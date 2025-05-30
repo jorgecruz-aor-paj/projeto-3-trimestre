@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.management.relation.Role;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -37,7 +38,7 @@ public class UserEntity {
     private String address;
 
     @Column (name = "birth_date", nullable = false)
-    private LocalDateTime birthDate;
+    private LocalDate birthDate;
 
     @Column (name = "biography")
     private String biography;
@@ -49,12 +50,17 @@ public class UserEntity {
     @Column(name = "photograph", nullable = false)
     private String photograph;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false, unique = false, updatable = true)
     private Role role;
 
     @ManyToOne
     @JoinColumn(name = "manager_id")
     private UserEntity manager;
+
+    @OneToMany
+    @JoinColumn(name = "manager")
+    private List<UserEntity> managedUsers;
 
     @ManyToOne
     @JoinColumn(name = "workplace_id")
