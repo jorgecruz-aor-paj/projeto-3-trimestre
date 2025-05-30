@@ -1,30 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Projeto Maven com coordenadas, propriedades de configuração, dependências, plugins e gerenciamento de dependências -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <!-- Coordenadas do projeto -->
     <groupId>aor.proj3t</groupId>
     <artifactId>jorge-osorio-proj3t</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>backend</name>
     <packaging>war</packaging>
 
+    <!-- Definição de propriedades para centralizar configurações e versões -->
     <properties>
+        <!-- Project Settings -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>21</maven.compiler.release>
+
+        <!-- Plugin Versions -->
         <wildfly.plugin.version>5.1.2.Final</wildfly.plugin.version>
         <maven-war.plugin.version>3.4.0</maven-war.plugin.version>
+        <maven-compiler.plugin.version>3.13.0</maven-compiler.plugin.version>
+        <maven-surefire.plugin.version>3.5.2</maven-surefire.plugin.version>
+
+        <!-- Dependency Versions -->
+        <jakartaee.version>10.0.0</jakartaee.version>
         <junit.version>5.11.4</junit.version>
+        <hamcrest.version>3.0</hamcrest.version>
+        <mockito.version>5.15.2</mockito.version>
+        <hibernate.version>6.6.7.Final</hibernate.version>
+        <postgresql.version>42.7.5</postgresql.version>
+        <log4j.version>2.24.3</log4j.version>
+        <jbcrypt.version>0.4</jbcrypt.version>
+        <websocket.version>1.1</websocket.version>
+        <jjwt.version>0.12.6</jjwt.version>
+        <jakarta.activation.version>2.1.1</jakarta.activation.version>
     </properties>
 
+    <!-- Seção de dependências do projeto -->
     <dependencies>
+        <!-- Dependência da API do Jakarta EE -->
         <dependency>
             <groupId>jakarta.platform</groupId>
             <artifactId>jakarta.jakartaee-api</artifactId>
-            <version>10.0.0</version>
+            <version>${jakartaee.version}</version>
             <scope>provided</scope>
         </dependency>
+
+        <!-- Dependências do JUnit para testes unitários -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -38,59 +61,87 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Dependência do Hamcrest para asserts avançados em testes -->
         <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest</artifactId>
-            <version>3.0</version>
+            <version>${hamcrest.version}</version>
             <scope>test</scope>
         </dependency>
+        <!-- Dependência do Mockito para criação de mocks nos testes -->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>5.15.2</version>
+            <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
 
+        <!-- Dependência do Hibernate Core para ORM -->
         <dependency>
             <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>6.6.7.Final</version>
+            <version>${hibernate.version}</version>
         </dependency>
+        <!-- Dependência do driver PostgreSQL -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.7.5</version>
+            <version>${postgresql.version}</version>
         </dependency>
 
+        <!-- Dependências do Log4j para logging -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
-            <version>2.24.3</version>
+            <version>${log4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
-            <version>2.24.3</version>
+            <version>${log4j.version}</version>
         </dependency>
 
+        <!-- Dependência do jBCrypt para hashing de senhas -->
         <dependency>
             <groupId>org.mindrot</groupId>
             <artifactId>jbcrypt</artifactId>
-            <version>0.4</version>
+            <version>${jbcrypt.version}</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/javax.websocket/javax.websocket-api -->
+        <!-- Dependência da API de WebSocket -->
         <dependency>
             <groupId>javax.websocket</groupId>
             <artifactId>javax.websocket-api</artifactId>
-            <version>1.1</version>
+            <version>${websocket.version}</version>
             <scope>provided</scope>
+        </dependency>
+
+        <!-- JJWT Dependencies: para criação e validação de tokens JWT -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>${jjwt.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>${jjwt.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <version>${jjwt.version}</version>
+            <scope>runtime</scope>
         </dependency>
     </dependencies>
 
+    <!-- Seção de build com definição dos plugins e suas configurações -->
     <build>
+        <!-- Nome final do artefato gerado -->
         <finalName>${project.artifactId}</finalName>
         <plugins>
+            <!-- Plugin para empacotar a aplicação em formato WAR -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
@@ -104,6 +155,7 @@
                     </webResources>
                 </configuration>
             </plugin>
+            <!-- Plugin para deploy e integração com o servidor WildFly -->
             <plugin>
                 <groupId>org.wildfly.plugins</groupId>
                 <artifactId>wildfly-maven-plugin</artifactId>
@@ -117,15 +169,16 @@
                     <auto-reload>true</auto-reload>
                 </configuration>
             </plugin>
+            <!-- Plugin para compilação do projeto com as configurações do Java -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.13.0</version>
+                <version>${maven-compiler.plugin.version}</version>
                 <configuration>
                     <release>${maven.compiler.release}</release>
                 </configuration>
             </plugin>
-
+            <!-- Plugin para manipulação de dependências e geração de propriedades a partir delas -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
@@ -137,26 +190,30 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- Plugin para execução de testes unitários -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.5.2</version>
+                <version>${maven-surefire.plugin.version}</version>
                 <configuration>
                     <argLine>
-                        -javaagent:"${settings.localRepository}/org/mockito/mockito-core/5.15.2/mockito-core-5.15.2.jar"
+            -javaagent:"${settings.localRepository}/org/mockito/mockito-core/${mockito.version}/mockito-core-${mockito.version}.jar"
                     </argLine>
                 </configuration>
             </plugin>
         </plugins>
     </build>
 
+    <!-- Seção de gerenciamento de dependências -->
     <dependencyManagement>
         <dependencies>
+            <!-- Gerenciamento da versão da API Jakarta Activation -->
             <dependency>
                 <groupId>jakarta.activation</groupId>
                 <artifactId>jakarta.activation-api</artifactId>
-                <version>2.1.1</version>
+                <version>${jakarta.activation.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
 </project>
+<!-- Fim do arquivo pom.xml -->
