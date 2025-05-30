@@ -47,5 +47,76 @@ public class EvaluationEntity {
     @JoinColumn(name = "evaluator_id", nullable = false)
     private UserEntity evaluator;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public EvaluationScale getScale() {
+        return scale;
+    }
+
+    public void setScale(EvaluationScale scale) {
+        this.scale = scale;
+    }
+
+    public EvaluationState getState() {
+        return state;
+    }
+
+    public void setState(EvaluationState state) {
+        this.state = state;
+    }
+
+    public String getFeedback() {
+        return feedback;
+    }
+
+    public void setFeedback(String feedback) {
+        this.feedback = feedback;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getEditedAt() {
+        return editedAt;
+    }
+
+    public void setEditedAt(LocalDateTime editedAt) {
+        this.editedAt = editedAt;
+    }
+
+    public EvaluationCycleEntity getEvaluationCycle() {
+        return evaluationCycle;
+    }
+
+    public void setEvaluationCycle(EvaluationCycleEntity evaluationCycle) {
+        this.evaluationCycle = evaluationCycle;
+    }
+
+    public UserEntity getEvaluatee() {
+        return evaluatee;
+    }
+
+    public void setEvaluatee(UserEntity evaluatee) {
+        this.evaluatee = evaluatee;
+    }
+
+    public UserEntity getEvaluator() {
+        return evaluator;
+    }
+
+    public void setEvaluator(UserEntity evaluator) {
+        this.evaluator = evaluator;
+    }
 }
 

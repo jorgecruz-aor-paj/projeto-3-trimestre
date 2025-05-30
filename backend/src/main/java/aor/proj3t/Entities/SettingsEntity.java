@@ -30,5 +30,52 @@ public class SettingsEntity {
     @JoinColumn(name = "created_by", nullable = false)
     private UserEntity createdBy;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Integer getConfirmationWindow() {
+        return confirmationWindow;
+    }
+
+    public void setConfirmationWindow(Integer confirmationWindow) {
+        this.confirmationWindow = confirmationWindow;
+    }
+
+    public Integer getSessionWindow() {
+        return sessionWindow;
+    }
+
+    public void setSessionWindow(Integer sessionWindow) {
+        this.sessionWindow = sessionWindow;
+    }
+
+    public Integer getResetPasswordWindow() {
+        return resetPasswordWindow;
+    }
+
+    public void setResetPasswordWindow(Integer resetPasswordWindow) {
+        this.resetPasswordWindow = resetPasswordWindow;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public UserEntity getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(UserEntity createdBy) {
+        this.createdBy = createdBy;
+    }
 }
 

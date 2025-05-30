@@ -37,4 +37,67 @@ public class NotificationEntity {
     @JoinColumn(name = "recipient_id", nullable = false)
     private UserEntity recipient;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public NotificationType getType() {
+        return type;
+    }
+
+    public void setType(NotificationType type) {
+        this.type = type;
+    }
+
+    public boolean isRead() {
+        return isRead;
+    }
+
+    public void setRead(boolean read) {
+        isRead = read;
+    }
+
+    public LocalDateTime getTimestampSent() {
+        return timestampSent;
+    }
+
+    public void setTimestampSent(LocalDateTime timestampSent) {
+        this.timestampSent = timestampSent;
+    }
+
+    public LocalDateTime getTimestampRead() {
+        return timestampRead;
+    }
+
+    public void setTimestampRead(LocalDateTime timestampRead) {
+        this.timestampRead = timestampRead;
+    }
+
+    public UserEntity getSender() {
+        return sender;
+    }
+
+    public void setSender(UserEntity sender) {
+        this.sender = sender;
+    }
+
+    public UserEntity getRecipient() {
+        return recipient;
+    }
+
+    public void setRecipient(UserEntity recipient) {
+        this.recipient = recipient;
+    }
 }
