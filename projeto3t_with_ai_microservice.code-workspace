@@ -1,13 +1,16 @@
 {
   "folders": [
-	{
-		"path": "frontend"
-	},
-	{
-		"path": "backend"
-	},
-	{
-		"path": "ai_microservice"
-	}
-]
+    {
+      "path": "frontend"
+    },
+    {
+      "path": "backend"
+    },
+    {
+      "path": "ai_microservice"
+    }
+  ],
+  "settings": {
+    "java.configuration.updateBuildConfiguration": "automatic"
+  }
 }
