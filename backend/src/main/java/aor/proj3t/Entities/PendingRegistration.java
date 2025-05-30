@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "PendingRegistration")
 
-public class PendingRegistrationEntity {
+public class PendingRegistration {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

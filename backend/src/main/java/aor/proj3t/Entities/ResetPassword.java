@@ -6,8 +6,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "session")
-public class SessionEntity {
+@Table(name = "reset_password")
+public class ResetPassword {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,12 +20,12 @@ public class SessionEntity {
     @Column(name = "expiration_date", nullable = false)
     private LocalDateTime expirationDate;
 
-    @Column(name = "session_token", nullable = false, unique = true)
-    private String sessionToken;
+    @Column(name = "reset_password_token", nullable = false, unique = true)
+    private String resetPasswordToken;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity user;
+    private User user;
 
     public Long getId() {
         return id;
@@ -51,19 +51,20 @@ public class SessionEntity {
         this.expirationDate = expirationDate;
     }
 
-    public String getSessionToken() {
-        return sessionToken;
+    public String getResetPasswordToken() {
+        return resetPasswordToken;
     }
 
-    public void setSessionToken(String sessionToken) {
-        this.sessionToken = sessionToken;
+    public void setResetPasswordToken(String resetPasswordToken) {
+        this.resetPasswordToken = resetPasswordToken;
     }
 
-    public UserEntity getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(UserEntity user) {
+    public void setUser(User user) {
         this.user = user;
     }
 }
+

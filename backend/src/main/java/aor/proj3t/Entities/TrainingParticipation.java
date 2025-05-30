@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "training_participation")
-public class TrainingParticipationEntity {
+public class TrainingParticipation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,15 +15,15 @@ public class TrainingParticipationEntity {
 
     @ManyToOne
     @JoinColumn(name = "participant_id", nullable = false)
-    private UserEntity participant;
+    private User participant;
 
     @ManyToOne
     @JoinColumn(name = "manager_id", nullable = false)
-    private UserEntity manager;
+    private User manager;
 
     @ManyToOne
     @JoinColumn(name = "training_id", nullable = false)
-    private TrainingEntity training;
+    private Training training;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

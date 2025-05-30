@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "evaluation_cycles")
-public class EvaluationCycleEntity {
+public class EvaluationCycle {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +28,7 @@ public class EvaluationCycleEntity {
 
     @ManyToOne
     @JoinColumn(name = "created_by", nullable = false) // Foreign key linking to UserEntity
-    private UserEntity createdBy;
+    private User createdBy;
 
     public Long getId() {
         return id;
@@ -70,11 +70,11 @@ public class EvaluationCycleEntity {
         this.closureDate = closureDate;
     }
 
-    public UserEntity getCreatedBy() {
+    public User getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(UserEntity createdBy) {
+    public void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
     }
 }

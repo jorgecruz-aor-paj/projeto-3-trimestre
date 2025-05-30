@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "messages")
-public class MessageEntity {
+public class Message {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,11 +26,11 @@ public class MessageEntity {
 
     @ManyToOne
     @JoinColumn(name = "sender_id", nullable = false)
-    private UserEntity sender;
+    private User sender;
 
     @ManyToOne
     @JoinColumn(name = "recipient_id", nullable = false)
-    private UserEntity recipient;
+    private User recipient;
 
     public Long getId() {
         return id;
@@ -72,19 +72,19 @@ public class MessageEntity {
         isRead = read;
     }
 
-    public UserEntity getSender() {
+    public User getSender() {
         return sender;
     }
 
-    public void setSender(UserEntity sender) {
+    public void setSender(User sender) {
         this.sender = sender;
     }
 
-    public UserEntity getRecipient() {
+    public User getRecipient() {
         return recipient;
     }
 
-    public void setRecipient(UserEntity recipient) {
+    public void setRecipient(User recipient) {
         this.recipient = recipient;
     }
 }

@@ -3,8 +3,8 @@ package aor.proj3t.Entities;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Workplace")
-public class WorkplaceEntity {
+@Table(name = "training_areas")
+public class TrainingArea {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
