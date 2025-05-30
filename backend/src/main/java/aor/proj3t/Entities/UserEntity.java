@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.management.relation.Role;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "Users")
@@ -58,5 +59,17 @@ public class UserEntity {
     @ManyToOne
     @JoinColumn(name = "workplace_id")
     private WorkplaceEntity workplace;
+
+    @OneToMany(mappedBy = "recipient", fetch = FetchType.LAZY)
+    private List<NotificationEntity> receivedNotifications;
+
+    @OneToMany(mappedBy = "sender", fetch = FetchType.LAZY)
+    private List<NotificationEntity> sentNotifications;
+
+    @OneToMany(mappedBy = "recipient", fetch = FetchType.LAZY)
+    private List<MessageEntity> receivedMessages;
+
+    @OneToMany(mappedBy = "sender", fetch = FetchType.LAZY)
+    private List<MessageEntity> sentMessages;
 
 }
