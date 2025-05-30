@@ -35,14 +35,14 @@ public class UserEntity {
     @Column (name = "address", nullable = false)
     private String address;
 
-    @Column (name = "birthDate", nullable = false)
+    @Column (name = "birth_date", nullable = false)
     private LocalDateTime birthDate;
 
     @Column (name = "biography")
     private String biography;
 
     @CreationTimestamp
-    @Column(name = "createdAt", nullable = false, updatable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "photograph", nullable = false)

@@ -23,13 +23,13 @@ public class PendingRegistrationEntity {
     private String password;
 
     @CreationTimestamp
-    @Column(name = "createdAt", nullable = false, updatable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @Column(name = "confirmationToken", nullable = false)
+    @Column(name = "confirmation_token", nullable = false)
     private String confirmationToken;
 
-    @Column(name = "expirationDate", nullable = false)
+    @Column(name = "expiration_date", nullable = false)
     private LocalDateTime expirationDate;
 
 }
