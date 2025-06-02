@@ -1,13 +1,24 @@
 package aor.proj3t.Entities;
 
-
-import jakarta.persistence.*;
-import org.hibernate.annotations.CreationTimestamp;
-
-import javax.management.relation.Role;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import org.hibernate.annotations.CreationTimestamp;
+
+import aor.proj3t.Enums.Role;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "Users")
@@ -16,7 +27,7 @@ public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column (name="id", nullable = false, unique = true, updatable = false)
+    @Column(name = "id", nullable = false, unique = true, updatable = false)
     private long id;
 
     @Column(name = "email", nullable = false, unique = true, updatable = false)
@@ -34,13 +45,13 @@ public class UserEntity {
     @Column(name = "phonenumber", nullable = false, unique = true)
     private String phoneNumber;
 
-    @Column (name = "address", nullable = false)
+    @Column(name = "address", nullable = false)
     private String address;
 
-    @Column (name = "birth_date", nullable = false)
+    @Column(name = "birth_date", nullable = false)
     private LocalDate birthDate;
 
-    @Column (name = "biography")
+    @Column(name = "biography")
     private String biography;
 
     @CreationTimestamp
@@ -64,7 +75,6 @@ public class UserEntity {
     @ManyToOne
     @JoinColumn(name = "workplace_id")
     private WorkplaceEntity workplace;
-
 
     public long getId() {
         return id;
