@@ -1,4 +1,4 @@
-package aor.proj3t.Entities;
+package aor.proj3t.entities;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "trainings")
-public class TrainingEntity {
+public class Training {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,7 +42,7 @@ public class TrainingEntity {
 
     @ManyToOne
     @JoinColumn(name = "training_area_id", nullable = false)
-    private TrainingAreaEntity trainingArea;
+    private TrainingArea trainingArea;
 
     public Long getId() {
         return id;
@@ -116,11 +116,11 @@ public class TrainingEntity {
         this.editedAt = editedAt;
     }
 
-    public TrainingAreaEntity getTrainingArea() {
+    public TrainingArea getTrainingArea() {
         return trainingArea;
     }
 
-    public void setTrainingArea(TrainingAreaEntity trainingArea) {
+    public void setTrainingArea(TrainingArea trainingArea) {
         this.trainingArea = trainingArea;
     }
 }

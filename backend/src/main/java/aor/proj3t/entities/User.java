@@ -1,4 +1,8 @@
-package aor.proj3t.Entities;
+package aor.proj3t.entities;
+
+import aor.proj3t.enums.Role;
+import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -21,9 +25,9 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Users")
+@Table(name = "users")
 
-public class UserEntity {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -67,14 +71,14 @@ public class UserEntity {
 
     @ManyToOne
     @JoinColumn(name = "manager_id")
-    private UserEntity manager;
+    private User manager;
 
     @OneToMany(mappedBy = "manager", fetch = FetchType.LAZY)
-    private List<UserEntity> managedUsers;
+    private List<User> managedUsers;
 
     @ManyToOne
     @JoinColumn(name = "workplace_id")
-    private WorkplaceEntity workplace;
+    private Workplace workplace;
 
     public long getId() {
         return id;
@@ -172,27 +176,27 @@ public class UserEntity {
         this.role = role;
     }
 
-    public UserEntity getManager() {
+    public User getManager() {
         return manager;
     }
 
-    public void setManager(UserEntity manager) {
+    public void setManager(User manager) {
         this.manager = manager;
     }
 
-    public List<UserEntity> getManagedUsers() {
+    public List<User> getManagedUsers() {
         return managedUsers;
     }
 
-    public void setManagedUsers(List<UserEntity> managedUsers) {
+    public void setManagedUsers(List<User> managedUsers) {
         this.managedUsers = managedUsers;
     }
 
-    public WorkplaceEntity getWorkplace() {
+    public Workplace getWorkplace() {
         return workplace;
     }
 
-    public void setWorkplace(WorkplaceEntity workplace) {
+    public void setWorkplace(Workplace workplace) {
         this.workplace = workplace;
     }
 

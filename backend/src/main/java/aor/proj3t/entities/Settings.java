@@ -1,4 +1,4 @@
-package aor.proj3t.Entities;
+package aor.proj3t.entities;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "settings")
-public class SettingsEntity {
+public class Settings {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +28,7 @@ public class SettingsEntity {
 
     @ManyToOne
     @JoinColumn(name = "created_by", nullable = false)
-    private UserEntity createdBy;
+    private User createdBy;
 
     public Long getId() {
         return id;
@@ -70,11 +70,11 @@ public class SettingsEntity {
         this.createdAt = createdAt;
     }
 
-    public UserEntity getCreatedBy() {
+    public User getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(UserEntity createdBy) {
+    public void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
     }
 }

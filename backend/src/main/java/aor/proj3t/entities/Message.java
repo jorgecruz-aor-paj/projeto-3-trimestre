@@ -1,13 +1,12 @@
-package aor.proj3t.Entities;
+package aor.proj3t.entities;
 
-import aor.proj3t.Enums.NotificationType;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "notifications")
-public class NotificationEntity {
+@Table(name = "messages")
+public class Message {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,26 +15,22 @@ public class NotificationEntity {
     @Column(name = "content", nullable = false)
     private String content;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "type", nullable = false)
-    private NotificationType type;
-
-    @Column(name = "is_read", nullable = false)
-    private boolean isRead = false;
-
     @Column(name = "timestamp_sent", nullable = false, updatable = false)
     private LocalDateTime timestampSent;
 
     @Column(name = "timestamp_read")
     private LocalDateTime timestampRead;
 
+    @Column(name = "is_read", nullable = false)
+    private boolean isRead = false;
+
     @ManyToOne
     @JoinColumn(name = "sender_id", nullable = false)
-    private UserEntity sender;
+    private User sender;
 
     @ManyToOne
     @JoinColumn(name = "recipient_id", nullable = false)
-    private UserEntity recipient;
+    private User recipient;
 
     public Long getId() {
         return id;
@@ -51,22 +46,6 @@ public class NotificationEntity {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public NotificationType getType() {
-        return type;
-    }
-
-    public void setType(NotificationType type) {
-        this.type = type;
-    }
-
-    public boolean isRead() {
-        return isRead;
-    }
-
-    public void setRead(boolean read) {
-        isRead = read;
     }
 
     public LocalDateTime getTimestampSent() {
@@ -85,19 +64,28 @@ public class NotificationEntity {
         this.timestampRead = timestampRead;
     }
 
-    public UserEntity getSender() {
+    public boolean isRead() {
+        return isRead;
+    }
+
+    public void setRead(boolean read) {
+        isRead = read;
+    }
+
+    public User getSender() {
         return sender;
     }
 
-    public void setSender(UserEntity sender) {
+    public void setSender(User sender) {
         this.sender = sender;
     }
 
-    public UserEntity getRecipient() {
+    public User getRecipient() {
         return recipient;
     }
 
-    public void setRecipient(UserEntity recipient) {
+    public void setRecipient(User recipient) {
         this.recipient = recipient;
     }
 }
+

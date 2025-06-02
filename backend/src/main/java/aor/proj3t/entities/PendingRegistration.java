@@ -1,4 +1,4 @@
-package aor.proj3t.Entities;
+package aor.proj3t.entities;
 
 
 import jakarta.persistence.*;
@@ -7,9 +7,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "PendingRegistration")
+@Table(name = "pending_registration")
 
-public class PendingRegistrationEntity {
+public class PendingRegistration {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

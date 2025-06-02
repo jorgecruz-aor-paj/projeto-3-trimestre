@@ -1,4 +1,4 @@
-package aor.proj3t.Entities;
+package aor.proj3t.entities;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "reset_password")
-public class ResetPasswordEntity {
+public class ResetPassword {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +25,7 @@ public class ResetPasswordEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity user;
+    private User user;
 
     public Long getId() {
         return id;
@@ -59,11 +59,11 @@ public class ResetPasswordEntity {
         this.resetPasswordToken = resetPasswordToken;
     }
 
-    public UserEntity getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(UserEntity user) {
+    public void setUser(User user) {
         this.user = user;
     }
 }

@@ -1,10 +1,10 @@
-package aor.proj3t.Entities;
+package aor.proj3t.entities;
 
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "training_areas")
-public class TrainingAreaEntity {
+public class TrainingArea {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

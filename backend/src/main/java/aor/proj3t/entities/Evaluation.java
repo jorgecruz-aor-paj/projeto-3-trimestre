@@ -1,7 +1,7 @@
-package aor.proj3t.Entities;
+package aor.proj3t.entities;
 
-import aor.proj3t.Enums.EvaluationScale;
-import aor.proj3t.Enums.EvaluationState;
+import aor.proj3t.enums.EvaluationScale;
+import aor.proj3t.enums.EvaluationStatus;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "evaluations")
-public class EvaluationEntity {
+public class Evaluation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +22,7 @@ public class EvaluationEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "state", nullable = false)
-    private EvaluationState state;
+    private EvaluationStatus state;
 
     @Column(name = "feedback")
     private String feedback;
@@ -37,15 +37,15 @@ public class EvaluationEntity {
 
     @ManyToOne
     @JoinColumn(name = "evaluation_cycle_id", nullable = false)
-    private EvaluationCycleEntity evaluationCycle;
+    private EvaluationCycle evaluationCycle;
 
     @ManyToOne
     @JoinColumn(name = "evaluatee_id", nullable = false)
-    private UserEntity evaluatee;
+    private User evaluatee;
 
     @ManyToOne
     @JoinColumn(name = "evaluator_id", nullable = false)
-    private UserEntity evaluator;
+    private User evaluator;
 
     public Long getId() {
         return id;
@@ -63,11 +63,11 @@ public class EvaluationEntity {
         this.scale = scale;
     }
 
-    public EvaluationState getState() {
+    public EvaluationStatus getState() {
         return state;
     }
 
-    public void setState(EvaluationState state) {
+    public void setState(EvaluationStatus state) {
         this.state = state;
     }
 
@@ -95,27 +95,27 @@ public class EvaluationEntity {
         this.editedAt = editedAt;
     }
 
-    public EvaluationCycleEntity getEvaluationCycle() {
+    public EvaluationCycle getEvaluationCycle() {
         return evaluationCycle;
     }
 
-    public void setEvaluationCycle(EvaluationCycleEntity evaluationCycle) {
+    public void setEvaluationCycle(EvaluationCycle evaluationCycle) {
         this.evaluationCycle = evaluationCycle;
     }
 
-    public UserEntity getEvaluatee() {
+    public User getEvaluatee() {
         return evaluatee;
     }
 
-    public void setEvaluatee(UserEntity evaluatee) {
+    public void setEvaluatee(User evaluatee) {
         this.evaluatee = evaluatee;
     }
 
-    public UserEntity getEvaluator() {
+    public User getEvaluator() {
         return evaluator;
     }
 
-    public void setEvaluator(UserEntity evaluator) {
+    public void setEvaluator(User evaluator) {
         this.evaluator = evaluator;
     }
 }
