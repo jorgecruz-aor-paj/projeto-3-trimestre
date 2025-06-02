@@ -1,6 +1,0 @@
-package aor.proj3t.Enums;
-
-public enum EvaluationScale {
-    LOW_CONTRIBUTION, PARCIAL_CONTRIBUTION, EXPECTED_CONTRIBUTION, EXCEED_CONTRIBUTION;
-}
-
