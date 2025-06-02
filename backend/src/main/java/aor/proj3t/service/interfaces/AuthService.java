@@ -1,7 +1,7 @@
 package aor.proj3t.service.interfaces;
 
-import aor.proj3t.Entities.SessionEntity;
 import aor.proj3t.dto.LoginDTO;
+import aor.proj3t.entities.Session;
 
 public interface AuthService {
 
@@ -13,7 +13,7 @@ public interface AuthService {
      * @param ipAddress the IP address of the client
      * @return a SessionEntity representing the authenticated session
      */
-    SessionEntity login(LoginDTO loginDTO, String userAgent, String ipAddress);
+    Session login(LoginDTO loginDTO, String userAgent, String ipAddress);
 
     /**
      * Logs out a user by invalidating their session.

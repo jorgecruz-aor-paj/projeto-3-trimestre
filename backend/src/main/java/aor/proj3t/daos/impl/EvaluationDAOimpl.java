@@ -1,8 +1,8 @@
 package aor.proj3t.daos.impl;
 
-
 import aor.proj3t.daos.interfaces.EvaluationDAO;
 import aor.proj3t.entities.Evaluation;
+import aor.proj3t.enums.EvaluationStatus;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
