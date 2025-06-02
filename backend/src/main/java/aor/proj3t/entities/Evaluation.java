@@ -1,7 +1,7 @@
 package aor.proj3t.entities;
 
 import aor.proj3t.enums.EvaluationScale;
-import aor.proj3t.enums.EvaluationState;
+import aor.proj3t.enums.EvaluationStatus;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -22,7 +22,7 @@ public class Evaluation {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "state", nullable = false)
-    private EvaluationState state;
+    private EvaluationStatus state;
 
     @Column(name = "feedback")
     private String feedback;
@@ -63,11 +63,11 @@ public class Evaluation {
         this.scale = scale;
     }
 
-    public EvaluationState getState() {
+    public EvaluationStatus getState() {
         return state;
     }
 
-    public void setState(EvaluationState state) {
+    public void setState(EvaluationStatus state) {
         this.state = state;
     }
 

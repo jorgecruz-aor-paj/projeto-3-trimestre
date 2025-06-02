@@ -1,4 +1,4 @@
-package aor.proj3t.daos;
+package aor.proj3t.daos.interfaces;
 
 
 import java.util.List;

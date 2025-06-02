@@ -1,6 +1,7 @@
-package aor.proj3t.daos;
+package aor.proj3t.daos.impl;
 
 
+import aor.proj3t.daos.interfaces.UserDAO;
 import aor.proj3t.entities.User;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.NoResultException;

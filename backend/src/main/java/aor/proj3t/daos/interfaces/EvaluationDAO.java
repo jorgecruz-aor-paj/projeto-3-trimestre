@@ -1,7 +1,8 @@
-package aor.proj3t.daos;
+package aor.proj3t.daos.interfaces;
 
 
 import aor.proj3t.entities.Evaluation;
+import aor.proj3t.enums.EvaluationStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.Optional;
 /**
  * Repository interface for Evaluation entity operations.
  */
-public interface EvaluationDAO extends BasicDAO <Evaluation, Long> {
+public interface EvaluationDAO extends BasicDAO<Evaluation, Long> {
 
     /**
      * Find evaluations by their status.

@@ -1,5 +1,6 @@
-package aor.proj3t.daos;
+package aor.proj3t.daos.impl;
 
+import aor.proj3t.daos.interfaces.BasicDAO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
