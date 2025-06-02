@@ -1,9 +1,8 @@
 package aor.proj3t.daos.interfaces;
 
-import aor.proj3t.entities.Message;
-
-import java.time.LocalDateTime;
 import java.util.List;
+
+import aor.proj3t.entities.Message;
 
 public interface MessageDAO extends BasicDAO<Message, Long> {
 
@@ -24,4 +23,3 @@ public interface MessageDAO extends BasicDAO<Message, Long> {
     List<Message> findByRecipientId(Long recipientId);
 
 }
-
