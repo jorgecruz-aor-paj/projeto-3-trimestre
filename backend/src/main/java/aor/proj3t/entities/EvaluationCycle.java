@@ -1,9 +1,11 @@
 package aor.proj3t.entities;
 
+import aor.proj3t.enums.EvaluationCycleStatus;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "evaluation_cycles")
@@ -26,9 +28,16 @@ public class EvaluationCycle {
     @Column(name = "closure_date")
     private LocalDateTime closureDate;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private EvaluationCycleStatus status;
+
     @ManyToOne
-    @JoinColumn(name = "created_by", nullable = false) // Foreign key linking to UserEntity
+    @JoinColumn(name = "created_by", nullable = false)
     private User createdBy;
+
+    @OneToMany (mappedBy = "evaluation_cycle_id", fetch = FetchType.LAZY)
+    private List<Evaluation> evaluations;
 
     public Long getId() {
         return id;
@@ -76,6 +85,22 @@ public class EvaluationCycle {
 
     public void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public EvaluationCycleStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(EvaluationCycleStatus status) {
+        this.status = status;
+    }
+
+    public List<Evaluation> getEvaluations() {
+        return evaluations;
+    }
+
+    public void setEvaluations(List<Evaluation> evaluations) {
+        this.evaluations = evaluations;
     }
 }
 

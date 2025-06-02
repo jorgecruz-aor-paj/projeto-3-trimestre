@@ -3,7 +3,7 @@ package aor.proj3t.entities;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Workplace")
+@Table(name = "workplace")
 public class Workplace {
 
     @Id

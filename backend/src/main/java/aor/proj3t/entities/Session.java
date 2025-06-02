@@ -20,8 +20,17 @@ public class Session {
     @Column(name = "expiration_date", nullable = false)
     private LocalDateTime expirationDate;
 
-    @Column(name = "session_token", nullable = false, unique = true)
+    @Column(name = "token", nullable = false, unique = true)
     private String sessionToken;
+
+    @Column(name = "is_active",nullable = false)
+    private Boolean isActive = true;
+
+    @Column(name = "ip_address", nullable = false)
+    private String ipAddress;
+
+    @Column(name = "user_agent",nullable = false)
+    private String userAgent;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -65,5 +74,29 @@ public class Session {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
+
+    public String getIpAddress() {
+        return ipAddress;
+    }
+
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
+    }
+
+    public String getUserAgent() {
+        return userAgent;
+    }
+
+    public void setUserAgent(String userAgent) {
+        this.userAgent = userAgent;
     }
 }

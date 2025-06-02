@@ -7,7 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "PendingRegistration")
+@Table(name = "pending_registration")
 
 public class PendingRegistration {
 
