@@ -18,36 +18,48 @@ import java.util.Optional;
 @Stateless
 public class EvaluationCycleDAOimpl extends AbstractDAO<EvaluationCycle, Long> implements EvaluationCycleDAO {
 
+
     @Override
     public List<EvaluationCycle> findActive() {
-        return executeNamedQuery("EvaluationCycle.findActive");
-    }
-
-    @Override
-    public List<EvaluationCycle> findByStatus(EvaluationStatus status) {
-        TypedQuery<EvaluationCycle> query = em.createQuery(
-                "SELECT ec FROM EvaluationCycle ec WHERE ec.status = :status", EvaluationCycle.class);
-        query.setParameter("status", status);
-        return query.getResultList();
-    }
-
-    @Override
-    public Optional<EvaluationCycle> findLatest() {
         try {
-            TypedQuery<EvaluationCycle> query = em.createNamedQuery("EvaluationCycle.findLatest", EvaluationCycle.class);
-            query.setMaxResults(1);
-            return Optional.ofNullable(query.getSingleResult());
+            return executeNamedQuery("EvaluationCycle.findActive", EvaluationCycle.class);
         } catch (NoResultException e) {
-            return Optional.empty();
+            return null;
         }
     }
 
     @Override
-    public boolean updateStatus(Long cycleId, EvaluationStatus status) {
-        Query query = em.createQuery(
-                "UPDATE EvaluationCycle ec SET ec.status = :status WHERE ec.id = :id");
-        query.setParameter("status", status);
-        query.setParameter("id", cycleId);
-        return query.executeUpdate() > 0;
+    public List<EvaluationCycle> findByStatus(EvaluationStatus status) {
+        try {
+            return executeNamedQuery("EvaluationCycle.findByStatus", EvaluationCycle.class, "status", status);
+        } catch (NoResultException e) {
+            return null;
+        }
     }
+
+    @Override
+    public List<EvaluationCycle> findByStatus(EvaluationStatus status, int page, int size) {
+        TypedQuery<EvaluationCycle> query = em.createNamedQuery("EvaluationCycle.findActive", EvaluationCycle.class);
+        query.setFirstResult(page * size);
+        query.setMaxResults(size);
+
+        return query.getResultList();
+    }
+
+
+    @Override
+    public boolean updateStatus(Long cycleId, EvaluationStatus status) {
+        try {
+            int updatedRows = em.createNamedQuery("EvaluationCycle.updateStatus")
+                    .setParameter("id", cycleId)
+                    .setParameter("status", status)
+                    .executeUpdate();
+
+            return updatedRows > 0;
+        } catch (NoResultException e) {
+            return false;
+        }
+    }
+
+
 }

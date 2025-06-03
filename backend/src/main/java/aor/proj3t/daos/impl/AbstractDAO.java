@@ -65,17 +65,19 @@ public abstract class AbstractDAO<T, ID> implements BasicDAO<T, ID> {
      * Execute a named query with parameters.
      *
      * @param queryName The name of the query
+     * @param entityClass The type of entity used
      * @param params    The parameters for the query in format: paramName1,
      *                  paramValue1, paramName2, paramValue2, etc.
      * @return A list of results
      */
-    protected List<T> executeNamedQuery(String queryName, Object... params) {
+    protected List<T> executeNamedQuery(String queryName, Class<T> entityClass, Object... params) {
         TypedQuery<T> query = em.createNamedQuery(queryName, entityClass);
         for (int i = 0; i < params.length; i += 2) {
             query.setParameter(params[i].toString(), params[i + 1]);
         }
         return query.getResultList();
     }
+
 
     /**
      * Execute a named query with parameters that returns a single result.
