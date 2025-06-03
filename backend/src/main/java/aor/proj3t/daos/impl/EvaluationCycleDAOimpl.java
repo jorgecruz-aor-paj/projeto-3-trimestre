@@ -9,6 +9,7 @@ import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,11 +32,15 @@ public class EvaluationCycleDAOimpl extends AbstractDAO<EvaluationCycle, Long> i
     @Override
     public List<EvaluationCycle> findByStatus(EvaluationStatus status) {
         try {
-            return executeNamedQuery("EvaluationCycle.findByStatus", EvaluationCycle.class, "status", status);
+            TypedQuery<EvaluationCycle> query = em.createQuery(
+                    "SELECT ec FROM EvaluationCycle ec WHERE ec.status = :status", EvaluationCycle.class);
+            query.setParameter("status", status);
+            return query.getResultList();
         } catch (NoResultException e) {
-            return null;
+            return Collections.emptyList();
         }
     }
+
 
     @Override
     public List<EvaluationCycle> findByStatus(EvaluationStatus status, int page, int size) {
@@ -50,10 +55,12 @@ public class EvaluationCycleDAOimpl extends AbstractDAO<EvaluationCycle, Long> i
     @Override
     public boolean updateStatus(Long cycleId, EvaluationStatus status) {
         try {
-            int updatedRows = em.createNamedQuery("EvaluationCycle.updateStatus")
+            int updatedRows = em.createQuery(
+                            "UPDATE EvaluationCycle ec SET ec.status = :status WHERE ec.id = :id")
                     .setParameter("id", cycleId)
                     .setParameter("status", status)
                     .executeUpdate();
+
 
             return updatedRows > 0;
         } catch (NoResultException e) {

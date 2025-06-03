@@ -14,9 +14,6 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(name = "EvaluationCycle.findActive", query = "SELECT ec FROM EvaluationCycle ec WHERE ec.status = 'ACTIVE'"),
         @NamedQuery(name = "EvaluationCycle.findAll", query = "SELECT ec FROM EvaluationCycle ec"),
-        @NamedQuery(name = "EvaluationCycle.findById", query = "SELECT ec FROM EvaluationCycle ec WHERE ec.id = :id"),
-        @NamedQuery(name = "EvaluationCycle.findByStatus", query = "SELECT ec FROM EvaluationCycle ec WHERE ec.status = :status"),
-        @NamedQuery(name = "EvaluationCycle.updateStatus", query = "UPDATE EvaluationCycle ec SET ec.status = :status WHERE ec.id = :id"),
 })
 
 public class EvaluationCycle {
