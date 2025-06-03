@@ -21,7 +21,7 @@ public class ResetPasswordDAOimpl extends AbstractDAO<ResetPassword, Long> imple
     @Override
     public Optional<ResetPassword> findByToken(String token) {
         TypedQuery<ResetPassword> query = em.createQuery(
-                "SELECT p FROM ResetPassword rp WHERE rp.resetPasswordToken = :token", ResetPassword.class);
+                "SELECT rp FROM ResetPassword rp WHERE rp.resetPasswordToken = :token", ResetPassword.class);
         query.setParameter("token", token);
         return query.getResultList().stream().findFirst();
     }
@@ -30,7 +30,7 @@ public class ResetPasswordDAOimpl extends AbstractDAO<ResetPassword, Long> imple
     @Override
     public Optional<ResetPassword> findByOwnerId(Long ownerId) {
         TypedQuery<ResetPassword> query = em.createQuery(
-                "SELECT e FROM ResetPassword rp WHERE rp.user.id = :ownerId", ResetPassword.class);
+                "SELECT rp FROM ResetPassword rp WHERE rp.user.id = :ownerId", ResetPassword.class);
         query.setParameter("ownerId", ownerId);
         return query.getResultList().stream().findFirst();
     }
@@ -39,7 +39,7 @@ public class ResetPasswordDAOimpl extends AbstractDAO<ResetPassword, Long> imple
     @Override
     public Boolean isValidToken(String token) {
         TypedQuery<Long> query = em.createQuery(
-                "SELECT COUNT(p) FROM ResetPassword p WHERE p.resetPasswordToken = :token AND p.expirationDate > CURRENT_TIMESTAMP",
+                "SELECT COUNT(rp) FROM ResetPassword rp WHERE rp.resetPasswordToken = :token AND p.expirationDate > CURRENT_TIMESTAMP",
                 Long.class);
         query.setParameter("token", token);
         return query.getSingleResult() > 0;
