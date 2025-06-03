@@ -2,6 +2,7 @@ package aor.proj3t.daos.interfaces;
 
 
 import aor.proj3t.entities.Evaluation;
+import aor.proj3t.entities.Training;
 import aor.proj3t.enums.EvaluationStatus;
 
 import java.time.LocalDateTime;
@@ -77,4 +78,7 @@ public interface EvaluationDAO extends BasicDAO<Evaluation, Long> {
      * @return An Optional containing the evaluation if found, or empty if not found
      */
     Optional<Evaluation> findByEvaluatedEvaluatorAndCycle(Long evaluatedId, Long evaluatorId, Long cycleId);
+
+    List<Training> getEvaluationsByFilters(EvaluationFilter filters);
+
 }

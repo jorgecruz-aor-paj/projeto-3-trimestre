@@ -2,5 +2,10 @@ package aor.proj3t.daos.interfaces;
 
 import aor.proj3t.entities.Training;
 
-public interface TrainingDAO extends BasicDAO<Training,Long> {
+import java.util.List;
+
+public interface TrainingDAO extends BasicDAO<Training, Long> {
+
+    Boolean setAsInactive(Long trainingId);
+    List<Training> getTrainingsByFilters(TrainingFilter filters);
 }
