@@ -4,6 +4,7 @@ package aor.proj3t.daos.interfaces;
 import aor.proj3t.entities.Evaluation;
 import aor.proj3t.entities.Training;
 import aor.proj3t.enums.EvaluationStatus;
+import aor.proj3t.filters.EvaluationFilter;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,13 +15,6 @@ import java.util.Optional;
  */
 public interface EvaluationDAO extends BasicDAO<Evaluation, Long> {
 
-    /**
-     * Find evaluations by their status.
-     *
-     * @param status The evaluation status
-     * @return A list of evaluations with the specified status
-     */
-    List<Evaluation> findByStatus(EvaluationStatus status);
 
     /**
      * Find evaluations for a specific evaluated user.
@@ -69,16 +63,6 @@ public interface EvaluationDAO extends BasicDAO<Evaluation, Long> {
      */
     int closeAllCompletedEvaluations();
 
-    /**
-     * Find an evaluation by evaluated user, evaluator and cycle.
-     *
-     * @param evaluatedId The ID of the evaluated user
-     * @param evaluatorId The ID of the evaluator
-     * @param cycleId     The ID of the evaluation cycle
-     * @return An Optional containing the evaluation if found, or empty if not found
-     */
-    Optional<Evaluation> findByEvaluatedEvaluatorAndCycle(Long evaluatedId, Long evaluatorId, Long cycleId);
-
-    List<Training> getEvaluationsByFilters(EvaluationFilter filters);
+    List<Evaluation> getEvaluationsByFilters(EvaluationFilter filters);
 
 }

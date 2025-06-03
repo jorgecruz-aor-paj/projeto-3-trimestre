@@ -10,6 +10,9 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "evaluations")
+@NamedQueries({
+        @NamedQuery(name = "Evaluation.findCompleted", query = "SELECT e FROM Evaluation e WHERE e.status = 'COMPLETED'"),
+})
 public class Evaluation {
 
     @Id
@@ -21,8 +24,8 @@ public class Evaluation {
     private EvaluationScale scale;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "state", nullable = false)
-    private EvaluationStatus state;
+    @Column(name = "status", nullable = false)
+    private EvaluationStatus status;
 
     @Column(name = "feedback")
     private String feedback;
@@ -40,8 +43,8 @@ public class Evaluation {
     private EvaluationCycle evaluationCycle;
 
     @ManyToOne
-    @JoinColumn(name = "evaluatee_id", nullable = false)
-    private User evaluatee;
+    @JoinColumn(name = "evaluated_id", nullable = false)
+    private User evaluated;
 
     @ManyToOne
     @JoinColumn(name = "evaluator_id", nullable = false)
@@ -63,12 +66,12 @@ public class Evaluation {
         this.scale = scale;
     }
 
-    public EvaluationStatus getState() {
-        return state;
+    public EvaluationStatus getStatus() {
+        return status;
     }
 
-    public void setState(EvaluationStatus state) {
-        this.state = state;
+    public void setStatus(EvaluationStatus status) {
+        this.status = status;
     }
 
     public String getFeedback() {
@@ -103,12 +106,12 @@ public class Evaluation {
         this.evaluationCycle = evaluationCycle;
     }
 
-    public User getEvaluatee() {
-        return evaluatee;
+    public User getEvaluated() {
+        return evaluated;
     }
 
-    public void setEvaluatee(User evaluatee) {
-        this.evaluatee = evaluatee;
+    public void setEvaluated(User evaluatee) {
+        this.evaluated = evaluatee;
     }
 
     public User getEvaluator() {
