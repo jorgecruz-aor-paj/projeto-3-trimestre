@@ -2,22 +2,41 @@ package aor.proj3t.daos.impl;
 
 import aor.proj3t.daos.interfaces.PendingRegistrationDAO;
 import aor.proj3t.entities.PendingRegistration;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 
 import java.util.Optional;
 
 public class PendingRegistrationDAOimpl extends AbstractDAO<PendingRegistration, Long> implements PendingRegistrationDAO {
+
+
+    @PersistenceContext
+    private EntityManager em;
+
     @Override
     public Optional<PendingRegistration> findByToken(String token) {
-        return Optional.empty();
+        TypedQuery<PendingRegistration> query = em.createQuery(
+                "SELECT p FROM PendingRegistration p WHERE p.confirmationToken = :token", PendingRegistration.class);
+        query.setParameter("token", token);
+        return query.getResultList().stream().findFirst();
     }
 
     @Override
     public Optional<PendingRegistration> findByEmail(String email) {
-        return Optional.empty();
+        TypedQuery<PendingRegistration> query = em.createQuery(
+                "SELECT p FROM PendingRegistration p WHERE p.email = :email", PendingRegistration.class);
+        query.setParameter("email", email);
+        return query.getResultList().stream().findFirst();
     }
 
     @Override
     public Boolean isValidToken(String token) {
-        return null;
+        TypedQuery<Long> query = em.createQuery(
+                "SELECT COUNT(p) FROM PendingRegistration p WHERE p.confirmationToken = :token AND p.expirationDate > CURRENT_TIMESTAMP",
+                Long.class);
+        query.setParameter("token", token);
+        return query.getSingleResult() > 0;
     }
 }
+
