@@ -3,6 +3,7 @@ package aor.proj3t.daos.interfaces;
 import java.util.List;
 
 import aor.proj3t.entities.Message;
+import aor.proj3t.entities.User;
 
 public interface MessageDAO extends BasicDAO<Message, Long> {
 
@@ -21,5 +22,47 @@ public interface MessageDAO extends BasicDAO<Message, Long> {
      * @return A list of messages received by the specified user.
      */
     List<Message> findByRecipientId(Long recipientId);
+
+
+    /**
+     * Finds all messages exchanged between a sender and recipient.
+     *
+     * @param senderId   The ID of the sender.
+     * @param recipientId The ID of the recipient.
+     * @return List of messages exchanged between the sender and recipient.
+     */
+    List<Message> findBySenderIdAndRecipientId(Long senderId, Long recipientId);
+
+    /**
+     * Finds all unique users that a given user has exchanged messages with.
+     *
+     * @param userId The ID of the user.
+     * @return A list of unique users who have interacted with the user.
+     */
+    List<User> findUniqueMessagedUsers(Long userId);
+
+    /**
+     * Counts the number of unread messages of a user.
+     *
+     * @param recipientId The ID of the user.
+     * @return A count of unread messages.
+     */
+    Integer findCountUnreadMessagesByRecipientId(Long recipientId);
+
+    /**
+     * Finds all messages that a given user has still not read.
+     *
+     * @param recipientId The ID of the user.
+     * @return A list of unique messages unread by the user.
+     */
+    List<Message> findUnreadMessagesByRecipientId(Long recipientId);
+
+    /**
+     * Marks a message has read.
+     *
+     * @param messageId The ID of the message.
+     * @return True for success and False for unsuccessful marking.
+     */
+    Boolean markMessageAsRead(Long messageId);
 
 }

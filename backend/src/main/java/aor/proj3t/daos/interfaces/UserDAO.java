@@ -1,6 +1,7 @@
 package aor.proj3t.daos.interfaces;
 
 
+import aor.proj3t.entities.Training;
 import aor.proj3t.entities.User;
 
 import java.util.List;
@@ -56,4 +57,7 @@ public interface UserDAO extends BasicDAO<User, Long> {
      * @return The number of users in the system
      */
     long countUsers();
+
+    List<Training> getUsersByFilters(UserFilter filters);
+
 }

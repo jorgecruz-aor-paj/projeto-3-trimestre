@@ -2,5 +2,19 @@ package aor.proj3t.daos.interfaces;
 
 import aor.proj3t.entities.TrainingParticipation;
 
-public interface TrainingParticipationDAO extends BasicDAO<TrainingParticipation,Long> {
+import java.util.List;
+import java.util.Map;
+
+public interface TrainingParticipationDAO extends BasicDAO<TrainingParticipation, Long> {
+
+    List<TrainingParticipation> findByTrainingId(Long trainingId);
+
+    List<TrainingParticipation> findByParticipationId(Long participationId);
+
+    List<TrainingParticipation> findByParticipantId(Long participantId);
+
+    List<TrainingParticipation> findUnparticipatedByParticipantId(Long participantId);
+
+    Map<Integer, Integer> trainingTimeByYearByParticipantId(Long participationId);
+
 }

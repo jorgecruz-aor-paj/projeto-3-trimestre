@@ -2,13 +2,19 @@ package aor.proj3t.daos.impl;
 
 import aor.proj3t.daos.interfaces.EvaluationDAO;
 import aor.proj3t.entities.Evaluation;
+import aor.proj3t.entities.Training;
 import aor.proj3t.enums.EvaluationStatus;
+import aor.proj3t.filters.EvaluationFilter;
 import jakarta.ejb.Stateless;
-import jakarta.persistence.NoResultException;
-import jakarta.persistence.Query;
-import jakarta.persistence.TypedQuery;
+import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
+import jakarta.transaction.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,29 +24,36 @@ import java.util.Optional;
 @Stateless
 public class EvaluationDAOimpl extends AbstractDAO<Evaluation, Long> implements EvaluationDAO {
 
-    @Override
-    public List<Evaluation> findByStatus(EvaluationStatus status) {
-        return executeNamedQuery("Evaluation.findByStatus", "status", status);
-    }
+    @PersistenceContext
+    private EntityManager em;
 
     @Override
     public List<Evaluation> findByEvaluated(Long evaluatedId) {
-        return executeNamedQuery("Evaluation.findByEvaluated", "evaluatedId", evaluatedId);
+        TypedQuery<Evaluation> query = em.createQuery(
+                "SELECT e FROM Evaluation e WHERE e.evaluated.id = :evaluatedId", Evaluation.class);
+        query.setParameter("evaluatedId", evaluatedId);
+        return query.getResultList();
     }
 
     @Override
     public List<Evaluation> findByEvaluator(Long evaluatorId) {
-        return executeNamedQuery("Evaluation.findByEvaluator", "evaluatorId", evaluatorId);
+        TypedQuery<Evaluation> query = em.createQuery(
+                "SELECT e FROM Evaluation e WHERE e.evaluator.id = :evaluatorId", Evaluation.class);
+        query.setParameter("evaluatorId", evaluatorId);
+        return query.getResultList();
     }
 
     @Override
     public List<Evaluation> findByCycleId(Long cycleId) {
-        return executeNamedQuery("Evaluation.findByCycleId", "cycleId", cycleId);
+        TypedQuery<Evaluation> query = em.createQuery(
+                "SELECT e FROM Evaluation e WHERE e.evaluationCycle.id = :cycleId", Evaluation.class);
+        query.setParameter("cycleId", cycleId);
+        return query.getResultList();
     }
 
     @Override
     public List<Evaluation> findCompletedEvaluations() {
-        return executeNamedQuery("Evaluation.findCompletedEvaluations");
+        return executeNamedQuery("Evaluation.findCompleted", Evaluation.class);
     }
 
     @Override
@@ -53,27 +66,56 @@ public class EvaluationDAOimpl extends AbstractDAO<Evaluation, Long> implements 
     }
 
     @Override
+    @Transactional
     public int closeAllCompletedEvaluations() {
-        Query query = em.createQuery(
-                "UPDATE Evaluation e SET e.status = :closedStatus WHERE e.status = :completedStatus");
-        query.setParameter("closedStatus", EvaluationStatus.CLOSED);
-        query.setParameter("completedStatus", EvaluationStatus.COMPLETED);
-        return query.executeUpdate();
+        return em.createQuery(
+                        "UPDATE Evaluation e SET e.status = 'CLOSED' WHERE e.status = 'COMPLETED'")
+                .executeUpdate();
     }
 
     @Override
-    public Optional<Evaluation> findByEvaluatedEvaluatorAndCycle(Long evaluatedId, Long evaluatorId, Long cycleId) {
-        try {
-            TypedQuery<Evaluation> query = em.createQuery(
-                    "SELECT e FROM Evaluation e WHERE e.evaluatedUser.id = :evaluatedId " +
-                            "AND e.evaluator.id = :evaluatorId AND e.evaluationCycle.id = :cycleId",
-                    Evaluation.class);
-            query.setParameter("evaluatedId", evaluatedId);
-            query.setParameter("evaluatorId", evaluatorId);
-            query.setParameter("cycleId", cycleId);
-            return Optional.ofNullable(query.getSingleResult());
-        } catch (NoResultException e) {
-            return Optional.empty();
+    public List<Evaluation> getEvaluationsByFilters(EvaluationFilter filters) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Evaluation> query = cb.createQuery(Evaluation.class);
+        Root<Evaluation> root = query.from(Evaluation.class);
+
+        List<Predicate> predicates = new ArrayList<>();
+
+        if (filters.getEvaluationId() != null) {
+            predicates.add(cb.equal(root.get("id"), filters.getEvaluationId()));
         }
+        if (filters.getEvaluatedId() != null) {
+            predicates.add(cb.equal(root.get("evaluated").get("id"), filters.getEvaluatedId()));
+        }
+        if (filters.getEvaluatorId() != null) {
+            predicates.add(cb.equal(root.get("evaluator").get("id"), filters.getEvaluatorId()));
+        }
+        if (filters.getEvaluationStatus() != null) {
+            predicates.add(cb.equal(root.get("status"), filters.getEvaluationStatus()));
+        }
+        if (filters.getEvaluationScale() != null) {
+            predicates.add(cb.equal(root.get("scale"), filters.getEvaluationScale()));
+        }
+        if (filters.getDateRange() != null) {
+            predicates.add(cb.between(root.get("createdAt"),
+                    filters.getDateRange().getStartDate().atStartOfDay(),
+                    filters.getDateRange().getEndDate().atTime(23, 59, 59)));
+        }
+        if (filters.getSearchText() != null && !filters.getSearchText().isEmpty()) {
+            predicates.add(cb.like(cb.lower(root.get("feedback")), "%" + filters.getSearchText().toLowerCase() + "%"));
+        }
+
+        query.where(cb.and(predicates.toArray(new Predicate[0])));
+
+        if (filters.getEvaluationSortField() != null) {
+            if (Boolean.TRUE.equals(filters.getAscending())) {
+                query.orderBy(cb.asc(root.get(filters.getEvaluationSortField().getFieldName())));
+            } else {
+                query.orderBy(cb.desc(root.get(filters.getEvaluationSortField().getFieldName())));
+            }
+        }
+
+        return em.createQuery(query).getResultList();
     }
+
 }

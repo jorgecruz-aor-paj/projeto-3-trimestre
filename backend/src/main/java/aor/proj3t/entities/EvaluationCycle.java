@@ -4,20 +4,31 @@ import aor.proj3t.enums.EvaluationCycleStatus;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import javax.xml.namespace.QName;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Table(name = "evaluation_cycles")
+
+@NamedQueries({
+        @NamedQuery(name = "EvaluationCycle.findActive", query = "SELECT ec FROM EvaluationCycle ec WHERE ec.status = 'ACTIVE'"),
+        @NamedQuery(name = "EvaluationCycle.findAll", query = "SELECT ec FROM EvaluationCycle ec"),
+})
+
 public class EvaluationCycle {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
 
     @Column(name = "start_date", nullable = false)
     private LocalDateTime startDate;
@@ -36,8 +47,9 @@ public class EvaluationCycle {
     @JoinColumn(name = "created_by", nullable = false)
     private User createdBy;
 
-    @OneToMany (mappedBy = "evaluation_cycle_id", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "evaluationCycle", fetch = FetchType.LAZY)
     private List<Evaluation> evaluations;
+
 
     public Long getId() {
         return id;
