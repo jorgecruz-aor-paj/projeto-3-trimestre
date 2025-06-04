@@ -14,7 +14,7 @@ public interface NotificationDAO extends BasicDAO<Notification, Long> {
      * @param senderId The ID of the sender.
      * @return A list of notifications sent by the specified user.
      */
-    List<Message> findBySenderId(Long senderId);
+    List<Notification> findBySenderId(Long senderId);
 
     /**
      * Finds all notifications received by a specific user.
@@ -22,7 +22,7 @@ public interface NotificationDAO extends BasicDAO<Notification, Long> {
      * @param recipientId The ID of the recipient.
      * @return A list of notifications received by the specified user.
      */
-    List<Message> findByRecipientId(Long recipientId);
+    List<Notification> findByRecipientId(Long recipientId);
 
 
     /**
@@ -31,7 +31,7 @@ public interface NotificationDAO extends BasicDAO<Notification, Long> {
      * @param recipientId The ID of the user.
      * @return A count of unread notifications.
      */
-    Integer findCountUnreadnotificationsByRecipientId(Long recipientId);
+    Long countUnreadNotificationsByRecipientId(Long recipientId);
 
     /**
      * Finds all notifications that a given user has still not read.
@@ -39,7 +39,7 @@ public interface NotificationDAO extends BasicDAO<Notification, Long> {
      * @param recipientId The ID of the user.
      * @return A list of unique notifications unread by the user.
      */
-    List<Message> findUnreadnotificationsByRecipientId(Long recipientId);
+    List<Notification> findUnreadNotificationsByRecipientId(Long recipientId);
 
     /**
      * Marks a notification has read.
@@ -47,6 +47,6 @@ public interface NotificationDAO extends BasicDAO<Notification, Long> {
      * @param notificationId The ID of the notification.
      * @return True for success and False for unsuccessful marking.
      */
-    Boolean markMessageAsRead(Long notificationId);
+    Boolean markNotificationAsRead(Long notificationId);
 
 }

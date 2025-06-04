@@ -23,7 +23,6 @@ public interface MessageDAO extends BasicDAO<Message, Long> {
      */
     List<Message> findByRecipientId(Long recipientId);
 
-
     /**
      * Finds all messages exchanged between a sender and recipient.
      *
@@ -39,7 +38,7 @@ public interface MessageDAO extends BasicDAO<Message, Long> {
      * @param userId The ID of the user.
      * @return A list of unique users who have interacted with the user.
      */
-    List<User> findUniqueMessagedUsers(Long userId);
+    List<User> findMessagedUsers(Long userId);
 
     /**
      * Counts the number of unread messages of a user.
