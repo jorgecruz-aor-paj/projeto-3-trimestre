@@ -28,9 +28,13 @@ public class Settings {
     @Column(name = "reset_password_window", nullable = false)
     private Integer resetPasswordWindow;
 
-    @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
 
     @ManyToOne
     @JoinColumn(name = "created_by", nullable = false)

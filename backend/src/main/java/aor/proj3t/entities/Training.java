@@ -14,8 +14,8 @@ public class Training {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "title", nullable = false)
+    private String title;
 
     @Column(name = "duration", nullable = false)
     private Integer duration; // Duration in minutes
@@ -32,13 +32,21 @@ public class Training {
     @Column(name = "is_active", nullable = false)
     private boolean isActive = true;
 
-    @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @UpdateTimestamp
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
+
     @Column(name = "edited_at")
     private LocalDateTime editedAt;
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.editedAt = LocalDateTime.now();
+    }
 
     @ManyToOne
     @JoinColumn(name = "training_area_id", nullable = false)
@@ -52,12 +60,12 @@ public class Training {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Integer getDuration() {

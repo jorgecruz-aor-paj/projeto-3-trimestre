@@ -30,9 +30,13 @@ public class Evaluation {
     @Column(name = "feedback")
     private String feedback;
 
-    @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
 
     @UpdateTimestamp
     @Column(name = "edited_at")
