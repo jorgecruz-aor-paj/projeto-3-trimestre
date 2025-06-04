@@ -6,6 +6,9 @@ import java.util.Map;
 
 import javax.crypto.SecretKey;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import io.github.cdimascio.dotenv.Dotenv;
 import io.github.cdimascio.dotenv.DotenvException;
 import io.jsonwebtoken.Jwts;
@@ -20,14 +23,13 @@ import jakarta.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class JwtUtil {
 
-    private LoggingUtil logger;
+    private static final Logger logger = LogManager.getLogger(JwtUtil.class);
     private static final int DEFAULT_TOKEN_EXPIRATION_TIME = 60; // value in minutes
     private String secretKey;
     private String issuer;
 
     @PostConstruct
     public void init() {
-        this.logger = LoggingUtil.forClass(JwtUtil.class);
         try {
             // Dotenv configuration
             Dotenv dotenv = Dotenv
