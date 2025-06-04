@@ -66,8 +66,10 @@ public class TrainingDAOimpl extends AbstractDAO<Training, Long> implements Trai
             predicates.add(cb.greaterThanOrEqualTo(root.get("created_at"), LocalDateTime.parse(filters.getStartDate())));
         }
         if (filters.getSearchText() != null && !filters.getSearchText().isEmpty()) {
-            predicates.add(cb.like(root.get("title"), "%" + filters.getSearchText() + "%"));
-            predicates.add(cb.like(root.get("description"), "%" + filters.getSearchText() + "%"));
+            Predicate namePredicate = cb.or(
+                    cb.like(root.get("title"), "%" + filters.getSearchText() + "%"),
+                    cb.like(root.get("description"), "%" + filters.getSearchText() + "%"));
+            predicates.add(namePredicate);
         }
 
         query.where(predicates.toArray(new Predicate[0]));

@@ -14,8 +14,8 @@ private Long evaluatorId;
 private EvaluationStatus evaluationStatus;
 private LocalDate date;
 private EvaluationScale evaluationScale;
-private EvaluationSortField evaluationSortField;
-private Boolean ascending = true;
+private EvaluationSortField evaluationSortField = EvaluationSortField.DATE;
+private Boolean ascending = false;
 private DateRange dateRange;
 private String searchText;
 
