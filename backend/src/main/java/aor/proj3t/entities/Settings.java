@@ -7,6 +7,12 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "settings")
+
+@NamedQueries({
+        @NamedQuery(name = "Settings.getLatestSettings",
+                query = "SELECT s FROM Settings s ORDER BY s.createdAt DESC")
+})
+
 public class Settings {
 
     @Id
