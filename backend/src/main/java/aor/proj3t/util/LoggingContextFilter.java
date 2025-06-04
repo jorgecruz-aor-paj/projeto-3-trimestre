@@ -8,12 +8,15 @@ import jakarta.annotation.Priority;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;
+import jakarta.ws.rs.container.ContainerResponseContext;
+import jakarta.ws.rs.container.ContainerResponseFilter;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.ext.Provider;
 
 /**
- * A JAX-RS request filter that captures client information and establishes
- * logging context.
+ * A JAX-RS filter that captures client information, establishes logging
+ * context,
+ * and cleans up after request processing.
  * <p>
  * This filter intercepts all incoming HTTP requests to the REST API and
  * performs the following tasks:
@@ -21,13 +24,14 @@ import jakarta.ws.rs.ext.Provider;
  * <li>Extracts the client IP address from various possible request headers</li>
  * <li>Sets up the Log4j2 ThreadContext with client information</li>
  * <li>Logs details about the incoming request</li>
+ * <li>Cleans up the ThreadContext after request processing completes</li>
  * </ul>
  * </p>
  * <p>
  * The filter has a high priority ({@code @Priority(1)}) to ensure it runs
- * before other filters,
- * establishing the logging context as early as possible in the request
- * processing lifecycle.
+ * before other filters for request processing, and after other filters for
+ * response processing, ensuring proper setup and cleanup of the logging
+ * context.
  * </p>
  * <p>
  * IP address extraction is handled through a sophisticated algorithm that
@@ -51,13 +55,16 @@ import jakarta.ws.rs.ext.Provider;
  * </p>
  * 
  * @see ContainerRequestFilter
+ * @see ContainerResponseFilter
  * @see ThreadContext
  */
 @Provider
 @Priority(1)
-public class LoggingContextFilter implements ContainerRequestFilter {
+public class LoggingContextFilter implements ContainerRequestFilter, ContainerResponseFilter {
 
     private static final Logger logger = LogManager.getLogger(LoggingContextFilter.class);
+    private static final String CLIENT_IP_KEY = "clientIp";
+    private static final String REQUEST_START_TIME = "requestStartTime";
 
     /**
      * The injected HTTP servlet request object to access HTTP headers and
@@ -73,8 +80,7 @@ public class LoggingContextFilter implements ContainerRequestFilter {
      * This method is called automatically by the JAX-RS runtime for each incoming
      * request.
      * It extracts the client IP address, logs the request details, and populates
-     * the
-     * Log4j2 ThreadContext with client information for use in subsequent log
+     * the Log4j2 ThreadContext with client information for use in subsequent log
      * entries.
      * </p>
      * 
@@ -87,9 +93,44 @@ public class LoggingContextFilter implements ContainerRequestFilter {
         String method = requestContext.getMethod();
         String path = requestContext.getUriInfo().getPath();
 
-        ThreadContext.put("clientIp", clientIp);
+        ThreadContext.put(CLIENT_IP_KEY, clientIp);
+        ThreadContext.put(REQUEST_START_TIME, String.valueOf(System.currentTimeMillis()));
 
         logger.info("Request received: Method={}, Path={}, Client IP={}", method, path, clientIp);
+    }
+
+    /**
+     * Filters an outgoing HTTP response to clean up logging context and log
+     * response details.
+     * <p>
+     * This method is called automatically by the JAX-RS runtime after the response
+     * has been generated but before it's sent to the client. It logs response
+     * details
+     * like status code and processing time, then clears the ThreadContext to
+     * prevent
+     * memory leaks and information leakage between requests.
+     * </p>
+     * 
+     * @param requestContext  The container request context containing request
+     *                        information
+     * @param responseContext The container response context containing response
+     *                        information
+     */
+    @Override
+    public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) {
+        try {
+            String startTimeStr = ThreadContext.get(REQUEST_START_TIME);
+            if (startTimeStr != null) {
+                long startTime = Long.parseLong(startTimeStr);
+                long duration = System.currentTimeMillis() - startTime;
+
+                logger.info("Response sent: Status={}, Duration={}ms",
+                        responseContext.getStatus(), duration);
+            }
+        } finally {
+            // Always clear the ThreadContext, even if logging fails
+            ThreadContext.clearAll();
+        }
     }
 
     /**
