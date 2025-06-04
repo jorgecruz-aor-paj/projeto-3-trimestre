@@ -24,9 +24,6 @@ import java.util.Optional;
 @Stateless
 public class EvaluationDAOimpl extends AbstractDAO<Evaluation, Long> implements EvaluationDAO {
 
-    @PersistenceContext
-    private EntityManager em;
-
     @Override
     public List<Evaluation> findByEvaluated(Long evaluatedId) {
         TypedQuery<Evaluation> query = em.createQuery(

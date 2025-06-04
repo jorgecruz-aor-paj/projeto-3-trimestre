@@ -13,8 +13,6 @@ import java.util.Optional;
 
 public class SessionDAOimpl extends AbstractDAO<Session, Long> implements SessionDAO {
 
-    @PersistenceContext
-    private EntityManager em;
 
     @Override
     public Optional<Session> findByToken(String token) {

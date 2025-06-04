@@ -10,10 +10,6 @@ import java.util.Optional;
 
 public class PendingRegistrationDAOimpl extends AbstractDAO<PendingRegistration, Long> implements PendingRegistrationDAO {
 
-
-    @PersistenceContext
-    private EntityManager em;
-
     @Override
     public Optional<PendingRegistration> findByToken(String token) {
         TypedQuery<PendingRegistration> query = em.createQuery(

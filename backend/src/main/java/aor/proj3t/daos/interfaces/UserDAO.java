@@ -3,6 +3,7 @@ package aor.proj3t.daos.interfaces;
 
 import aor.proj3t.entities.Training;
 import aor.proj3t.entities.User;
+import aor.proj3t.filters.UserFilter;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,28 +22,12 @@ public interface UserDAO extends BasicDAO<User, Long> {
     Optional<User> findByEmail(String email);
 
     /**
-     * Find all Userss managed by a specific manager.
+     * Find all Users managed by a specific manager.
      *
      * @param managerId The ID of the manager
      * @return A list of users managed by the specified manager
      */
     List<User> findByManager(Long managerId);
-
-    /**
-     * Find users by their verification token.
-     *
-     * @param token The verification token
-     * @return An Optional containing the user if found, or empty if not found
-     */
-    Optional<User> findByVerificationToken(String token);
-
-    /**
-     * Find users by their password reset token.
-     *
-     * @param token The password reset token
-     * @return An Optional containing the user if found, or empty if not found
-     */
-    Optional<User> findByPasswordResetToken(String token);
 
     /**
      * Check if all users have a manager assigned.
@@ -56,8 +41,11 @@ public interface UserDAO extends BasicDAO<User, Long> {
      *
      * @return The number of users in the system
      */
-    long countUsers();
+    Long countAllUsers();
 
-    List<Training> getUsersByFilters(UserFilter filters);
+    Long countUsersWithoutManager();
 
+    Long countUsersWithManager();
+
+    List<User> getUsersByFilters(UserFilter filters);
 }

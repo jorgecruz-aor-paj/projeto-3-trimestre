@@ -14,9 +14,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class ResetPasswordDAOimpl extends AbstractDAO<ResetPassword, Long> implements ResetPasswordDAO {
 
-    @PersistenceContext
-    private EntityManager em;
-
 
     @Override
     public Optional<ResetPassword> findByToken(String token) {

@@ -8,40 +8,40 @@ import aor.proj3t.enums.EvaluationStatus;
 import java.time.LocalDate;
 
 public class EvaluationFilter {
-private Integer evaluationId;
-private Integer evaluatedId;
-private Integer evaluatorId;
+private Long evaluationId;
+private Long evaluatedId;
+private Long evaluatorId;
 private EvaluationStatus evaluationStatus;
 private LocalDate date;
 private EvaluationScale evaluationScale;
-private EvaluationSortField evaluationSortField;
-private Boolean ascending = true;
+private EvaluationSortField evaluationSortField = EvaluationSortField.DATE;
+private Boolean ascending = false;
 private DateRange dateRange;
 private String searchText;
 
 public EvaluationFilter() {}
 
-    public Integer getEvaluationId() {
+    public Long getEvaluationId() {
         return evaluationId;
     }
 
-    public void setEvaluationId(Integer evaluationId) {
+    public void setEvaluationId(Long evaluationId) {
         this.evaluationId = evaluationId;
     }
 
-    public Integer getEvaluatedId() {
+    public Long getEvaluatedId() {
         return evaluatedId;
     }
 
-    public void setEvaluatedId(Integer evaluatedId) {
+    public void setEvaluatedId(Long evaluatedId) {
         this.evaluatedId = evaluatedId;
     }
 
-    public Integer getEvaluatorId() {
+    public Long getEvaluatorId() {
         return evaluatorId;
     }
 
-    public void setEvaluatorId(Integer evaluatorId) {
+    public void setEvaluatorId(Long evaluatorId) {
         this.evaluatorId = evaluatorId;
     }
 
