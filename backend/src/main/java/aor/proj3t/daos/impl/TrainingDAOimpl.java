@@ -15,11 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class TrainingDAOimpl extends AbstractDAO<Training,Long> implements TrainingDAO {
+public class TrainingDAOimpl extends AbstractDAO<Training, Long> implements TrainingDAO {
 
-    @PersistenceContext
-    private EntityManager em;
-
+    @Override
     public Boolean setAsInactive(Long trainingId) {
         Optional<Training> trainingOpt = findById(trainingId);
         if (trainingOpt.isPresent()) {
@@ -31,6 +29,19 @@ public class TrainingDAOimpl extends AbstractDAO<Training,Long> implements Train
         }
         return false;
     }
+
+    @Override
+    public List<Training> findTrainingsNotParticipatedByUser(Long userId) {
+        String query = """
+                    SELECT t FROM Training t WHERE t.id NOT IN (
+                        SELECT tp.training.id FROM TrainingParticipation tp WHERE tp.participant.id = :userId
+                    )
+                """;
+        return em.createQuery(query, Training.class)
+                .setParameter("userId", userId)
+                .getResultList();
+    }
+
 
     public List<Training> getTrainingsByFilters(TrainingFilter filters) {
         CriteriaBuilder cb = em.getCriteriaBuilder();

@@ -9,11 +9,9 @@ public interface TrainingParticipationDAO extends BasicDAO<TrainingParticipation
 
     List<TrainingParticipation> findByTrainingId(Long trainingId);
 
-    List<TrainingParticipation> findByParticipationId(Long participationId);
-
     List<TrainingParticipation> findByParticipantId(Long participantId);
 
-    List<TrainingParticipation> findUnparticipatedByParticipantId(Long participantId);
+    List<TrainingParticipation> findByManagerId(Long managerId);
 
     Map<Integer, Integer> trainingTimeByYearByParticipantId(Long participationId);
 
