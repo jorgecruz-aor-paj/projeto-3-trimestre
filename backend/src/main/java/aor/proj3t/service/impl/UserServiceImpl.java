@@ -1,10 +1,13 @@
 package aor.proj3t.service.impl;
 
+import aor.proj3t.config.AppConstants;
 import aor.proj3t.daos.impl.*;
 import aor.proj3t.dto.LoginDTO;
 import aor.proj3t.dto.UserDTO;
 import aor.proj3t.entities.*;
 import aor.proj3t.enums.Role;
+import aor.proj3t.filters.UserFilter;
+import aor.proj3t.util.ConverterUtil;
 import aor.proj3t.util.JwtUtil;
 import aor.proj3t.util.PasswordUtil;
 import jakarta.inject.Inject;
@@ -14,11 +17,12 @@ import org.apache.logging.log4j.Logger;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
 public class UserServiceImpl {
-    private static final int DEFAULT_CONFIRMATION_WINDOW = 60;
     private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
 
     @Inject
@@ -47,7 +51,7 @@ public class UserServiceImpl {
             pendingRegistrationDAO.create(registration);
             return true;
         } catch (Exception e) {
-            logger.error("Error registering user with email {}. Error: {}", loginDTO.getEmail(), e.getMessage());
+            logger.error("Error registering user with email {}. Error: {}", loginDTO.getEmail(), e);
             return false;
         }
     }
@@ -56,10 +60,12 @@ public class UserServiceImpl {
         try {
             PendingRegistration registration = getPendingRegistration(confirmationToken);
             if (registration == null) {
+                logger.warn("Failed to confirm user: No pending registration found for token {}", confirmationToken);
                 return false;
             }
             Workplace workplace = getWorkplace(newUserDto.getWorkplaceId());
             if (workplace == null) {
+                logger.warn("Failed to confirm user: Workplace ID {} does not exist", newUserDto.getWorkplaceId());
                 return false;
             }
             User newUser = new User(
@@ -75,7 +81,7 @@ public class UserServiceImpl {
             userDao.create(newUser);
             return true;
         } catch (Exception e) {
-            logger.error("Error confirming user with email {}. Error: {}", confirmationToken, e.getMessage());
+            logger.error("Error confirming user with email {}. Error: {}", confirmationToken, e);
             return false;
         }
     }
@@ -94,7 +100,7 @@ public class UserServiceImpl {
             logger.info("Invalid or expired session token {}", sessionToken);
             return false;
         } catch (Exception e) {
-            logger.error("Error changing password with session token {}. Error: {}", sessionToken, e.getMessage());
+            logger.error("Error changing password with session token {}. Error: {}", sessionToken, e);
             return false;
         }
     }
@@ -111,13 +117,22 @@ public class UserServiceImpl {
            }
            return true;
        }catch (NoSuchElementException e) {
-               logger.error("Invalid user ID {} or manager ID {} while assigning manager. Error: {}", userId, managerId, e.getMessage());
+               logger.error("Invalid user ID {} or manager ID {} while assigning manager. Error: {}", userId, managerId, e);
                return false;
 
        }catch (Exception e) {
-           logger.error("Error assigning manager. Error: {}", e.getMessage());
+           logger.error("Error assigning manager. Error: {}", e);
            return false;
        }
+    }
+
+    public List<UserDTO> getUsersByFilter(UserFilter filter) {
+        try {
+            return ConverterUtil.userEntityListToUserDTOList(userDao.getUsersByFilters(filter));
+        } catch (Exception e) {
+            logger.error("Error getting users list. Error: {}", e);
+            return new ArrayList<>();
+        }
     }
 
     private Integer getConfirmationExpirationTime() {
@@ -128,11 +143,11 @@ public class UserServiceImpl {
                 settings = settingsOpt.get();
                 return settings.getConfirmationExpirationTime();
             } else {
-                return DEFAULT_CONFIRMATION_WINDOW;
+                return AppConstants.Jwt.DEFAULT_CONFIRMATION_TOKEN_EXPIRATION_TIME;
             }
         } catch (Exception e) {
-            logger.error("Error getting confirmation expiration window. Error: {}", e.getMessage());
-            return DEFAULT_CONFIRMATION_WINDOW;
+            logger.error("Error getting confirmation expiration window. Error: {}", e);
+            return AppConstants.Jwt.DEFAULT_CONFIRMATION_TOKEN_EXPIRATION_TIME;
         }
     }
 
@@ -156,7 +171,7 @@ public class UserServiceImpl {
                 return sessionOpt.orElseThrow(() -> new NoSuchElementException("Session not found for token: " + sessionToken));
             }
         } catch (Exception e) {
-            logger.error("Error getting session with token {}. Error: {}", sessionToken, e.getMessage());
+            logger.error("Error getting session with token {}. Error: {}", sessionToken, e);
             return null;
         }
     }
