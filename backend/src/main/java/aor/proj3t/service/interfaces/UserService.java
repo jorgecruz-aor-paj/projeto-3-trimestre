@@ -12,11 +12,13 @@ public interface UserService {
 
     Boolean registerUser(LoginDTO loginDTO, String ipAddress);
 
-    Boolean confirmUser(String confirmationToken);
+    Boolean confirmUser(Long registrationId, UserDTO newUserDto);
 
-    boolean changePassword(Long userId, String newPassword);
+    Boolean changePassword(Long userId, String newPassword);
 
-    boolean assignManager(Long userId, Long managerId);
+    Boolean assignManager(Long userId, Long managerId);
+
+    Boolean updateUser(UserDTO userDto);
 
     List<UserDTO> getUsersByFilters(UserFilter userFilter);
 }

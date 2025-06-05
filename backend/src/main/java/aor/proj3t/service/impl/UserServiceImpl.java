@@ -7,6 +7,7 @@ import aor.proj3t.dto.UserDTO;
 import aor.proj3t.entities.*;
 import aor.proj3t.enums.Role;
 import aor.proj3t.filters.UserFilter;
+import aor.proj3t.service.interfaces.UserService;
 import aor.proj3t.util.ConverterUtil;
 import aor.proj3t.util.JwtUtil;
 import aor.proj3t.util.PasswordUtil;
@@ -22,7 +23,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-public class UserServiceImpl {
+public class UserServiceImpl implements UserService {
     private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
 
     @Inject
@@ -40,9 +41,6 @@ public class UserServiceImpl {
     @Inject
     UserDAOimpl userDao;
 
-    @Inject
-    SessionDAOimpl sessionDAO;
-
     public Boolean registerUser(LoginDTO loginDTO, String ipAddress) {
         try {
             PendingRegistration registration = new PendingRegistration(loginDTO.getEmail(), loginDTO.getPassword());
@@ -51,16 +49,16 @@ public class UserServiceImpl {
             pendingRegistrationDAO.create(registration);
             return true;
         } catch (Exception e) {
-            logger.error("Error registering user with email {}. Error: {}", loginDTO.getEmail(), e);
+            logger.error("Error registering user with email {}.  {}", loginDTO.getEmail(), e);
             return false;
         }
     }
 
-    public Boolean confirmUser(String confirmationToken, UserDTO newUserDto) {
+    public Boolean confirmUser(Long registrationId, UserDTO newUserDto) {
         try {
-            PendingRegistration registration = getPendingRegistration(confirmationToken);
+            PendingRegistration registration = getPendingRegistration(registrationId);
             if (registration == null) {
-                logger.warn("Failed to confirm user: No pending registration found for token {}", confirmationToken);
+                logger.warn("Failed to confirm user: No pending registration found with id {}", registrationId);
                 return false;
             }
             Workplace workplace = getWorkplace(newUserDto.getWorkplaceId());
@@ -78,59 +76,90 @@ public class UserServiceImpl {
                     newUserDto.getBirthDate(),
                     newUserDto.getRole(),
                     workplace);
+            if(newUserDto.getBiography() != null) {
+                newUser.setBiography(newUserDto.getBiography());
+            }
             userDao.create(newUser);
             return true;
         } catch (Exception e) {
-            logger.error("Error confirming user with email {}. Error: {}", confirmationToken, e);
+            logger.error("Error confirming registration with id {}. ", registrationId, e);
             return false;
         }
     }
 
-    public Boolean changePassword(String sessionToken, String newPassword) {
+    public Boolean changePassword(Long userId, String newRawPassword) {
         try {
-            Session session = getSession(sessionToken);
-            if (session == null) {
-                return false;
-            }
-            User user = session.getUser();
-            user.setPassword(PasswordUtil.hashPassword(newPassword));
+            User user = getUser(userId);
+            user.setPassword(PasswordUtil.hashPassword(newRawPassword));
             userDao.update(user);
             return true;
         } catch (NoSuchElementException e) {
-            logger.info("Invalid or expired session token {}", sessionToken);
+            logger.error("Invalid user ID {} while updating user. ", userId, e);
             return false;
         } catch (Exception e) {
-            logger.error("Error changing password with session token {}. Error: {}", sessionToken, e);
+            logger.error("Error changing password for user id {}. ", userId, e);
             return false;
         }
     }
 
     public Boolean assignManager(Long userId, Long managerId) {
-       try {
-           User user = getUser(userId);
-           User manager = getUser(managerId);
-           user.setManager(manager);
-           userDao.update(user);
-           if (!manager.getRole().equals(Role.MANAGER)) {
-               manager.setRole(Role.MANAGER);
-               userDao.update(manager);
-           }
-           return true;
-       }catch (NoSuchElementException e) {
-               logger.error("Invalid user ID {} or manager ID {} while assigning manager. Error: {}", userId, managerId, e);
-               return false;
+        try {
+            User user = getUser(userId);
+            User manager = getUser(managerId);
+            user.setManager(manager);
+            userDao.update(user);
+            if (!manager.getRole().equals(Role.MANAGER)) {
+                manager.setRole(Role.MANAGER);
+                userDao.update(manager);
+            }
+            return true;
+        } catch (NoSuchElementException e) {
+            logger.error("Invalid user ID {} or manager ID {} while assigning manager. ", userId, managerId, e);
+            return false;
 
-       }catch (Exception e) {
-           logger.error("Error assigning manager. Error: {}", e);
-           return false;
-       }
+        } catch (Exception e) {
+            logger.error("Error assigning manager. ", e);
+            return false;
+        }
     }
 
-    public List<UserDTO> getUsersByFilter(UserFilter filter) {
+    public Boolean updateUser(UserDTO userDto) {
+        try {
+            User user = getUser(userDto.getId());
+            user.setFirstName(userDto.getFirstName());
+            user.setLastName(userDto.getLastName());
+            user.setPhoneNumber(userDto.getPhoneNumber());
+            user.setAddress(userDto.getAddress());
+            user.setRole(userDto.getRole());
+            user.setBiography(userDto.getBiography());
+            user.setBirthDate(userDto.getBirthDate());
+            user.setPhotograph(userDto.getPhotograph());
+            Workplace workplace;
+            try {
+                workplace = getWorkplace(userDto.getWorkplaceId());
+            } catch (NoSuchElementException e) {
+                logger.error("Workplace with ID {} not found while updating user.", userDto.getWorkplaceId());
+                return false;
+            }
+            user.setWorkplace(workplace);
+
+            userDao.update(user);
+        return true;
+        } catch (NoSuchElementException e) {
+            logger.error("Invalid user ID {} while updating user. ", userDto.getId(), e);
+            return false;
+
+        } catch (Exception e) {
+            logger.error("Error updating user.", e);
+            return false;
+        }
+    }
+
+    public List<UserDTO> getUsersByFilters(UserFilter filter) {
         try {
             return ConverterUtil.userEntityListToUserDTOList(userDao.getUsersByFilters(filter));
         } catch (Exception e) {
-            logger.error("Error getting users list. Error: {}", e);
+            logger.error("Error getting users list. ", e);
             return new ArrayList<>();
         }
     }
@@ -146,34 +175,19 @@ public class UserServiceImpl {
                 return AppConstants.Jwt.DEFAULT_CONFIRMATION_TOKEN_EXPIRATION_TIME;
             }
         } catch (Exception e) {
-            logger.error("Error getting confirmation expiration window. Error: {}", e);
+            logger.error("Error getting confirmation expiration window. ", e);
             return AppConstants.Jwt.DEFAULT_CONFIRMATION_TOKEN_EXPIRATION_TIME;
         }
     }
 
-    private PendingRegistration getPendingRegistration(String token) {
-        Optional<PendingRegistration> pendingRegistrationOpt = pendingRegistrationDAO.findByToken(token);
+    private PendingRegistration getPendingRegistration(Long id) {
+        Optional<PendingRegistration> pendingRegistrationOpt = pendingRegistrationDAO.findById(id);
         return pendingRegistrationOpt.orElse(null);
     }
 
     private Workplace getWorkplace(Long workplaceId) {
         return workPlaceDAO.findById(workplaceId)
                 .orElseThrow(() -> new NoSuchElementException("Workplace not found with ID: " + workplaceId));
-    }
-
-    private Session getSession(String sessionToken) {
-        try {
-            if (!sessionDAO.isValidToken(sessionToken)) {
-                logger.info("Invalid or expired session token: {} ", sessionToken);
-                return null;
-            } else {
-                Optional<Session> sessionOpt = sessionDAO.findByToken(sessionToken);
-                return sessionOpt.orElseThrow(() -> new NoSuchElementException("Session not found for token: " + sessionToken));
-            }
-        } catch (Exception e) {
-            logger.error("Error getting session with token {}. Error: {}", sessionToken, e);
-            return null;
-        }
     }
 
     private User getUser(Long userId) {
