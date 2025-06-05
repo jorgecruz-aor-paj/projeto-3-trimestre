@@ -54,8 +54,8 @@ public class JwtUtil {
      * @param validityMinutes The validity period in minutes
      * @return The JWT token
      */
-    public String generateToken(Long userId, String userEmail, String userRole, String ipAddress,
-            Integer validityMinutes) {
+    public String generateSessionToken(Long userId, String userEmail, String userRole, String ipAddress,
+                                       Integer validityMinutes) {
         int minutes = (validityMinutes != null) ? validityMinutes : DEFAULT_TOKEN_EXPIRATION_TIME;
 
         Map<String, Object> claims = new HashMap<>();
@@ -66,6 +66,19 @@ public class JwtUtil {
 
         return createToken(claims, userEmail, minutes);
     }
+
+    public String generateConfirmationToken(String userEmail, String ipAddress, Integer validityMinutes) {
+        int minutes = (validityMinutes != null) ? validityMinutes : DEFAULT_TOKEN_EXPIRATION_TIME;
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("email", userEmail);
+        claims.put("ipAddress", ipAddress);
+
+        return createToken(claims, userEmail, minutes);
+    }
+
+
+
 
     /**
      * Create a JWT token with the specified claims.
