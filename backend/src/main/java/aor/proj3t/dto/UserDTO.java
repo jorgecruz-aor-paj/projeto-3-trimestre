@@ -1,7 +1,7 @@
 package aor.proj3t.dto;
 
+import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import aor.proj3t.enums.Role;
 import jakarta.xml.bind.annotation.XmlAccessType;
@@ -32,7 +32,7 @@ public class UserDTO {
     @XmlElement(name = "biography")
     private String biography;
     @XmlElement(name = "createdAt")
-    private LocalDateTime createdAt;
+    private Instant createdAt;
     @XmlElement(name = "photograph")
     private String photograph;
     @XmlElement(name = "role")
@@ -46,7 +46,7 @@ public class UserDTO {
     }
 
     public UserDTO(long id, String email, String firstName, String lastName, String phoneNumber, String address,
-            LocalDate birthDate, String biography, LocalDateTime createdAt, String photograph, Role role,
+            LocalDate birthDate, String biography, Instant createdAt, String photograph, Role role,
             Long managerId, Long workplaceId) {
         this.id = id;
         this.email = email;
@@ -127,11 +127,11 @@ public class UserDTO {
         this.biography = biography;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
 

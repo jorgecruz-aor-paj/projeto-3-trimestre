@@ -1,22 +1,19 @@
 package aor.proj3t.daos.impl;
 
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+
 import aor.proj3t.daos.interfaces.EvaluationDAO;
 import aor.proj3t.entities.Evaluation;
-import aor.proj3t.entities.Training;
-import aor.proj3t.enums.EvaluationStatus;
 import aor.proj3t.filters.EvaluationFilter;
 import jakarta.ejb.Stateless;
-import jakarta.persistence.*;
+import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import jakarta.transaction.Transactional;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * Implementation of the EvaluationRepository interface.
@@ -54,7 +51,7 @@ public class EvaluationDAOimpl extends AbstractDAO<Evaluation, Long> implements 
     }
 
     @Override
-    public List<Evaluation> findByDateRange(LocalDateTime startDate, LocalDateTime endDate) {
+    public List<Evaluation> findByDateRange(Instant startDate, Instant endDate) {
         TypedQuery<Evaluation> query = em.createQuery(
                 "SELECT e FROM Evaluation e WHERE e.createdAt BETWEEN :startDate AND :endDate", Evaluation.class);
         query.setParameter("startDate", startDate);
@@ -66,7 +63,7 @@ public class EvaluationDAOimpl extends AbstractDAO<Evaluation, Long> implements 
     @Transactional
     public int closeAllCompletedEvaluations() {
         return em.createQuery(
-                        "UPDATE Evaluation e SET e.status = 'CLOSED' WHERE e.status = 'COMPLETED'")
+                "UPDATE Evaluation e SET e.status = 'CLOSED' WHERE e.status = 'COMPLETED'")
                 .executeUpdate();
     }
 

@@ -1,6 +1,6 @@
 package aor.proj3t.dto;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
@@ -28,9 +28,9 @@ public class TrainingDTO {
     @XmlElement(name = "active")
     private boolean isActive;
     @XmlElement(name = "createdAt")
-    private LocalDateTime createdAt;
+    private Instant createdAt;
     @XmlElement(name = "editedAt")
-    private LocalDateTime editedAt;
+    private Instant editedAt;
     @XmlElement(name = "trainingAreaId")
     private Long trainingAreaId;
 
@@ -38,7 +38,7 @@ public class TrainingDTO {
     }
 
     public TrainingDTO(Long id, String name, Integer duration, String description, String link, String language,
-            boolean isActive, LocalDateTime createdAt, LocalDateTime editedAt, Long trainingAreaId) {
+            boolean isActive, Instant createdAt, Instant editedAt, Long trainingAreaId) {
         this.id = id;
         this.name = name;
         this.duration = duration;
@@ -107,19 +107,19 @@ public class TrainingDTO {
         isActive = active;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getEditedAt() {
+    public Instant getEditedAt() {
         return editedAt;
     }
 
-    public void setEditedAt(LocalDateTime editedAt) {
+    public void setEditedAt(Instant editedAt) {
         this.editedAt = editedAt;
     }
 

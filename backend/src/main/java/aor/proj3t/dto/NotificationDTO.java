@@ -1,6 +1,6 @@
 package aor.proj3t.dto;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 import aor.proj3t.enums.NotificationType;
 import jakarta.xml.bind.annotation.XmlAccessType;
@@ -23,9 +23,9 @@ public class NotificationDTO {
     @XmlElement(name = "read")
     private boolean isRead;
     @XmlElement(name = "timestampSent")
-    private LocalDateTime timestampSent;
+    private Instant timestampSent;
     @XmlElement(name = "timestampRead")
-    private LocalDateTime timestampRead;
+    private Instant timestampRead;
     @XmlElement(name = "senderId")
     private Long senderId;
     @XmlElement(name = "recipientId")
@@ -35,7 +35,7 @@ public class NotificationDTO {
     }
 
     public NotificationDTO(Long id, String content, NotificationType type, boolean isRead,
-            LocalDateTime timestampSent, LocalDateTime timestampRead,
+            Instant timestampSent, Instant timestampRead,
             Long senderId, Long recipientId) {
         this.id = id;
         this.content = content;
@@ -79,19 +79,19 @@ public class NotificationDTO {
         isRead = read;
     }
 
-    public LocalDateTime getTimestampSent() {
+    public Instant getTimestampSent() {
         return timestampSent;
     }
 
-    public void setTimestampSent(LocalDateTime timestampSent) {
+    public void setTimestampSent(Instant timestampSent) {
         this.timestampSent = timestampSent;
     }
 
-    public LocalDateTime getTimestampRead() {
+    public Instant getTimestampRead() {
         return timestampRead;
     }
 
-    public void setTimestampRead(LocalDateTime timestampRead) {
+    public void setTimestampRead(Instant timestampRead) {
         this.timestampRead = timestampRead;
     }
 

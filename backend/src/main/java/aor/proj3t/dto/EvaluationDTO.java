@@ -1,6 +1,6 @@
 package aor.proj3t.dto;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 import aor.proj3t.enums.EvaluationScale;
 import aor.proj3t.enums.EvaluationStatus;
@@ -24,9 +24,9 @@ public class EvaluationDTO {
     @XmlElement(name = "feedback")
     private String feedback;
     @XmlElement(name = "createdAt")
-    private LocalDateTime createdAt;
+    private Instant createdAt;
     @XmlElement(name = "editedAt")
-    private LocalDateTime editedAt;
+    private Instant editedAt;
     @XmlElement(name = "evaluationCycleId")
     private Long evaluationCycleId;
     @XmlElement(name = "evaluateeId")
@@ -38,7 +38,7 @@ public class EvaluationDTO {
     }
 
     public EvaluationDTO(Long id, EvaluationScale scale, EvaluationStatus state, String feedback,
-            LocalDateTime createdAt, LocalDateTime editedAt, Long evaluationCycleId,
+            Instant createdAt, Instant editedAt, Long evaluationCycleId,
             Long evaluateeId, Long evaluatorId) {
         this.id = id;
         this.scale = scale;
@@ -83,19 +83,19 @@ public class EvaluationDTO {
         this.feedback = feedback;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getEditedAt() {
+    public Instant getEditedAt() {
         return editedAt;
     }
 
-    public void setEditedAt(LocalDateTime editedAt) {
+    public void setEditedAt(Instant editedAt) {
         this.editedAt = editedAt;
     }
 

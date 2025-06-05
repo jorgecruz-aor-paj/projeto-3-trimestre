@@ -1,6 +1,6 @@
 package aor.proj3t.dto;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
@@ -18,17 +18,17 @@ public class PendingRegistrationDTO {
     @XmlElement(name = "email")
     private String email;
     @XmlElement(name = "createdAt")
-    private LocalDateTime createdAt;
+    private Instant createdAt;
     @XmlElement(name = "confirmationToken")
     private String confirmationToken;
     @XmlElement(name = "expirationDate")
-    private LocalDateTime expirationDate;
+    private Instant expirationDate;
 
     public PendingRegistrationDTO() {
     }
 
-    public PendingRegistrationDTO(long id, String email, LocalDateTime createdAt,
-            String confirmationToken, LocalDateTime expirationDate) {
+    public PendingRegistrationDTO(long id, String email, Instant createdAt,
+            String confirmationToken, Instant expirationDate) {
         this.id = id;
         this.email = email;
         this.createdAt = createdAt;
@@ -52,11 +52,11 @@ public class PendingRegistrationDTO {
         this.email = email;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -68,11 +68,11 @@ public class PendingRegistrationDTO {
         this.confirmationToken = confirmationToken;
     }
 
-    public LocalDateTime getExpirationDate() {
+    public Instant getExpirationDate() {
         return expirationDate;
     }
 
-    public void setExpirationDate(LocalDateTime expirationDate) {
+    public void setExpirationDate(Instant expirationDate) {
         this.expirationDate = expirationDate;
     }
 }

@@ -1,6 +1,6 @@
 package aor.proj3t.service.interfaces;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,7 +67,7 @@ public interface EvaluationService {
      * @param endDate   The end date
      * @return A list of evaluations created within the specified date range
      */
-    List<Evaluation> findEvaluationsByDateRange(LocalDateTime startDate, LocalDateTime endDate);
+    List<Evaluation> findEvaluationsByDateRange(Instant startDate, Instant endDate);
 
     /**
      * Complete an evaluation.

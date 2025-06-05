@@ -1,6 +1,6 @@
 package aor.proj3t.dto;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
@@ -18,9 +18,9 @@ public class MessageDTO {
     @XmlElement(name = "content")
     private String content;
     @XmlElement(name = "timestampSent")
-    private LocalDateTime timestampSent;
+    private Instant timestampSent;
     @XmlElement(name = "timestampRead")
-    private LocalDateTime timestampRead;
+    private Instant timestampRead;
     @XmlElement(name = "read")
     private boolean isRead;
     @XmlElement(name = "senderId")
@@ -31,7 +31,7 @@ public class MessageDTO {
     public MessageDTO() {
     }
 
-    public MessageDTO(Long id, String content, LocalDateTime timestampSent, LocalDateTime timestampRead,
+    public MessageDTO(Long id, String content, Instant timestampSent, Instant timestampRead,
             boolean isRead, Long senderId, Long recipientId) {
         this.id = id;
         this.content = content;
@@ -58,19 +58,19 @@ public class MessageDTO {
         this.content = content;
     }
 
-    public LocalDateTime getTimestampSent() {
+    public Instant getTimestampSent() {
         return timestampSent;
     }
 
-    public void setTimestampSent(LocalDateTime timestampSent) {
+    public void setTimestampSent(Instant timestampSent) {
         this.timestampSent = timestampSent;
     }
 
-    public LocalDateTime getTimestampRead() {
+    public Instant getTimestampRead() {
         return timestampRead;
     }
 
-    public void setTimestampRead(LocalDateTime timestampRead) {
+    public void setTimestampRead(Instant timestampRead) {
         this.timestampRead = timestampRead;
     }
 

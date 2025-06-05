@@ -1,20 +1,15 @@
 package aor.proj3t.daos.interfaces;
 
+import java.time.Instant;
+import java.util.List;
 
 import aor.proj3t.entities.Evaluation;
-import aor.proj3t.entities.Training;
-import aor.proj3t.enums.EvaluationStatus;
 import aor.proj3t.filters.EvaluationFilter;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * Repository interface for Evaluation entity operations.
  */
 public interface EvaluationDAO extends BasicDAO<Evaluation, Long> {
-
 
     /**
      * Find evaluations for a specific evaluated user.
@@ -54,7 +49,7 @@ public interface EvaluationDAO extends BasicDAO<Evaluation, Long> {
      * @param endDate   The end date of the range
      * @return A list of evaluations created within the specified date range
      */
-    List<Evaluation> findByDateRange(LocalDateTime startDate, LocalDateTime endDate);
+    List<Evaluation> findByDateRange(Instant startDate, Instant endDate);
 
     /**
      * Close all completed evaluations.

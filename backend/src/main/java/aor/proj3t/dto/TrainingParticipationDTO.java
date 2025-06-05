@@ -1,6 +1,6 @@
 package aor.proj3t.dto;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
@@ -22,15 +22,15 @@ public class TrainingParticipationDTO {
     @XmlElement(name = "trainingId")
     private Long trainingId;
     @XmlElement(name = "createdAt")
-    private LocalDateTime createdAt;
+    private Instant createdAt;
     @XmlElement(name = "participatedAt")
-    private LocalDateTime participatedAt;
+    private Instant participatedAt;
 
     public TrainingParticipationDTO() {
     }
 
     public TrainingParticipationDTO(Long id, Long participantId, Long managerId, Long trainingId,
-            LocalDateTime createdAt, LocalDateTime participatedAt) {
+            Instant createdAt, Instant participatedAt) {
         this.id = id;
         this.participantId = participantId;
         this.managerId = managerId;
@@ -71,19 +71,19 @@ public class TrainingParticipationDTO {
         this.trainingId = trainingId;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getParticipatedAt() {
+    public Instant getParticipatedAt() {
         return participatedAt;
     }
 
-    public void setParticipatedAt(LocalDateTime participatedAt) {
+    public void setParticipatedAt(Instant participatedAt) {
         this.participatedAt = participatedAt;
     }
 }

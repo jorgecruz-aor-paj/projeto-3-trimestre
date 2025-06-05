@@ -1,6 +1,6 @@
 package aor.proj3t.dto;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 import aor.proj3t.enums.EvaluationCycleStatus;
 import jakarta.xml.bind.annotation.XmlAccessType;
@@ -14,26 +14,33 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "evaluationCycle")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class EvaluationCycleDTO {
+
     @XmlElement(name = "id")
     private Long id;
+
     @XmlElement(name = "createdAt")
-    private LocalDateTime createdAt;
+    private Instant createdAt;
+
     @XmlElement(name = "startDate")
-    private LocalDateTime startDate;
+    private Instant startDate;
+
     @XmlElement(name = "endDate")
-    private LocalDateTime endDate;
+    private Instant endDate;
+
     @XmlElement(name = "closureDate")
-    private LocalDateTime closureDate;
+    private Instant closureDate;
+
     @XmlElement(name = "status")
     private EvaluationCycleStatus status;
+
     @XmlElement(name = "createdById")
     private Long createdById;
 
     public EvaluationCycleDTO() {
     }
 
-    public EvaluationCycleDTO(Long id, LocalDateTime createdAt, LocalDateTime startDate, LocalDateTime endDate,
-            LocalDateTime closureDate, EvaluationCycleStatus status, Long createdById) {
+    public EvaluationCycleDTO(Long id, Instant createdAt, Instant startDate, Instant endDate,
+            Instant closureDate, EvaluationCycleStatus status, Long createdById) {
         this.id = id;
         this.createdAt = createdAt;
         this.startDate = startDate;
@@ -51,35 +58,35 @@ public class EvaluationCycleDTO {
         this.id = id;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getStartDate() {
+    public Instant getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDateTime startDate) {
+    public void setStartDate(Instant startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDateTime getEndDate() {
+    public Instant getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDateTime endDate) {
+    public void setEndDate(Instant endDate) {
         this.endDate = endDate;
     }
 
-    public LocalDateTime getClosureDate() {
+    public Instant getClosureDate() {
         return closureDate;
     }
 
-    public void setClosureDate(LocalDateTime closureDate) {
+    public void setClosureDate(Instant closureDate) {
         this.closureDate = closureDate;
     }
 

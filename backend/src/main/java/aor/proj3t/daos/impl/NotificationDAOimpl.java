@@ -1,15 +1,12 @@
 package aor.proj3t.daos.impl;
 
-import aor.proj3t.daos.interfaces.NotificationDAO;
-import aor.proj3t.entities.Notification;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 
-public class NotificationDAOimpl extends AbstractDAO<Notification, Long> implements NotificationDAO {
+import aor.proj3t.daos.interfaces.NotificationDAO;
+import aor.proj3t.entities.Notification;
 
+public class NotificationDAOimpl extends AbstractDAO<Notification, Long> implements NotificationDAO {
 
     @Override
     public List<Notification> findBySenderId(Long senderId) {
@@ -30,7 +27,10 @@ public class NotificationDAOimpl extends AbstractDAO<Notification, Long> impleme
     @Override
     public Long countUnreadNotificationsByRecipientId(Long recipientId) {
 
-        return em.createQuery("SELECT COUNT(n) FROM Notification n WHERE n.recipient.id = :recipientId AND n.isRead = FALSE", Long.class)
+        return em
+                .createQuery(
+                        "SELECT COUNT(n) FROM Notification n WHERE n.recipient.id = :recipientId AND n.isRead = FALSE",
+                        Long.class)
                 .setParameter("recipientId", recipientId)
                 .getSingleResult();
     }
@@ -38,7 +38,9 @@ public class NotificationDAOimpl extends AbstractDAO<Notification, Long> impleme
     @Override
     public List<Notification> findUnreadNotificationsByRecipientId(Long recipientId) {
 
-        return em.createQuery("SELECT n FROM Notification n WHERE n.recipient.id = :recipientId AND n.isRead = FALSE", Notification.class)
+        return em
+                .createQuery("SELECT n FROM Notification n WHERE n.recipient.id = :recipientId AND n.isRead = FALSE",
+                        Notification.class)
                 .setParameter("recipientId", recipientId)
                 .getResultList();
     }
@@ -46,8 +48,9 @@ public class NotificationDAOimpl extends AbstractDAO<Notification, Long> impleme
     @Override
     public Boolean markNotificationAsRead(Long notificationId) {
 
-        int updatedCount = em.createQuery("UPDATE Notification n  SET n.isRead = TRUE, n.timestampRead = :timestamp WHERE n.id = :notificationId")
-                .setParameter("timestamp", LocalDateTime.now())
+        int updatedCount = em.createQuery(
+                "UPDATE Notification n  SET n.isRead = TRUE, n.timestampRead = :timestamp WHERE n.id = :notificationId")
+                .setParameter("timestamp", Instant.now())
                 .setParameter("notificationId", notificationId)
                 .executeUpdate();
 

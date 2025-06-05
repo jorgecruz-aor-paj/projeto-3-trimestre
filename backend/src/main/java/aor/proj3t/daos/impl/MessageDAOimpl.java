@@ -1,14 +1,12 @@
 package aor.proj3t.daos.impl;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 
 import aor.proj3t.daos.interfaces.MessageDAO;
 import aor.proj3t.entities.Message;
 import aor.proj3t.entities.User;
 import jakarta.ejb.Stateless;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 
 @Stateless
 public class MessageDAOimpl extends AbstractDAO<Message, Long> implements MessageDAO {
@@ -32,7 +30,9 @@ public class MessageDAOimpl extends AbstractDAO<Message, Long> implements Messag
     @Override
     public List<Message> findBySenderIdAndRecipientId(Long senderId, Long recipientId) {
 
-        return em.createQuery("SELECT m FROM Message m WHERE m.sender.id = :senderId AND m.recipient.id = :recipientId", Message.class)
+        return em
+                .createQuery("SELECT m FROM Message m WHERE m.sender.id = :senderId AND m.recipient.id = :recipientId",
+                        Message.class)
                 .setParameter("senderId", senderId)
                 .setParameter("recipientId", recipientId)
                 .getResultList();
@@ -44,7 +44,8 @@ public class MessageDAOimpl extends AbstractDAO<Message, Long> implements Messag
         return em.createQuery(
                 "SELECT DISTINCT u FROM User u WHERE u.id IN (" +
                         "SELECT m.sender.id FROM Message m WHERE m.recipient.id = :userId UNION " +
-                        "SELECT m.recipient.id FROM Message m WHERE m.sender.id = :userId)", User.class)
+                        "SELECT m.recipient.id FROM Message m WHERE m.sender.id = :userId)",
+                User.class)
                 .setParameter("userId", userId)
                 .getResultList();
     }
@@ -52,7 +53,9 @@ public class MessageDAOimpl extends AbstractDAO<Message, Long> implements Messag
     @Override
     public Integer findCountUnreadMessagesByRecipientId(Long recipientId) {
 
-        return em.createQuery("SELECT COUNT(m) FROM Message m WHERE m.recipient.id = :recipientId AND m.isRead = FALSE", Long.class)
+        return em
+                .createQuery("SELECT COUNT(m) FROM Message m WHERE m.recipient.id = :recipientId AND m.isRead = FALSE",
+                        Long.class)
                 .setParameter("recipientId", recipientId)
                 .getSingleResult()
                 .intValue();
@@ -61,7 +64,9 @@ public class MessageDAOimpl extends AbstractDAO<Message, Long> implements Messag
     @Override
     public List<Message> findUnreadMessagesByRecipientId(Long recipientId) {
 
-        return em.createQuery("SELECT m FROM Message m WHERE m.recipient.id = :recipientId AND m.isRead = FALSE", Message.class)
+        return em
+                .createQuery("SELECT m FROM Message m WHERE m.recipient.id = :recipientId AND m.isRead = FALSE",
+                        Message.class)
                 .setParameter("recipientId", recipientId)
                 .getResultList();
     }
@@ -69,8 +74,10 @@ public class MessageDAOimpl extends AbstractDAO<Message, Long> implements Messag
     @Override
     public Boolean markMessageAsRead(Long messageId) {
 
-        int updatedCount = em.createQuery("UPDATE Message m SET m.isRead = TRUE, m.timestampRead = :timestamp WHERE m.id = :messageId")
-                .setParameter("timestamp", LocalDateTime.now())
+        int updatedCount = em
+                .createQuery(
+                        "UPDATE Message m SET m.isRead = TRUE, m.timestampRead = :timestamp WHERE m.id = :messageId")
+                .setParameter("timestamp", Instant.now())
                 .setParameter("messageId", messageId)
                 .executeUpdate();
 

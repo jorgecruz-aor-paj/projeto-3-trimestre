@@ -1,6 +1,6 @@
 package aor.proj3t.dto;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
@@ -22,7 +22,7 @@ public class SettingsDTO {
     @XmlElement(name = "resetPasswordWindow")
     private Integer resetPasswordWindow;
     @XmlElement(name = "createdAt")
-    private LocalDateTime createdAt;
+    private Instant createdAt;
     @XmlElement(name = "createdById")
     private Long createdById;
 
@@ -30,7 +30,7 @@ public class SettingsDTO {
     }
 
     public SettingsDTO(Long id, Integer confirmationWindow, Integer sessionWindow,
-            Integer resetPasswordWindow, LocalDateTime createdAt,
+            Integer resetPasswordWindow, Instant createdAt,
             Long createdById) {
         this.id = id;
         this.confirmationWindow = confirmationWindow;
@@ -72,11 +72,11 @@ public class SettingsDTO {
         this.resetPasswordWindow = resetPasswordWindow;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
 

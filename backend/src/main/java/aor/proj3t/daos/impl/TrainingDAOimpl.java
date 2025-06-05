@@ -1,19 +1,17 @@
 package aor.proj3t.daos.impl;
 
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import aor.proj3t.daos.interfaces.TrainingDAO;
 import aor.proj3t.entities.Training;
 import aor.proj3t.filters.TrainingFilter;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 public class TrainingDAOimpl extends AbstractDAO<Training, Long> implements TrainingDAO {
 
@@ -23,7 +21,7 @@ public class TrainingDAOimpl extends AbstractDAO<Training, Long> implements Trai
         if (trainingOpt.isPresent()) {
             Training training = trainingOpt.get();
             training.setActive(false);
-            training.setEditedAt(LocalDateTime.now());
+            training.setEditedAt(Instant.now());
             update(training);
             return true;
         }
@@ -41,7 +39,6 @@ public class TrainingDAOimpl extends AbstractDAO<Training, Long> implements Trai
                 .setParameter("userId", userId)
                 .getResultList();
     }
-
 
     public List<Training> getTrainingsByFilters(TrainingFilter filters) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -63,7 +60,7 @@ public class TrainingDAOimpl extends AbstractDAO<Training, Long> implements Trai
             predicates.add(cb.equal(root.get("duration"), filters.getDuration()));
         }
         if (filters.getStartDate() != null) {
-            predicates.add(cb.greaterThanOrEqualTo(root.get("created_at"), LocalDateTime.parse(filters.getStartDate())));
+            predicates.add(cb.greaterThanOrEqualTo(root.get("created_at"), Instant.parse(filters.getStartDate())));
         }
         if (filters.getSearchText() != null && !filters.getSearchText().isEmpty()) {
             Predicate namePredicate = cb.or(

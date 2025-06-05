@@ -1,6 +1,6 @@
 package aor.proj3t.dto;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
@@ -16,9 +16,9 @@ public class SessionDTO {
     @XmlElement(name = "id")
     private Long id;
     @XmlElement(name = "createdAt")
-    private LocalDateTime createdAt;
+    private Instant createdAt;
     @XmlElement(name = "expirationDate")
-    private LocalDateTime expirationDate;
+    private Instant expirationDate;
     @XmlElement(name = "sessionToken")
     private String sessionToken;
     @XmlElement(name = "active")
@@ -33,7 +33,7 @@ public class SessionDTO {
     public SessionDTO() {
     }
 
-    public SessionDTO(Long id, LocalDateTime createdAt, LocalDateTime expirationDate,
+    public SessionDTO(Long id, Instant createdAt, Instant expirationDate,
             String sessionToken, Boolean isActive, String ipAddress,
             String userAgent, Long userId) {
         this.id = id;
@@ -54,19 +54,19 @@ public class SessionDTO {
         this.id = id;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getExpirationDate() {
+    public Instant getExpirationDate() {
         return expirationDate;
     }
 
-    public void setExpirationDate(LocalDateTime expirationDate) {
+    public void setExpirationDate(Instant expirationDate) {
         this.expirationDate = expirationDate;
     }
 
