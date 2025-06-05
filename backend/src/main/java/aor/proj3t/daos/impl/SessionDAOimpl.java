@@ -21,6 +21,7 @@ public class SessionDAOimpl extends AbstractDAO<Session, Long> implements Sessio
         query.setParameter("token", token);
         return query.getResultList().stream().findFirst();
     }
+
     @Override
     public Boolean isValidToken(String token) {
         TypedQuery<Long> query = em.createQuery(

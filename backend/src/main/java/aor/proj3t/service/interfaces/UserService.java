@@ -12,7 +12,7 @@ public interface UserService {
 
     Boolean registerUser(LoginDTO loginDTO, String ipAddress);
 
-    UserDTO confirmUser(PendingRegistrationDTO pendingRegistration);
+    Boolean confirmUser(String confirmationToken);
 
     boolean changePassword(Long userId, String newPassword);
 
