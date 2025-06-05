@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Entity
 @Table(name = "trainings")
@@ -33,19 +33,19 @@ public class Training {
     private boolean isActive = true;
 
     @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    private Instant createdAt;
 
     @PrePersist
     protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
+        this.createdAt = Instant.now();
     }
 
     @Column(name = "edited_at")
-    private LocalDateTime editedAt;
+    private Instant editedAt;
 
     @PreUpdate
     protected void onUpdate() {
-        this.editedAt = LocalDateTime.now();
+        this.editedAt = Instant.now();
     }
 
     @ManyToOne
@@ -108,19 +108,19 @@ public class Training {
         isActive = active;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getEditedAt() {
+    public Instant getEditedAt() {
         return editedAt;
     }
 
-    public void setEditedAt(LocalDateTime editedAt) {
+    public void setEditedAt(Instant editedAt) {
         this.editedAt = editedAt;
     }
 

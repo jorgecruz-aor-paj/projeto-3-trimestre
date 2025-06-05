@@ -13,6 +13,8 @@ public class Workplace {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
+    public Workplace() {}
+
     public Long getId() {
         return id;
     }

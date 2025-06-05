@@ -1,7 +1,7 @@
 package aor.proj3t.entities;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 
 import jakarta.persistence.*;
@@ -47,9 +47,13 @@ public class User {
     @Column(name = "biography")
     private String biography;
 
-    @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    private Instant createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = Instant.now();
+    }
 
     @Column(name = "photograph", nullable = false)
     private String photograph;
@@ -68,6 +72,8 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "workplace_id")
     private Workplace workplace;
+
+    public User(){}
 
     public long getId() {
         return id;
@@ -141,11 +147,11 @@ public class User {
         this.biography = biography;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
 

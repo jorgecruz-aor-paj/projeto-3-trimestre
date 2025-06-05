@@ -13,6 +13,9 @@ public class TrainingArea {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
+    public TrainingArea() {
+    }
+
     public Long getId() {
         return id;
     }

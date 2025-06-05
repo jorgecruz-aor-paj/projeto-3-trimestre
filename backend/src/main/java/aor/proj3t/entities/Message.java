@@ -2,7 +2,7 @@ package aor.proj3t.entities;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Entity
 @Table(name = "messages")
@@ -16,10 +16,10 @@ public class Message {
     private String content;
 
     @Column(name = "timestamp_sent", nullable = false, updatable = false)
-    private LocalDateTime timestampSent;
+    private Instant timestampSent;
 
     @Column(name = "timestamp_read")
-    private LocalDateTime timestampRead;
+    private Instant timestampRead;
 
     @Column(name = "is_read", nullable = false)
     private boolean isRead = false;
@@ -48,19 +48,19 @@ public class Message {
         this.content = content;
     }
 
-    public LocalDateTime getTimestampSent() {
+    public Instant getTimestampSent() {
         return timestampSent;
     }
 
-    public void setTimestampSent(LocalDateTime timestampSent) {
+    public void setTimestampSent(Instant timestampSent) {
         this.timestampSent = timestampSent;
     }
 
-    public LocalDateTime getTimestampRead() {
+    public Instant getTimestampRead() {
         return timestampRead;
     }
 
-    public void setTimestampRead(LocalDateTime timestampRead) {
+    public void setTimestampRead(Instant timestampRead) {
         this.timestampRead = timestampRead;
     }
 

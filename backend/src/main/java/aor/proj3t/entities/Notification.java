@@ -3,7 +3,7 @@ package aor.proj3t.entities;
 import aor.proj3t.enums.NotificationType;
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Entity
 @Table(name = "notifications")
@@ -24,10 +24,10 @@ public class Notification {
     private boolean isRead = false;
 
     @Column(name = "timestamp_sent", nullable = false, updatable = false)
-    private LocalDateTime timestampSent;
+    private Instant timestampSent;
 
     @Column(name = "timestamp_read")
-    private LocalDateTime timestampRead;
+    private Instant timestampRead;
 
     @ManyToOne
     @JoinColumn(name = "sender_id", nullable = false)
@@ -69,19 +69,19 @@ public class Notification {
         isRead = read;
     }
 
-    public LocalDateTime getTimestampSent() {
+    public Instant getTimestampSent() {
         return timestampSent;
     }
 
-    public void setTimestampSent(LocalDateTime timestampSent) {
+    public void setTimestampSent(Instant timestampSent) {
         this.timestampSent = timestampSent;
     }
 
-    public LocalDateTime getTimestampRead() {
+    public Instant getTimestampRead() {
         return timestampRead;
     }
 
-    public void setTimestampRead(LocalDateTime timestampRead) {
+    public void setTimestampRead(Instant timestampRead) {
         this.timestampRead = timestampRead;
     }
 

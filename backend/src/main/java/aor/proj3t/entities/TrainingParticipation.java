@@ -3,7 +3,7 @@ package aor.proj3t.entities;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Entity
 @Table(name = "training_participation")
@@ -26,15 +26,17 @@ public class TrainingParticipation {
     private Training training;
 
     @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    private Instant createdAt;
 
     @PrePersist
     protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
+        this.createdAt = Instant.now();
     }
 
     @Column(name = "participated_at")
-    private LocalDateTime participatedAt;
+    private Instant participatedAt;
+
+    public TrainingParticipation() {}
 
     public Long getId() {
         return id;
@@ -68,19 +70,19 @@ public class TrainingParticipation {
         this.training = training;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getParticipatedAt() {
+    public Instant getParticipatedAt() {
         return participatedAt;
     }
 
-    public void setParticipatedAt(LocalDateTime participatedAt) {
+    public void setParticipatedAt(Instant participatedAt) {
         this.participatedAt = participatedAt;
     }
 }
