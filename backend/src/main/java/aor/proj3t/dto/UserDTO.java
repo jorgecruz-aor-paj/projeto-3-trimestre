@@ -17,28 +17,39 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 public class UserDTO {
     @XmlElement(name = "id")
     private long id;
+
     @XmlElement(name = "email")
     private String email;
+
     @XmlElement(name = "firstName")
     private String firstName;
+
     @XmlElement(name = "lastName")
     private String lastName;
+
     @XmlElement(name = "phoneNumber")
     private String phoneNumber;
+
     @XmlElement(name = "address")
     private String address;
+
     @XmlElement(name = "birthDate")
     private LocalDate birthDate;
+
     @XmlElement(name = "biography")
     private String biography;
+
     @XmlElement(name = "createdAt")
     private Instant createdAt;
     @XmlElement(name = "photograph")
     private String photograph;
+
     @XmlElement(name = "role")
     private Role role;
+
     @XmlElement(name = "managerId")
     private Long managerId; // Only the ID is passed to avoid recursive references
+
     @XmlElement(name = "workplaceId")
     private Long workplaceId;
 
