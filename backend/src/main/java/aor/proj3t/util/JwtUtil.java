@@ -1,5 +1,7 @@
 package aor.proj3t.util;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +15,10 @@ import io.github.cdimascio.dotenv.Dotenv;
 import io.github.cdimascio.dotenv.DotenvException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.io.DecodingException;
+import io.jsonwebtoken.security.InvalidKeyException;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.WeakKeyException;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -30,8 +35,10 @@ public class JwtUtil {
 
     @PostConstruct
     public void init() {
+        logger.info("Initializing JWT utility service");
         try {
             // Dotenv configuration
+            logger.debug("Loading environment variables for JWT configuration");
             Dotenv dotenv = Dotenv
                     .configure()
                     .ignoreIfMalformed()
@@ -39,8 +46,19 @@ public class JwtUtil {
             // Load JWT configuration from environment variables
             secretKey = dotenv.get("JWT_SECRET");
             issuer = dotenv.get("JWT_ISSUER");
+
+            if (secretKey == null || secretKey.isEmpty()) {
+                logger.warn("JWT_SECRET environment variable is not set or empty");
+            }
+            if (issuer == null || issuer.isEmpty()) {
+                logger.warn("JWT_ISSUER environment variable is not set or empty");
+            }
+
+            logger.info("JWT utility service initialized successfully");
         } catch (DotenvException e) {
             logger.error("Failed to load JWT configuration from environment variables", e);
+        } catch (Exception e) {
+            logger.error("Unexpected error during JWT utility initialization", e);
         }
     }
 
@@ -56,7 +74,11 @@ public class JwtUtil {
      */
     public String generateToken(Long userId, String userEmail, String userRole, String ipAddress,
             Integer validityMinutes) {
+        logger.debug("Generating JWT token for user [ID={}] with email [{}] and role [{}]", userId, userEmail,
+                userRole);
+
         int minutes = (validityMinutes != null) ? validityMinutes : DEFAULT_TOKEN_EXPIRATION_TIME;
+        logger.debug("Token will be valid for {} minutes", minutes);
 
         Map<String, Object> claims = new HashMap<>();
         claims.put("userId", userId);
@@ -64,7 +86,14 @@ public class JwtUtil {
         claims.put("role", userRole);
         claims.put("ipAddress", ipAddress);
 
-        return createToken(claims, userEmail, minutes);
+        try {
+            String token = createToken(claims, userEmail, minutes);
+            logger.info("JWT token generated successfully for user [ID={}]", userId);
+            return token;
+        } catch (Exception e) {
+            logger.error("Failed to generate JWT token for user [ID={}]", userId, e);
+            throw e;
+        }
     }
 
     /**
@@ -77,17 +106,33 @@ public class JwtUtil {
      * @return The JWT token
      */
     private String createToken(Map<String, Object> claims, String subject, int validityMinutes) {
-        Date now = new Date();
-        Date expiration = new Date(now.getTime() + validityMinutes * 60 * 1000);
+        logger.debug("Creating JWT token for subject [{}] with validity of {} minutes", subject, validityMinutes);
 
-        return Jwts.builder()
-                .claims(claims)
-                .subject(subject)
-                .issuer(issuer)
-                .issuedAt(now)
-                .expiration(expiration)
-                .signWith(getSigningKey())
-                .compact();
+        try {
+            // Use Instant for consistent UTC time handling across global deployments
+            Instant now = Instant.now();
+            Instant expiration = now.plus(Duration.ofMinutes(validityMinutes));
+
+            // Always log in UTC for global consistency and clarity
+            logger.debug("Token issuance time (UTC): {}, expiration time (UTC): {}",
+                    now.toString(),
+                    expiration.toString());
+
+            String token = Jwts.builder()
+                    .claims(claims)
+                    .subject(subject)
+                    .issuer(issuer)
+                    .issuedAt(Date.from(now))
+                    .expiration(Date.from(expiration))
+                    .signWith(getSigningKey())
+                    .compact();
+
+            logger.debug("JWT token created successfully");
+            return token;
+        } catch (InvalidKeyException e) {
+            logger.error("Error creating JWT token for subject [{}]", subject, e);
+            throw e;
+        }
     }
 
     /**
@@ -96,8 +141,23 @@ public class JwtUtil {
      * @return The signing key
      */
     private SecretKey getSigningKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
-        return Keys.hmacShaKeyFor(keyBytes);
-    }
+        logger.trace("Generating signing key from secret");
+        try {
+            if (secretKey == null || secretKey.isEmpty()) {
+                logger.error("Cannot generate signing key: Secret key is null or empty");
+                throw new IllegalStateException("JWT secret key is not configured");
+            }
 
+            byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+            SecretKey key = Keys.hmacShaKeyFor(keyBytes);
+            logger.trace("Signing key generated successfully");
+            return key;
+        } catch (IllegalArgumentException e) {
+            logger.error("Failed to decode secret key - invalid Base64 encoding", e);
+            throw e;
+        } catch (DecodingException | WeakKeyException | IllegalStateException e) {
+            logger.error("Unexpected error while generating signing key", e);
+            throw e;
+        }
+    }
 }
