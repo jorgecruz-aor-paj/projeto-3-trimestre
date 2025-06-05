@@ -1,30 +1,25 @@
 package aor.proj3t.daos.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import aor.proj3t.daos.interfaces.UserDAO;
-import aor.proj3t.entities.Evaluation;
 import aor.proj3t.entities.User;
 import aor.proj3t.filters.UserFilter;
 import jakarta.ejb.Stateless;
-import jakarta.persistence.*;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-
 @Stateless
 public class UserDAOimpl extends AbstractDAO<User, Long> implements UserDAO {
-
 
     @Override
     public Optional<User> findByEmail(String email) {
         User user = em.createQuery(
-                        "SELECT u FROM User u WHERE u.email = :email", User.class)
+                "SELECT u FROM User u WHERE u.email = :email", User.class)
                 .setParameter("email", email)
                 .getSingleResult();
         return Optional.of(user);
@@ -41,7 +36,7 @@ public class UserDAOimpl extends AbstractDAO<User, Long> implements UserDAO {
     @Override
     public boolean allUsersHaveManager() {
         Long count = em.createQuery(
-                        "SELECT COUNT(u) FROM User u WHERE u.manager IS NULL", Long.class)
+                "SELECT COUNT(u) FROM User u WHERE u.manager IS NULL", Long.class)
                 .getSingleResult();
         return count == 0;
     }
@@ -49,7 +44,7 @@ public class UserDAOimpl extends AbstractDAO<User, Long> implements UserDAO {
     @Override
     public Long countAllUsers() {
         return em.createQuery(
-                        "SELECT COUNT(u) FROM User u", Long.class)
+                "SELECT COUNT(u) FROM User u", Long.class)
                 .getSingleResult();
     }
 
@@ -63,7 +58,7 @@ public class UserDAOimpl extends AbstractDAO<User, Long> implements UserDAO {
     @Override
     public Long countUsersWithManager() {
         return em.createQuery(
-                        "SELECT COUNT(u) FROM User u WHERE u.manager IS NOT NULL", Long.class)
+                "SELECT COUNT(u) FROM User u WHERE u.manager IS NOT NULL", Long.class)
                 .getSingleResult();
     }
 
@@ -94,8 +89,7 @@ public class UserDAOimpl extends AbstractDAO<User, Long> implements UserDAO {
             Predicate namePredicate = cb.or(
                     cb.like(root.get("firstName"), "%" + filters.getSearchText() + "%"),
                     cb.like(root.get("lastName"), "%" + filters.getSearchText() + "%"),
-                    cb.like(root.get("email"), "%" + filters.getSearchText() + "%")
-            );
+                    cb.like(root.get("email"), "%" + filters.getSearchText() + "%"));
             predicates.add(namePredicate);
         }
 
@@ -111,5 +105,3 @@ public class UserDAOimpl extends AbstractDAO<User, Long> implements UserDAO {
     }
 
 }
-
-

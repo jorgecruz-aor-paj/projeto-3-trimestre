@@ -1,27 +1,33 @@
 package aor.proj3t.service.impl;
 
-import aor.proj3t.config.AppConstants;
-import aor.proj3t.daos.impl.*;
-import aor.proj3t.dto.LoginDTO;
-import aor.proj3t.dto.UserDTO;
-import aor.proj3t.entities.*;
-import aor.proj3t.enums.Role;
-import aor.proj3t.filters.UserFilter;
-import aor.proj3t.service.interfaces.UserService;
-import aor.proj3t.util.ConverterUtil;
-import aor.proj3t.util.JwtUtil;
-import aor.proj3t.util.PasswordUtil;
-import jakarta.inject.Inject;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import aor.proj3t.config.AppConstants;
+import aor.proj3t.daos.impl.PendingRegistrationDAOimpl;
+import aor.proj3t.daos.impl.SettingsDAOimpl;
+import aor.proj3t.daos.impl.UserDAOimpl;
+import aor.proj3t.daos.impl.WorkPlaceDAOimpl;
+import aor.proj3t.dto.LoginDTO;
+import aor.proj3t.dto.UserDTO;
+import aor.proj3t.entities.PendingRegistration;
+import aor.proj3t.entities.Settings;
+import aor.proj3t.entities.User;
+import aor.proj3t.entities.Workplace;
+import aor.proj3t.enums.Role;
+import aor.proj3t.filters.UserFilter;
+import aor.proj3t.service.interfaces.UserService;
+import aor.proj3t.util.JwtUtil;
+import aor.proj3t.util.PasswordUtil;
+import aor.proj3t.util.converterUtils.ConverterFactory;
+import jakarta.inject.Inject;
 
 public class UserServiceImpl implements UserService {
     private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
@@ -41,10 +47,15 @@ public class UserServiceImpl implements UserService {
     @Inject
     UserDAOimpl userDao;
 
+    @Inject
+    ConverterFactory converterFactory;
+
+    @Override
     public Boolean registerUser(LoginDTO loginDTO, String ipAddress) {
         try {
             PendingRegistration registration = new PendingRegistration(loginDTO.getEmail(), loginDTO.getPassword());
-            registration.setConfirmationToken(jwtUtil.generateConfirmationToken(loginDTO.getEmail(), ipAddress, getConfirmationExpirationTime()));
+            registration.setConfirmationToken(
+                    jwtUtil.generateConfirmationToken(loginDTO.getEmail(), ipAddress, getConfirmationExpirationTime()));
             registration.setExpirationDate(Instant.now().plus(getConfirmationExpirationTime(), ChronoUnit.MINUTES));
             pendingRegistrationDAO.create(registration);
             return true;
@@ -54,6 +65,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
     public Boolean confirmUser(Long registrationId, UserDTO newUserDto) {
         try {
             PendingRegistration registration = getPendingRegistration(registrationId);
@@ -76,7 +88,7 @@ public class UserServiceImpl implements UserService {
                     newUserDto.getBirthDate(),
                     newUserDto.getRole(),
                     workplace);
-            if(newUserDto.getBiography() != null) {
+            if (newUserDto.getBiography() != null) {
                 newUser.setBiography(newUserDto.getBiography());
             }
             userDao.create(newUser);
@@ -87,6 +99,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
     public Boolean changePassword(Long userId, String newRawPassword) {
         try {
             User user = getUser(userId);
@@ -102,6 +115,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
     public Boolean assignManager(Long userId, Long managerId) {
         try {
             User user = getUser(userId);
@@ -123,6 +137,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
     public Boolean updateUser(UserDTO userDto) {
         try {
             User user = getUser(userDto.getId());
@@ -144,7 +159,7 @@ public class UserServiceImpl implements UserService {
             user.setWorkplace(workplace);
 
             userDao.update(user);
-        return true;
+            return true;
         } catch (NoSuchElementException e) {
             logger.error("Invalid user ID {} while updating user. ", userDto.getId(), e);
             return false;
@@ -155,9 +170,15 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
     public List<UserDTO> getUsersByFilters(UserFilter filter) {
         try {
-            return ConverterUtil.userEntityListToUserDTOList(userDao.getUsersByFilters(filter));
+            /*
+             * // FIXME Para comparar e eliminar após ter a certeza que a conversão está
+             * correta:
+             * ConverterUtil.userEntityListToUserDTOList(userDao.getUsersByFilters(filter));
+             */
+            return converterFactory.forUser().toDTOList(userDao.getUsersByFilters(filter));
         } catch (Exception e) {
             logger.error("Error getting users list. ", e);
             return new ArrayList<>();
