@@ -11,6 +11,7 @@ import javax.crypto.SecretKey;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import aor.proj3t.enums.TokenType;
 import io.github.cdimascio.dotenv.Dotenv;
 import io.github.cdimascio.dotenv.DotenvException;
 import io.jsonwebtoken.Jwts;
@@ -72,7 +73,7 @@ public class JwtUtil {
      * @param validityMinutes The validity period in minutes
      * @return The JWT token
      */
-    public String generateToken(Long userId, String userEmail, String userRole, String ipAddress,
+    public String generateSessionToken(Long userId, String userEmail, String userRole, String ipAddress,
             Integer validityMinutes) {
         logger.debug("Generating JWT token for user [ID={}] with email [{}] and role [{}]", userId, userEmail,
                 userRole);
@@ -87,24 +88,7 @@ public class JwtUtil {
         claims.put("ipAddress", ipAddress);
 
         try {
-            String token = createToken(claims, userEmail, minutes);
-            logger.info("JWT token generated successfully for user [ID={}]", userId);
-            return token;
-        } catch (Exception e) {
-            logger.error("Failed to generate JWT token for user [ID={}]", userId, e);
-            throw e;
-        }
-    }
-
-    public String generateConfirmationToken(String userEmail, String ipAddress, Integer validityMinutes) {
-        int minutes = (validityMinutes != null) ? validityMinutes : DEFAULT_TOKEN_EXPIRATION_TIME;
-
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("email", userEmail);
-        claims.put("ipAddress", ipAddress);
-
-        try {
-            String token = createToken(claims, userEmail, minutes);
+            String token = createToken(userEmail, TokenType.SESSION, claims, minutes);
             logger.info("JWT token generated successfully for user [ID={}]", userId);
             return token;
         } catch (Exception e) {
@@ -114,23 +98,86 @@ public class JwtUtil {
     }
 
     /**
-     * Create a JWT token with the specified claims.
+     * Generate a confirmation token for account validation.
      * 
-     * @param claims          The claims to include in the token
-     * @param subject         The subject of the token (typically the
-     *                        username/email)
-     * @param validityMinutes The validity period in minutes
-     * @return The JWT token
+     * @param userEmail       The user email to be confirmed
+     * @param ipAddress       The IP address of the client
+     * @param validityMinutes The validity period in minutes, or null to use the
+     *                        default
+     * @return The JWT confirmation token
      */
-    private String createToken(Map<String, Object> claims, String subject, int validityMinutes) {
-        logger.debug("Creating JWT token for subject [{}] with validity of {} minutes", subject, validityMinutes);
+    public String generateConfirmationToken(String userEmail, String ipAddress, Integer validityMinutes) {
+        int minutes = (validityMinutes != null) ? validityMinutes : DEFAULT_TOKEN_EXPIRATION_TIME;
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("email", userEmail);
+        claims.put("ipAddress", ipAddress);
 
         try {
-            // Use Instant for consistent UTC time handling across global deployments
+            String token = createToken(userEmail, TokenType.ACCOUNT_CONFIRMATION, claims, minutes);
+
+            logger.info("JWT token generated successfully for email [EMAIL={}]", userEmail);
+            return token;
+        } catch (Exception e) {
+            logger.error("Failed to generate JWT token for email [EMAIL={}]", userEmail, e);
+            throw e;
+        }
+    }
+
+    /**
+     * Generate a password reset token for a user.
+     * 
+     * @param userEmail       The user email for which the password reset is
+     *                        requested
+     * @param ipAddress       The IP address of the client
+     * @param validityMinutes The validity period in minutes, or null to use the
+     *                        default
+     * @return The JWT password reset token
+     */
+    public String generatePasswordResetToken(String userEmail, String ipAddress, Integer validityMinutes) {
+        int minutes = (validityMinutes != null) ? validityMinutes : DEFAULT_TOKEN_EXPIRATION_TIME;
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("email", userEmail);
+        claims.put("ipAddress", ipAddress);
+
+        try {
+            String token = createToken(userEmail, TokenType.PASSWORD_RESET, claims, minutes);
+
+            logger.info("JWT token generated successfully for email [EMAIL={}]", userEmail);
+            return token;
+        } catch (Exception e) {
+            logger.error("Failed to generate JWT token for email [EMAIL={}]", userEmail, e);
+            throw e;
+        }
+    }
+
+    /**
+     * Create a JWT token with the specified subject, token type, additional claims
+     * and validity period.
+     * 
+     * @param subject          The subject of the token (typically the
+     *                         username/email)
+     * @param tokenType        The type of token being created (e.g., SESSION,
+     *                         ACCOUNT_CONFIRMATION)
+     * @param additionalClaims Additional claims to include in the token
+     * @param validityMinutes  The validity period in minutes
+     * @return The JWT token
+     * 
+     * @see TokenType
+     */
+    private String createToken(String subject, TokenType tokenType, Map<String, Object> additionalClaims,
+            int validityMinutes) {
+
+        logger.debug("Creating JWT token for subject [{}] with validity of {} minutes", subject, validityMinutes);
+
+        Map<String, Object> claims = new HashMap<>(additionalClaims);
+        claims.put("tokenType", tokenType.name());
+
+        try {
             Instant now = Instant.now();
             Instant expiration = now.plus(Duration.ofMinutes(validityMinutes));
 
-            // Always log in UTC for global consistency and clarity
             logger.debug("Token issuance time (UTC): {}, expiration time (UTC): {}",
                     now.toString(),
                     expiration.toString());
