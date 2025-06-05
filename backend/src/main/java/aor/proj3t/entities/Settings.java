@@ -1,7 +1,6 @@
 package aor.proj3t.entities;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
 
@@ -19,14 +18,14 @@ public class Settings {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "confirmation_window", nullable = false)
-    private Integer confirmationWindow;
+    @Column(name = "confirmation_expiration_time", nullable = false)
+    private Integer confirmationExpirationTime;
 
-    @Column(name = "session_window", nullable = false)
-    private Integer sessionWindow;
+    @Column(name = "session_expiration_time", nullable = false)
+    private Integer sessionExpirationTime;
 
-    @Column(name = "reset_password_window", nullable = false)
-    private Integer resetPasswordWindow;
+    @Column(name = "reset_password_expiration_time", nullable = false)
+    private Integer resetPasswordExpirationTime;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
@@ -48,28 +47,28 @@ public class Settings {
         this.id = id;
     }
 
-    public Integer getConfirmationWindow() {
-        return confirmationWindow;
+    public Integer getConfirmationExpirationTime() {
+        return confirmationExpirationTime;
     }
 
-    public void setConfirmationWindow(Integer confirmationWindow) {
-        this.confirmationWindow = confirmationWindow;
+    public void setConfirmationExpirationTime(Integer confirmationWindow) {
+        this.confirmationExpirationTime = confirmationWindow;
     }
 
-    public Integer getSessionWindow() {
-        return sessionWindow;
+    public Integer getSessionExpirationTime() {
+        return sessionExpirationTime;
     }
 
-    public void setSessionWindow(Integer sessionWindow) {
-        this.sessionWindow = sessionWindow;
+    public void setSessionExpirationTime(Integer sessionWindow) {
+        this.sessionExpirationTime = sessionWindow;
     }
 
-    public Integer getResetPasswordWindow() {
-        return resetPasswordWindow;
+    public Integer getResetPasswordExpirationTime() {
+        return resetPasswordExpirationTime;
     }
 
-    public void setResetPasswordWindow(Integer resetPasswordWindow) {
-        this.resetPasswordWindow = resetPasswordWindow;
+    public void setResetPasswordExpirationTime(Integer resetPasswordWindow) {
+        this.resetPasswordExpirationTime = resetPasswordWindow;
     }
 
     public Instant getCreatedAt() {

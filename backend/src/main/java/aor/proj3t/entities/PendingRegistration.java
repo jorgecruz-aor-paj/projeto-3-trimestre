@@ -37,6 +37,13 @@ public class PendingRegistration {
     @Column(name = "expiration_date", nullable = false)
     private Instant expirationDate;
 
+    public PendingRegistration() {}
+
+    public PendingRegistration(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
     public long getId() {
         return id;
     }

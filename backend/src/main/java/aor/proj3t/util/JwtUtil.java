@@ -96,6 +96,23 @@ public class JwtUtil {
         }
     }
 
+    public String generateConfirmationToken(String userEmail, String ipAddress, Integer validityMinutes) {
+        int minutes = (validityMinutes != null) ? validityMinutes : DEFAULT_TOKEN_EXPIRATION_TIME;
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("email", userEmail);
+        claims.put("ipAddress", ipAddress);
+
+        try {
+            String token = createToken(claims, userEmail, minutes);
+            logger.info("JWT token generated successfully for user [ID={}]", userId);
+            return token;
+        } catch (Exception e) {
+            logger.error("Failed to generate JWT token for user [ID={}]", userId, e);
+            throw e;
+        }
+    }
+
     /**
      * Create a JWT token with the specified claims.
      * 
