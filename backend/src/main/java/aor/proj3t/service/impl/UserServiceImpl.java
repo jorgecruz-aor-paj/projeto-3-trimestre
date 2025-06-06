@@ -11,10 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import aor.proj3t.config.AppConstants;
-import aor.proj3t.daos.impl.PendingRegistrationDAOimpl;
-import aor.proj3t.daos.impl.SettingsDAOimpl;
-import aor.proj3t.daos.impl.UserDAOimpl;
-import aor.proj3t.daos.impl.WorkPlaceDAOimpl;
+import aor.proj3t.daos.DAOFactory;
 import aor.proj3t.dto.LoginDTO;
 import aor.proj3t.dto.UserDTO;
 import aor.proj3t.entities.PendingRegistration;
@@ -36,16 +33,7 @@ public class UserServiceImpl implements UserService {
     JwtUtil jwtUtil;
 
     @Inject
-    SettingsDAOimpl settingsDAO;
-
-    @Inject
-    WorkPlaceDAOimpl workPlaceDAO;
-
-    @Inject
-    PendingRegistrationDAOimpl pendingRegistrationDAO;
-
-    @Inject
-    UserDAOimpl userDao;
+    DAOFactory daoFactory;
 
     @Inject
     ConverterFactory converterFactory;
@@ -55,15 +43,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean registerUser(LoginDTO loginDTO, String ipAddress) {
+        Instant now = Instant.now();
+        String email = loginDTO.getEmail();
+        String password = loginDTO.getPassword();
+        Integer confirmationExpirationTime = getConfirmationExpirationTime();
         try {
-            PendingRegistration registration = new PendingRegistration(loginDTO.getEmail(), loginDTO.getPassword());
-            registration.setConfirmationToken(
-                    jwtUtil.generateConfirmationToken(loginDTO.getEmail(), ipAddress, getConfirmationExpirationTime()));
-            registration.setExpirationDate(Instant.now().plus(getConfirmationExpirationTime(), ChronoUnit.MINUTES));
-            pendingRegistrationDAO.create(registration);
+            PendingRegistration registration = new PendingRegistration(email, password);
+            registration
+                    .setConfirmationToken(
+                            jwtUtil.generateConfirmationToken(email, ipAddress, confirmationExpirationTime));
+            registration
+                    .setExpirationDate(now.plus(confirmationExpirationTime, ChronoUnit.MINUTES));
+            daoFactory.forPendingRegistration().create(registration);
             return true;
         } catch (Exception e) {
-            logger.error("Error registering user with email {}.  {}", loginDTO.getEmail(), e);
+            logger.error("Error registering user with email {}.  {}", email, e);
             return false;
         }
     }
@@ -81,6 +75,7 @@ public class UserServiceImpl implements UserService {
                 logger.warn("Failed to confirm user: Workplace ID {} does not exist", newUserDto.getWorkplaceId());
                 return false;
             }
+
             User newUser = new User(
                     registration.getEmail(),
                     registration.getPassword(),
@@ -91,10 +86,12 @@ public class UserServiceImpl implements UserService {
                     newUserDto.getBirthDate(),
                     newUserDto.getRole(),
                     workplace);
+
             if (newUserDto.getBiography() != null) {
                 newUser.setBiography(newUserDto.getBiography());
             }
-            userDao.create(newUser);
+
+            daoFactory.forUser().create(newUser);
             return true;
         } catch (Exception e) {
             logger.error("Error confirming registration with id {}. ", registrationId, e);
@@ -107,7 +104,7 @@ public class UserServiceImpl implements UserService {
         try {
             User user = getUser(userId);
             user.setPassword(passwordUtil.hashPassword(newRawPassword));
-            userDao.update(user);
+            daoFactory.forUser().update(user);
             return true;
         } catch (NoSuchElementException e) {
             logger.error("Invalid user ID {} while updating user. ", userId, e);
@@ -124,10 +121,10 @@ public class UserServiceImpl implements UserService {
             User user = getUser(userId);
             User manager = getUser(managerId);
             user.setManager(manager);
-            userDao.update(user);
+            daoFactory.forUser().update(user);
             if (!manager.getRole().equals(Role.MANAGER)) {
                 manager.setRole(Role.MANAGER);
-                userDao.update(manager);
+                daoFactory.forUser().update(manager);
             }
             return true;
         } catch (NoSuchElementException e) {
@@ -161,7 +158,7 @@ public class UserServiceImpl implements UserService {
             }
             user.setWorkplace(workplace);
 
-            userDao.update(user);
+            daoFactory.forUser().update(user);
             return true;
         } catch (NoSuchElementException e) {
             logger.error("Invalid user ID {} while updating user. ", userDto.getId(), e);
@@ -181,7 +178,7 @@ public class UserServiceImpl implements UserService {
              * correta:
              * ConverterUtil.userEntityListToUserDTOList(userDao.getUsersByFilters(filter));
              */
-            return converterFactory.forUser().toDTOList(userDao.getUsersByFilters(filter));
+            return converterFactory.forUser().toDTOList(daoFactory.forUser().getUsersByFilters(filter));
         } catch (Exception e) {
             logger.error("Error getting users list. ", e);
             return new ArrayList<>();
@@ -190,7 +187,7 @@ public class UserServiceImpl implements UserService {
 
     private Integer getConfirmationExpirationTime() {
         try {
-            Optional<Settings> settingsOpt = settingsDAO.getLatestSettings();
+            Optional<Settings> settingsOpt = daoFactory.forSettings().getLatestSettings();
             Settings settings;
             if (settingsOpt.isPresent()) {
                 settings = settingsOpt.get();
@@ -205,17 +202,17 @@ public class UserServiceImpl implements UserService {
     }
 
     private PendingRegistration getPendingRegistration(Long id) {
-        Optional<PendingRegistration> pendingRegistrationOpt = pendingRegistrationDAO.findById(id);
+        Optional<PendingRegistration> pendingRegistrationOpt = daoFactory.forPendingRegistration().findById(id);
         return pendingRegistrationOpt.orElse(null);
     }
 
     private Workplace getWorkplace(Long workplaceId) {
-        return workPlaceDAO.findById(workplaceId)
+        return daoFactory.forWorkplace().findById(workplaceId)
                 .orElseThrow(() -> new NoSuchElementException("Workplace not found with ID: " + workplaceId));
     }
 
     private User getUser(Long userId) {
-        return userDao.findById(userId)
+        return daoFactory.forUser().findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("User not found with ID: " + userId));
     }
 
