@@ -8,6 +8,7 @@
     }
   ],
   "settings": {
-    "java.configuration.updateBuildConfiguration": "automatic"
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "postman.settings.dotenv-detection-notification-visibility": false
   }
 }
