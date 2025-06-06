@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-public class TrainingServiceImpl implements TrainingService {
+public class TrainingServiceImpl extends BaseService implements TrainingService {
     private static final Logger logger = LogManager.getLogger(TrainingServiceImpl.class);
 
     @Inject
@@ -30,7 +30,7 @@ public class TrainingServiceImpl implements TrainingService {
     @Override
     public Boolean createTraining(TrainingDTO trainingDTO) {
         try {
-            TrainingArea trainingArea = getTrainingArea(trainingDTO.getTrainingAreaId());
+            TrainingArea trainingArea = getEntity(daoFactory.forTrainingArea().findById(trainingDTO.getTrainingAreaId()),trainingDTO.getTrainingAreaId());
             Training training = new Training(
                     trainingDTO.getTitle(),
                     trainingDTO.getDuration(),
@@ -53,8 +53,8 @@ public class TrainingServiceImpl implements TrainingService {
     @Override
     public Boolean updateTraining(TrainingDTO trainingDTO) {
         try {
-            TrainingArea trainingArea = getTrainingArea(trainingDTO.getTrainingAreaId());
-            Training training = getTraining(trainingDTO.getId());
+            TrainingArea trainingArea = getEntity(daoFactory.forTrainingArea().findById(trainingDTO.getTrainingAreaId()),trainingDTO.getTrainingAreaId());
+            Training training = getEntity(daoFactory.forTraining().findById(trainingDTO.getId()),trainingDTO.getId());
             training.setTitle(trainingDTO.getTitle());
             training.setDuration(trainingDTO.getDuration());
             training.setDescription(trainingDTO.getDescription());
@@ -75,7 +75,7 @@ public class TrainingServiceImpl implements TrainingService {
     @Override
     public Boolean deactivateTraining(Long trainingId) {
         try {
-            Training training = getTraining(trainingId);
+            Training training = getEntity(daoFactory.forTraining().findById(trainingId),trainingId);
             training.setActive(false);
             daoFactory.forTraining().update(training);
             return true;
@@ -91,7 +91,7 @@ public class TrainingServiceImpl implements TrainingService {
     @Override
     public List<TrainingParticipationDTO> findTrainingParticipationsByUser(Long userId) {
         try {
-            User user = getUser(userId);
+            User user = getEntity(daoFactory.forUser().findById(userId),userId);
             List<TrainingParticipation> trainingParticipationList = daoFactory.forTrainingParticipation().findByParticipantId(user.getId());
             return converterFactory.forTrainingParticipation().toDTOList(trainingParticipationList);
         } catch (NoSuchElementException e) {
@@ -106,7 +106,7 @@ public class TrainingServiceImpl implements TrainingService {
     @Override
     public List<TrainingDTO> getTrainingsUnparticipatedByUser(Long userId) {
         try {
-            User user = getUser(userId);
+            User user = getEntity(daoFactory.forUser().findById(userId),userId);
             List<Training> trainingList = daoFactory.forTraining().findTrainingsNotParticipatedByUser(user.getId());
             return converterFactory.forTraining().toDTOList(trainingList);
         } catch (NoSuchElementException e) {
@@ -131,7 +131,8 @@ public class TrainingServiceImpl implements TrainingService {
 
     @Override
     public TrainingDTO getTrainingById(Long trainingId) {
-        return converterFactory.forTraining().toDTO(getTraining(trainingId));
+        Training training = getEntity(daoFactory.forTraining().findById(trainingId),trainingId);
+        return converterFactory.forTraining().toDTO(training);
     }
 
     @Override
@@ -154,9 +155,9 @@ public class TrainingServiceImpl implements TrainingService {
     @Override
     public Boolean registerTrainingParticipation(TrainingParticipationDTO trainingParticipationDTO) {
         try {
-            User participant = getUser(trainingParticipationDTO.getParticipantId());
-            User manager = getUser(trainingParticipationDTO.getManagerId());
-            Training training = getTraining(trainingParticipationDTO.getTrainingId());
+            User participant = getEntity(daoFactory.forUser().findById(trainingParticipationDTO.getParticipantId()),trainingParticipationDTO.getParticipantId());
+            User manager = getEntity(daoFactory.forUser().findById(trainingParticipationDTO.getManagerId()),trainingParticipationDTO.getManagerId());
+            Training training = getEntity(daoFactory.forTraining().findById(trainingParticipationDTO.getTrainingId()),trainingParticipationDTO.getTrainingId());
             TrainingParticipation trainingParticipation = new TrainingParticipation(
                     participant,
                     manager,
@@ -176,7 +177,7 @@ public class TrainingServiceImpl implements TrainingService {
 
     public Map<Integer, Integer> getTrainingParticipationTimeByYearByUser(Long userId) {
         try {
-            User user = getUser(userId);
+            User user = getEntity(daoFactory.forUser().findById(userId),userId);
             return daoFactory.forTrainingParticipation().trainingTimeByYearByParticipantId(user.getId());
         } catch (NoSuchElementException e) {
             logger.error("No user found with id {}", userId);
@@ -196,19 +197,4 @@ public class TrainingServiceImpl implements TrainingService {
         }
     }
 
-
-    private TrainingArea getTrainingArea(Long trainingAreaId) {
-        return daoFactory.forTrainingArea().findById(trainingAreaId)
-                .orElseThrow(() -> new NoSuchElementException("TrainingArea not found with ID: " + trainingAreaId));
-    }
-
-    private Training getTraining(Long trainingId) {
-        return daoFactory.forTraining().findById(trainingId)
-                .orElseThrow(() -> new NoSuchElementException("Training not found with ID: " + trainingId));
-    }
-
-    private User getUser(Long userId) {
-        return daoFactory.forUser().findById(userId)
-                .orElseThrow(() -> new NoSuchElementException("User not found with ID: " + userId));
-    }
 }

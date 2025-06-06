@@ -26,7 +26,7 @@ import aor.proj3t.util.PasswordUtil;
 import aor.proj3t.util.converterutils.ConverterFactory;
 import jakarta.inject.Inject;
 
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends BaseService implements UserService {
     private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
 
     @Inject
@@ -65,12 +65,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean confirmUser(Long registrationId, UserDTO newUserDto) {
         try {
-            PendingRegistration registration = getPendingRegistration(registrationId);
+            PendingRegistration registration = getEntity(daoFactory.forPendingRegistration().findById(registrationId),registrationId);
             if (registration == null) {
                 logger.warn("Failed to confirm user: No pending registration found with id {}", registrationId);
                 return false;
             }
-            Workplace workplace = getWorkplace(newUserDto.getWorkplaceId());
+            Workplace workplace = getEntity(daoFactory.forWorkplace().findById(newUserDto.getWorkplaceId()), newUserDto.getWorkplaceId());
             if (workplace == null) {
                 logger.warn("Failed to confirm user: Workplace ID {} does not exist", newUserDto.getWorkplaceId());
                 return false;
@@ -107,7 +107,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean changePassword(Long userId, String newRawPassword) {
         try {
-            User user = getUser(userId);
+            User user = getEntity(daoFactory.forUser().findById(userId),userId);
             user.setPassword(passwordUtil.hashPassword(newRawPassword));
             daoFactory.forUser().update(user);
             return true;
@@ -123,8 +123,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean assignManager(Long userId, Long managerId) {
         try {
-            User user = getUser(userId);
-            User manager = getUser(managerId);
+            User user = getEntity(daoFactory.forUser().findById(userId),userId);
+            User manager = getEntity(daoFactory.forUser().findById(managerId),managerId);
             user.setManager(manager);
             daoFactory.forUser().update(user);
             if (!manager.getRole().equals(Role.MANAGER)) {
@@ -145,7 +145,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean assignManagerBulk(Long managerId, Long[] userIds) {
         try {
-            User manager = getUser(managerId);
+            User manager = getEntity(daoFactory.forUser().findById(managerId),managerId);
             List<User> users = getUserListFromIds(userIds);
             for (User user : users) {
                 user.setManager(manager);
@@ -164,7 +164,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean updateUser(UserDTO userDto) {
         try {
-            User user = getUser(userDto.getId());
+            User user = getEntity(daoFactory.forUser().findById(userDto.getId()),userDto.getId());
             user.setFirstName(userDto.getFirstName());
             user.setLastName(userDto.getLastName());
             user.setPhoneNumber(userDto.getPhoneNumber());
@@ -175,7 +175,7 @@ public class UserServiceImpl implements UserService {
             user.setPhotograph(userDto.getPhotograph());
             Workplace workplace;
             try {
-                workplace = getWorkplace(userDto.getWorkplaceId());
+                workplace = getEntity(daoFactory.forWorkplace().findById(userDto.getWorkplaceId()), userDto.getWorkplaceId());
             } catch (NoSuchElementException e) {
                 logger.error("Workplace with ID {} not found while updating user.", userDto.getWorkplaceId());
                 return false;
@@ -220,26 +220,11 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private PendingRegistration getPendingRegistration(Long id) {
-        Optional<PendingRegistration> pendingRegistrationOpt = daoFactory.forPendingRegistration().findById(id);
-        return pendingRegistrationOpt.orElse(null);
-    }
-
-    private Workplace getWorkplace(Long workplaceId) {
-        return daoFactory.forWorkplace().findById(workplaceId)
-                .orElseThrow(() -> new NoSuchElementException("Workplace not found with ID: " + workplaceId));
-    }
-
-    private User getUser(Long userId) {
-        return daoFactory.forUser().findById(userId)
-                .orElseThrow(() -> new NoSuchElementException("User not found with ID: " + userId));
-    }
-
-    private List<User> getUserListFromIds(Long[] userIds) {
+    protected List<User> getUserListFromIds(Long[] userIds) {
         try {
             List<User> users = new ArrayList<>(userIds.length);
             for (Long userId : userIds) {
-                User user = getUser(userId);
+                User user = getEntity(daoFactory.forUser().findById(userId),userId);
                 if (user != null) {
                     users.add(user);
                 } else {
@@ -255,4 +240,5 @@ public class UserServiceImpl implements UserService {
             return null;
         }
     }
+
 }

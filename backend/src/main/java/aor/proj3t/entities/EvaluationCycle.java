@@ -41,7 +41,7 @@ public class EvaluationCycle {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private EvaluationCycleStatus status;
+    private EvaluationCycleStatus status = EvaluationCycleStatus.ACTIVE;
 
     @ManyToOne
     @JoinColumn(name = "created_by", nullable = false)
@@ -50,6 +50,13 @@ public class EvaluationCycle {
     @OneToMany(mappedBy = "evaluationCycle", fetch = FetchType.LAZY)
     private List<Evaluation> evaluations;
 
+    public EvaluationCycle() {}
+
+    public EvaluationCycle(Instant startDate, Instant endDate, User createdBy) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.createdBy = createdBy;
+    }
 
     public Long getId() {
         return id;
