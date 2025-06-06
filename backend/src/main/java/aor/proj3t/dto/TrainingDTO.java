@@ -15,8 +15,8 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 public class TrainingDTO {
     @XmlElement(name = "id")
     private Long id;
-    @XmlElement(name = "name")
-    private String name;
+    @XmlElement(name = "title")
+    private String title;
     @XmlElement(name = "duration")
     private Integer duration;
     @XmlElement(name = "description")
@@ -37,10 +37,10 @@ public class TrainingDTO {
     public TrainingDTO() {
     }
 
-    public TrainingDTO(Long id, String name, Integer duration, String description, String link, String language,
+    public TrainingDTO(Long id, String title, Integer duration, String description, String link, String language,
             boolean isActive, Instant createdAt, Instant editedAt, Long trainingAreaId) {
         this.id = id;
-        this.name = name;
+        this.title = title;
         this.duration = duration;
         this.description = description;
         this.link = link;
@@ -59,12 +59,12 @@ public class TrainingDTO {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Integer getDuration() {

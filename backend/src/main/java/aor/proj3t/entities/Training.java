@@ -52,6 +52,18 @@ public class Training {
     @JoinColumn(name = "training_area_id", nullable = false)
     private TrainingArea trainingArea;
 
+    public Training(){}
+
+    public Training (String title, Integer duration, String description, String link, String language, TrainingArea trainingArea) {
+        this.title = title;
+        this.duration = duration;
+        this.description = description;
+        this.link = link;
+        this.language = language;
+        this.trainingArea = trainingArea;
+    }
+
+
     public Long getId() {
         return id;
     }
