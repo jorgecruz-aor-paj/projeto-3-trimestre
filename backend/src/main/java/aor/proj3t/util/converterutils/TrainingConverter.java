@@ -45,7 +45,7 @@ public class TrainingConverter extends AbstractConverter<Training, TrainingDTO, 
     @Override
     protected void mapEntityToDTO(Training training, TrainingDTO dto) {
         dto.setId(training.getId());
-        dto.setName(training.getTitle());
+        dto.setTitle(training.getTitle());
         dto.setDuration(training.getDuration());
         dto.setDescription(training.getDescription());
         dto.setLink(training.getLink());
@@ -61,7 +61,7 @@ public class TrainingConverter extends AbstractConverter<Training, TrainingDTO, 
 
     @Override
     protected void mapDTOToEntity(TrainingDTO dto, Training training) {
-        training.setTitle(dto.getName());
+        training.setTitle(dto.getTitle());
         training.setDuration(dto.getDuration());
         training.setDescription(dto.getDescription());
         training.setLink(dto.getLink());
