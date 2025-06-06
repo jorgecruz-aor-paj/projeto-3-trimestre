@@ -25,6 +25,12 @@ import jakarta.enterprise.context.ApplicationScoped;
 
 /**
  * Utility class for handling JWT (JSON Web Tokens) operations.
+ * 
+ * This class provides methods for generating and validating JWT tokens
+ * used for authentication and authorization throughout the application.
+ *
+ * @author Jorge Cruz & João Osório - Gr4
+ * @version 1.0
  */
 @ApplicationScoped
 public class JwtUtil {
