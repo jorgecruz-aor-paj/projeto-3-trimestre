@@ -99,7 +99,7 @@ public class EvaluationDAOimpl extends AbstractDAO<Evaluation, Long> implements 
             predicates.add(cb.like(cb.lower(root.get("feedback")), "%" + filters.getSearchText().toLowerCase() + "%"));
         }
 
-        query.where(cb.and(predicates.toArray(new Predicate[0])));
+        query.where(cb.and(predicates.toArray(Predicate[]::new))); // TODO Ver nota ao fundo da classe
 
         if (filters.getEvaluationSortField() != null) {
             if (Boolean.TRUE.equals(filters.getAscending())) {
@@ -113,3 +113,48 @@ public class EvaluationDAOimpl extends AbstractDAO<Evaluation, Long> implements 
     }
 
 }
+
+/**
+ * TODO esta mensagem é para autodestruir em 10 segundos :)
+ * 
+ * Why change this:
+ * query.where(cb.and(predicates.toArray(new Predicate[0])));
+ * to this:
+ * query.where(cb.and(predicates.toArray(Predicate[]::new)));
+ * ?
+ * # Array Creation in Java: Comparing Methods
+ * 
+ * Both expressions achieve the same result - they convert a List of Predicates
+ * to a Predicate array. However, they use different approaches:
+ * 
+ * ## Traditional Approach
+ * ```java
+ * predicates.toArray(new Predicate[0])
+ * ```
+ * 
+ * ## Method Reference Approach (Java 8+)
+ * ```java
+ * predicates.toArray(Predicate[]::new)
+ * ```
+ * 
+ * ## Why Make This Change?
+ * 
+ * 1. **Modern syntax**: The method reference syntax (`Predicate[]::new`) is a
+ * more modern Java feature introduced in Java 8.
+ * 
+ * 2. **Performance considerations**: The method reference version is
+ * potentially more efficient. When you use `new Predicate[0]`, the JVM creates
+ * an empty array first, then the `toArray` method must allocate a new array of
+ * the correct size. With the method reference, the JVM can directly create an
+ * array of the appropriate size.
+ * 
+ * 3. **Readability**: For developers familiar with Java 8+ features, the method
+ * reference style is considered cleaner and more concise.
+ * 
+ * 4. **Consistency**: If the rest of your codebase uses modern Java idioms,
+ * this change keeps the style consistent.
+ * 
+ * The change is mostly stylistic and follows modern Java best practices. Both
+ * versions are functionally equivalent, but the method reference version is
+ * generally preferred in contemporary Java code.
+ */
