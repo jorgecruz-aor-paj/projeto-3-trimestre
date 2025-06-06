@@ -26,7 +26,7 @@ import aor.proj3t.filters.UserFilter;
 import aor.proj3t.service.interfaces.UserService;
 import aor.proj3t.util.JwtUtil;
 import aor.proj3t.util.PasswordUtil;
-import aor.proj3t.util.converterUtils.ConverterFactory;
+import aor.proj3t.util.converterutils.ConverterFactory;
 import jakarta.inject.Inject;
 
 public class UserServiceImpl implements UserService {

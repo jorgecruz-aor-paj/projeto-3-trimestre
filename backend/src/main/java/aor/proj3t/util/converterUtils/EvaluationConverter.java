@@ -1,4 +1,4 @@
-package aor.proj3t.util.converterUtils;
+package aor.proj3t.util.converterutils;
 
 import aor.proj3t.dto.EvaluationDTO;
 import aor.proj3t.entities.Evaluation;
@@ -16,6 +16,7 @@ import jakarta.enterprise.context.ApplicationScoped;
  * including ratings, feedback, and relationships between evaluators and
  * evaluatees within
  * specific evaluation cycles.
+ * 
  * @author Jorge Cruz & João Osório - Gr4
  * 
  * @version 1.0
