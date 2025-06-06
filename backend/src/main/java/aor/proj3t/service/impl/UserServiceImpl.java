@@ -50,6 +50,9 @@ public class UserServiceImpl implements UserService {
     @Inject
     ConverterFactory converterFactory;
 
+    @Inject
+    PasswordUtil passwordUtil;
+
     @Override
     public Boolean registerUser(LoginDTO loginDTO, String ipAddress) {
         try {
@@ -103,7 +106,7 @@ public class UserServiceImpl implements UserService {
     public Boolean changePassword(Long userId, String newRawPassword) {
         try {
             User user = getUser(userId);
-            user.setPassword(PasswordUtil.hashPassword(newRawPassword));
+            user.setPassword(passwordUtil.hashPassword(newRawPassword));
             userDao.update(user);
             return true;
         } catch (NoSuchElementException e) {
