@@ -38,6 +38,13 @@ public class TrainingParticipation {
 
     public TrainingParticipation() {}
 
+    public TrainingParticipation(User participant, User manager, Training training, Instant participatedAt) {
+        this.participant = participant;
+        this.manager = manager;
+        this.training = training;
+        this.participatedAt = participatedAt;
+    }
+
     public Long getId() {
         return id;
     }

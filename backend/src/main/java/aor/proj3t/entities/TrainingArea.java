@@ -16,6 +16,10 @@ public class TrainingArea {
     public TrainingArea() {
     }
 
+    public TrainingArea(String name) {
+        this.name = name;
+    }
+
     public Long getId() {
         return id;
     }

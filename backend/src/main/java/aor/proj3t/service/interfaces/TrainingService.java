@@ -3,9 +3,11 @@ package aor.proj3t.service.interfaces;
 import java.util.List;
 import java.util.Optional;
 
+import aor.proj3t.dto.TrainingAreaDTO;
 import aor.proj3t.dto.TrainingDTO;
 import aor.proj3t.dto.TrainingParticipationDTO;
 import aor.proj3t.entities.Training;
+import aor.proj3t.entities.TrainingArea;
 import aor.proj3t.entities.TrainingParticipation;
 
 public interface TrainingService {
@@ -45,4 +47,14 @@ public interface TrainingService {
     List<TrainingDTO> findTrainingsUnparticipatedByUser(Long userId);
 
     List<TrainingDTO> findAllTrainings();
+
+    TrainingDTO getTrainingById(Long trainingId);
+
+    List<TrainingAreaDTO> getAllTrainingAreas();
+
+    Boolean addTrainingArea(TrainingAreaDTO trainingAreaDTO);
+
+    Boolean registerTrainingParticipation(TrainingParticipationDTO trainingParticipationDTO);
+
+
 }

@@ -178,11 +178,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDTO> getUsersByFilters(UserFilter filter) {
         try {
-            /*
-             * // FIXME Para comparar e eliminar após ter a certeza que a conversão está
-             * correta:
-             * ConverterUtil.userEntityListToUserDTOList(userDao.getUsersByFilters(filter));
-             */
             return converterFactory.forUser().toDTOList(daoFactory.forUser().getUsersByFilters(filter));
         } catch (Exception e) {
             logger.error("Error getting users list. ", e);

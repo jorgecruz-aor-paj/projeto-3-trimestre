@@ -1,9 +1,7 @@
 package aor.proj3t.service.impl;
 
-import aor.proj3t.daos.impl.TrainingAreaDAOimpl;
-import aor.proj3t.daos.impl.TrainingDAOimpl;
-import aor.proj3t.daos.interfaces.TrainingParticipationDAO;
-import aor.proj3t.daos.interfaces.UserDAO;
+import aor.proj3t.daos.DAOFactory;
+import aor.proj3t.dto.TrainingAreaDTO;
 import aor.proj3t.dto.TrainingDTO;
 import aor.proj3t.dto.TrainingParticipationDTO;
 import aor.proj3t.entities.*;
@@ -20,18 +18,8 @@ import java.util.NoSuchElementException;
 public class TrainingServiceImpl implements TrainingService {
     private static final Logger logger = LogManager.getLogger(TrainingServiceImpl.class);
 
-
     @Inject
-    TrainingAreaDAOimpl trainingAreaDAO;
-
-    @Inject
-    TrainingDAOimpl trainingDAO;
-
-    @Inject
-    UserDAO userDAO;
-
-    @Inject
-    TrainingParticipationDAO trainingParticipationDAO;
+    DAOFactory daoFactory;
 
     @Inject
     ConverterFactory converterFactory;
@@ -49,7 +37,7 @@ public class TrainingServiceImpl implements TrainingService {
                     trainingDTO.getLanguage(),
                     trainingArea
             );
-            trainingDAO.create(training);
+            daoFactory.forTraining().create(training);
             return true;
         } catch (NoSuchElementException e) {
             logger.error("Training area not found with id: " + trainingDTO.getTrainingAreaId());
@@ -71,7 +59,7 @@ public class TrainingServiceImpl implements TrainingService {
             training.setLink(trainingDTO.getLink());
             training.setLanguage(trainingDTO.getLanguage());
             training.setTrainingArea(trainingArea);
-            trainingDAO.update(training);
+            daoFactory.forTraining().update(training);
             return true;
         } catch (NoSuchElementException e) {
             logger.error("Training area with id {} or training with id {} not found while updating training", trainingDTO.getTrainingAreaId(), trainingDTO.getId());
@@ -87,7 +75,7 @@ public class TrainingServiceImpl implements TrainingService {
         try {
             Training training = getTraining(trainingId);
             training.setActive(false);
-            trainingDAO.update(training);
+            daoFactory.forTraining().update(training);
             return true;
         } catch (NoSuchElementException e) {
             logger.error("Training with id {} not found while deactivating training", trainingId);
@@ -102,7 +90,7 @@ public class TrainingServiceImpl implements TrainingService {
     public List<TrainingParticipationDTO> findTrainingParticipationsByUser(Long userId) {
         try {
             User user = getUser(userId);
-            List<TrainingParticipation> trainingParticipationList = trainingParticipationDAO.findByParticipantId(user.getId());
+            List<TrainingParticipation> trainingParticipationList = daoFactory.forTrainingParticipation().findByParticipantId(user.getId());
             return converterFactory.forTrainingParticipation().toDTOList(trainingParticipationList);
         } catch (NoSuchElementException e) {
             logger.error("No user found with id {}", userId);
@@ -117,7 +105,7 @@ public class TrainingServiceImpl implements TrainingService {
     public List<TrainingDTO> findTrainingsUnparticipatedByUser(Long userId) {
         try {
             User user = getUser(userId);
-            List<Training> trainingList = trainingDAO.findTrainingsNotParticipatedByUser(user.getId());
+            List<Training> trainingList = daoFactory.forTraining().findTrainingsNotParticipatedByUser(user.getId());
             return converterFactory.forTraining().toDTOList(trainingList);
         } catch (NoSuchElementException e) {
             logger.error("No user found with id {}", userId);
@@ -130,28 +118,70 @@ public class TrainingServiceImpl implements TrainingService {
 
     @Override
     public List<TrainingDTO> findAllTrainings() {
-        try{
-            List<Training> trainingList = trainingDAO.findAll();
+        try {
+            List<Training> trainingList = daoFactory.forTraining().findAll();
             return converterFactory.forTraining().toDTOList(trainingList);
-        }catch (Exception e) {
+        } catch (Exception e) {
             logger.error("Error finding all trainings", e);
             return new ArrayList<>();
         }
     }
 
+    @Override
+    public TrainingDTO getTrainingById(Long trainingId) {
+        return converterFactory.forTraining().toDTO(getTraining(trainingId));
+    }
+
+    @Override
+    public List<TrainingAreaDTO> getAllTrainingAreas() {
+        return converterFactory.forTrainingArea().toDTOList(daoFactory.forTrainingArea().findAll());
+    }
+
+    public Boolean addTrainingArea(TrainingAreaDTO trainingAreaDTO) {
+        try {
+            TrainingArea trainingArea = new TrainingArea(trainingAreaDTO.getName());
+            daoFactory.forTrainingArea().create(trainingArea);
+            return true;
+        } catch (Exception e) {
+            logger.error("Error adding training area", e);
+            return false;
+        }
+    }
+
+    public Boolean registerTrainingParticipation(TrainingParticipationDTO trainingParticipationDTO) {
+        try {
+            User participant = getUser(trainingParticipationDTO.getParticipantId());
+            User manager = getUser(trainingParticipationDTO.getManagerId());
+            Training training = getTraining(trainingParticipationDTO.getTrainingId());
+            TrainingParticipation trainingParticipation = new TrainingParticipation(
+                    participant,
+                    manager,
+                    training,
+                    trainingParticipationDTO.getParticipatedAt());
+            daoFactory.forTrainingParticipation().create(trainingParticipation);
+            return true;
+        } catch (NoSuchElementException e) {
+            logger.error("Invalid id for participant {}, manager {} or training {}, while registering participation",
+                    trainingParticipationDTO.getParticipantId(), trainingParticipationDTO.getManagerId(), trainingParticipationDTO.getTrainingId(), e);
+            return false;
+        } catch (Exception e) {
+            logger.error("Error registering participation", e);
+            return false;
+        }
+    }
 
     private TrainingArea getTrainingArea(Long trainingAreaId) {
-        return trainingAreaDAO.findById(trainingAreaId)
+        return daoFactory.forTrainingArea().findById(trainingAreaId)
                 .orElseThrow(() -> new NoSuchElementException("TrainingArea not found with ID: " + trainingAreaId));
     }
 
     private Training getTraining(Long trainingId) {
-        return trainingDAO.findById(trainingId)
+        return daoFactory.forTraining().findById(trainingId)
                 .orElseThrow(() -> new NoSuchElementException("Training not found with ID: " + trainingId));
     }
 
     private User getUser(Long userId) {
-        return userDAO.findById(userId)
+        return daoFactory.forUser().findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("User not found with ID: " + userId));
     }
 }
