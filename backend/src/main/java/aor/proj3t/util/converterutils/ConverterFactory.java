@@ -31,7 +31,6 @@ import jakarta.inject.Inject;
 
 /**
  * Factory class to access all entity-DTO converters.
- * 
  * This class provides a centralized access point for all the converters in the
  * application.
  * It follows the Factory design pattern to encapsulate the instantiation logic

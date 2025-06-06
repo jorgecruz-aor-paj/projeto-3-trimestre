@@ -2,14 +2,13 @@ package aor.proj3t.service.impl;
 
 import aor.proj3t.daos.impl.TrainingAreaDAOimpl;
 import aor.proj3t.daos.impl.TrainingDAOimpl;
-import aor.proj3t.daos.interfaces.TrainingDAO;
 import aor.proj3t.daos.interfaces.TrainingParticipationDAO;
 import aor.proj3t.daos.interfaces.UserDAO;
 import aor.proj3t.dto.TrainingDTO;
 import aor.proj3t.dto.TrainingParticipationDTO;
 import aor.proj3t.entities.*;
 import aor.proj3t.service.interfaces.TrainingService;
-import aor.proj3t.util.converterUtils.ConverterFactory;
+import aor.proj3t.util.converterutils.ConverterFactory;
 import jakarta.inject.Inject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
