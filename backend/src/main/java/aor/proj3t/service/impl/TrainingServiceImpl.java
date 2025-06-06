@@ -4,16 +4,17 @@ import aor.proj3t.daos.impl.TrainingAreaDAOimpl;
 import aor.proj3t.daos.impl.TrainingDAOimpl;
 import aor.proj3t.daos.interfaces.TrainingDAO;
 import aor.proj3t.daos.interfaces.TrainingParticipationDAO;
+import aor.proj3t.daos.interfaces.UserDAO;
 import aor.proj3t.dto.TrainingDTO;
-import aor.proj3t.entities.Training;
-import aor.proj3t.entities.TrainingArea;
-import aor.proj3t.entities.TrainingParticipation;
-import aor.proj3t.entities.Workplace;
+import aor.proj3t.dto.TrainingParticipationDTO;
+import aor.proj3t.entities.*;
 import aor.proj3t.service.interfaces.TrainingService;
+import aor.proj3t.util.converterUtils.ConverterFactory;
 import jakarta.inject.Inject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -26,6 +27,16 @@ public class TrainingServiceImpl implements TrainingService {
 
     @Inject
     TrainingDAOimpl trainingDAO;
+
+    @Inject
+    UserDAO userDAO;
+
+    @Inject
+    TrainingParticipationDAO trainingParticipationDAO;
+
+    @Inject
+    ConverterFactory converterFactory;
+
 
     @Override
     public Boolean createTraining(TrainingDTO trainingDTO) {
@@ -74,17 +85,59 @@ public class TrainingServiceImpl implements TrainingService {
 
     @Override
     public Boolean deactivateTraining(Long trainingId) {
-        return false;
+        try {
+            Training training = getTraining(trainingId);
+            training.setActive(false);
+            trainingDAO.update(training);
+            return true;
+        } catch (NoSuchElementException e) {
+            logger.error("Training with id {} not found while deactivating training", trainingId);
+            return false;
+        } catch (Exception e) {
+            logger.error("Error deactivating training", e);
+            return false;
+        }
     }
 
     @Override
-    public TrainingParticipation enrollUser(Long userId, Long trainingId) {
-        return null;
+    public List<TrainingParticipationDTO> findTrainingParticipationsByUser(Long userId) {
+        try {
+            User user = getUser(userId);
+            List<TrainingParticipation> trainingParticipationList = trainingParticipationDAO.findByParticipantId(user.getId());
+            return converterFactory.forTrainingParticipation().toDTOList(trainingParticipationList);
+        } catch (NoSuchElementException e) {
+            logger.error("No user found with id {}", userId);
+            return null;
+        } catch (Exception e) {
+            logger.error("Error finding training participations", e);
+            return null;
+        }
     }
 
     @Override
-    public List<TrainingParticipation> findTrainingsByUser(Long userId) {
-        return List.of();
+    public List<TrainingDTO> findTrainingsUnparticipatedByUser(Long userId) {
+        try {
+            User user = getUser(userId);
+            List<Training> trainingList = trainingDAO.findTrainingsNotParticipatedByUser(user.getId());
+            return converterFactory.forTraining().toDTOList(trainingList);
+        } catch (NoSuchElementException e) {
+            logger.error("No user found with id {}", userId);
+            return null;
+        } catch (Exception e) {
+            logger.error("Error finding trainigs not participated by user", e);
+            return null;
+        }
+    }
+
+    @Override
+    public List<TrainingDTO> findAllTrainings() {
+        try{
+            List<Training> trainingList = trainingDAO.findAll();
+            return converterFactory.forTraining().toDTOList(trainingList);
+        }catch (Exception e) {
+            logger.error("Error finding all trainings", e);
+            return new ArrayList<>();
+        }
     }
 
 
@@ -96,5 +149,10 @@ public class TrainingServiceImpl implements TrainingService {
     private Training getTraining(Long trainingId) {
         return trainingDAO.findById(trainingId)
                 .orElseThrow(() -> new NoSuchElementException("Training not found with ID: " + trainingId));
+    }
+
+    private User getUser(Long userId) {
+        return userDAO.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("User not found with ID: " + userId));
     }
 }

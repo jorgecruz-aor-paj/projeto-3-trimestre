@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import aor.proj3t.dto.TrainingDTO;
+import aor.proj3t.dto.TrainingParticipationDTO;
 import aor.proj3t.entities.Training;
 import aor.proj3t.entities.TrainingParticipation;
 
@@ -34,20 +35,14 @@ public interface TrainingService {
     Boolean deactivateTraining(Long trainingId);
 
     /**
-     * Enroll a user in a training.
-     * 
-     * @param userId     The ID of the user
-     * @param trainingId The ID of the training
-     * @return The created UserTraining entity
-     */
-    TrainingParticipation enrollUser(Long userId, Long trainingId);
-
-    /**
      * Find trainings for a specific user.
      * 
      * @param userId The ID of the user
      * @return A list of trainings for the specified user
      */
-    List<TrainingParticipation> findTrainingsByUser(Long userId);
+    List<TrainingParticipationDTO> findTrainingParticipationsByUser(Long userId);
 
+    List<TrainingDTO> findTrainingsUnparticipatedByUser(Long userId);
+
+    List<TrainingDTO> findAllTrainings();
 }
