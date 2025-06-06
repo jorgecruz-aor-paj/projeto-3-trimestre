@@ -5,65 +5,77 @@ import aor.proj3t.entities.Training;
 import aor.proj3t.entities.TrainingParticipation;
 import aor.proj3t.entities.User;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
 
+/**
+ * Converter for TrainingParticipation entities and DTOs.
+ * 
+ * This class handles the bidirectional conversion between
+ * {@link TrainingParticipation} entities and
+ * {@link TrainingParticipationDTO} data transfer objects. Training
+ * participations track when users
+ * have completed training courses, including timestamps and approval by
+ * managers.
+ * 
+ * @author Jorge Cruz & João Osório - Gr4
+ * 
+ * @version 1.0
+ */
 @ApplicationScoped
-public class TrainingParticipationConverter implements Converter<TrainingParticipation, TrainingParticipationDTO> {
-
-    @Inject
-    private EntityManager em;
-
+public class TrainingParticipationConverter
+        extends AbstractConverter<TrainingParticipation, TrainingParticipationDTO, Long> {
     @Override
-    public TrainingParticipationDTO toDTO(TrainingParticipation participation) {
-        if (participation == null) {
-            return null;
-        }
-
-        return new TrainingParticipationDTO(
-                participation.getId(),
-                participation.getParticipant() != null ? participation.getParticipant().getId() : null,
-                participation.getManager() != null ? participation.getManager().getId() : null,
-                participation.getTraining() != null ? participation.getTraining().getId() : null,
-                participation.getCreatedAt(),
-                participation.getParticipatedAt());
+    protected Class<TrainingParticipation> getEntityClass() {
+        return TrainingParticipation.class;
     }
 
     @Override
-    public TrainingParticipation toEntity(TrainingParticipationDTO dto) {
-        if (dto == null) {
-            return null;
+    protected TrainingParticipation createEntityInstance() {
+        return new TrainingParticipation();
+    }
+
+    @Override
+    protected TrainingParticipationDTO createDTOInstance() {
+        return new TrainingParticipationDTO();
+    }
+
+    @Override
+    protected Long getIdFromDTO(TrainingParticipationDTO dto) {
+        return dto.getId();
+    }
+
+    @Override
+    protected void mapEntityToDTO(TrainingParticipation participation, TrainingParticipationDTO dto) {
+        dto.setId(participation.getId());
+        dto.setCreatedAt(participation.getCreatedAt());
+        dto.setParticipatedAt(participation.getParticipatedAt());
+
+        if (participation.getParticipant() != null) {
+            dto.setParticipantId(participation.getParticipant().getId());
         }
 
-        TrainingParticipation participation;
-        if (dto.getId() != null && dto.getId() != 0) {
-            participation = em.find(TrainingParticipation.class, dto.getId());
-            if (participation == null) {
-                participation = new TrainingParticipation();
-            }
-        } else {
-            participation = new TrainingParticipation();
+        if (participation.getManager() != null) {
+            dto.setManagerId(participation.getManager().getId());
         }
 
+        if (participation.getTraining() != null) {
+            dto.setTrainingId(participation.getTraining().getId());
+        }
+    }
+
+    @Override
+    protected void mapDTOToEntity(TrainingParticipationDTO dto, TrainingParticipation participation) {
         participation.setCreatedAt(dto.getCreatedAt());
         participation.setParticipatedAt(dto.getParticipatedAt());
 
-        // Handle relationships
-        if (dto.getParticipantId() != null) {
-            User participant = em.find(User.class, dto.getParticipantId());
-            participation.setParticipant(participant);
-        }
+        // Handle relationships using findSafely
+        User participant = findSafely(User.class, dto.getParticipantId());
+        participation.setParticipant(participant);
 
-        if (dto.getManagerId() != null) {
-            User manager = em.find(User.class, dto.getManagerId());
-            participation.setManager(manager);
-        }
+        User manager = findSafely(User.class, dto.getManagerId());
+        participation.setManager(manager);
 
-        if (dto.getTrainingId() != null) {
-            Training training = em.find(Training.class, dto.getTrainingId());
-            participation.setTraining(training);
-        }
+        Training training = findSafely(Training.class, dto.getTrainingId());
+        participation.setTraining(training);
 
-        return participation;
     }
 }

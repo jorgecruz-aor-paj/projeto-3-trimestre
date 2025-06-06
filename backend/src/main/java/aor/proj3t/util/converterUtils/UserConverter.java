@@ -3,62 +3,69 @@ package aor.proj3t.util.converterUtils;
 import aor.proj3t.dto.UserDTO;
 import aor.proj3t.entities.User;
 import aor.proj3t.entities.Workplace;
-import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
+import jakarta.enterprise.context.ApplicationScoped;
 
-public class UserConverter implements Converter<User, UserDTO> {
-
-    @Inject
-    private EntityManager em;
-
+/**
+ * Converter for User entities and DTOs.
+ * 
+ * This class handles the bidirectional conversion between {@link User} entities
+ * and
+ * {@link UserDTO} data transfer objects. It manages the complex relationships
+ * between
+ * users, such as manager-subordinate relationships and workplace associations.
+ * 
+ * @author Jorge Cruz & João Osório - Gr4
+ * 
+ * @version 1.0
+ */
+@ApplicationScoped
+public class UserConverter extends AbstractConverter<User, UserDTO, Long> {
     @Override
-    public UserDTO toDTO(User user) {
-        if (user == null) {
-            return null;
-        }
-
-        UserDTO userDTO = new UserDTO();
-        userDTO.setId(user.getId());
-        userDTO.setEmail(user.getEmail());
-        userDTO.setFirstName(user.getFirstName());
-        userDTO.setLastName(user.getLastName());
-        userDTO.setAddress(user.getAddress());
-        userDTO.setPhoneNumber(user.getPhoneNumber());
-        userDTO.setRole(user.getRole());
-        userDTO.setBirthDate(user.getBirthDate());
-        userDTO.setCreatedAt(user.getCreatedAt());
-        userDTO.setBiography(user.getBiography());
-        userDTO.setPhotograph(user.getPhotograph());
-
-        // Handle nullable relationships safely
-        if (user.getManager() != null) {
-            userDTO.setManagerId(user.getManager().getId());
-        }
-
-        if (user.getWorkplace() != null) {
-            userDTO.setWorkplaceId(user.getWorkplace().getId());
-        }
-
-        return userDTO;
+    protected Class<User> getEntityClass() {
+        return User.class;
     }
 
     @Override
-    public User toEntity(UserDTO dto) {
-        if (dto == null) {
-            return null;
+    protected User createEntityInstance() {
+        return new User();
+    }
+
+    @Override
+    protected UserDTO createDTOInstance() {
+        return new UserDTO();
+    }
+
+    @Override
+    protected Long getIdFromDTO(UserDTO dto) {
+        return dto.getId() != 0 ? dto.getId() : null;
+    }
+
+    @Override
+    protected void mapEntityToDTO(User user, UserDTO dto) {
+        dto.setId(user.getId());
+        dto.setEmail(user.getEmail());
+        dto.setFirstName(user.getFirstName());
+        dto.setLastName(user.getLastName());
+        dto.setAddress(user.getAddress());
+        dto.setPhoneNumber(user.getPhoneNumber());
+        dto.setRole(user.getRole());
+        dto.setBirthDate(user.getBirthDate());
+        dto.setCreatedAt(user.getCreatedAt());
+        dto.setBiography(user.getBiography());
+        dto.setPhotograph(user.getPhotograph());
+
+        // Handle nullable relationships safely
+        if (user.getManager() != null) {
+            dto.setManagerId(user.getManager().getId());
         }
 
-        // For existing entities, we should load them first
-        User user;
-        if (dto.getId() != 0) {
-            user = em.find(User.class, dto.getId());
-            if (user == null) {
-                user = new User();
-            }
-        } else {
-            user = new User();
+        if (user.getWorkplace() != null) {
+            dto.setWorkplaceId(user.getWorkplace().getId());
         }
+    }
 
+    @Override
+    protected void mapDTOToEntity(UserDTO dto, User user) {
         user.setEmail(dto.getEmail());
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());
@@ -69,18 +76,12 @@ public class UserConverter implements Converter<User, UserDTO> {
         user.setBiography(dto.getBiography());
         user.setPhotograph(dto.getPhotograph());
 
-        // Handle relationships
-        if (dto.getManagerId() != null) {
-            User manager = em.find(User.class, dto.getManagerId());
-            user.setManager(manager);
-        }
+        // Handle relationships using findSafely
+        User manager = findSafely(User.class, dto.getManagerId());
+        user.setManager(manager);
 
-        if (dto.getWorkplaceId() != null) {
-            Workplace workplace = em.find(Workplace.class, dto.getWorkplaceId());
-            user.setWorkplace(workplace);
-        }
-
-        return user;
+        Workplace workplace = findSafely(Workplace.class, dto.getWorkplaceId());
+        user.setWorkplace(workplace);
     }
 
 }
