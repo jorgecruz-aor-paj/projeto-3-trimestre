@@ -10,6 +10,7 @@ import aor.proj3t.dto.TrainingParticipationDTO;
 import aor.proj3t.entities.Training;
 import aor.proj3t.entities.TrainingArea;
 import aor.proj3t.entities.TrainingParticipation;
+import aor.proj3t.filters.TrainingFilter;
 
 public interface TrainingService {
 
@@ -58,5 +59,7 @@ public interface TrainingService {
     Boolean registerTrainingParticipation(TrainingParticipationDTO trainingParticipationDTO);
 
     Map<Integer, Integer> getTrainingParticipationTimeByYearByUser(Long userId);
+
+    List<TrainingDTO> getTrainingsByFilters(TrainingFilter filters);
 
 }

@@ -5,6 +5,7 @@ import aor.proj3t.dto.TrainingAreaDTO;
 import aor.proj3t.dto.TrainingDTO;
 import aor.proj3t.dto.TrainingParticipationDTO;
 import aor.proj3t.entities.*;
+import aor.proj3t.filters.TrainingFilter;
 import aor.proj3t.service.interfaces.TrainingService;
 import aor.proj3t.util.converterutils.ConverterFactory;
 import jakarta.inject.Inject;
@@ -185,6 +186,16 @@ public class TrainingServiceImpl implements TrainingService {
             return null;
         }
     }
+
+    public List<TrainingDTO> getTrainingsByFilters(TrainingFilter filters) {
+        try{
+            return converterFactory.forTraining().toDTOList(daoFactory.forTraining().getTrainingsByFilters(filters));
+        } catch (Exception e) {
+            logger.error("Error finding trainings by filter", e);
+            return null;
+        }
+    }
+
 
     private TrainingArea getTrainingArea(Long trainingAreaId) {
         return daoFactory.forTrainingArea().findById(trainingAreaId)
