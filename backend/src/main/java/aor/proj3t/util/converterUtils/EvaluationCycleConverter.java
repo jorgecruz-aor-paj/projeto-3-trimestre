@@ -4,59 +4,54 @@ import aor.proj3t.dto.EvaluationCycleDTO;
 import aor.proj3t.entities.EvaluationCycle;
 import aor.proj3t.entities.User;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
 
 @ApplicationScoped
-public class EvaluationCycleConverter implements Converter<EvaluationCycle, EvaluationCycleDTO> {
-
-    @Inject
-    private EntityManager em;
+public class EvaluationCycleConverter extends AbstractConverter<EvaluationCycle, EvaluationCycleDTO, Long> {
 
     @Override
-    public EvaluationCycleDTO toDTO(EvaluationCycle evaluationCycle) {
-        if (evaluationCycle == null) {
-            return null;
-        }
-
-        return new EvaluationCycleDTO(
-                evaluationCycle.getId(),
-                evaluationCycle.getCreatedAt(),
-                evaluationCycle.getStartDate(),
-                evaluationCycle.getEndDate(),
-                evaluationCycle.getClosureDate(),
-                evaluationCycle.getStatus(),
-                evaluationCycle.getCreatedBy() != null ? evaluationCycle.getCreatedBy().getId() : null);
+    protected Class<EvaluationCycle> getEntityClass() {
+        return EvaluationCycle.class;
     }
 
     @Override
-    public EvaluationCycle toEntity(EvaluationCycleDTO dto) {
-        if (dto == null) {
-            return null;
-        }
+    protected EvaluationCycle createEntityInstance() {
+        return new EvaluationCycle();
+    }
 
-        EvaluationCycle evaluationCycle;
-        if (dto.getId() != null && dto.getId() != 0) {
-            evaluationCycle = em.find(EvaluationCycle.class, dto.getId());
-            if (evaluationCycle == null) {
-                evaluationCycle = new EvaluationCycle();
-            }
-        } else {
-            evaluationCycle = new EvaluationCycle();
-        }
+    @Override
+    protected EvaluationCycleDTO createDTOInstance() {
+        return new EvaluationCycleDTO();
+    }
 
+    @Override
+    protected Long getIdFromDTO(EvaluationCycleDTO dto) {
+        return dto.getId();
+    }
+
+    @Override
+    protected void mapEntityToDTO(EvaluationCycle evaluationCycle, EvaluationCycleDTO dto) {
+        dto.setId(evaluationCycle.getId());
+        dto.setCreatedAt(evaluationCycle.getCreatedAt());
+        dto.setStartDate(evaluationCycle.getStartDate());
+        dto.setEndDate(evaluationCycle.getEndDate());
+        dto.setClosureDate(evaluationCycle.getClosureDate());
+        dto.setStatus(evaluationCycle.getStatus());
+
+        if (evaluationCycle.getCreatedBy() != null) {
+            dto.setCreatedById(evaluationCycle.getCreatedBy().getId());
+        }
+    }
+
+    @Override
+    protected void mapDTOToEntity(EvaluationCycleDTO dto, EvaluationCycle evaluationCycle) {
         evaluationCycle.setCreatedAt(dto.getCreatedAt());
         evaluationCycle.setStartDate(dto.getStartDate());
         evaluationCycle.setEndDate(dto.getEndDate());
         evaluationCycle.setClosureDate(dto.getClosureDate());
         evaluationCycle.setStatus(dto.getStatus());
 
-        // Handle relationships
-        if (dto.getCreatedById() != null) {
-            User createdBy = em.find(User.class, dto.getCreatedById());
-            evaluationCycle.setCreatedBy(createdBy);
-        }
-
-        return evaluationCycle;
+        // Handle relationships using findSafely
+        User createdBy = findSafely(User.class, dto.getCreatedById());
+        evaluationCycle.setCreatedBy(createdBy);
     }
 }

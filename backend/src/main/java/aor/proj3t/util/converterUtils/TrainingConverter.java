@@ -4,50 +4,49 @@ import aor.proj3t.dto.TrainingDTO;
 import aor.proj3t.entities.Training;
 import aor.proj3t.entities.TrainingArea;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
 
 @ApplicationScoped
-public class TrainingConverter implements Converter<Training, TrainingDTO> {
-
-    @Inject
-    private EntityManager em;
+public class TrainingConverter extends AbstractConverter<Training, TrainingDTO, Long> {
 
     @Override
-    public TrainingDTO toDTO(Training training) {
-        if (training == null) {
-            return null;
-        }
-
-        return new TrainingDTO(
-                training.getId(),
-                training.getTitle(),
-                training.getDuration(),
-                training.getDescription(),
-                training.getLink(),
-                training.getLanguage(),
-                training.isActive(),
-                training.getCreatedAt(),
-                training.getEditedAt(),
-                training.getTrainingArea() != null ? training.getTrainingArea().getId() : null);
+    protected Class<Training> getEntityClass() {
+        return Training.class;
     }
 
     @Override
-    public Training toEntity(TrainingDTO dto) {
-        if (dto == null) {
-            return null;
-        }
+    protected Training createEntityInstance() {
+        return new Training();
+    }
 
-        Training training;
-        if (dto.getId() != null && dto.getId() != 0) {
-            training = em.find(Training.class, dto.getId());
-            if (training == null) {
-                training = new Training();
-            }
-        } else {
-            training = new Training();
-        }
+    @Override
+    protected TrainingDTO createDTOInstance() {
+        return new TrainingDTO();
+    }
 
+    @Override
+    protected Long getIdFromDTO(TrainingDTO dto) {
+        return dto.getId();
+    }
+
+    @Override
+    protected void mapEntityToDTO(Training training, TrainingDTO dto) {
+        dto.setId(training.getId());
+        dto.setName(training.getTitle());
+        dto.setDuration(training.getDuration());
+        dto.setDescription(training.getDescription());
+        dto.setLink(training.getLink());
+        dto.setLanguage(training.getLanguage());
+        dto.setActive(training.isActive());
+        dto.setCreatedAt(training.getCreatedAt());
+        dto.setEditedAt(training.getEditedAt());
+
+        if (training.getTrainingArea() != null) {
+            dto.setTrainingAreaId(training.getTrainingArea().getId());
+        }
+    }
+
+    @Override
+    protected void mapDTOToEntity(TrainingDTO dto, Training training) {
         training.setTitle(dto.getName());
         training.setDuration(dto.getDuration());
         training.setDescription(dto.getDescription());
@@ -57,12 +56,8 @@ public class TrainingConverter implements Converter<Training, TrainingDTO> {
         training.setCreatedAt(dto.getCreatedAt());
         training.setEditedAt(dto.getEditedAt());
 
-        // Handle relationships
-        if (dto.getTrainingAreaId() != null) {
-            TrainingArea trainingArea = em.find(TrainingArea.class, dto.getTrainingAreaId());
-            training.setTrainingArea(trainingArea);
-        }
-
-        return training;
+        // Handle relationships using findSafely
+        TrainingArea trainingArea = findSafely(TrainingArea.class, dto.getTrainingAreaId());
+        training.setTrainingArea(trainingArea);
     }
 }

@@ -5,71 +5,67 @@ import aor.proj3t.entities.Evaluation;
 import aor.proj3t.entities.EvaluationCycle;
 import aor.proj3t.entities.User;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
 
 @ApplicationScoped
-public class EvaluationConverter implements Converter<Evaluation, EvaluationDTO> {
-
-    @Inject
-    private EntityManager em;
-
+public class EvaluationConverter extends AbstractConverter<Evaluation, EvaluationDTO, Long> {
     @Override
-    public EvaluationDTO toDTO(Evaluation evaluation) {
-        if (evaluation == null) {
-            return null;
-        }
-
-        return new EvaluationDTO(
-                evaluation.getId(),
-                evaluation.getScale(),
-                evaluation.getStatus(),
-                evaluation.getFeedback(),
-                evaluation.getCreatedAt(),
-                evaluation.getEditedAt(),
-                evaluation.getEvaluationCycle() != null ? evaluation.getEvaluationCycle().getId() : null,
-                evaluation.getEvaluated() != null ? evaluation.getEvaluated().getId() : null,
-                evaluation.getEvaluator() != null ? evaluation.getEvaluator().getId() : null);
+    protected Class<Evaluation> getEntityClass() {
+        return Evaluation.class;
     }
 
     @Override
-    public Evaluation toEntity(EvaluationDTO dto) {
-        if (dto == null) {
-            return null;
+    protected Evaluation createEntityInstance() {
+        return new Evaluation();
+    }
+
+    @Override
+    protected EvaluationDTO createDTOInstance() {
+        return new EvaluationDTO();
+    }
+
+    @Override
+    protected Long getIdFromDTO(EvaluationDTO dto) {
+        return dto.getId();
+    }
+
+    @Override
+    protected void mapEntityToDTO(Evaluation evaluation, EvaluationDTO dto) {
+        dto.setId(evaluation.getId());
+        dto.setScale(evaluation.getScale());
+        dto.setState(evaluation.getStatus());
+        dto.setFeedback(evaluation.getFeedback());
+        dto.setCreatedAt(evaluation.getCreatedAt());
+        dto.setEditedAt(evaluation.getEditedAt());
+
+        if (evaluation.getEvaluationCycle() != null) {
+            dto.setEvaluationCycleId(evaluation.getEvaluationCycle().getId());
         }
 
-        Evaluation evaluation;
-        if (dto.getId() != null && dto.getId() != 0) {
-            evaluation = em.find(Evaluation.class, dto.getId());
-            if (evaluation == null) {
-                evaluation = new Evaluation();
-            }
-        } else {
-            evaluation = new Evaluation();
+        if (evaluation.getEvaluated() != null) {
+            dto.setEvaluateeId(evaluation.getEvaluated().getId());
         }
 
+        if (evaluation.getEvaluator() != null) {
+            dto.setEvaluatorId(evaluation.getEvaluator().getId());
+        }
+    }
+
+    @Override
+    protected void mapDTOToEntity(EvaluationDTO dto, Evaluation evaluation) {
         evaluation.setScale(dto.getScale());
         evaluation.setStatus(dto.getState());
         evaluation.setFeedback(dto.getFeedback());
         evaluation.setCreatedAt(dto.getCreatedAt());
         evaluation.setEditedAt(dto.getEditedAt());
 
-        // Handle relationships
-        if (dto.getEvaluationCycleId() != null) {
-            EvaluationCycle evaluationCycle = em.find(EvaluationCycle.class, dto.getEvaluationCycleId());
-            evaluation.setEvaluationCycle(evaluationCycle);
-        }
+        // Handle relationships using findSafely
+        EvaluationCycle evaluationCycle = findSafely(EvaluationCycle.class, dto.getEvaluationCycleId());
+        evaluation.setEvaluationCycle(evaluationCycle);
 
-        if (dto.getEvaluateeId() != null) {
-            User evaluatee = em.find(User.class, dto.getEvaluateeId());
-            evaluation.setEvaluated(evaluatee);
-        }
+        User evaluatee = findSafely(User.class, dto.getEvaluateeId());
+        evaluation.setEvaluated(evaluatee);
 
-        if (dto.getEvaluatorId() != null) {
-            User evaluator = em.find(User.class, dto.getEvaluatorId());
-            evaluation.setEvaluator(evaluator);
-        }
-
-        return evaluation;
+        User evaluator = findSafely(User.class, dto.getEvaluatorId());
+        evaluation.setEvaluator(evaluator);
     }
 }

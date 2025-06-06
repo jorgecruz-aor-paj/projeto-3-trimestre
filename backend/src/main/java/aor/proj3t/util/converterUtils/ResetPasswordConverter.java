@@ -4,55 +4,50 @@ import aor.proj3t.dto.ResetPasswordDTO;
 import aor.proj3t.entities.ResetPassword;
 import aor.proj3t.entities.User;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
 
 @ApplicationScoped
-public class ResetPasswordConverter implements Converter<ResetPassword, ResetPasswordDTO> {
-
-    @Inject
-    private EntityManager em;
+public class ResetPasswordConverter extends AbstractConverter<ResetPassword, ResetPasswordDTO, Long> {
 
     @Override
-    public ResetPasswordDTO toDTO(ResetPassword resetPassword) {
-        if (resetPassword == null) {
-            return null;
-        }
-
-        return new ResetPasswordDTO(
-                resetPassword.getId(),
-                resetPassword.getCreatedAt(),
-                resetPassword.getExpirationDate(),
-                resetPassword.getResetPasswordToken(),
-                resetPassword.getUser() != null ? resetPassword.getUser().getId() : null);
+    protected Class<ResetPassword> getEntityClass() {
+        return ResetPassword.class;
     }
 
     @Override
-    public ResetPassword toEntity(ResetPasswordDTO dto) {
-        if (dto == null) {
-            return null;
-        }
+    protected ResetPassword createEntityInstance() {
+        return new ResetPassword();
+    }
 
-        ResetPassword resetPassword;
-        if (dto.getId() != null && dto.getId() != 0) {
-            resetPassword = em.find(ResetPassword.class, dto.getId());
-            if (resetPassword == null) {
-                resetPassword = new ResetPassword();
-            }
-        } else {
-            resetPassword = new ResetPassword();
-        }
+    @Override
+    protected ResetPasswordDTO createDTOInstance() {
+        return new ResetPasswordDTO();
+    }
 
+    @Override
+    protected Long getIdFromDTO(ResetPasswordDTO dto) {
+        return dto.getId();
+    }
+
+    @Override
+    protected void mapEntityToDTO(ResetPassword resetPassword, ResetPasswordDTO dto) {
+        dto.setId(resetPassword.getId());
+        dto.setCreatedAt(resetPassword.getCreatedAt());
+        dto.setExpirationDate(resetPassword.getExpirationDate());
+        dto.setResetPasswordToken(resetPassword.getResetPasswordToken());
+
+        if (resetPassword.getUser() != null) {
+            dto.setUserId(resetPassword.getUser().getId());
+        }
+    }
+
+    @Override
+    protected void mapDTOToEntity(ResetPasswordDTO dto, ResetPassword resetPassword) {
         resetPassword.setCreatedAt(dto.getCreatedAt());
         resetPassword.setExpirationDate(dto.getExpirationDate());
         resetPassword.setResetPasswordToken(dto.getResetPasswordToken());
 
-        // Handle relationships
-        if (dto.getUserId() != null) {
-            User user = em.find(User.class, dto.getUserId());
-            resetPassword.setUser(user);
-        }
-
-        return resetPassword;
+        // Handle relationships using findSafely
+        User user = findSafely(User.class, dto.getUserId());
+        resetPassword.setUser(user);
     }
 }

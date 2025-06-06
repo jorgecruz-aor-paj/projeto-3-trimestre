@@ -3,44 +3,38 @@ package aor.proj3t.util.converterUtils;
 import aor.proj3t.dto.WorkplaceDTO;
 import aor.proj3t.entities.Workplace;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
 
 @ApplicationScoped
-public class WorkplaceConverter implements Converter<Workplace, WorkplaceDTO> {
-
-    @Inject
-    private EntityManager em;
+public class WorkplaceConverter extends AbstractConverter<Workplace, WorkplaceDTO, Long> {
 
     @Override
-    public WorkplaceDTO toDTO(Workplace workplace) {
-        if (workplace == null) {
-            return null;
-        }
-
-        return new WorkplaceDTO(
-                workplace.getId(),
-                workplace.getName());
+    protected Class<Workplace> getEntityClass() {
+        return Workplace.class;
     }
 
     @Override
-    public Workplace toEntity(WorkplaceDTO dto) {
-        if (dto == null) {
-            return null;
-        }
+    protected Workplace createEntityInstance() {
+        return new Workplace();
+    }
 
-        Workplace workplace;
-        if (dto.getId() != null && dto.getId() != 0) {
-            workplace = em.find(Workplace.class, dto.getId());
-            if (workplace == null) {
-                workplace = new Workplace();
-            }
-        } else {
-            workplace = new Workplace();
-        }
+    @Override
+    protected WorkplaceDTO createDTOInstance() {
+        return new WorkplaceDTO();
+    }
 
+    @Override
+    protected Long getIdFromDTO(WorkplaceDTO dto) {
+        return dto.getId();
+    }
+
+    @Override
+    protected void mapEntityToDTO(Workplace workplace, WorkplaceDTO dto) {
+        dto.setId(workplace.getId());
+        dto.setName(workplace.getName());
+    }
+
+    @Override
+    protected void mapDTOToEntity(WorkplaceDTO dto, Workplace workplace) {
         workplace.setName(dto.getName());
-
-        return workplace;
     }
 }

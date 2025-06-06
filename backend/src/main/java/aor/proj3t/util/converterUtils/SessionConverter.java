@@ -4,48 +4,47 @@ import aor.proj3t.dto.SessionDTO;
 import aor.proj3t.entities.Session;
 import aor.proj3t.entities.User;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
 
 @ApplicationScoped
-public class SessionConverter implements Converter<Session, SessionDTO> {
-
-    @Inject
-    private EntityManager em;
+public class SessionConverter extends AbstractConverter<Session, SessionDTO, Long> {
 
     @Override
-    public SessionDTO toDTO(Session session) {
-        if (session == null) {
-            return null;
-        }
-
-        return new SessionDTO(
-                session.getId(),
-                session.getCreatedAt(),
-                session.getExpirationDate(),
-                session.getSessionToken(),
-                session.getActive(),
-                session.getIpAddress(),
-                session.getUserAgent(),
-                session.getUser() != null ? session.getUser().getId() : null);
+    protected Class<Session> getEntityClass() {
+        return Session.class;
     }
 
     @Override
-    public Session toEntity(SessionDTO dto) {
-        if (dto == null) {
-            return null;
-        }
+    protected Session createEntityInstance() {
+        return new Session();
+    }
 
-        Session session;
-        if (dto.getId() != null && dto.getId() != 0) {
-            session = em.find(Session.class, dto.getId());
-            if (session == null) {
-                session = new Session();
-            }
-        } else {
-            session = new Session();
-        }
+    @Override
+    protected SessionDTO createDTOInstance() {
+        return new SessionDTO();
+    }
 
+    @Override
+    protected Long getIdFromDTO(SessionDTO dto) {
+        return dto.getId();
+    }
+
+    @Override
+    protected void mapEntityToDTO(Session session, SessionDTO dto) {
+        dto.setId(session.getId());
+        dto.setCreatedAt(session.getCreatedAt());
+        dto.setExpirationDate(session.getExpirationDate());
+        dto.setSessionToken(session.getSessionToken());
+        dto.setActive(session.getActive());
+        dto.setIpAddress(session.getIpAddress());
+        dto.setUserAgent(session.getUserAgent());
+
+        if (session.getUser() != null) {
+            dto.setUserId(session.getUser().getId());
+        }
+    }
+
+    @Override
+    protected void mapDTOToEntity(SessionDTO dto, Session session) {
         session.setCreatedAt(dto.getCreatedAt());
         session.setExpirationDate(dto.getExpirationDate());
         session.setSessionToken(dto.getSessionToken());
@@ -53,12 +52,8 @@ public class SessionConverter implements Converter<Session, SessionDTO> {
         session.setIpAddress(dto.getIpAddress());
         session.setUserAgent(dto.getUserAgent());
 
-        // Handle relationships
-        if (dto.getUserId() != null) {
-            User user = em.find(User.class, dto.getUserId());
-            session.setUser(user);
-        }
-
-        return session;
+        // Handle relationships using findSafely
+        User user = findSafely(User.class, dto.getUserId());
+        session.setUser(user);
     }
 }

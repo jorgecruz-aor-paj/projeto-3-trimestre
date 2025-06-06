@@ -4,48 +4,43 @@ import aor.proj3t.dto.NotificationDTO;
 import aor.proj3t.entities.Notification;
 import aor.proj3t.entities.User;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
 
 @ApplicationScoped
-public class NotificationConverter implements Converter<Notification, NotificationDTO> {
-
-    @Inject
-    private EntityManager em;
-
+public class NotificationConverter extends AbstractConverter<Notification, NotificationDTO, Long> {
     @Override
-    public NotificationDTO toDTO(Notification notification) {
-        if (notification == null) {
-            return null;
-        }
-
-        return new NotificationDTO(
-                notification.getId(),
-                notification.getContent(),
-                notification.getType(),
-                notification.isRead(),
-                notification.getTimestampSent(),
-                notification.getTimestampRead(),
-                notification.getSender() != null ? notification.getSender().getId() : null,
-                notification.getRecipient() != null ? notification.getRecipient().getId() : null);
+    protected Class<Notification> getEntityClass() {
+        return Notification.class;
     }
 
     @Override
-    public Notification toEntity(NotificationDTO dto) {
-        if (dto == null) {
-            return null;
-        }
+    protected Notification createEntityInstance() {
+        return new Notification();
+    }
 
-        Notification notification;
-        if (dto.getId() != null && dto.getId() != 0) {
-            notification = em.find(Notification.class, dto.getId());
-            if (notification == null) {
-                notification = new Notification();
-            }
-        } else {
-            notification = new Notification();
-        }
+    @Override
+    protected NotificationDTO createDTOInstance() {
+        return new NotificationDTO();
+    }
 
+    @Override
+    protected Long getIdFromDTO(NotificationDTO dto) {
+        return dto.getId();
+    }
+
+    @Override
+    protected void mapEntityToDTO(Notification notification, NotificationDTO dto) {
+        dto.setId(notification.getId());
+        dto.setContent(notification.getContent());
+        dto.setType(notification.getType());
+        dto.setRead(notification.isRead());
+        dto.setTimestampSent(notification.getTimestampSent());
+        dto.setTimestampRead(notification.getTimestampRead());
+        dto.setSenderId(notification.getSender() != null ? notification.getSender().getId() : null);
+        dto.setRecipientId(notification.getRecipient() != null ? notification.getRecipient().getId() : null);
+    }
+
+    @Override
+    protected void mapDTOToEntity(NotificationDTO dto, Notification notification) {
         notification.setContent(dto.getContent());
         notification.setType(dto.getType());
         notification.setRead(dto.isRead());
@@ -53,16 +48,10 @@ public class NotificationConverter implements Converter<Notification, Notificati
         notification.setTimestampRead(dto.getTimestampRead());
 
         // Handle relationships
-        if (dto.getSenderId() != null) {
-            User sender = em.find(User.class, dto.getSenderId());
-            notification.setSender(sender);
-        }
+        User sender = findSafely(User.class, dto.getSenderId());
+        notification.setSender(sender);
 
-        if (dto.getRecipientId() != null) {
-            User recipient = em.find(User.class, dto.getRecipientId());
-            notification.setRecipient(recipient);
-        }
-
-        return notification;
+        User recipient = findSafely(User.class, dto.getRecipientId());
+        notification.setRecipient(recipient);
     }
 }

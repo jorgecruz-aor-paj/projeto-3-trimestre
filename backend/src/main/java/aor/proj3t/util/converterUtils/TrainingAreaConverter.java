@@ -3,44 +3,38 @@ package aor.proj3t.util.converterUtils;
 import aor.proj3t.dto.TrainingAreaDTO;
 import aor.proj3t.entities.TrainingArea;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
 
 @ApplicationScoped
-public class TrainingAreaConverter implements Converter<TrainingArea, TrainingAreaDTO> {
-
-    @Inject
-    private EntityManager em;
+public class TrainingAreaConverter extends AbstractConverter<TrainingArea, TrainingAreaDTO, Long> {
 
     @Override
-    public TrainingAreaDTO toDTO(TrainingArea trainingArea) {
-        if (trainingArea == null) {
-            return null;
-        }
-
-        return new TrainingAreaDTO(
-                trainingArea.getId(),
-                trainingArea.getName());
+    protected Class<TrainingArea> getEntityClass() {
+        return TrainingArea.class;
     }
 
     @Override
-    public TrainingArea toEntity(TrainingAreaDTO dto) {
-        if (dto == null) {
-            return null;
-        }
+    protected TrainingArea createEntityInstance() {
+        return new TrainingArea();
+    }
 
-        TrainingArea trainingArea;
-        if (dto.getId() != null && dto.getId() != 0) {
-            trainingArea = em.find(TrainingArea.class, dto.getId());
-            if (trainingArea == null) {
-                trainingArea = new TrainingArea();
-            }
-        } else {
-            trainingArea = new TrainingArea();
-        }
+    @Override
+    protected TrainingAreaDTO createDTOInstance() {
+        return new TrainingAreaDTO();
+    }
 
+    @Override
+    protected Long getIdFromDTO(TrainingAreaDTO dto) {
+        return dto.getId();
+    }
+
+    @Override
+    protected void mapEntityToDTO(TrainingArea trainingArea, TrainingAreaDTO dto) {
+        dto.setId(trainingArea.getId());
+        dto.setName(trainingArea.getName());
+    }
+
+    @Override
+    protected void mapDTOToEntity(TrainingAreaDTO dto, TrainingArea trainingArea) {
         trainingArea.setName(dto.getName());
-
-        return trainingArea;
     }
 }

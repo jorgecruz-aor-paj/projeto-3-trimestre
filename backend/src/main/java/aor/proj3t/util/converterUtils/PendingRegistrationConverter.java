@@ -3,50 +3,44 @@ package aor.proj3t.util.converterUtils;
 import aor.proj3t.dto.PendingRegistrationDTO;
 import aor.proj3t.entities.PendingRegistration;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
 
 @ApplicationScoped
-public class PendingRegistrationConverter implements Converter<PendingRegistration, PendingRegistrationDTO> {
-
-    @Inject
-    private EntityManager em;
+public class PendingRegistrationConverter extends AbstractConverter<PendingRegistration, PendingRegistrationDTO, Long> {
 
     @Override
-    public PendingRegistrationDTO toDTO(PendingRegistration pendingRegistration) {
-        if (pendingRegistration == null) {
-            return null;
-        }
-
-        return new PendingRegistrationDTO(
-                pendingRegistration.getId(),
-                pendingRegistration.getEmail(),
-                pendingRegistration.getCreatedAt(),
-                pendingRegistration.getConfirmationToken(),
-                pendingRegistration.getExpirationDate());
+    protected Class<PendingRegistration> getEntityClass() {
+        return PendingRegistration.class;
     }
 
     @Override
-    public PendingRegistration toEntity(PendingRegistrationDTO dto) {
-        if (dto == null) {
-            return null;
-        }
+    protected PendingRegistration createEntityInstance() {
+        return new PendingRegistration();
+    }
 
-        PendingRegistration pendingRegistration;
-        if (dto.getId() != 0) {
-            pendingRegistration = em.find(PendingRegistration.class, dto.getId());
-            if (pendingRegistration == null) {
-                pendingRegistration = new PendingRegistration();
-            }
-        } else {
-            pendingRegistration = new PendingRegistration();
-        }
+    @Override
+    protected PendingRegistrationDTO createDTOInstance() {
+        return new PendingRegistrationDTO();
+    }
 
+    @Override
+    protected Long getIdFromDTO(PendingRegistrationDTO dto) {
+        return dto.getId() != 0 ? dto.getId() : null;
+    }
+
+    @Override
+    protected void mapEntityToDTO(PendingRegistration pendingRegistration, PendingRegistrationDTO dto) {
+        dto.setId(pendingRegistration.getId());
+        dto.setEmail(pendingRegistration.getEmail());
+        dto.setCreatedAt(pendingRegistration.getCreatedAt());
+        dto.setConfirmationToken(pendingRegistration.getConfirmationToken());
+        dto.setExpirationDate(pendingRegistration.getExpirationDate());
+    }
+
+    @Override
+    protected void mapDTOToEntity(PendingRegistrationDTO dto, PendingRegistration pendingRegistration) {
         pendingRegistration.setEmail(dto.getEmail());
         pendingRegistration.setCreatedAt(dto.getCreatedAt());
         pendingRegistration.setConfirmationToken(dto.getConfirmationToken());
         pendingRegistration.setExpirationDate(dto.getExpirationDate());
-
-        return pendingRegistration;
     }
 }

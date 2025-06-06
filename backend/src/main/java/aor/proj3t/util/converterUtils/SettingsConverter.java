@@ -4,57 +4,52 @@ import aor.proj3t.dto.SettingsDTO;
 import aor.proj3t.entities.Settings;
 import aor.proj3t.entities.User;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
 
 @ApplicationScoped
-public class SettingsConverter implements Converter<Settings, SettingsDTO> {
-
-    @Inject
-    private EntityManager em;
+public class SettingsConverter extends AbstractConverter<Settings, SettingsDTO, Long> {
 
     @Override
-    public SettingsDTO toDTO(Settings settings) {
-        if (settings == null) {
-            return null;
-        }
-
-        return new SettingsDTO(
-                settings.getId(),
-                settings.getConfirmationExpirationTime(),
-                settings.getSessionExpirationTime(),
-                settings.getResetPasswordExpirationTime(),
-                settings.getCreatedAt(),
-                settings.getCreatedBy() != null ? settings.getCreatedBy().getId() : null);
+    protected Class<Settings> getEntityClass() {
+        return Settings.class;
     }
 
     @Override
-    public Settings toEntity(SettingsDTO dto) {
-        if (dto == null) {
-            return null;
-        }
+    protected Settings createEntityInstance() {
+        return new Settings();
+    }
 
-        Settings settings;
-        if (dto.getId() != null && dto.getId() != 0) {
-            settings = em.find(Settings.class, dto.getId());
-            if (settings == null) {
-                settings = new Settings();
-            }
-        } else {
-            settings = new Settings();
-        }
+    @Override
+    protected SettingsDTO createDTOInstance() {
+        return new SettingsDTO();
+    }
 
+    @Override
+    protected Long getIdFromDTO(SettingsDTO dto) {
+        return dto.getId();
+    }
+
+    @Override
+    protected void mapEntityToDTO(Settings settings, SettingsDTO dto) {
+        dto.setId(settings.getId());
+        dto.setConfirmationWindow(settings.getConfirmationExpirationTime());
+        dto.setSessionWindow(settings.getSessionExpirationTime());
+        dto.setResetPasswordWindow(settings.getResetPasswordExpirationTime());
+        dto.setCreatedAt(settings.getCreatedAt());
+
+        if (settings.getCreatedBy() != null) {
+            dto.setCreatedById(settings.getCreatedBy().getId());
+        }
+    }
+
+    @Override
+    protected void mapDTOToEntity(SettingsDTO dto, Settings settings) {
         settings.setConfirmationExpirationTime(dto.getConfirmationWindow());
         settings.setSessionExpirationTime(dto.getSessionWindow());
         settings.setResetPasswordExpirationTime(dto.getResetPasswordWindow());
         settings.setCreatedAt(dto.getCreatedAt());
 
-        // Handle relationships
-        if (dto.getCreatedById() != null) {
-            User createdBy = em.find(User.class, dto.getCreatedById());
-            settings.setCreatedBy(createdBy);
-        }
-
-        return settings;
+        // Handle relationships using findSafely
+        User createdBy = findSafely(User.class, dto.getCreatedById());
+        settings.setCreatedBy(createdBy);
     }
 }
