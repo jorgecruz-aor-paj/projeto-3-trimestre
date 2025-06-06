@@ -13,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 public class TrainingServiceImpl implements TrainingService {
@@ -102,7 +103,7 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
-    public List<TrainingDTO> findTrainingsUnparticipatedByUser(Long userId) {
+    public List<TrainingDTO> getTrainingsUnparticipatedByUser(Long userId) {
         try {
             User user = getUser(userId);
             List<Training> trainingList = daoFactory.forTraining().findTrainingsNotParticipatedByUser(user.getId());
@@ -117,7 +118,7 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
-    public List<TrainingDTO> findAllTrainings() {
+    public List<TrainingDTO> getAllTrainings() {
         try {
             List<Training> trainingList = daoFactory.forTraining().findAll();
             return converterFactory.forTraining().toDTOList(trainingList);
@@ -137,6 +138,7 @@ public class TrainingServiceImpl implements TrainingService {
         return converterFactory.forTrainingArea().toDTOList(daoFactory.forTrainingArea().findAll());
     }
 
+    @Override
     public Boolean addTrainingArea(TrainingAreaDTO trainingAreaDTO) {
         try {
             TrainingArea trainingArea = new TrainingArea(trainingAreaDTO.getName());
@@ -148,6 +150,7 @@ public class TrainingServiceImpl implements TrainingService {
         }
     }
 
+    @Override
     public Boolean registerTrainingParticipation(TrainingParticipationDTO trainingParticipationDTO) {
         try {
             User participant = getUser(trainingParticipationDTO.getParticipantId());
@@ -167,6 +170,19 @@ public class TrainingServiceImpl implements TrainingService {
         } catch (Exception e) {
             logger.error("Error registering participation", e);
             return false;
+        }
+    }
+
+    public Map<Integer, Integer> getTrainingParticipationTimeByYearByUser(Long userId) {
+        try {
+            User user = getUser(userId);
+            return daoFactory.forTrainingParticipation().trainingTimeByYearByParticipantId(user.getId());
+        } catch (NoSuchElementException e) {
+            logger.error("No user found with id {}", userId);
+            return null;
+        } catch (Exception e) {
+            logger.error("Error finding training participation time by year for user with id {}", e);
+            return null;
         }
     }
 
