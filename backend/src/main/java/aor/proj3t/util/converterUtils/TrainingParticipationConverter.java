@@ -1,4 +1,4 @@
-package aor.proj3t.util.converterUtils;
+package aor.proj3t.util.converterutils;
 
 import aor.proj3t.dto.TrainingParticipationDTO;
 import aor.proj3t.entities.Training;
