@@ -90,8 +90,13 @@ public class UserServiceImpl implements UserService {
             if (newUserDto.getBiography() != null) {
                 newUser.setBiography(newUserDto.getBiography());
             }
-
+            // Create the user
             daoFactory.forUser().create(newUser);
+
+            // Delete the pending registration
+            daoFactory.forPendingRegistration().deleteById(registration.getId());
+
+            logger.info("User with email {} successfully registered and confirmed.", registration.getEmail());
             return true;
         } catch (Exception e) {
             logger.error("Error confirming registration with id {}. ", registrationId, e);
