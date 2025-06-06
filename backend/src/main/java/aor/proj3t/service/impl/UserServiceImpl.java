@@ -143,6 +143,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Boolean assignManagerBulk(Long managerId, Long[] userIds) {
+        try {
+            User manager = getUser(managerId);
+            List<User> users = getUserListFromIds(userIds);
+            for (User user : users) {
+                user.setManager(manager);
+                daoFactory.forUser().update(user);
+            }
+            if (!manager.getRole().equals(Role.MANAGER)) {
+                manager.setRole(Role.MANAGER);
+            }
+            return true;
+        }catch (Exception e) {
+            logger.error("Error assigning manager with id {} in bulk. ", e);
+            return false;
+        }
+    }
+
+    @Override
     public Boolean updateUser(UserDTO userDto) {
         try {
             User user = getUser(userDto.getId());
@@ -216,4 +235,24 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new NoSuchElementException("User not found with ID: " + userId));
     }
 
+    private List<User> getUserListFromIds(Long[] userIds) {
+        try {
+            List<User> users = new ArrayList<>(userIds.length);
+            for (Long userId : userIds) {
+                User user = getUser(userId);
+                if (user != null) {
+                    users.add(user);
+                } else {
+                    logger.error("User not found with ID: " + userId);
+                }
+            }
+            return users;
+        } catch (NoSuchElementException e) {
+            logger.error("User not found with ID: " + userIds[0]);
+            return null;
+        } catch (Exception e) {
+            logger.error("Error getting user list. ", e);
+            return null;
+        }
+    }
 }

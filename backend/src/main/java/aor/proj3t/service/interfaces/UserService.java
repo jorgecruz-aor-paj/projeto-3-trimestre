@@ -18,6 +18,8 @@ public interface UserService {
 
     Boolean assignManager(Long userId, Long managerId);
 
+    Boolean assignManagerBulk(Long managerId, Long[] userIds);
+
     Boolean updateUser(UserDTO userDto);
 
     List<UserDTO> getUsersByFilters(UserFilter userFilter);
