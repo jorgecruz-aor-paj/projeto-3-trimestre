@@ -3,9 +3,11 @@ package aor.proj3t.util.converterUtils;
 import aor.proj3t.dto.UserDTO;
 import aor.proj3t.entities.User;
 import aor.proj3t.entities.Workplace;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 
+@ApplicationScoped
 public class UserConverter implements Converter<User, UserDTO> {
 
     @Inject
