@@ -1,10 +1,9 @@
 package aor.proj3t.daos.interfaces;
 
-import aor.proj3t.entities.Training;
-import aor.proj3t.entities.TrainingParticipation;
-import aor.proj3t.filters.TrainingFilter;
-
 import java.util.List;
+
+import aor.proj3t.entities.Training;
+import aor.proj3t.filters.TrainingFilter;
 
 public interface TrainingDAO extends BasicDAO<Training, Long> {
 

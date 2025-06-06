@@ -1,12 +1,10 @@
 package aor.proj3t.daos.interfaces;
 
-
-import aor.proj3t.entities.Training;
-import aor.proj3t.entities.User;
-import aor.proj3t.filters.UserFilter;
-
 import java.util.List;
 import java.util.Optional;
+
+import aor.proj3t.entities.User;
+import aor.proj3t.filters.UserFilter;
 
 /**
  * Repository interface for User entity operations.

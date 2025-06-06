@@ -1,24 +1,20 @@
 package aor.proj3t.daos.impl;
 
+import java.util.Collections;
+import java.util.List;
 
 import aor.proj3t.daos.interfaces.EvaluationCycleDAO;
 import aor.proj3t.entities.EvaluationCycle;
 import aor.proj3t.enums.EvaluationStatus;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.NoResultException;
-import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * Implementation of the EvaluationCycleRepository interface.
  */
 @Stateless
 public class EvaluationCycleDAOimpl extends AbstractDAO<EvaluationCycle, Long> implements EvaluationCycleDAO {
-
 
     @Override
     public List<EvaluationCycle> findActive() {
@@ -41,7 +37,6 @@ public class EvaluationCycleDAOimpl extends AbstractDAO<EvaluationCycle, Long> i
         }
     }
 
-
     @Override
     public List<EvaluationCycle> findByStatus(EvaluationStatus status, int page, int size) {
         TypedQuery<EvaluationCycle> query = em.createNamedQuery("EvaluationCycle.findActive", EvaluationCycle.class);
@@ -51,22 +46,19 @@ public class EvaluationCycleDAOimpl extends AbstractDAO<EvaluationCycle, Long> i
         return query.getResultList();
     }
 
-
     @Override
     public boolean updateStatus(Long cycleId, EvaluationStatus status) {
         try {
             int updatedRows = em.createQuery(
-                            "UPDATE EvaluationCycle ec SET ec.status = :status WHERE ec.id = :id")
+                    "UPDATE EvaluationCycle ec SET ec.status = :status WHERE ec.id = :id")
                     .setParameter("id", cycleId)
                     .setParameter("status", status)
                     .executeUpdate();
-
 
             return updatedRows > 0;
         } catch (NoResultException e) {
             return false;
         }
     }
-
 
 }

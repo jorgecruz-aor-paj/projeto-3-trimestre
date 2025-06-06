@@ -1,12 +1,10 @@
 package aor.proj3t.daos.impl;
 
+import java.util.Optional;
+
 import aor.proj3t.daos.interfaces.PendingRegistrationDAO;
 import aor.proj3t.entities.PendingRegistration;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
-
-import java.util.Optional;
 
 public class PendingRegistrationDAOimpl extends AbstractDAO<PendingRegistration, Long> implements PendingRegistrationDAO {
 

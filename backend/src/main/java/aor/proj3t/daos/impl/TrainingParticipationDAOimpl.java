@@ -1,16 +1,14 @@
 package aor.proj3t.daos.impl;
 
-import aor.proj3t.daos.interfaces.TrainingParticipationDAO;
-import aor.proj3t.entities.TrainingParticipation;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TrainingParticipationDAOimpl extends AbstractDAO<TrainingParticipation, Long> implements TrainingParticipationDAO {
+import aor.proj3t.daos.interfaces.TrainingParticipationDAO;
+import aor.proj3t.entities.TrainingParticipation;
 
+public class TrainingParticipationDAOimpl extends AbstractDAO<TrainingParticipation, Long>
+        implements TrainingParticipationDAO {
 
     @Override
     public List<TrainingParticipation> findByTrainingId(Long trainingId) {
@@ -49,7 +47,6 @@ public class TrainingParticipationDAOimpl extends AbstractDAO<TrainingParticipat
                 .setParameter("participantId", participantId)
                 .getResultList();
 
-
         Map<Integer, Integer> trainingTimeByYear = new HashMap<>();
         for (Object[] row : results) {
             trainingTimeByYear.put((Integer) row[0], ((Integer) row[1]));
@@ -59,4 +56,3 @@ public class TrainingParticipationDAOimpl extends AbstractDAO<TrainingParticipat
     }
 
 }
-

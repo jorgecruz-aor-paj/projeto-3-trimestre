@@ -1,18 +1,13 @@
 package aor.proj3t.daos.impl;
 
-import aor.proj3t.daos.interfaces.SessionDAO;
-import aor.proj3t.entities.PendingRegistration;
-import aor.proj3t.entities.ResetPassword;
-import aor.proj3t.entities.Session;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.TypedQuery;
-
 import java.util.List;
 import java.util.Optional;
 
-public class SessionDAOimpl extends AbstractDAO<Session, Long> implements SessionDAO {
+import aor.proj3t.daos.interfaces.SessionDAO;
+import aor.proj3t.entities.Session;
+import jakarta.persistence.TypedQuery;
 
+public class SessionDAOimpl extends AbstractDAO<Session, Long> implements SessionDAO {
 
     @Override
     public Optional<Session> findByToken(String token) {
@@ -39,6 +34,5 @@ public class SessionDAOimpl extends AbstractDAO<Session, Long> implements Sessio
 
         return query.getResultList();
     }
-
 
 }

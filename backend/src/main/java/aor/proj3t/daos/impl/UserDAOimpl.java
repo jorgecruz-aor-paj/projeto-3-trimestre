@@ -93,7 +93,7 @@ public class UserDAOimpl extends AbstractDAO<User, Long> implements UserDAO {
             predicates.add(namePredicate);
         }
 
-        query.where(predicates.toArray(new Predicate[0]));
+        query.where(predicates.toArray(Predicate[]::new));
 
         if (filters.getSortField() != null) {
             query.orderBy(filters.isAscending()

@@ -1,19 +1,12 @@
 package aor.proj3t.daos.impl;
 
+import java.util.Optional;
+
 import aor.proj3t.daos.interfaces.ResetPasswordDAO;
-import aor.proj3t.entities.Evaluation;
-import aor.proj3t.entities.PendingRegistration;
 import aor.proj3t.entities.ResetPassword;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.locks.ReentrantLock;
-
 public class ResetPasswordDAOimpl extends AbstractDAO<ResetPassword, Long> implements ResetPasswordDAO {
-
 
     @Override
     public Optional<ResetPassword> findByToken(String token) {
@@ -23,7 +16,6 @@ public class ResetPasswordDAOimpl extends AbstractDAO<ResetPassword, Long> imple
         return query.getResultList().stream().findFirst();
     }
 
-
     @Override
     public Optional<ResetPassword> findByOwnerId(Long ownerId) {
         TypedQuery<ResetPassword> query = em.createQuery(
@@ -31,7 +23,6 @@ public class ResetPasswordDAOimpl extends AbstractDAO<ResetPassword, Long> imple
         query.setParameter("ownerId", ownerId);
         return query.getResultList().stream().findFirst();
     }
-
 
     @Override
     public Boolean isValidToken(String token) {

@@ -40,6 +40,7 @@ public class TrainingDAOimpl extends AbstractDAO<Training, Long> implements Trai
                 .getResultList();
     }
 
+    @Override
     public List<Training> getTrainingsByFilters(TrainingFilter filters) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Training> query = cb.createQuery(Training.class);
@@ -69,7 +70,7 @@ public class TrainingDAOimpl extends AbstractDAO<Training, Long> implements Trai
             predicates.add(namePredicate);
         }
 
-        query.where(predicates.toArray(new Predicate[0]));
+        query.where(predicates.toArray(Predicate[]::new));
 
         if (filters.getSortField() != null) {
             if (filters.getSortAscending()) {

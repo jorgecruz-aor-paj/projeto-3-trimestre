@@ -1,11 +1,9 @@
 package aor.proj3t.daos.interfaces;
 
+import java.util.List;
 
 import aor.proj3t.entities.EvaluationCycle;
 import aor.proj3t.enums.EvaluationStatus;
-
-import java.util.List;
-import java.util.Optional;
 
 /**
  * Repository interface for EvaluationCycle entity operations.
@@ -30,8 +28,11 @@ public interface EvaluationCycleDAO extends BasicDAO<EvaluationCycle, Long> {
     /**
      * Retrieves a paginated list of EvaluationCycle entities filtered by status.
      *
-     * <p>This method applies pagination by using the provided page number and size.
-     * It ensures efficient query execution and limits the number of results returned.</p>
+     * <p>
+     * This method applies pagination by using the provided page number and size.
+     * It ensures efficient query execution and limits the number of results
+     * returned.
+     * </p>
      *
      * @param status The status used to filter evaluation cycles.
      * @param page   The page number (zero-based index) for pagination.

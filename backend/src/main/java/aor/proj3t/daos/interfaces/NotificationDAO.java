@@ -1,10 +1,8 @@
 package aor.proj3t.daos.interfaces;
 
-import aor.proj3t.entities.Message;
-import aor.proj3t.entities.Notification;
-import aor.proj3t.entities.User;
-
 import java.util.List;
+
+import aor.proj3t.entities.Notification;
 
 public interface NotificationDAO extends BasicDAO<Notification, Long> {
 
@@ -23,7 +21,6 @@ public interface NotificationDAO extends BasicDAO<Notification, Long> {
      * @return A list of notifications received by the specified user.
      */
     List<Notification> findByRecipientId(Long recipientId);
-
 
     /**
      * Counts the number of unread notifications of a user.
