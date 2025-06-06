@@ -9,11 +9,34 @@ import jakarta.persistence.EntityManager;
 
 /**
  * Abstract base class for entity-DTO converters that implements common
- * functionality
+ * functionality.
  * 
- * @param <E>  The entity type
- * @param <D>  The DTO type
+ * This class provides a template implementation of the {@link Converter}
+ * interface,
+ * implementing the conversion algorithms while allowing subclasses to define
+ * specific mapping logic through abstract methods. It introduces the Template
+ * Method
+ * pattern to standardize the overall conversion process while allowing
+ * customization
+ * of specific steps.
+ * 
+ * Key features:
+ * <ul>
+ * <li>Implements the basic conversion algorithms for both individual objects
+ * and collections</li>
+ * <li>Handles null values safely</li>
+ * <li>Manages entity lookup, creation, and relationship handling</li>
+ * <li>Provides utility methods for common operations like safe entity
+ * lookup</li>
+ * </ul>
+ * * @param <E> The entity type (domain model object)
+ * 
+ * @param <D>  The DTO type (data transfer object)
  * @param <ID> The type of the entity's ID field
+ * 
+ * @author Jorge Cruz & João Osório - Gr4
+ * @version 1.0
+ * @see Converter
  */
 public abstract class AbstractConverter<E, D, ID> implements Converter<E, D> {
 
@@ -21,47 +44,83 @@ public abstract class AbstractConverter<E, D, ID> implements Converter<E, D> {
     protected EntityManager em;
 
     /**
-     * Get the class of the entity
+     * Gets the class of the entity.
+     * 
+     * This method returns the Class object for the entity type E. It's used
+     * by the conversion process to find entities in the persistence context
+     * and for reflection-based operations.
      * 
      * @return The entity class
      */
     protected abstract Class<E> getEntityClass();
 
     /**
-     * Create a new instance of the entity
+     * Creates a new instance of the entity.
+     * 
+     * This method is responsible for instantiating a new entity object when
+     * a conversion process determines that a new entity needs to be created.
+     * Subclasses should implement this method to return a fresh instance of the
+     * appropriate entity class.
      * 
      * @return A new entity instance
      */
     protected abstract E createEntityInstance();
 
     /**
-     * Create a new instance of the DTO
+     * Creates a new instance of the DTO.
+     * 
+     * This method is responsible for instantiating a new DTO object when
+     * a conversion process requires a fresh DTO. Subclasses should implement
+     * this method to return a new instance of the appropriate DTO class.
      * 
      * @return A new DTO instance
      */
     protected abstract D createDTOInstance();
 
     /**
-     * Get the ID from the DTO
+     * Gets the ID from the DTO.
      * 
-     * @param dto The DTO
-     * @return The ID value
+     * This method extracts the identifier value from a DTO. The identifier is used
+     * to determine if the DTO represents an existing entity that should be updated
+     * or if a new entity should be created. Subclasses may implement custom logic
+     * to determine what constitutes a valid ID (e.g., non-zero values only).
+     * 
+     * @param dto The DTO to extract the ID from
+     * @return The ID value, or null if the DTO has no valid ID
      */
     protected abstract ID getIdFromDTO(D dto);
 
     /**
-     * Map entity fields to DTO fields
+     * Maps entity fields to DTO fields.
      * 
-     * @param entity The source entity
-     * @param dto    The target DTO
+     * This method is responsible for transferring data from an entity object to a
+     * DTO object.
+     * It should map all relevant fields from the entity to their corresponding
+     * fields in the DTO,
+     * including handling of relationships. Implementations should be careful to
+     * handle null
+     * values and ensure that all necessary data is copied.
+     * 
+     * @param entity The source entity containing the data to be transferred
+     * @param dto    The target DTO to receive the data
      */
     protected abstract void mapEntityToDTO(E entity, D dto);
 
     /**
-     * Map DTO fields to entity fields
+     * Maps DTO fields to entity fields.
      * 
-     * @param dto    The source DTO
-     * @param entity The target entity
+     * This method is responsible for transferring data from a DTO object to an
+     * entity object.
+     * It should map all relevant fields from the DTO to their corresponding fields
+     * in the entity,
+     * including handling of relationships. Implementations should be careful to
+     * handle null
+     * values and ensure that all necessary data is copied. Use the
+     * {@link #findSafely} method
+     * to handle relationships safely.
+     * 
+     * @param dto    The source DTO containing the data to be transferred
+     * @param entity The target entity to receive the data
      */
     protected abstract void mapDTOToEntity(D dto, E entity);
 
@@ -126,12 +185,27 @@ public abstract class AbstractConverter<E, D, ID> implements Converter<E, D> {
     }
 
     /**
-     * Safely finds an entity by ID, returning null if not found
+     * Safely finds an entity by ID, returning null if not found.
      * 
-     * @param <T>         Entity type
-     * @param entityClass The class of the entity
+     * This utility method provides a safe way to look up related entities during
+     * the
+     * conversion process. It handles null ID values gracefully by returning null
+     * instead
+     * of throwing an exception, which simplifies relationship handling code.
+     * 
+     * <p>
+     * Example usage:
+     * 
+     * <pre>
+     * User manager = findSafely(User.class, dto.getManagerId());
+     * entity.setManager(manager);
+     * </pre>
+     * 
+     * @param <T>         Entity type parameter
+     * @param entityClass The class of the entity to look up
      * @param id          The ID to look up
-     * @return The found entity or null
+     * @return The found entity or null if either the ID is null or no entity with
+     *         that ID exists
      */
     protected <T> T findSafely(Class<T> entityClass, Object id) {
         if (id == null) {

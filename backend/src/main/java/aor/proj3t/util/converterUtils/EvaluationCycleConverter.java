@@ -5,6 +5,21 @@ import aor.proj3t.entities.EvaluationCycle;
 import aor.proj3t.entities.User;
 import jakarta.enterprise.context.ApplicationScoped;
 
+/**
+ * Converter for EvaluationCycle entities and DTOs.
+ * 
+ * This class handles the bidirectional conversion between
+ * {@link EvaluationCycle} entities and
+ * {@link EvaluationCycleDTO} data transfer objects. Evaluation cycles represent
+ * time periods
+ * during which employee performance evaluations are conducted, including start
+ * dates,
+ * end dates, and closure dates.
+ * 
+ * @author Jorge Cruz & João Osório - Gr4
+ * 
+ * @version 1.0
+ */
 @ApplicationScoped
 public class EvaluationCycleConverter extends AbstractConverter<EvaluationCycle, EvaluationCycleDTO, Long> {
 

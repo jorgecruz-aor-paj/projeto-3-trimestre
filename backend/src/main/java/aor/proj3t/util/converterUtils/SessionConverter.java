@@ -5,6 +5,20 @@ import aor.proj3t.entities.Session;
 import aor.proj3t.entities.User;
 import jakarta.enterprise.context.ApplicationScoped;
 
+/**
+ * Converter for Session entities and DTOs.
+ * 
+ * This class handles the bidirectional conversion between {@link Session}
+ * entities and
+ * {@link SessionDTO} data transfer objects. Sessions represent user
+ * authentication states
+ * and contain sensitive information that needs to be carefully managed during
+ * conversion.
+ * 
+ * @author Jorge Cruz & João Osório - Gr4
+ * 
+ * @version 1.0
+ */
 @ApplicationScoped
 public class SessionConverter extends AbstractConverter<Session, SessionDTO, Long> {
 

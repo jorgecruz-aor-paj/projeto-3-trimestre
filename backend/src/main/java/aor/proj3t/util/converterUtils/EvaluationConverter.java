@@ -6,6 +6,20 @@ import aor.proj3t.entities.EvaluationCycle;
 import aor.proj3t.entities.User;
 import jakarta.enterprise.context.ApplicationScoped;
 
+/**
+ * Converter for Evaluation entities and DTOs.
+ * 
+ * This class handles the bidirectional conversion between {@link Evaluation}
+ * entities and
+ * {@link EvaluationDTO} data transfer objects. Evaluations store performance
+ * assessment data
+ * including ratings, feedback, and relationships between evaluators and
+ * evaluatees within
+ * specific evaluation cycles.
+ * @author Jorge Cruz & João Osório - Gr4
+ * 
+ * @version 1.0
+ */
 @ApplicationScoped
 public class EvaluationConverter extends AbstractConverter<Evaluation, EvaluationDTO, Long> {
     @Override

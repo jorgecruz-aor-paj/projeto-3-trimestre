@@ -5,6 +5,20 @@ import aor.proj3t.entities.Settings;
 import aor.proj3t.entities.User;
 import jakarta.enterprise.context.ApplicationScoped;
 
+/**
+ * Converter for Settings entities and DTOs.
+ * 
+ * This class handles the bidirectional conversion between {@link Settings}
+ * entities and
+ * {@link SettingsDTO} data transfer objects. Settings define system-wide
+ * configuration
+ * parameters like expiration windows for sessions, password resets, and account
+ * confirmations.
+ * 
+ * @author Jorge Cruz & João Osório - Gr4
+ * 
+ * @version 1.0
+ */
 @ApplicationScoped
 public class SettingsConverter extends AbstractConverter<Settings, SettingsDTO, Long> {
 

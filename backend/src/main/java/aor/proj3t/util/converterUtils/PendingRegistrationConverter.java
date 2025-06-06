@@ -4,6 +4,21 @@ import aor.proj3t.dto.PendingRegistrationDTO;
 import aor.proj3t.entities.PendingRegistration;
 import jakarta.enterprise.context.ApplicationScoped;
 
+/**
+ * Converter for PendingRegistration entities and DTOs.
+ * 
+ * This class handles the bidirectional conversion between
+ * {@link PendingRegistration} entities and
+ * {@link PendingRegistrationDTO} data transfer objects. Pending registrations
+ * represent user
+ * signup requests that are awaiting email confirmation, including confirmation
+ * tokens
+ * and expiration dates.
+ * 
+ * @author Jorge Cruz & João Osório - Gr4
+ * 
+ * @version 1.0
+ */
 @ApplicationScoped
 public class PendingRegistrationConverter extends AbstractConverter<PendingRegistration, PendingRegistrationDTO, Long> {
 

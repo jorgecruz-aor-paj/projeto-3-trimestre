@@ -4,6 +4,19 @@ import aor.proj3t.dto.WorkplaceDTO;
 import aor.proj3t.entities.Workplace;
 import jakarta.enterprise.context.ApplicationScoped;
 
+/**
+ * Converter for Workplace entities and DTOs.
+ * 
+ * This class handles the bidirectional conversion between {@link Workplace}
+ * entities and
+ * {@link WorkplaceDTO} data transfer objects. It provides simple mapping for
+ * workplace
+ * data used throughout the system.
+ * 
+ * @author Jorge Cruz & João Osório - Gr4
+ * 
+ * @version 1.0
+ */
 @ApplicationScoped
 public class WorkplaceConverter extends AbstractConverter<Workplace, WorkplaceDTO, Long> {
 

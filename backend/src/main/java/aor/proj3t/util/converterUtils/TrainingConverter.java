@@ -5,6 +5,20 @@ import aor.proj3t.entities.Training;
 import aor.proj3t.entities.TrainingArea;
 import jakarta.enterprise.context.ApplicationScoped;
 
+/**
+ * Converter for Training entities and DTOs.
+ * 
+ * This class handles the bidirectional conversion between {@link Training}
+ * entities and
+ * {@link TrainingDTO} data transfer objects. It manages training course
+ * information including
+ * descriptions, duration, language, active status, and associated training
+ * areas.
+ * 
+ * @author Jorge Cruz & João Osório - Gr4
+ * 
+ * @version 1.0
+ */
 @ApplicationScoped
 public class TrainingConverter extends AbstractConverter<Training, TrainingDTO, Long> {
 

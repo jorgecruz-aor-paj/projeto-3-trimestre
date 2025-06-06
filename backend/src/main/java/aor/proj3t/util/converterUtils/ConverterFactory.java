@@ -30,7 +30,27 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 /**
- * Factory class to access all entity-DTO converters
+ * Factory class to access all entity-DTO converters.
+ * 
+ * This class provides a centralized access point for all the converters in the
+ * application.
+ * It follows the Factory design pattern to encapsulate the instantiation logic
+ * of converters
+ * and provides a clean, consistent API for accessing them. The factory is
+ * injected with all
+ * available converters and offers type-safe methods to retrieve them.
+ * 
+ * <p>
+ * Example usage:
+ * 
+ * <pre>
+ * UserDTO userDto = converterFactory.forUser().toDTO(userEntity);
+ * User userEntity = converterFactory.forUser().toEntity(userDto);
+ * </pre>
+ * 
+ * @author Jorge Cruz & João Osório - Gr4
+ * 
+ * @version 1.0
  */
 @ApplicationScoped
 public class ConverterFactory {
@@ -75,7 +95,11 @@ public class ConverterFactory {
     private TrainingAreaConverter trainingAreaConverter;
 
     /**
-     * Get the converter for User entities and DTOs
+     * Gets the converter for User entities and DTOs.
+     * 
+     * This method provides access to the converter responsible for transforming
+     * between {@link User} entities and {@link UserDTO} data transfer objects.
+     * The returned converter handles all user-related conversion operations.
      * 
      * @return The UserConverter instance
      */

@@ -6,6 +6,20 @@ import aor.proj3t.entities.TrainingParticipation;
 import aor.proj3t.entities.User;
 import jakarta.enterprise.context.ApplicationScoped;
 
+/**
+ * Converter for TrainingParticipation entities and DTOs.
+ * 
+ * This class handles the bidirectional conversion between
+ * {@link TrainingParticipation} entities and
+ * {@link TrainingParticipationDTO} data transfer objects. Training
+ * participations track when users
+ * have completed training courses, including timestamps and approval by
+ * managers.
+ * 
+ * @author Jorge Cruz & João Osório - Gr4
+ * 
+ * @version 1.0
+ */
 @ApplicationScoped
 public class TrainingParticipationConverter
         extends AbstractConverter<TrainingParticipation, TrainingParticipationDTO, Long> {

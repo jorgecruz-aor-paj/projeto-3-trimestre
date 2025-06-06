@@ -5,6 +5,20 @@ import aor.proj3t.entities.Notification;
 import aor.proj3t.entities.User;
 import jakarta.enterprise.context.ApplicationScoped;
 
+/**
+ * Converter for Notification entities and DTOs.
+ * 
+ * This class handles the bidirectional conversion between {@link Notification}
+ * entities and
+ * {@link NotificationDTO} data transfer objects. Notifications represent system
+ * messages
+ * to users with different types, read status tracking, and timestamps for
+ * delivery and reading.
+ * 
+ * @author Jorge Cruz & João Osório - Gr4
+ * 
+ * @version 1.0
+ */
 @ApplicationScoped
 public class NotificationConverter extends AbstractConverter<Notification, NotificationDTO, Long> {
     @Override

@@ -5,6 +5,20 @@ import aor.proj3t.entities.Message;
 import aor.proj3t.entities.User;
 import jakarta.enterprise.context.ApplicationScoped;
 
+/**
+ * Converter for Message entities and DTOs.
+ * 
+ * This class handles the bidirectional conversion between {@link Message}
+ * entities and
+ * {@link MessageDTO} data transfer objects. It manages user message data
+ * including
+ * sender and recipient relationships, message content, and read status
+ * tracking.
+ * 
+ * @author Jorge Cruz & João Osório - Gr4
+ * 
+ * @version 1.0
+ */
 @ApplicationScoped
 public class MessageConverter extends AbstractConverter<Message, MessageDTO, Long> {
 

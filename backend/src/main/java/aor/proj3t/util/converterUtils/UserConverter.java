@@ -5,6 +5,19 @@ import aor.proj3t.entities.User;
 import aor.proj3t.entities.Workplace;
 import jakarta.enterprise.context.ApplicationScoped;
 
+/**
+ * Converter for User entities and DTOs.
+ * 
+ * This class handles the bidirectional conversion between {@link User} entities
+ * and
+ * {@link UserDTO} data transfer objects. It manages the complex relationships
+ * between
+ * users, such as manager-subordinate relationships and workplace associations.
+ * 
+ * @author Jorge Cruz & João Osório - Gr4
+ * 
+ * @version 1.0
+ */
 @ApplicationScoped
 public class UserConverter extends AbstractConverter<User, UserDTO, Long> {
     @Override

@@ -5,6 +5,19 @@ import aor.proj3t.entities.ResetPassword;
 import aor.proj3t.entities.User;
 import jakarta.enterprise.context.ApplicationScoped;
 
+/**
+ * Converter for ResetPassword entities and DTOs.
+ * 
+ * This class handles the bidirectional conversion between {@link ResetPassword}
+ * entities and
+ * {@link ResetPasswordDTO} data transfer objects. Reset password records manage
+ * password
+ * recovery requests, including security tokens and their expiration dates.
+ * 
+ * @author Jorge Cruz & João Osório - Gr4
+ * 
+ * @version 1.0
+ */
 @ApplicationScoped
 public class ResetPasswordConverter extends AbstractConverter<ResetPassword, ResetPasswordDTO, Long> {
 
