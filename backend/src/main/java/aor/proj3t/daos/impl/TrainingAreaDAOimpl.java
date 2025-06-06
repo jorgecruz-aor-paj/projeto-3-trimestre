@@ -1,6 +1,9 @@
 package aor.proj3t.daos.impl;
 
+import aor.proj3t.daos.interfaces.TrainingAreaDAO;
 import aor.proj3t.entities.TrainingArea;
+import jakarta.ejb.Stateless;
 
-public class TrainingAreaDAOimpl extends AbstractDAO<TrainingArea, Long> {
+@Stateless
+public class TrainingAreaDAOimpl extends AbstractDAO<TrainingArea, Long> implements TrainingAreaDAO {
 }
