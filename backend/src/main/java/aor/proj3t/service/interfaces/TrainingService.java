@@ -38,16 +38,6 @@ public interface TrainingService {
      */
     Boolean deactivateTraining(Long trainingId);
 
-    /**
-     * Find trainings for a specific user.
-     * 
-     * @param userId The ID of the user
-     * @return A list of trainings for the specified user
-     */
-    List<TrainingParticipationDTO> findTrainingParticipationsByUser(Long userId);
-
-    List<TrainingDTO> getTrainingsUnparticipatedByUser(Long userId);
-
     List<TrainingDTO> getAllTrainings();
 
     TrainingDTO getTrainingById(Long trainingId);
@@ -56,9 +46,7 @@ public interface TrainingService {
 
     Boolean addTrainingArea(TrainingAreaDTO trainingAreaDTO);
 
-    Boolean registerTrainingParticipation(TrainingParticipationDTO trainingParticipationDTO);
 
-    Map<Integer, Integer> getTrainingParticipationTimeByYearByUser(Long userId);
 
     List<TrainingDTO> getTrainingsByFilters(TrainingFilter filters);
 

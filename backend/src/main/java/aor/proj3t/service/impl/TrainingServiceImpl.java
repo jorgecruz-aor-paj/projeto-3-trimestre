@@ -88,35 +88,8 @@ public class TrainingServiceImpl extends BaseService implements TrainingService 
         }
     }
 
-    @Override
-    public List<TrainingParticipationDTO> findTrainingParticipationsByUser(Long userId) {
-        try {
-            User user = getEntity(daoFactory.forUser().findById(userId),userId);
-            List<TrainingParticipation> trainingParticipationList = daoFactory.forTrainingParticipation().findByParticipantId(user.getId());
-            return converterFactory.forTrainingParticipation().toDTOList(trainingParticipationList);
-        } catch (NoSuchElementException e) {
-            logger.error("No user found with id {}", userId);
-            return null;
-        } catch (Exception e) {
-            logger.error("Error finding training participations", e);
-            return null;
-        }
-    }
 
-    @Override
-    public List<TrainingDTO> getTrainingsUnparticipatedByUser(Long userId) {
-        try {
-            User user = getEntity(daoFactory.forUser().findById(userId),userId);
-            List<Training> trainingList = daoFactory.forTraining().findTrainingsNotParticipatedByUser(user.getId());
-            return converterFactory.forTraining().toDTOList(trainingList);
-        } catch (NoSuchElementException e) {
-            logger.error("No user found with id {}", userId);
-            return null;
-        } catch (Exception e) {
-            logger.error("Error finding trainigs not participated by user", e);
-            return null;
-        }
-    }
+
 
     @Override
     public List<TrainingDTO> getAllTrainings() {
@@ -152,41 +125,7 @@ public class TrainingServiceImpl extends BaseService implements TrainingService 
         }
     }
 
-    @Override
-    public Boolean registerTrainingParticipation(TrainingParticipationDTO trainingParticipationDTO) {
-        try {
-            User participant = getEntity(daoFactory.forUser().findById(trainingParticipationDTO.getParticipantId()),trainingParticipationDTO.getParticipantId());
-            User manager = getEntity(daoFactory.forUser().findById(trainingParticipationDTO.getManagerId()),trainingParticipationDTO.getManagerId());
-            Training training = getEntity(daoFactory.forTraining().findById(trainingParticipationDTO.getTrainingId()),trainingParticipationDTO.getTrainingId());
-            TrainingParticipation trainingParticipation = new TrainingParticipation(
-                    participant,
-                    manager,
-                    training,
-                    trainingParticipationDTO.getParticipatedAt());
-            daoFactory.forTrainingParticipation().create(trainingParticipation);
-            return true;
-        } catch (NoSuchElementException e) {
-            logger.error("Invalid id for participant {}, manager {} or training {}, while registering participation",
-                    trainingParticipationDTO.getParticipantId(), trainingParticipationDTO.getManagerId(), trainingParticipationDTO.getTrainingId(), e);
-            return false;
-        } catch (Exception e) {
-            logger.error("Error registering participation", e);
-            return false;
-        }
-    }
 
-    public Map<Integer, Integer> getTrainingParticipationTimeByYearByUser(Long userId) {
-        try {
-            User user = getEntity(daoFactory.forUser().findById(userId),userId);
-            return daoFactory.forTrainingParticipation().trainingTimeByYearByParticipantId(user.getId());
-        } catch (NoSuchElementException e) {
-            logger.error("No user found with id {}", userId);
-            return null;
-        } catch (Exception e) {
-            logger.error("Error finding training participation time by year for user with id {}", e);
-            return null;
-        }
-    }
 
     public List<TrainingDTO> getTrainingsByFilters(TrainingFilter filters) {
         try{
