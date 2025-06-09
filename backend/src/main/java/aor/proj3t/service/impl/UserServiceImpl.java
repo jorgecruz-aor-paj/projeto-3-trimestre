@@ -144,9 +144,17 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     @Override
     public Boolean assignManagerBulk(Long managerId, Long[] userIds) {
+        if (userIds.length == 0) {
+            logger.warn("No user IDs provided for assigning manager");
+            return true;
+        }
         try {
             User manager = getEntity(daoFactory.forUser().findById(managerId),managerId);
             List<User> users = getUserListFromIds(userIds);
+            if(users == null || users.isEmpty()){
+                logger.error("No valid users Id's assigning manager in bulk. ");
+                return false;
+            }
             for (User user : users) {
                 user.setManager(manager);
                 daoFactory.forUser().update(user);
@@ -220,7 +228,7 @@ public class UserServiceImpl extends BaseService implements UserService {
         }
     }
 
-    protected List<User> getUserListFromIds(Long[] userIds) {
+    private List<User> getUserListFromIds(Long[] userIds) {
         try {
             List<User> users = new ArrayList<>(userIds.length);
             for (Long userId : userIds) {

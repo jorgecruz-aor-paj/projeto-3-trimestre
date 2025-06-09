@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
+import aor.proj3t.dto.EvaluationDTO;
 import aor.proj3t.entities.Evaluation;
 
 public interface EvaluationService {
@@ -16,7 +17,7 @@ public interface EvaluationService {
      * @param evaluationCycleId The ID of the evaluation cycle
      * @return The created evaluation
      */
-    Evaluation createEvaluation(Long evaluatedUserId, Long evaluatorUserId, Long evaluationCycleId);
+    Boolean createEvaluation(Long evaluatedUserId, Long evaluatorUserId, Long evaluationCycleId);
 
     /**
      * Find an evaluation by ID.
@@ -24,7 +25,7 @@ public interface EvaluationService {
      * @param evaluationId The ID of the evaluation
      * @return An Optional containing the evaluation if found, or empty if not found
      */
-    Optional<Evaluation> findEvaluationById(Long evaluationId);
+    EvaluationDTO getEvaluationById(Long evaluationId);
 
     /**
      * Update an evaluation.
@@ -34,7 +35,7 @@ public interface EvaluationService {
      * @param feedback     The feedback
      * @return The updated evaluation
      */
-    Evaluation updateEvaluation(Long evaluationId, Integer score, String feedback);
+    Boolean updateEvaluation(Long evaluationId, Integer score, String feedback);
 
     /**
      * Find evaluations for a specific evaluator.
@@ -42,7 +43,7 @@ public interface EvaluationService {
      * @param evaluatorId The ID of the evaluator
      * @return A list of evaluations for the specified evaluator
      */
-    List<Evaluation> findEvaluationsByEvaluator(Long evaluatorId);
+    List<EvaluationDTO> findEvaluationsByEvaluator(Long evaluatorId);
 
     /**
      * Find evaluations for a specific evaluated user.
@@ -50,7 +51,7 @@ public interface EvaluationService {
      * @param evaluatedId The ID of the evaluated user
      * @return A list of evaluations for the specified evaluated user
      */
-    List<Evaluation> findEvaluationsByEvaluated(Long evaluatedId);
+    List<EvaluationDTO> findEvaluationsByEvaluated(Long evaluatedId);
 
     /**
      * Find evaluations for a specific cycle.
@@ -58,7 +59,7 @@ public interface EvaluationService {
      * @param cycleId The ID of the evaluation cycle
      * @return A list of evaluations for the specified cycle
      */
-    List<Evaluation> findEvaluationsByCycle(Long cycleId);
+    List<EvaluationDTO> findEvaluationsByCycle(Long cycleId);
 
     /**
      * Find evaluations within a date range.
@@ -67,7 +68,7 @@ public interface EvaluationService {
      * @param endDate   The end date
      * @return A list of evaluations created within the specified date range
      */
-    List<Evaluation> findEvaluationsByDateRange(Instant startDate, Instant endDate);
+    List<EvaluationDTO> findEvaluationsByDateRange(Instant startDate, Instant endDate);
 
     /**
      * Complete an evaluation.
@@ -75,7 +76,11 @@ public interface EvaluationService {
      * @param evaluationId The ID of the evaluation
      * @return The updated evaluation
      */
-    Evaluation completeEvaluation(Long evaluationId);
+    Boolean completeEvaluation(Long evaluationId);
+
+    Boolean closeEvaluation (Long evaluationId);
+
+    Boolean closeEvaluationsBulk (Long[] evaluationIds);
 
     /**
      * Close all completed evaluations.
@@ -84,22 +89,4 @@ public interface EvaluationService {
      */
     int closeAllCompletedEvaluations();
 
-    // Converto to DTO methods:
-    //
-    // /**
-    // * Convert an Evaluation entity to an EvaluationDTO.
-    // *
-    // * @param evaluation The evaluation entity
-    // * @return The evaluation DTO
-    // */
-    // EvaluationDTO convertToDTO(Evaluation evaluation);
-    //
-    // /**
-    // * Convert an EvaluationCycle entity to an EvaluationCycleDTO.
-    // *
-    // * @param cycle The evaluation cycle entity
-    // * @return The evaluation cycle DTO
-    // */
-    // EvaluationCycleDTO convertToDTO(EvaluationCycle cycle);
-    //
-}
+   }

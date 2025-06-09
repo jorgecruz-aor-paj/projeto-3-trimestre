@@ -60,4 +60,6 @@ public interface EvaluationDAO extends BasicDAO<Evaluation, Long> {
 
     List<Evaluation> getEvaluationsByFilters(EvaluationFilter filters);
 
+    Integer countUnclosedEvaluationsByCycleId(Long cycleId);
+
 }

@@ -6,6 +6,7 @@ import java.util.List;
 
 import aor.proj3t.daos.interfaces.EvaluationDAO;
 import aor.proj3t.entities.Evaluation;
+import aor.proj3t.enums.EvaluationStatus;
 import aor.proj3t.filters.EvaluationFilter;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.TypedQuery;
@@ -63,7 +64,7 @@ public class EvaluationDAOimpl extends AbstractDAO<Evaluation, Long> implements 
     @Transactional
     public int closeAllCompletedEvaluations() {
         return em.createQuery(
-                "UPDATE Evaluation e SET e.status = 'CLOSED' WHERE e.status = 'COMPLETED'")
+                        "UPDATE Evaluation e SET e.status = 'CLOSED' WHERE e.status = 'COMPLETED'")
                 .executeUpdate();
     }
 
@@ -112,4 +113,14 @@ public class EvaluationDAOimpl extends AbstractDAO<Evaluation, Long> implements 
         return em.createQuery(query).getResultList();
     }
 
+    @Override
+    public Integer countUnclosedEvaluationsByCycleId(Long cycleId) {
+        Long count = em.createQuery(
+                        "SELECT COUNT(e) FROM Evaluation e WHERE e.evaluationCycle.id = :cycleId AND e.status <> :closedStatus",
+                        Long.class)
+                .setParameter("cycleId", cycleId)
+                .setParameter("closedStatus", EvaluationStatus.CLOSED)
+                .getSingleResult();
+        return count.intValue();
+    }
 }
