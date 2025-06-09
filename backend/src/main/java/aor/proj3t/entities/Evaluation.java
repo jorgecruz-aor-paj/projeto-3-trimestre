@@ -25,7 +25,7 @@ public class Evaluation {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private EvaluationStatus status;
+    private EvaluationStatus status = EvaluationStatus.ONGOING;
 
     @Column(name = "feedback")
     private String feedback;
@@ -38,9 +38,13 @@ public class Evaluation {
         this.createdAt = Instant.now();
     }
 
-    @UpdateTimestamp
     @Column(name = "edited_at")
     private Instant editedAt;
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.editedAt = Instant.now();
+    }
 
     @ManyToOne
     @JoinColumn(name = "evaluation_cycle_id", nullable = false)
@@ -53,6 +57,15 @@ public class Evaluation {
     @ManyToOne
     @JoinColumn(name = "evaluator_id", nullable = false)
     private User evaluator;
+
+    public Evaluation() {}
+
+    public Evaluation(EvaluationCycle evaluationCycle, User evaluated, User evaluator) {
+        this.evaluationCycle = evaluationCycle;
+        this.evaluated = evaluated;
+        this.evaluator = evaluator;
+    }
+    
 
     public Long getId() {
         return id;
