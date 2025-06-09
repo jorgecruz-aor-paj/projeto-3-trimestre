@@ -71,6 +71,7 @@ public class DAOFactory {
 
     @Inject
     private ResetPasswordDAO resetPasswordDAO;
+
     @Inject
     private PendingRegistrationDAO pendingRegistrationDAO;
 

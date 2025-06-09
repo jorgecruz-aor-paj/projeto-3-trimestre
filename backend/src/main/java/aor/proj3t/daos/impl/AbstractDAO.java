@@ -1,5 +1,9 @@
 package aor.proj3t.daos.impl;
 
+import java.lang.reflect.ParameterizedType;
+import java.util.List;
+import java.util.Optional;
+
 import aor.proj3t.daos.interfaces.BasicDAO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -7,10 +11,6 @@ import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
-
-import java.lang.reflect.ParameterizedType;
-import java.util.List;
-import java.util.Optional;
 
 public abstract class AbstractDAO<T, ID> implements BasicDAO<T, ID> {
 
@@ -64,10 +64,10 @@ public abstract class AbstractDAO<T, ID> implements BasicDAO<T, ID> {
     /**
      * Execute a named query with parameters.
      *
-     * @param queryName The name of the query
+     * @param queryName   The name of the query
      * @param entityClass The type of entity used
-     * @param params    The parameters for the query in format: paramName1,
-     *                  paramValue1, paramName2, paramValue2, etc.
+     * @param params      The parameters for the query in format: paramName1,
+     *                    paramValue1, paramName2, paramValue2, etc.
      * @return A list of results
      */
     protected List<T> executeNamedQuery(String queryName, Class<T> entityClass, Object... params) {
@@ -77,7 +77,6 @@ public abstract class AbstractDAO<T, ID> implements BasicDAO<T, ID> {
         }
         return query.getResultList();
     }
-
 
     /**
      * Execute a named query with parameters that returns a single result.
@@ -97,5 +96,89 @@ public abstract class AbstractDAO<T, ID> implements BasicDAO<T, ID> {
         } catch (Exception e) {
             return Optional.empty();
         }
+    }
+
+    /**
+     * Execute a count query using Criteria API
+     *
+     * @param propertyName The property to filter on (null for no filtering)
+     * @param value        The value to filter by (ignored if propertyName is null)
+     * @param isNull       If true, checks if propertyName is null (ignores value)
+     * @return Count of matching entities
+     */
+    protected Long executeCountQuery(String propertyName, Object value, boolean isNull) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+        Root<T> root = cq.from(entityClass);
+        cq.select(cb.count(root));
+
+        if (propertyName != null) {
+            if (isNull) {
+                cq.where(cb.isNull(root.get(propertyName)));
+            } else {
+                cq.where(cb.equal(root.get(propertyName), value));
+            }
+        }
+
+        return em.createQuery(cq).getSingleResult();
+    }
+
+    /**
+     * Find entities by property using Criteria API
+     *
+     * @param propertyName Property name to filter on
+     * @param value        Value to match
+     * @return List of matching entities
+     */
+    protected List<T> findByProperty(String propertyName, Object value) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<T> cq = cb.createQuery(entityClass);
+        Root<T> root = cq.from(entityClass);
+        cq.select(root);
+        cq.where(cb.equal(root.get(propertyName), value));
+        return em.createQuery(cq).getResultList();
+    }
+
+    /**
+     * Find a single entity by property using Criteria API
+     * 
+     * @param propertyName Property name to filter on
+     * @param value        Value to match
+     * @return Optional containing the entity if found
+     */
+    protected Optional<T> findSingleByProperty(String propertyName, Object value) {
+        try {
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<T> cq = cb.createQuery(entityClass);
+            Root<T> root = cq.from(entityClass);
+            cq.select(root);
+            cq.where(cb.equal(root.get(propertyName), value));
+
+            return Optional.ofNullable(em.createQuery(cq).getSingleResult());
+        } catch (Exception e) {
+            return Optional.empty();
+        }
+    }
+
+    /**
+     * Find entities by a related entity's property.
+     * 
+     * This method uses Criteria API to filter entities based on a property on a
+     * related entity.
+     * For example, if you have an entity with a relation to a "manager" entity,
+     * you can find all entities where the manager's ID matches a specific value.
+     * 
+     * @param relationPath Path to the related entity (e.g., "manager")
+     * @param propertyName Name of the property on related entity (e.g., "id")
+     * @param value        Value to match
+     * @return List of matching entities
+     */
+    protected List<T> findByRelatedProperty(String relationPath, String propertyName, Object value) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<T> cq = cb.createQuery(entityClass);
+        Root<T> root = cq.from(entityClass);
+        cq.select(root);
+        cq.where(cb.equal(root.get(relationPath).get(propertyName), value));
+        return em.createQuery(cq).getResultList();
     }
 }
