@@ -1,22 +1,24 @@
 package aor.proj3t.service.impl;
 
-import aor.proj3t.daos.DAOFactory;
-import aor.proj3t.dto.TrainingAreaDTO;
-import aor.proj3t.dto.TrainingDTO;
-import aor.proj3t.dto.TrainingParticipationDTO;
-import aor.proj3t.entities.*;
-import aor.proj3t.filters.TrainingFilter;
-import aor.proj3t.service.interfaces.TrainingService;
-import aor.proj3t.util.converterutils.ConverterFactory;
-import jakarta.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import aor.proj3t.daos.DAOFactory;
+import aor.proj3t.dto.TrainingAreaDTO;
+import aor.proj3t.dto.TrainingDTO;
+import aor.proj3t.entities.Training;
+import aor.proj3t.entities.TrainingArea;
+import aor.proj3t.filters.TrainingFilter;
+import aor.proj3t.service.interfaces.TrainingService;
+import aor.proj3t.util.converterutils.ConverterFactory;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
+@ApplicationScoped
 public class TrainingServiceImpl extends BaseService implements TrainingService {
     private static final Logger logger = LogManager.getLogger(TrainingServiceImpl.class);
 
@@ -26,19 +28,19 @@ public class TrainingServiceImpl extends BaseService implements TrainingService 
     @Inject
     ConverterFactory converterFactory;
 
-
     @Override
     public Boolean createTraining(TrainingDTO trainingDTO) {
         try {
-            TrainingArea trainingArea = getEntity(daoFactory.forTrainingArea().findById(trainingDTO.getTrainingAreaId()),trainingDTO.getTrainingAreaId());
+            TrainingArea trainingArea = getEntity(
+                    daoFactory.forTrainingArea().findById(trainingDTO.getTrainingAreaId()),
+                    trainingDTO.getTrainingAreaId());
             Training training = new Training(
                     trainingDTO.getTitle(),
                     trainingDTO.getDuration(),
                     trainingDTO.getDescription(),
                     trainingDTO.getLink(),
                     trainingDTO.getLanguage(),
-                    trainingArea
-            );
+                    trainingArea);
             daoFactory.forTraining().create(training);
             return true;
         } catch (NoSuchElementException e) {
@@ -53,8 +55,10 @@ public class TrainingServiceImpl extends BaseService implements TrainingService 
     @Override
     public Boolean updateTraining(TrainingDTO trainingDTO) {
         try {
-            TrainingArea trainingArea = getEntity(daoFactory.forTrainingArea().findById(trainingDTO.getTrainingAreaId()),trainingDTO.getTrainingAreaId());
-            Training training = getEntity(daoFactory.forTraining().findById(trainingDTO.getId()),trainingDTO.getId());
+            TrainingArea trainingArea = getEntity(
+                    daoFactory.forTrainingArea().findById(trainingDTO.getTrainingAreaId()),
+                    trainingDTO.getTrainingAreaId());
+            Training training = getEntity(daoFactory.forTraining().findById(trainingDTO.getId()), trainingDTO.getId());
             training.setTitle(trainingDTO.getTitle());
             training.setDuration(trainingDTO.getDuration());
             training.setDescription(trainingDTO.getDescription());
@@ -64,7 +68,8 @@ public class TrainingServiceImpl extends BaseService implements TrainingService 
             daoFactory.forTraining().update(training);
             return true;
         } catch (NoSuchElementException e) {
-            logger.error("Training area with id {} or training with id {} not found while updating training", trainingDTO.getTrainingAreaId(), trainingDTO.getId());
+            logger.error("Training area with id {} or training with id {} not found while updating training",
+                    trainingDTO.getTrainingAreaId(), trainingDTO.getId());
             return false;
         } catch (Exception e) {
             logger.error("Error updating training", e);
@@ -75,7 +80,7 @@ public class TrainingServiceImpl extends BaseService implements TrainingService 
     @Override
     public Boolean deactivateTraining(Long trainingId) {
         try {
-            Training training = getEntity(daoFactory.forTraining().findById(trainingId),trainingId);
+            Training training = getEntity(daoFactory.forTraining().findById(trainingId), trainingId);
             training.setActive(false);
             daoFactory.forTraining().update(training);
             return true;
@@ -87,9 +92,6 @@ public class TrainingServiceImpl extends BaseService implements TrainingService 
             return false;
         }
     }
-
-
-
 
     @Override
     public List<TrainingDTO> getAllTrainings() {
@@ -104,7 +106,7 @@ public class TrainingServiceImpl extends BaseService implements TrainingService 
 
     @Override
     public TrainingDTO getTrainingById(Long trainingId) {
-        Training training = getEntity(daoFactory.forTraining().findById(trainingId),trainingId);
+        Training training = getEntity(daoFactory.forTraining().findById(trainingId), trainingId);
         return converterFactory.forTraining().toDTO(training);
     }
 
@@ -125,10 +127,9 @@ public class TrainingServiceImpl extends BaseService implements TrainingService 
         }
     }
 
-
-
+    @Override
     public List<TrainingDTO> getTrainingsByFilters(TrainingFilter filters) {
-        try{
+        try {
             return converterFactory.forTraining().toDTOList(daoFactory.forTraining().getTrainingsByFilters(filters));
         } catch (Exception e) {
             logger.error("Error finding trainings by filter", e);

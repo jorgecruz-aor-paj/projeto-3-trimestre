@@ -6,7 +6,9 @@ import java.util.Map;
 
 import aor.proj3t.daos.interfaces.TrainingParticipationDAO;
 import aor.proj3t.entities.TrainingParticipation;
+import jakarta.ejb.Stateless;
 
+@Stateless
 public class TrainingParticipationDAOimpl extends AbstractDAO<TrainingParticipation, Long>
         implements TrainingParticipationDAO {
 

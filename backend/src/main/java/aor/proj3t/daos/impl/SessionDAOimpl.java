@@ -5,8 +5,10 @@ import java.util.Optional;
 
 import aor.proj3t.daos.interfaces.SessionDAO;
 import aor.proj3t.entities.Session;
+import jakarta.ejb.Stateless;
 import jakarta.persistence.TypedQuery;
 
+@Stateless
 public class SessionDAOimpl extends AbstractDAO<Session, Long> implements SessionDAO {
 
     @Override

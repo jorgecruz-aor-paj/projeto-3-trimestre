@@ -1,5 +1,12 @@
 package aor.proj3t.service.impl;
 
+import java.time.Instant;
+import java.util.List;
+import java.util.NoSuchElementException;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import aor.proj3t.daos.DAOFactory;
 import aor.proj3t.dto.EvaluationCycleDTO;
 import aor.proj3t.entities.Evaluation;
@@ -9,19 +16,17 @@ import aor.proj3t.enums.EvaluationCycleStatus;
 import aor.proj3t.enums.Role;
 import aor.proj3t.service.interfaces.EvaluationCycleService;
 import aor.proj3t.util.converterutils.ConverterFactory;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-import java.time.Instant;
-import java.util.List;
-import java.util.NoSuchElementException;
-
+@ApplicationScoped
 public class EvaluationCycleServiceImpl extends BaseService implements EvaluationCycleService {
     private static final Logger logger = LogManager.getLogger(EvaluationCycleServiceImpl.class);
 
     @Inject
     DAOFactory daoFactory;
+
+    @Inject
     private ConverterFactory converterFactory;
 
     @Override
@@ -50,7 +55,7 @@ public class EvaluationCycleServiceImpl extends BaseService implements Evaluatio
             List<EvaluationCycle> cyles = daoFactory.forEvaluationCycle().findActive();
             if (cyles.size() > 1) {
                 logger.warn("Two or more active evaluation cycles found");
-                //todo figure out what to do in this case
+                // todo figure out what to do in this case
                 return null;
             } else if (cyles.size() == 1) {
                 return converterFactory.forEvaluationCycle().toDTO(cyles.getFirst());
@@ -99,10 +104,11 @@ public class EvaluationCycleServiceImpl extends BaseService implements Evaluatio
                     daoFactory.forEvaluation().create(evaluation);
                 }
             }
-            logger.info(" {} evaluations created in evaluation cycle with id {}", users.size(), evaluationCycle.getId());
+            logger.info(" {} evaluations created in evaluation cycle with id {}", users.size(),
+                    evaluationCycle.getId());
             return true;
         } catch (Exception e) {
-            logger.error("Error while creating evaluations for cycle with id {}",evaluationCycle.getId(), e);
+            logger.error("Error while creating evaluations for cycle with id {}", evaluationCycle.getId(), e);
             return false;
         }
     }

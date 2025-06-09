@@ -8,11 +8,13 @@ import java.util.Optional;
 import aor.proj3t.daos.interfaces.TrainingDAO;
 import aor.proj3t.entities.Training;
 import aor.proj3t.filters.TrainingFilter;
+import jakarta.ejb.Stateless;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 
+@Stateless
 public class TrainingDAOimpl extends AbstractDAO<Training, Long> implements TrainingDAO {
 
     @Override

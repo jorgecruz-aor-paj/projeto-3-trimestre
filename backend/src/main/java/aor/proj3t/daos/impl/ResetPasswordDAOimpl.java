@@ -4,8 +4,10 @@ import java.util.Optional;
 
 import aor.proj3t.daos.interfaces.ResetPasswordDAO;
 import aor.proj3t.entities.ResetPassword;
+import jakarta.ejb.Stateless;
 import jakarta.persistence.TypedQuery;
 
+@Stateless
 public class ResetPasswordDAOimpl extends AbstractDAO<ResetPassword, Long> implements ResetPasswordDAO {
 
     @Override

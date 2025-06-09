@@ -4,9 +4,12 @@ import java.util.Optional;
 
 import aor.proj3t.daos.interfaces.PendingRegistrationDAO;
 import aor.proj3t.entities.PendingRegistration;
+import jakarta.ejb.Stateless;
 import jakarta.persistence.TypedQuery;
 
-public class PendingRegistrationDAOimpl extends AbstractDAO<PendingRegistration, Long> implements PendingRegistrationDAO {
+@Stateless
+public class PendingRegistrationDAOimpl extends AbstractDAO<PendingRegistration, Long>
+        implements PendingRegistrationDAO {
 
     @Override
     public Optional<PendingRegistration> findByToken(String token) {
@@ -33,4 +36,3 @@ public class PendingRegistrationDAOimpl extends AbstractDAO<PendingRegistration,
         return query.getSingleResult() > 0;
     }
 }
-

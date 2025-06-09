@@ -4,6 +4,9 @@ import java.util.regex.Pattern;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+import jakarta.enterprise.context.ApplicationScoped;
+
+@ApplicationScoped
 public class PasswordUtil {
 
     // Password validation pattern: at least 8 chars, 1 uppercase, 1 lowercase, 1

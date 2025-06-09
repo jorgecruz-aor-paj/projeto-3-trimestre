@@ -24,8 +24,10 @@ import aor.proj3t.service.interfaces.UserService;
 import aor.proj3t.util.JwtUtil;
 import aor.proj3t.util.PasswordUtil;
 import aor.proj3t.util.converterutils.ConverterFactory;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
+@ApplicationScoped
 public class UserServiceImpl extends BaseService implements UserService {
     private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
 
@@ -47,7 +49,7 @@ public class UserServiceImpl extends BaseService implements UserService {
         String email = loginDTO.getEmail();
         String password = loginDTO.getPassword();
         Integer confirmationExpirationTime = getConfirmationExpirationTime();
-        if(!isEmailValid(email)) {
+        if (!isEmailValid(email)) {
             logger.error("Error registering user with email {} due to pre-existing email.", email);
             return false;
         }
@@ -69,12 +71,14 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Override
     public Boolean confirmUser(Long registrationId, UserDTO newUserDto) {
         try {
-            PendingRegistration registration = getEntity(daoFactory.forPendingRegistration().findById(registrationId),registrationId);
+            PendingRegistration registration = getEntity(daoFactory.forPendingRegistration().findById(registrationId),
+                    registrationId);
             if (registration == null) {
                 logger.warn("Failed to confirm user: No pending registration found with id {}", registrationId);
                 return false;
             }
-            Workplace workplace = getEntity(daoFactory.forWorkplace().findById(newUserDto.getWorkplaceId()), newUserDto.getWorkplaceId());
+            Workplace workplace = getEntity(daoFactory.forWorkplace().findById(newUserDto.getWorkplaceId()),
+                    newUserDto.getWorkplaceId());
             if (workplace == null) {
                 logger.warn("Failed to confirm user: Workplace ID {} does not exist", newUserDto.getWorkplaceId());
                 return false;
@@ -111,7 +115,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Override
     public Boolean changePassword(Long userId, String newRawPassword) {
         try {
-            User user = getEntity(daoFactory.forUser().findById(userId),userId);
+            User user = getEntity(daoFactory.forUser().findById(userId), userId);
             user.setPassword(passwordUtil.hashPassword(newRawPassword));
             daoFactory.forUser().update(user);
             return true;
@@ -127,8 +131,8 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Override
     public Boolean assignManager(Long userId, Long managerId) {
         try {
-            User user = getEntity(daoFactory.forUser().findById(userId),userId);
-            User manager = getEntity(daoFactory.forUser().findById(managerId),managerId);
+            User user = getEntity(daoFactory.forUser().findById(userId), userId);
+            User manager = getEntity(daoFactory.forUser().findById(managerId), managerId);
             user.setManager(manager);
             daoFactory.forUser().update(user);
             if (!manager.getRole().equals(Role.MANAGER)) {
@@ -153,9 +157,9 @@ public class UserServiceImpl extends BaseService implements UserService {
             return true;
         }
         try {
-            User manager = getEntity(daoFactory.forUser().findById(managerId),managerId);
+            User manager = getEntity(daoFactory.forUser().findById(managerId), managerId);
             List<User> users = getUserListFromIds(userIds);
-            if(users == null || users.isEmpty()){
+            if (users == null || users.isEmpty()) {
                 logger.error("No valid users Id's assigning manager in bulk. ");
                 return false;
             }
@@ -167,7 +171,7 @@ public class UserServiceImpl extends BaseService implements UserService {
                 manager.setRole(Role.MANAGER);
             }
             return true;
-        }catch (Exception e) {
+        } catch (Exception e) {
             logger.error("Error assigning manager with id {} in bulk. ", e);
             return false;
         }
@@ -176,7 +180,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Override
     public Boolean updateUser(UserDTO userDto) {
         try {
-            User user = getEntity(daoFactory.forUser().findById(userDto.getId()),userDto.getId());
+            User user = getEntity(daoFactory.forUser().findById(userDto.getId()), userDto.getId());
             user.setFirstName(userDto.getFirstName());
             user.setLastName(userDto.getLastName());
             user.setPhoneNumber(userDto.getPhoneNumber());
@@ -187,7 +191,8 @@ public class UserServiceImpl extends BaseService implements UserService {
             user.setPhotograph(userDto.getPhotograph());
             Workplace workplace;
             try {
-                workplace = getEntity(daoFactory.forWorkplace().findById(userDto.getWorkplaceId()), userDto.getWorkplaceId());
+                workplace = getEntity(daoFactory.forWorkplace().findById(userDto.getWorkplaceId()),
+                        userDto.getWorkplaceId());
             } catch (NoSuchElementException e) {
                 logger.error("Workplace with ID {} not found while updating user.", userDto.getWorkplaceId());
                 return false;
@@ -236,7 +241,7 @@ public class UserServiceImpl extends BaseService implements UserService {
         try {
             List<User> users = new ArrayList<>(userIds.length);
             for (Long userId : userIds) {
-                User user = getEntity(daoFactory.forUser().findById(userId),userId);
+                User user = getEntity(daoFactory.forUser().findById(userId), userId);
                 if (user != null) {
                     users.add(user);
                 } else {
@@ -254,13 +259,14 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     private Boolean isEmailValid(String email) {
-        try{
-            Optional<User> userOpt= daoFactory.forUser().findByEmail(email);
-            if(userOpt.isPresent()){
+        try {
+            Optional<User> userOpt = daoFactory.forUser().findByEmail(email);
+            if (userOpt.isPresent()) {
                 return false;
             }
-            Optional<PendingRegistration> pendingRegistrationOpt = daoFactory.forPendingRegistration().findByEmail(email);
-            if(pendingRegistrationOpt.isPresent()){
+            Optional<PendingRegistration> pendingRegistrationOpt = daoFactory.forPendingRegistration()
+                    .findByEmail(email);
+            if (pendingRegistrationOpt.isPresent()) {
                 return false;
             }
             return true;
