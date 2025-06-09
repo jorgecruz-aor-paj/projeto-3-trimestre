@@ -12,7 +12,7 @@ public final class AppConstants {
         }
 
         public static final int DEFAULT_TOKEN_EXPIRATION_TIME = 60; // value in minutes
-
+        public static final int DEFAULT_RESET_PASSWORD_TOKEN_EXPIRATION_TIME = 60; // value in minutes
         public static final int DEFAULT_CONFIRMATION_TOKEN_EXPIRATION_TIME = 60; // value in minutes
     }
 

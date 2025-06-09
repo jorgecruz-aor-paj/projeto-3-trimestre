@@ -24,6 +24,7 @@ import aor.proj3t.service.interfaces.UserService;
 import aor.proj3t.util.JwtUtil;
 import aor.proj3t.util.PasswordUtil;
 import aor.proj3t.util.converterutils.ConverterFactory;
+import io.jsonwebtoken.JwtException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
@@ -44,11 +45,24 @@ public class UserServiceImpl extends BaseService implements UserService {
     PasswordUtil passwordUtil;
 
     @Override
+    public UserDTO getUser(Long userId) {
+        try {
+            return converterFactory.forUser().toDTO(getEntity(daoFactory.forUser().findById(userId), userId));
+        } catch (NoSuchElementException e) {
+            logger.error("User with id {} not found", userId, e);
+            return null;
+        } catch (Exception e) {
+            logger.error("Error getting user with id {}", userId);
+            return null;
+        }
+    }
+
+    @Override
     public Boolean registerUser(LoginDTO loginDTO, String ipAddress) {
         Instant now = Instant.now();
         String email = loginDTO.getEmail();
         String password = loginDTO.getPassword();
-        Integer confirmationExpirationTime = getConfirmationExpirationTime();
+        Integer confirmationExpirationTime = getSettings().getConfirmationExpirationTime();
         if (!isEmailValid(email)) {
             logger.error("Error registering user with email {} due to pre-existing email.", email);
             return false;
@@ -65,6 +79,25 @@ public class UserServiceImpl extends BaseService implements UserService {
         } catch (Exception e) {
             logger.error("Error registering user with email {}.  {}", email, e);
             return false;
+        }
+    }
+
+    @Override
+    public String login(Long userId, LoginDTO loginDto, String ipAddress) throws Exception {
+        try {
+            User user = getEntity(daoFactory.forUser().findById(userId), userId);
+            Integer confirmationExpirationTime = getSettings().getConfirmationExpirationTime();
+            if (verifyCredentials(user, loginDto)) {
+                return jwtUtil.generateSessionToken(user.getId(), user.getEmail(), user.getRole().getName(), ipAddress,
+                        confirmationExpirationTime);
+            }
+            throw new JwtException("Invalid credentials");
+        } catch (NoSuchElementException e) {
+            logger.error("User with id {} not found", userId, e);
+            throw new NoSuchElementException("User with ID " + userId + " not found", e);
+        } catch (Exception e) {
+            logger.error("Error login with email {} due to pre-existing email.", userId, e);
+            throw new Exception("Unknown Error");
         }
     }
 
@@ -221,19 +254,17 @@ public class UserServiceImpl extends BaseService implements UserService {
         }
     }
 
-    private Integer getConfirmationExpirationTime() {
+    private Settings getSettings() {
+        Settings settings = new Settings(
+                AppConstants.Jwt.DEFAULT_CONFIRMATION_TOKEN_EXPIRATION_TIME,
+                AppConstants.Jwt.DEFAULT_TOKEN_EXPIRATION_TIME,
+                AppConstants.Jwt.DEFAULT_RESET_PASSWORD_TOKEN_EXPIRATION_TIME);
         try {
             Optional<Settings> settingsOpt = daoFactory.forSettings().getLatestSettings();
-            Settings settings;
-            if (settingsOpt.isPresent()) {
-                settings = settingsOpt.get();
-                return settings.getConfirmationExpirationTime();
-            } else {
-                return AppConstants.Jwt.DEFAULT_CONFIRMATION_TOKEN_EXPIRATION_TIME;
-            }
+            return settingsOpt.orElse(settings);
         } catch (Exception e) {
             logger.error("Error getting confirmation expiration window. ", e);
-            return AppConstants.Jwt.DEFAULT_CONFIRMATION_TOKEN_EXPIRATION_TIME;
+            return settings;
         }
     }
 
@@ -277,5 +308,11 @@ public class UserServiceImpl extends BaseService implements UserService {
             logger.error("Error finding email for pre-registering validation. ", e);
             return false;
         }
+    }
+
+    private Boolean verifyCredentials(User user, LoginDTO loginDto) {
+        return passwordUtil.verifyPassword(loginDto.getPassword(), user.getPassword()) &&
+                user.getEmail().equals(loginDto.getEmail());
+
     }
 }

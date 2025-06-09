@@ -39,6 +39,14 @@ public class Settings {
     @JoinColumn(name = "created_by", nullable = false)
     private User createdBy;
 
+    public Settings() {}
+
+    public Settings(Integer confirmationExpirationTime, Integer sessionExpirationTime, Integer resetPasswordExpirationTime) {
+        this.confirmationExpirationTime = confirmationExpirationTime;
+        this.sessionExpirationTime = sessionExpirationTime;
+        this.resetPasswordExpirationTime = resetPasswordExpirationTime;
+    }
+
     public Long getId() {
         return id;
     }

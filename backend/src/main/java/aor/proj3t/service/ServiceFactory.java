@@ -18,17 +18,17 @@ import jakarta.inject.Inject;
  * and provides a clean, consistent API for accessing them. The factory is
  * injected with all
  * available services and offers type-safe methods to retrieve them.
- * 
+ *
  * <p>
  * Example usage:
- * 
+ *
  * <pre>
  * User user = serviceFactory.forUser().findById(userId);
  * List<Training> trainings = serviceFactory.forTraining().getAllTrainings();
  * </pre>
- * 
+ *
  * @author Jorge Cruz & João Osório - Gr4
- * 
+ *
  * @version 1.0
  */
 @ApplicationScoped
@@ -54,13 +54,13 @@ public class ServiceFactory {
 
     /**
      * Get the service for User operations
-     * 
+     *
      * This method provides access to the service responsible for user-related
      * business logic and operations. The returned service handles all user
      * management
      * functionality such as creating, updating, retrieving, and authenticating
      * users.
-     * 
+     *
      * @return The UserService instance
      */
     public UserService forUser() {
@@ -69,7 +69,7 @@ public class ServiceFactory {
 
     /**
      * Get the service for Authentication operations
-     * 
+     *
      * @return The AuthService instance
      */
     public AuthService forAuth() {
@@ -78,7 +78,7 @@ public class ServiceFactory {
 
     /**
      * Get the service for Training operations
-     * 
+     *
      * @return The TrainingService instance
      */
     public TrainingService forTraining() {
@@ -87,7 +87,7 @@ public class ServiceFactory {
 
     /**
      * Get the service for TrainingParticipation operations
-     * 
+     *
      * @return The TrainingParticipationService instance
      */
     public TrainingParticipationService forTrainingParticipation() {
@@ -96,7 +96,7 @@ public class ServiceFactory {
 
     /**
      * Get the service for Evaluation operations
-     * 
+     *
      * @return The EvaluationService instance
      */
     public EvaluationService forEvaluation() {
@@ -105,7 +105,7 @@ public class ServiceFactory {
 
     /**
      * Get the service for EvaluationCycle operations
-     * 
+     *
      * @return The EvaluationCycleService instance
      */
     public EvaluationCycleService forEvaluationCycle() {

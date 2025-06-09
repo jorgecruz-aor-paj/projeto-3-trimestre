@@ -8,6 +8,9 @@ import java.util.Map;
 
 import javax.crypto.SecretKey;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.security.SignatureException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -247,10 +250,12 @@ public class JwtUtil {
                     .requireIssuer(issuer)
                     .build()
                     .parseSignedClaims(token);
-            return true;
+            return !isTokenExpired(token);
         } catch (SignatureException e) {
+            logger.error("Invalid JWT signature - invalid Base64 encoding", e);
             return false;
         } catch (JwtException | IllegalArgumentException e) {
+            logger.error("JWT token validation failed", e);
             return false;
         }
     }
@@ -325,4 +330,7 @@ public class JwtUtil {
         Instant expirationDate = extractExpirationDate(token);
         return expirationDate.isBefore(Instant.now());
     }
+
+
+
 }
