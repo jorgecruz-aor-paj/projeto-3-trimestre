@@ -181,4 +181,20 @@ public abstract class AbstractDAO<T, ID> implements BasicDAO<T, ID> {
         cq.where(cb.equal(root.get(relationPath).get(propertyName), value));
         return em.createQuery(cq).getResultList();
     }
+
+    /**
+     * Execute a count query for non-null property using Criteria API. This method
+     * counts entities where the specified property is not null.
+     *
+     * @param propertyName Property to check for non-null values
+     * @return Count of matching entities
+     */
+    protected Long executeCountQueryNotNull(String propertyName) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+        Root<T> root = cq.from(entityClass);
+        cq.select(cb.count(root));
+        cq.where(cb.isNotNull(root.get(propertyName)));
+        return em.createQuery(cq).getSingleResult();
+    }
 }
