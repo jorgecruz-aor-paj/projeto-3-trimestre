@@ -99,7 +99,8 @@ public abstract class AbstractDAO<T, ID> implements BasicDAO<T, ID> {
     }
 
     /**
-     * Execute a count query using Criteria API
+     * Execute a count query using Criteria API.
+     * Counts entities based on a property.
      *
      * @param propertyName The property to filter on (null for no filtering)
      * @param value        The value to filter by (ignored if propertyName is null)
@@ -124,7 +125,9 @@ public abstract class AbstractDAO<T, ID> implements BasicDAO<T, ID> {
     }
 
     /**
-     * Find entities by property using Criteria API
+     * Find entities by property using Criteria API.
+     * This method retrieves a list of entities that match a specific property
+     * value.
      *
      * @param propertyName Property name to filter on
      * @param value        Value to match
@@ -140,7 +143,10 @@ public abstract class AbstractDAO<T, ID> implements BasicDAO<T, ID> {
     }
 
     /**
-     * Find a single entity by property using Criteria API
+     * Find a single entity by property using Criteria API.
+     * This method retrieves a single entity that matches a specific property
+     * value.
+     * If no entity is found, it returns an empty Optional.
      * 
      * @param propertyName Property name to filter on
      * @param value        Value to match
