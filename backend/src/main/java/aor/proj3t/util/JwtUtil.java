@@ -14,11 +14,14 @@ import org.apache.logging.log4j.Logger;
 import aor.proj3t.enums.TokenType;
 import io.github.cdimascio.dotenv.Dotenv;
 import io.github.cdimascio.dotenv.DotenvException;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.DecodingException;
 import io.jsonwebtoken.security.InvalidKeyException;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import io.jsonwebtoken.security.WeakKeyException;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -229,5 +232,97 @@ public class JwtUtil {
             logger.error("Unexpected error while generating signing key", e);
             throw e;
         }
+    }
+
+    /**
+     * Validate a JWT token.
+     * 
+     * @param token The JWT token
+     * @return true if the token is valid, false otherwise
+     */
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parser()
+                    .verifyWith(getSigningKey())
+                    .requireIssuer(issuer)
+                    .build()
+                    .parseSignedClaims(token);
+            return true;
+        } catch (SignatureException e) {
+            return false;
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Extract all claims from a JWT token.
+     * 
+     * @param token The JWT token
+     * @return The claims
+     */
+    public Claims extractAllClaims(String token) {
+        return Jwts.parser()
+                .verifyWith(getSigningKey())
+                .requireIssuer(issuer)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+    }
+
+    /**
+     * Extract the user ID from a JWT token.
+     * 
+     * @param token The JWT token
+     * @return The user ID
+     */
+    public Long extractUserId(String token) {
+        Claims claims = extractAllClaims(token);
+        return claims.get("userId", Long.class);
+    }
+
+    /**
+     * Extract the user email from a JWT token.
+     * 
+     * @param token The JWT token
+     * @return The user email
+     */
+    public String extractUserEmail(String token) {
+        Claims claims = extractAllClaims(token);
+        return claims.getSubject();
+    }
+
+    /**
+     * Extract the user role from a JWT token.
+     * 
+     * @param token The JWT token
+     * @return The user role
+     */
+    public String extractUserRole(String token) {
+        Claims claims = extractAllClaims(token);
+        return claims.get("role", String.class);
+    }
+
+    /**
+     * Extract the token expiration date from a JWT token.
+     * 
+     * @param token The JWT token
+     * @return The expiration date as Instant
+     */
+    public Instant extractExpirationDate(String token) {
+        Claims claims = extractAllClaims(token);
+        Date expirationDate = claims.getExpiration();
+        return expirationDate.toInstant();
+    }
+
+    /**
+     * Check if a JWT token is expired.
+     * 
+     * @param token The JWT token
+     * @return true if the token is expired, false otherwise
+     */
+    public boolean isTokenExpired(String token) {
+        Instant expirationDate = extractExpirationDate(token);
+        return expirationDate.isBefore(Instant.now());
     }
 }
