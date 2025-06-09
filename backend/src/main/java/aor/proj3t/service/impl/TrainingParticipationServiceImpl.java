@@ -63,6 +63,10 @@ public class TrainingParticipationServiceImpl extends BaseService implements Tra
         try {
             User participant = getEntity(daoFactory.forUser().findById(trainingParticipationDTO.getParticipantId()),trainingParticipationDTO.getParticipantId());
             User manager = getEntity(daoFactory.forUser().findById(trainingParticipationDTO.getManagerId()),trainingParticipationDTO.getManagerId());
+            if(manager.getId() != participant.getManager().getId()){
+                logger.warn("User manager and trainingParticipation manager id's are a mismatch");
+                return false;
+            }
             Training training = getEntity(daoFactory.forTraining().findById(trainingParticipationDTO.getTrainingId()),trainingParticipationDTO.getTrainingId());
             TrainingParticipation trainingParticipation = new TrainingParticipation(
                     participant,
