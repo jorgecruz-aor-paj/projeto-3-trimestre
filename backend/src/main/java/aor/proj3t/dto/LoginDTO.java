@@ -7,9 +7,12 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "login")
 @XmlAccessorType(XmlAccessType.FIELD)
+
 public class LoginDTO {
+
   @XmlElement(name = "email")
   private String email;
+
   @XmlElement(name = "password")
   private String password;
 

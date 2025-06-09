@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import io.jsonwebtoken.JwtException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -42,12 +43,25 @@ public class UserServiceImpl extends BaseService implements UserService {
     PasswordUtil passwordUtil;
 
     @Override
+    public UserDTO getUser(Long userId) {
+        try {
+            return converterFactory.forUser().toDTO(getEntity(daoFactory.forUser().findById(userId), userId));
+        } catch (NoSuchElementException e) {
+            logger.error("User with id {} not found", userId, e);
+            return null;
+        } catch (Exception e) {
+            logger.error("Error getting user with id {}", userId);
+            return null;
+        }
+    }
+
+    @Override
     public Boolean registerUser(LoginDTO loginDTO, String ipAddress) {
         Instant now = Instant.now();
         String email = loginDTO.getEmail();
         String password = loginDTO.getPassword();
-        Integer confirmationExpirationTime = getConfirmationExpirationTime();
-        if(!isEmailValid(email)) {
+        Integer confirmationExpirationTime = getSettings().getConfirmationExpirationTime();
+        if (!isEmailValid(email)) {
             logger.error("Error registering user with email {} due to pre-existing email.", email);
             return false;
         }
@@ -67,9 +81,27 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     @Override
+    public String login(Long userId, LoginDTO loginDto, String ipAddress) throws Exception {
+        try {
+            User user = getEntity(daoFactory.forUser().findById(userId), userId);
+            Integer confirmationExpirationTime = getSettings().getConfirmationExpirationTime();
+            if (verifyCredentials(user, loginDto)) {
+                return jwtUtil.generateSessionToken(user.getId(), user.getEmail(), user.getRole().getName(), ipAddress, confirmationExpirationTime);
+            }
+            throw new JwtException("Invalid credentials");
+        } catch (NoSuchElementException e) {
+            logger.error("User with id {} not found", userId, e);
+            throw new NoSuchElementException("User with ID " + userId + " not found", e);
+        } catch (Exception e) {
+            logger.error("Error login with email {} due to pre-existing email.", userId, e);
+            throw new Exception ("Unknown Error");
+        }
+    }
+
+    @Override
     public Boolean confirmUser(Long registrationId, UserDTO newUserDto) {
         try {
-            PendingRegistration registration = getEntity(daoFactory.forPendingRegistration().findById(registrationId),registrationId);
+            PendingRegistration registration = getEntity(daoFactory.forPendingRegistration().findById(registrationId), registrationId);
             if (registration == null) {
                 logger.warn("Failed to confirm user: No pending registration found with id {}", registrationId);
                 return false;
@@ -111,7 +143,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Override
     public Boolean changePassword(Long userId, String newRawPassword) {
         try {
-            User user = getEntity(daoFactory.forUser().findById(userId),userId);
+            User user = getEntity(daoFactory.forUser().findById(userId), userId);
             user.setPassword(passwordUtil.hashPassword(newRawPassword));
             daoFactory.forUser().update(user);
             return true;
@@ -127,8 +159,8 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Override
     public Boolean assignManager(Long userId, Long managerId) {
         try {
-            User user = getEntity(daoFactory.forUser().findById(userId),userId);
-            User manager = getEntity(daoFactory.forUser().findById(managerId),managerId);
+            User user = getEntity(daoFactory.forUser().findById(userId), userId);
+            User manager = getEntity(daoFactory.forUser().findById(managerId), managerId);
             user.setManager(manager);
             daoFactory.forUser().update(user);
             if (!manager.getRole().equals(Role.MANAGER)) {
@@ -153,9 +185,9 @@ public class UserServiceImpl extends BaseService implements UserService {
             return true;
         }
         try {
-            User manager = getEntity(daoFactory.forUser().findById(managerId),managerId);
+            User manager = getEntity(daoFactory.forUser().findById(managerId), managerId);
             List<User> users = getUserListFromIds(userIds);
-            if(users == null || users.isEmpty()){
+            if (users == null || users.isEmpty()) {
                 logger.error("No valid users Id's assigning manager in bulk. ");
                 return false;
             }
@@ -167,7 +199,7 @@ public class UserServiceImpl extends BaseService implements UserService {
                 manager.setRole(Role.MANAGER);
             }
             return true;
-        }catch (Exception e) {
+        } catch (Exception e) {
             logger.error("Error assigning manager with id {} in bulk. ", e);
             return false;
         }
@@ -176,7 +208,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Override
     public Boolean updateUser(UserDTO userDto) {
         try {
-            User user = getEntity(daoFactory.forUser().findById(userDto.getId()),userDto.getId());
+            User user = getEntity(daoFactory.forUser().findById(userDto.getId()), userDto.getId());
             user.setFirstName(userDto.getFirstName());
             user.setLastName(userDto.getLastName());
             user.setPhoneNumber(userDto.getPhoneNumber());
@@ -216,27 +248,26 @@ public class UserServiceImpl extends BaseService implements UserService {
         }
     }
 
-    private Integer getConfirmationExpirationTime() {
+    private Settings getSettings() {
+        Settings settings = new Settings(
+                AppConstants.Jwt.DEFAULT_CONFIRMATION_TOKEN_EXPIRATION_TIME,
+                AppConstants.Jwt.DEFAULT_TOKEN_EXPIRATION_TIME,
+                AppConstants.Jwt.DEFAULT_RESET_PASSWORD_TOKEN_EXPIRATION_TIME);
         try {
             Optional<Settings> settingsOpt = daoFactory.forSettings().getLatestSettings();
-            Settings settings;
-            if (settingsOpt.isPresent()) {
-                settings = settingsOpt.get();
-                return settings.getConfirmationExpirationTime();
-            } else {
-                return AppConstants.Jwt.DEFAULT_CONFIRMATION_TOKEN_EXPIRATION_TIME;
-            }
+            return settingsOpt.orElse(settings);
         } catch (Exception e) {
             logger.error("Error getting confirmation expiration window. ", e);
-            return AppConstants.Jwt.DEFAULT_CONFIRMATION_TOKEN_EXPIRATION_TIME;
+            return settings;
         }
     }
+
 
     private List<User> getUserListFromIds(Long[] userIds) {
         try {
             List<User> users = new ArrayList<>(userIds.length);
             for (Long userId : userIds) {
-                User user = getEntity(daoFactory.forUser().findById(userId),userId);
+                User user = getEntity(daoFactory.forUser().findById(userId), userId);
                 if (user != null) {
                     users.add(user);
                 } else {
@@ -254,13 +285,13 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     private Boolean isEmailValid(String email) {
-        try{
-            Optional<User> userOpt= daoFactory.forUser().findByEmail(email);
-            if(userOpt.isPresent()){
+        try {
+            Optional<User> userOpt = daoFactory.forUser().findByEmail(email);
+            if (userOpt.isPresent()) {
                 return false;
             }
             Optional<PendingRegistration> pendingRegistrationOpt = daoFactory.forPendingRegistration().findByEmail(email);
-            if(pendingRegistrationOpt.isPresent()){
+            if (pendingRegistrationOpt.isPresent()) {
                 return false;
             }
             return true;
@@ -271,5 +302,11 @@ public class UserServiceImpl extends BaseService implements UserService {
             logger.error("Error finding email for pre-registering validation. ", e);
             return false;
         }
+    }
+
+    private Boolean verifyCredentials(User user, LoginDTO loginDto) {
+        return passwordUtil.verifyPassword(loginDto.getPassword(), user.getPassword()) &&
+                user.getEmail().equals(loginDto.getEmail());
+
     }
 }

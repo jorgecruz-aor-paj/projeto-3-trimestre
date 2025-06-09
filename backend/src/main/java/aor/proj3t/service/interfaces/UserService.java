@@ -10,6 +10,10 @@ import java.util.List;
 
 public interface UserService {
 
+    UserDTO getUser(Long userId);
+
+    String login(Long userId, LoginDTO loginDto, String ipAddress) throws Exception;
+
     Boolean registerUser(LoginDTO loginDTO, String ipAddress);
 
     Boolean confirmUser(Long registrationId, UserDTO newUserDto);
