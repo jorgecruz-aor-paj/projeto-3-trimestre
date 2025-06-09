@@ -2,16 +2,14 @@ package aor.proj3t.resource;
 
 import aor.proj3t.dto.LoginDTO;
 import aor.proj3t.dto.UserDTO;
-import aor.proj3t.entities.User;
 import aor.proj3t.enums.Role;
 import aor.proj3t.service.ServiceFactory;
 import aor.proj3t.util.JwtUtil;
 import aor.proj3t.util.Validator;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
-import jakarta.faces.context.ResponseStream;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
-import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -19,11 +17,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.HttpHeaders;
-
-
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * REST endpoint for authentication-related operations.
@@ -51,6 +44,7 @@ public class AuthResource {
 
     @POST
     @Path("/login")
+    @RolesAllowed({"Admin", "User"})
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(@HeaderParam("Authorization") String authHeader, LoginDTO loginDto) {
