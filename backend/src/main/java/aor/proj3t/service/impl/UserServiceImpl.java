@@ -47,6 +47,10 @@ public class UserServiceImpl extends BaseService implements UserService {
         String email = loginDTO.getEmail();
         String password = loginDTO.getPassword();
         Integer confirmationExpirationTime = getConfirmationExpirationTime();
+        if(!isEmailValid(email)) {
+            logger.error("Error registering user with email {} due to pre-existing email.", email);
+            return false;
+        }
         try {
             PendingRegistration registration = new PendingRegistration(email, password);
             registration
@@ -249,4 +253,23 @@ public class UserServiceImpl extends BaseService implements UserService {
         }
     }
 
+    private Boolean isEmailValid(String email) {
+        try{
+            Optional<User> userOpt= daoFactory.forUser().findByEmail(email);
+            if(userOpt.isPresent()){
+                return false;
+            }
+            Optional<PendingRegistration> pendingRegistrationOpt = daoFactory.forPendingRegistration().findByEmail(email);
+            if(pendingRegistrationOpt.isPresent()){
+                return false;
+            }
+            return true;
+        } catch (NoSuchElementException e) {
+            logger.error("Used email during registration: " + email);
+            return false;
+        } catch (Exception e) {
+            logger.error("Error finding email for pre-registering validation. ", e);
+            return false;
+        }
+    }
 }
