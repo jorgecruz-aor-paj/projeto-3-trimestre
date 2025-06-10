@@ -75,6 +75,11 @@ public class UserServiceImpl extends BaseService implements UserService {
             registration
                     .setExpirationDate(now.plus(confirmationExpirationTime, ChronoUnit.MINUTES));
             daoFactory.forPendingRegistration().create(registration);
+
+            String confirmationToken = jwtUtil.generateConfirmationToken(email, ipAddress, confirmationExpirationTime);
+            String link = "https://jorgeosorio-proj3t/api/auth/confirm?confirmationToken=" + confirmationToken;
+            System.out.println(link);
+            //todo enviar email de confirmação
             return true;
         } catch (Exception e) {
             logger.error("Error registering user with email {}.  {}", email, e);
