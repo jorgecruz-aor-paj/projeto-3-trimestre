@@ -50,8 +50,36 @@ public class AuthResource {
     JwtUtil jwtUtil;
 
     @POST
+    @Path("/register")
+    @RolesAllowed({"Admin", "Manager", "User"})
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response registerUser(LoginDTO loginDto) {
+        try {
+            String ipAddress = headers.getHeaderString("X-Forwarded-For");
+            if (ipAddress == null || ipAddress.isEmpty()) {
+                ipAddress = headers.getHeaderString("X-Real-IP");
+            }
+            if (!validator.isValidLoginDTO(loginDto)) {
+                return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorResponse("Invalid data")).build();
+            }
+
+            boolean success = serviceFactory.forUser().registerUser(loginDto, ipAddress);
+            if (success) {
+                return Response.status(Response.Status.CREATED).entity("User registered successfully").build();
+            } else {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ErrorResponse("Unexpected error ocurred")).build();
+            }
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(new ErrorResponse("Unexpected error"))
+                    .build();
+        }
+    }
+
+    @POST
     @Path("/login")
-    @RolesAllowed({ "Admin", "User" })
+    @RolesAllowed({"Admin", "User"})
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(@HeaderParam("Authorization") String authHeader, LoginDTO loginDto) {
@@ -93,7 +121,7 @@ public class AuthResource {
             }
 
             String sessionToken = serviceFactory.forUser().login(userId, loginDto, ipAddress);
-            if (sessionToken != null) {
+            if (sessionToken != null && !sessionToken.isEmpty()) {
                 logger.info("Login successful for user with id {}", userId);
                 return Response.status(Response.Status.OK).entity(sessionToken).build();
             } else {
