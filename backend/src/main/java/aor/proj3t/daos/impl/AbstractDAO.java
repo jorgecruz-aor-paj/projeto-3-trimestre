@@ -1,6 +1,5 @@
 package aor.proj3t.daos.impl;
 
-import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,14 +16,6 @@ public abstract class AbstractDAO<T, ID> implements BasicDAO<T, ID> {
     @PersistenceContext(unitName = "jorgeosorio-proj3t")
     protected EntityManager em;
 
-    protected final Class<T> entityClass;
-
-    @SuppressWarnings("unchecked")
-    public AbstractDAO() {
-        this.entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass())
-                .getActualTypeArguments()[0];
-    }
-
     @Override
     public T create(T entity) {
         em.persist(entity);
@@ -38,14 +29,14 @@ public abstract class AbstractDAO<T, ID> implements BasicDAO<T, ID> {
 
     @Override
     public Optional<T> findById(ID id) {
-        return Optional.ofNullable(em.find(entityClass, id));
+        return Optional.ofNullable(em.find(getEntityClass(), id));
     }
 
     @Override
     public List<T> findAll() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<T> cq = cb.createQuery(entityClass);
-        Root<T> root = cq.from(entityClass);
+        CriteriaQuery<T> cq = cb.createQuery(getEntityClass());
+        Root<T> root = cq.from(getEntityClass());
         cq.select(root);
         TypedQuery<T> query = em.createQuery(cq);
         return query.getResultList();
@@ -98,7 +89,7 @@ public abstract class AbstractDAO<T, ID> implements BasicDAO<T, ID> {
      */
     protected Optional<T> executeSingleResultNamedQuery(String queryName, Object... params) {
         try {
-            TypedQuery<T> query = em.createNamedQuery(queryName, entityClass);
+            TypedQuery<T> query = em.createNamedQuery(queryName, getEntityClass());
             for (int i = 0; i < params.length; i += 2) {
                 query.setParameter(params[i].toString(), params[i + 1]);
             }
@@ -120,7 +111,7 @@ public abstract class AbstractDAO<T, ID> implements BasicDAO<T, ID> {
     protected Long executeCountQuery(String propertyName, Object value, boolean isNull) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-        Root<T> root = cq.from(entityClass);
+        Root<T> root = cq.from(getEntityClass());
         cq.select(cb.count(root));
 
         if (propertyName != null) {
@@ -145,8 +136,8 @@ public abstract class AbstractDAO<T, ID> implements BasicDAO<T, ID> {
      */
     protected List<T> findByProperty(String propertyName, Object value) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<T> cq = cb.createQuery(entityClass);
-        Root<T> root = cq.from(entityClass);
+        CriteriaQuery<T> cq = cb.createQuery(getEntityClass());
+        Root<T> root = cq.from(getEntityClass());
         cq.select(root);
         cq.where(cb.equal(root.get(propertyName), value));
         return em.createQuery(cq).getResultList();
@@ -165,8 +156,8 @@ public abstract class AbstractDAO<T, ID> implements BasicDAO<T, ID> {
     protected Optional<T> findSingleByProperty(String propertyName, Object value) {
         try {
             CriteriaBuilder cb = em.getCriteriaBuilder();
-            CriteriaQuery<T> cq = cb.createQuery(entityClass);
-            Root<T> root = cq.from(entityClass);
+            CriteriaQuery<T> cq = cb.createQuery(getEntityClass());
+            Root<T> root = cq.from(getEntityClass());
             cq.select(root);
             cq.where(cb.equal(root.get(propertyName), value));
 
@@ -191,8 +182,8 @@ public abstract class AbstractDAO<T, ID> implements BasicDAO<T, ID> {
      */
     protected List<T> findByRelatedProperty(String relationPath, String propertyName, Object value) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<T> cq = cb.createQuery(entityClass);
-        Root<T> root = cq.from(entityClass);
+        CriteriaQuery<T> cq = cb.createQuery(getEntityClass());
+        Root<T> root = cq.from(getEntityClass());
         cq.select(root);
         cq.where(cb.equal(root.get(relationPath).get(propertyName), value));
         return em.createQuery(cq).getResultList();
@@ -208,7 +199,7 @@ public abstract class AbstractDAO<T, ID> implements BasicDAO<T, ID> {
     protected Long executeCountQueryNotNull(String propertyName) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-        Root<T> root = cq.from(entityClass);
+        Root<T> root = cq.from(getEntityClass());
         cq.select(cb.count(root));
         cq.where(cb.isNotNull(root.get(propertyName)));
         return em.createQuery(cq).getSingleResult();
