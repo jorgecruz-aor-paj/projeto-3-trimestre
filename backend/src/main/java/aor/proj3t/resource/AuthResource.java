@@ -1,5 +1,6 @@
 package aor.proj3t.resource;
 
+import aor.proj3t.dto.ResetPasswordDTO;
 import aor.proj3t.dto.UserRegistrationDTO;
 import jakarta.ws.rs.*;
 import org.apache.logging.log4j.LogManager;
@@ -168,5 +169,21 @@ public class AuthResource {
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ErrorResponse("Unexpected error")).build();
         }
+    }
+
+    @GET
+    @Path("/resetPassword/{email}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getResetPasswordLink(@PathParam ("email") String email){
+        String ipAddress = headers.getHeaderString("X-Forwarded-For");
+        if (ipAddress == null || ipAddress.isEmpty()) {
+            ipAddress = headers.getHeaderString("X-Real-IP");
+        }
+        logger.info("Received reset password request for email: {}", email);
+        if(!validatorUtil.isValidEmail(email)){
+            return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorResponse("Invalid data")).build();
+        }
+        return Response.status(Response.Status.OK).build();
     }
 }
