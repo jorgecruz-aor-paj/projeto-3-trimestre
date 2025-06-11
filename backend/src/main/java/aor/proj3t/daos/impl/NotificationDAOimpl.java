@@ -11,6 +11,11 @@ import jakarta.ejb.Stateless;
 public class NotificationDAOimpl extends AbstractDAO<Notification, Long> implements NotificationDAO {
 
         @Override
+        protected Class<Notification> getEntityClass() {
+                return Notification.class;
+        }
+
+        @Override
         public List<Notification> findBySenderId(Long senderId) {
 
                 return em.createQuery("SELECT n FROM Notification n WHERE n.sender.id = :senderId", Notification.class)

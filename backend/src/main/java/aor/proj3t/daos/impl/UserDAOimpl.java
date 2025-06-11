@@ -56,6 +56,12 @@ import jakarta.persistence.criteria.Root;
  */
 @Stateless
 public class UserDAOimpl extends AbstractDAO<User, Long> implements UserDAO {
+
+    @Override
+    protected Class<User> getEntityClass() {
+        return User.class;
+    }
+
     /**
      * Find a user by their email address.
      * 

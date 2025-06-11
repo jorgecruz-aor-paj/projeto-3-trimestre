@@ -12,6 +12,11 @@ public class PendingRegistrationDAOimpl extends AbstractDAO<PendingRegistration,
         implements PendingRegistrationDAO {
 
     @Override
+    protected Class<PendingRegistration> getEntityClass() {
+        return PendingRegistration.class;
+    }
+
+    @Override
     public Optional<PendingRegistration> findByToken(String token) {
         TypedQuery<PendingRegistration> query = em.createQuery(
                 "SELECT p FROM PendingRegistration p WHERE p.confirmationToken = :token", PendingRegistration.class);

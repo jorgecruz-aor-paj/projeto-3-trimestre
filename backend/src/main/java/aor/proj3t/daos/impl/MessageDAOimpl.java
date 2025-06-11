@@ -12,6 +12,11 @@ import jakarta.ejb.Stateless;
 public class MessageDAOimpl extends AbstractDAO<Message, Long> implements MessageDAO {
 
     @Override
+    protected Class<Message> getEntityClass() {
+        return Message.class;
+    }
+
+    @Override
     public List<Message> findBySenderId(Long senderId) {
 
         return em.createQuery("SELECT m FROM Message m WHERE m.sender.id = :senderId", Message.class)

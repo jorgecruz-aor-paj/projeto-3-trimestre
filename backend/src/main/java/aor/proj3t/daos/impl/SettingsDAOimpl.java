@@ -11,6 +11,11 @@ import jakarta.persistence.TypedQuery;
 public class SettingsDAOimpl extends AbstractDAO<Settings, Long> implements SettingsDAO {
 
     @Override
+    public Class<Settings> getEntityClass() {
+        return Settings.class;
+    }
+
+    @Override
     public Optional<Settings> getLatestSettings() {
         TypedQuery<Settings> query = em.createNamedQuery("Settings.getLatestSettings", Settings.class);
         query.setMaxResults(1);

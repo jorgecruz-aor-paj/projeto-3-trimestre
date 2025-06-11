@@ -11,6 +11,11 @@ import jakarta.persistence.TypedQuery;
 public class ResetPasswordDAOimpl extends AbstractDAO<ResetPassword, Long> implements ResetPasswordDAO {
 
     @Override
+    protected Class<ResetPassword> getEntityClass() {
+        return ResetPassword.class;
+    }
+
+    @Override
     public Optional<ResetPassword> findByToken(String token) {
         TypedQuery<ResetPassword> query = em.createQuery(
                 "SELECT rp FROM ResetPassword rp WHERE rp.resetPasswordToken = :token", ResetPassword.class);

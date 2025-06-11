@@ -18,6 +18,11 @@ import jakarta.persistence.criteria.Root;
 public class TrainingDAOimpl extends AbstractDAO<Training, Long> implements TrainingDAO {
 
     @Override
+    protected Class<Training> getEntityClass() {
+        return Training.class;
+    }
+
+    @Override
     public Boolean setAsInactive(Long trainingId) {
         Optional<Training> trainingOpt = findById(trainingId);
         if (trainingOpt.isPresent()) {

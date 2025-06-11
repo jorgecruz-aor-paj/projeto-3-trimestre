@@ -13,6 +13,11 @@ public class TrainingParticipationDAOimpl extends AbstractDAO<TrainingParticipat
         implements TrainingParticipationDAO {
 
     @Override
+    protected Class<TrainingParticipation> getEntityClass() {
+        return TrainingParticipation.class;
+    }
+
+    @Override
     public List<TrainingParticipation> findByTrainingId(Long trainingId) {
         String query = "SELECT tp FROM TrainingParticipation tp WHERE tp.training.id = :trainingId";
         return em.createQuery(query, TrainingParticipation.class)

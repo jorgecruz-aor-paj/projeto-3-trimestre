@@ -23,6 +23,11 @@ import jakarta.transaction.Transactional;
 public class EvaluationDAOimpl extends AbstractDAO<Evaluation, Long> implements EvaluationDAO {
 
     @Override
+    protected Class<Evaluation> getEntityClass() {
+        return Evaluation.class;
+    }
+
+    @Override
     public List<Evaluation> findByEvaluated(Long evaluatedId) {
         TypedQuery<Evaluation> query = em.createQuery(
                 "SELECT e FROM Evaluation e WHERE e.evaluated.id = :evaluatedId", Evaluation.class);

@@ -12,6 +12,11 @@ import jakarta.persistence.TypedQuery;
 public class SessionDAOimpl extends AbstractDAO<Session, Long> implements SessionDAO {
 
     @Override
+    protected Class<Session> getEntityClass() {
+        return Session.class;
+    }
+
+    @Override
     public Optional<Session> findByToken(String token) {
         TypedQuery<Session> query = em.createQuery(
                 "SELECT s FROM Session s WHERE s.sessionToken = :token", Session.class);

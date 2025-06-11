@@ -6,4 +6,9 @@ import jakarta.ejb.Stateless;
 
 @Stateless
 public class TrainingAreaDAOimpl extends AbstractDAO<TrainingArea, Long> implements TrainingAreaDAO {
+    
+    @Override
+    protected Class<TrainingArea> getEntityClass() {
+        return TrainingArea.class;
+    }
 }

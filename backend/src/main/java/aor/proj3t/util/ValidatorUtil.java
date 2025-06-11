@@ -14,7 +14,7 @@ public class ValidatorUtil {
         // Default constructor
     }
 
-    private Boolean isValidEmail(String email) {
+    public Boolean isValidEmail(String email) {
         if (email == null || email.isEmpty()) {
             return false;
         }
