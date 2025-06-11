@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import aor.proj3t.dto.UserRegistrationDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -107,45 +108,28 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     @Override
-    public Boolean confirmUser(Long registrationId, UserDTO newUserDto) {
+    public Boolean confirmUser(String email, UserRegistrationDTO userRegistrationDto) {
         try {
-            PendingRegistration registration = getEntity(daoFactory.forPendingRegistration().findById(registrationId),
-                    registrationId);
+
+            PendingRegistration registration = getPendingRegistration(email);
             if (registration == null) {
-                logger.warn("Failed to confirm user: No pending registration found with id {}", registrationId);
+                logger.warn("Failed to confirm user: No pending registration found for email {}", email);
                 return false;
             }
-            Workplace workplace = getEntity(daoFactory.forWorkplace().findById(newUserDto.getWorkplaceId()),
-                    newUserDto.getWorkplaceId());
+            Workplace workplace = getEntity(daoFactory.forWorkplace().findById(userRegistrationDto.getWorkplaceId()),
+                    userRegistrationDto.getWorkplaceId());
             if (workplace == null) {
-                logger.warn("Failed to confirm user: Workplace ID {} does not exist", newUserDto.getWorkplaceId());
+                logger.warn("Failed to confirm user: Workplace ID {} does not exist", userRegistrationDto.getWorkplaceId());
                 return false;
             }
 
-            User newUser = new User(
-                    registration.getEmail(),
-                    registration.getPassword(),
-                    newUserDto.getFirstName(),
-                    newUserDto.getLastName(),
-                    newUserDto.getPhoneNumber(),
-                    newUserDto.getAddress(),
-                    newUserDto.getBirthDate(),
-                    newUserDto.getRole(),
-                    workplace);
-
-            if (newUserDto.getBiography() != null) {
-                newUser.setBiography(newUserDto.getBiography());
-            }
-            // Create the user
+            User newUser = createNewUser(userRegistrationDto, registration, workplace);
             daoFactory.forUser().create(newUser);
-
-            // Delete the pending registration
             daoFactory.forPendingRegistration().deleteById(registration.getId());
-
             logger.info("User with email {} successfully registered and confirmed.", registration.getEmail());
             return true;
         } catch (Exception e) {
-            logger.error("Error confirming registration with id {}. ", registrationId, e);
+            logger.error("Error confirming registration with email {}.", email, e);
             return false;
         }
     }
@@ -320,4 +304,34 @@ public class UserServiceImpl extends BaseService implements UserService {
                 user.getEmail().equals(loginDto.getEmail());
 
     }
+
+    private PendingRegistration getPendingRegistration(String email) {
+        try {
+            Optional<PendingRegistration> pendingRegistrationOpt = daoFactory.forPendingRegistration().findByEmail(email);
+            return pendingRegistrationOpt.orElse(null);
+        } catch (Exception e) {
+            logger.error("Error getting pending registration. ", e);
+            return null;
+        }
+    }
+
+    private static User createNewUser(UserRegistrationDTO userRegistrationDto, PendingRegistration registration, Workplace workplace) {
+        User newUser = new User(
+                registration.getEmail(),
+                registration.getPassword(),
+                userRegistrationDto.getFirstName(),
+                userRegistrationDto.getLastName(),
+                userRegistrationDto.getPhoneNumber(),
+                userRegistrationDto.getAddress(),
+                userRegistrationDto.getBirthDate(),
+                Role.USER,
+                workplace);
+
+        if (userRegistrationDto.getBiography() != null) {
+            newUser.setBiography(userRegistrationDto.getBiography());
+        }
+        return newUser;
+    }
+
 }
+

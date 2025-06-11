@@ -3,6 +3,7 @@ package aor.proj3t.service.interfaces;
 import aor.proj3t.dto.LoginDTO;
 import aor.proj3t.dto.PendingRegistrationDTO;
 import aor.proj3t.dto.UserDTO;
+import aor.proj3t.dto.UserRegistrationDTO;
 import aor.proj3t.entities.User;
 import aor.proj3t.filters.UserFilter;
 
@@ -16,7 +17,7 @@ public interface UserService {
 
     Boolean registerUser(LoginDTO loginDTO, String ipAddress);
 
-    Boolean confirmUser(Long registrationId, UserDTO newUserDto);
+    Boolean confirmUser(String email, UserRegistrationDTO userRegistrationDTO);
 
     Boolean changePassword(Long userId, String newPassword);
 

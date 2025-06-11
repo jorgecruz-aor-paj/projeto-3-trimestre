@@ -41,3 +41,7 @@ logs/app.log
 
 ### Mac OS ###
 .DS_Store
+
+### Artifacts ###
+.out/
+out/

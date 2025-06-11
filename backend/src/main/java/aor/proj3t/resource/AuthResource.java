@@ -1,5 +1,7 @@
 package aor.proj3t.resource;
 
+import aor.proj3t.dto.UserRegistrationDTO;
+import jakarta.ws.rs.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -8,17 +10,12 @@ import aor.proj3t.dto.UserDTO;
 import aor.proj3t.enums.Role;
 import aor.proj3t.service.ServiceFactory;
 import aor.proj3t.util.JwtUtil;
-import aor.proj3t.util.Validator;
+import aor.proj3t.util.ValidatorUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.HeaderParam;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
@@ -44,7 +41,7 @@ public class AuthResource {
     ServiceFactory serviceFactory;
 
     @Inject
-    Validator validator;
+    ValidatorUtil validatorUtil;
 
     @Inject
     JwtUtil jwtUtil;
@@ -60,15 +57,15 @@ public class AuthResource {
             if (ipAddress == null || ipAddress.isEmpty()) {
                 ipAddress = headers.getHeaderString("X-Real-IP");
             }
-            if (!validator.isValidLoginDTO(loginDto)) {
+            if (!validatorUtil.isValidLoginDTO(loginDto)) {
                 return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorResponse("Invalid data")).build();
             }
 
-            boolean success = serviceFactory.forUser().registerUser(loginDto, ipAddress);
+            Boolean success = serviceFactory.forUser().registerUser(loginDto, ipAddress);
             if (success) {
                 return Response.status(Response.Status.CREATED).entity("User registered successfully").build();
             } else {
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ErrorResponse("Unexpected error ocurred")).build();
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ErrorResponse("Unexpected error")).build();
             }
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -79,7 +76,7 @@ public class AuthResource {
 
     @POST
     @Path("/login")
-    @RolesAllowed({"Admin", "User"})
+    @RolesAllowed({"Admin", "Manager", "User"})
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(@HeaderParam("Authorization") String authHeader, LoginDTO loginDto) {
@@ -88,7 +85,7 @@ public class AuthResource {
             ipAddress = headers.getHeaderString("X-Real-IP");
         }
 
-        if (!validator.isValidLoginDTO(loginDto)) {
+        if (!validatorUtil.isValidLoginDTO(loginDto)) {
             return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorResponse("Invalid data")).build();
         }
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
@@ -103,7 +100,6 @@ public class AuthResource {
                 return Response.status(Response.Status.UNAUTHORIZED)
                         .entity(new ErrorResponse("Invalid or expired token")).build();
             }
-            ;
             Claims claims = jwtUtil.extractAllClaims(token);
             Long userId = Long.parseLong(claims.get("userId").toString());
             String role = claims.get("role", String.class);
@@ -141,4 +137,36 @@ public class AuthResource {
         }
     }
 
+    @POST
+    @Path("/confirm")
+    @RolesAllowed({"Admin", "Manager", "User"})
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response confirmUser(@QueryParam("confirmationToken") String confirmationToken, UserRegistrationDTO userRegistrationDTO) {
+        String ipAddress = headers.getHeaderString("X-Forwarded-For");
+        if (ipAddress == null || ipAddress.isEmpty()) {
+            ipAddress = headers.getHeaderString("X-Real-IP");
+        }
+        logger.info("Received confirmation request for token: {}", confirmationToken);
+        if (!validatorUtil.isValidUserRegistrationDTO(userRegistrationDTO)) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorResponse("Invalid data")).build();
+        }
+        try {
+            if (!jwtUtil.validateToken(confirmationToken)) {
+                logger.warn("Invalid token");
+                return Response.status(Response.Status.UNAUTHORIZED)
+                        .entity(new ErrorResponse("Invalid or expired token")).build();
+            }
+            Claims claims = jwtUtil.extractAllClaims(confirmationToken);
+            String email = claims.get("email").toString();
+            Boolean success = serviceFactory.forUser().confirmUser(email, userRegistrationDTO);
+            if (success) {
+                return Response.status(Response.Status.OK).entity("User confirmed successfully").build();
+            } else {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ErrorResponse("Unexpected error")).build();
+            }
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ErrorResponse("Unexpected error")).build();
+        }
+    }
 }
