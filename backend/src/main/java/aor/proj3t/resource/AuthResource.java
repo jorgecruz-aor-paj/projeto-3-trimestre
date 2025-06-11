@@ -72,8 +72,7 @@ public class AuthResource {
             if (success) {
                 return Response.status(Response.Status.CREATED).entity("User registered successfully").build();
             } else {
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                        .entity(new ErrorResponse("Unexpected error")).build();
+                return Response.status(Response.Status.CONFLICT).entity(new ErrorResponse("Existing registration email")).build();
             }
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
