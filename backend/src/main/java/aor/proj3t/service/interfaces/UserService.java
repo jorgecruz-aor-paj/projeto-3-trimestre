@@ -13,7 +13,7 @@ public interface UserService {
 
     UserDTO getUser(Long userId);
 
-    String login(Long userId, LoginDTO loginDto, String ipAddress) throws Exception;
+    String login(LoginDTO loginDto, String ipAddress) throws Exception;
 
     Boolean registerUser(LoginDTO loginDTO, String ipAddress);
 

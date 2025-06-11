@@ -8,6 +8,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import aor.proj3t.dto.UserRegistrationDTO;
+import aor.proj3t.util.EmailUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -44,6 +45,8 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     @Inject
     PasswordUtil passwordUtil;
+    @Inject
+    private EmailUtil emailUtil;
 
     @Override
     public UserDTO getUser(Long userId) {
@@ -90,9 +93,9 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     @Override
-    public String login(Long userId, LoginDTO loginDto, String ipAddress) throws Exception {
+    public String login(LoginDTO loginDto, String ipAddress) throws Exception {
         try {
-            User user = getEntity(daoFactory.forUser().findById(userId), userId);
+            User user = getUserByEmail(loginDto.getEmail());
             Integer confirmationExpirationTime = getSettings().getConfirmationExpirationTime();
             if (verifyCredentials(user, loginDto)) {
                 return jwtUtil.generateSessionToken(user.getId(), user.getEmail(), user.getRole().getName(), ipAddress,
@@ -100,10 +103,10 @@ public class UserServiceImpl extends BaseService implements UserService {
             }
             throw new JwtException("Invalid credentials");
         } catch (NoSuchElementException e) {
-            logger.error("User with id {} not found", userId, e);
-            throw new NoSuchElementException("User with ID " + userId + " not found", e);
+            logger.error("User with email {} not found", loginDto.getEmail(), e);
+            throw new NoSuchElementException("User with  email " + loginDto.getEmail() + " not found", e);
         } catch (Exception e) {
-            logger.error("Error login with email {} due to pre-existing email.", userId, e);
+            logger.error("Error logging in with email {}.", loginDto.getEmail(), e);
             throw new Exception("Unknown Error");
         }
     }
@@ -254,8 +257,17 @@ public class UserServiceImpl extends BaseService implements UserService {
             return settingsOpt.orElse(settings);
         } catch (Exception e) {
             logger.error("Error getting confirmation expiration window. ", e);
-            System.out.println(settings.getConfirmationExpirationTime()); //todo remove after utility expires
             return settings;
+        }
+    }
+
+    private User getUserByEmail(String email) {
+        try {
+            Optional<User> userOpt = daoFactory.forUser().findByEmail(email);
+            return userOpt.orElse(null);
+        } catch (Exception e) {
+            logger.error("Error getting user by email {}. ",email, e);
+            throw new NoSuchElementException("No user found with email " + email);
         }
     }
 

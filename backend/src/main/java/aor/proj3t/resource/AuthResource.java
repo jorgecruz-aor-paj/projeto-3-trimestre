@@ -55,7 +55,6 @@ public class AuthResource {
 
     @POST
     @Path("/register")
-    // Public endpoint - no @Secured annotation
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response registerUser(LoginDTO loginDto) {
@@ -83,49 +82,20 @@ public class AuthResource {
 
     @POST
     @Path("/login")
-    @Secured
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response login(@HeaderParam("Authorization") String authHeader, LoginDTO loginDto) {
+    public Response login(LoginDTO loginDto) {
         String ipAddress = headers.getHeaderString("X-Forwarded-For");
         if (ipAddress == null || ipAddress.isEmpty()) {
             ipAddress = headers.getHeaderString("X-Real-IP");
         }
-
         if (!validatorUtil.isValidLoginDTO(loginDto)) {
             return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorResponse("Invalid data")).build();
         }
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            return Response.status(Response.Status.UNAUTHORIZED).entity(new ErrorResponse("Invalid token")).build();
-        }
-
-        String token = authHeader.substring("Bearer ".length()).trim();
-
         try {
-            if (!jwtUtil.validateToken(token)) {
-                logger.warn("Invalid token");
-                return Response.status(Response.Status.UNAUTHORIZED)
-                        .entity(new ErrorResponse("Invalid or expired token")).build();
-            }
-            Claims claims = jwtUtil.extractAllClaims(token);
-            Long userId = Long.parseLong(claims.get("userId").toString());
-            String role = claims.get("role", String.class);
-
-            UserDTO user = serviceFactory.forUser().getUser(userId);
-            if (user == null) {
-                return Response.status(Response.Status.NOT_FOUND)
-                        .entity(new ErrorResponse("Invalid token userId"))
-                        .build();
-            }
-
-            if (!user.getRole().equals(Role.valueOf(role))) {
-                return Response.status(Response.Status.FORBIDDEN).entity(new ErrorResponse("Invalid token role"))
-                        .build();
-            }
-
-            String sessionToken = serviceFactory.forUser().login(userId, loginDto, ipAddress);
+            String sessionToken = serviceFactory.forUser().login(loginDto, ipAddress);
             if (sessionToken != null && !sessionToken.isEmpty()) {
-                logger.info("Login successful for user with id {}", userId);
+                logger.info("Login successful for user with email {}", loginDto.getEmail());
                 return Response.status(Response.Status.OK).entity(sessionToken).build();
             } else {
                 return Response.status(Response.Status.UNAUTHORIZED)
@@ -194,4 +164,6 @@ public class AuthResource {
         }
         return Response.status(Response.Status.OK).build();
     }
+
+
 }
