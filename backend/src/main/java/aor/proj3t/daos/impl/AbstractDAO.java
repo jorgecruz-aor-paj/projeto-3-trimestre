@@ -17,12 +17,10 @@ public abstract class AbstractDAO<T, ID> implements BasicDAO<T, ID> {
     @PersistenceContext(unitName = "jorgeosorio-proj3t")
     protected EntityManager em;
 
-    protected final Class<T> entityClass;
+    public final Class<T> entityClass;
 
-    @SuppressWarnings("unchecked")
-    public AbstractDAO() {
-        this.entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass())
-                .getActualTypeArguments()[0];
+    protected AbstractDAO(Class<T> entityClass) {
+        this.entityClass = entityClass;
     }
 
     @Override
@@ -61,15 +59,6 @@ public abstract class AbstractDAO<T, ID> implements BasicDAO<T, ID> {
         return false;
     }
 
-    /**
-     * Gets the class of the entity.
-     * 
-     * This method returns the Class object for the dao type T. It's used
-     * by the query creation process and for reflection-based operations.
-     * 
-     * @return The entity class
-     */
-    protected abstract Class<T> getEntityClass();
 
     /**
      * Execute a named query with parameters.

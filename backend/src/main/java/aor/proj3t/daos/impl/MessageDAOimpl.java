@@ -11,9 +11,8 @@ import jakarta.ejb.Stateless;
 @Stateless
 public class MessageDAOimpl extends AbstractDAO<Message, Long> implements MessageDAO {
 
-    @Override
-    protected Class<Message> getEntityClass() {
-        return Message.class;
+    public MessageDAOimpl() {
+        super(Message.class);
     }
 
     @Override

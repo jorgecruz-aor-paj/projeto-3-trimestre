@@ -17,9 +17,8 @@ import jakarta.persistence.criteria.Root;
 @Stateless
 public class TrainingDAOimpl extends AbstractDAO<Training, Long> implements TrainingDAO {
 
-    @Override
-    protected Class<Training> getEntityClass() {
-        return Training.class;
+    public TrainingDAOimpl() {
+        super(Training.class);
     }
 
     @Override

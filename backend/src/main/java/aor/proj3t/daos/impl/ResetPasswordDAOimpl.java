@@ -10,9 +10,8 @@ import jakarta.persistence.TypedQuery;
 @Stateless
 public class ResetPasswordDAOimpl extends AbstractDAO<ResetPassword, Long> implements ResetPasswordDAO {
 
-    @Override
-    protected Class<ResetPassword> getEntityClass() {
-        return ResetPassword.class;
+    public ResetPasswordDAOimpl() {
+        super(ResetPassword.class);
     }
 
     @Override

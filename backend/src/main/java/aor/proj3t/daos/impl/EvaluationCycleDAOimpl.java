@@ -16,10 +16,9 @@ import jakarta.persistence.TypedQuery;
 @Stateless
 public class EvaluationCycleDAOimpl extends AbstractDAO<EvaluationCycle, Long> implements EvaluationCycleDAO {
 
-    @Override
-    protected Class<EvaluationCycle> getEntityClass() {
-        return EvaluationCycle.class;
-    }
+   public EvaluationCycleDAOimpl() {
+       super(EvaluationCycle.class);
+   }
 
     @Override
     public List<EvaluationCycle> findActive() {

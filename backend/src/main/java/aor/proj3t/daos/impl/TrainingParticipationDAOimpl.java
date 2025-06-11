@@ -12,10 +12,9 @@ import jakarta.ejb.Stateless;
 public class TrainingParticipationDAOimpl extends AbstractDAO<TrainingParticipation, Long>
         implements TrainingParticipationDAO {
 
-    @Override
-    protected Class<TrainingParticipation> getEntityClass() {
-        return TrainingParticipation.class;
-    }
+   public TrainingParticipationDAOimpl() {
+       super(TrainingParticipation.class);
+   }
 
     @Override
     public List<TrainingParticipation> findByTrainingId(Long trainingId) {
