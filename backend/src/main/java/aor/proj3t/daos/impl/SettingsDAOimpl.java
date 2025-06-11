@@ -10,8 +10,9 @@ import jakarta.persistence.TypedQuery;
 @Stateless
 public class SettingsDAOimpl extends AbstractDAO<Settings, Long> implements SettingsDAO {
 
-    public SettingsDAOimpl() {
-        super(Settings.class);
+    @Override
+    protected Class<Settings> getEntityClass() {
+        return Settings.class;
     }
 
     @Override

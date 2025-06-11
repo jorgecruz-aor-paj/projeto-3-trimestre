@@ -49,6 +49,7 @@ public class UserResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(@HeaderParam("Authorization") String authHeader, LoginDTO loginDto) {
+        String userAgent = headers.getHeaderString("User-Agent");
         String ipAddress = headers.getHeaderString("X-Forwarded-For");
         if (ipAddress == null || ipAddress.isEmpty()) {
             ipAddress = headers.getHeaderString("X-Real-IP");
@@ -85,7 +86,7 @@ public class UserResource {
                         .build();
             }
 
-            String sessionToken = serviceFactory.forUser().login(loginDto, ipAddress);
+            String sessionToken = serviceFactory.forUser().login(loginDto, ipAddress, userAgent);
             if (sessionToken != null && !sessionToken.isEmpty()) {
                 logger.info("Login successful for user with id {}", userId);
                 return Response.status(Response.Status.OK).entity(sessionToken).build();

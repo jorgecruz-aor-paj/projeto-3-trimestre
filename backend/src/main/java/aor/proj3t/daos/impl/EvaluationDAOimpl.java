@@ -22,9 +22,10 @@ import jakarta.transaction.Transactional;
 @Stateless
 public class EvaluationDAOimpl extends AbstractDAO<Evaluation, Long> implements EvaluationDAO {
 
-   public EvaluationDAOimpl() {
-       super(Evaluation.class);
-   }
+    @Override
+    protected Class<Evaluation> getEntityClass() {
+        return Evaluation.class;
+    }
 
     @Override
     public List<Evaluation> findByEvaluated(Long evaluatedId) {
@@ -68,7 +69,7 @@ public class EvaluationDAOimpl extends AbstractDAO<Evaluation, Long> implements 
     @Transactional
     public int closeAllCompletedEvaluations() {
         return em.createQuery(
-                        "UPDATE Evaluation e SET e.status = 'CLOSED' WHERE e.status = 'COMPLETED'")
+                "UPDATE Evaluation e SET e.status = 'CLOSED' WHERE e.status = 'COMPLETED'")
                 .executeUpdate();
     }
 
@@ -120,8 +121,8 @@ public class EvaluationDAOimpl extends AbstractDAO<Evaluation, Long> implements 
     @Override
     public Integer countUnclosedEvaluationsByCycleId(Long cycleId) {
         Long count = em.createQuery(
-                        "SELECT COUNT(e) FROM Evaluation e WHERE e.evaluationCycle.id = :cycleId AND e.status <> :closedStatus",
-                        Long.class)
+                "SELECT COUNT(e) FROM Evaluation e WHERE e.evaluationCycle.id = :cycleId AND e.status <> :closedStatus",
+                Long.class)
                 .setParameter("cycleId", cycleId)
                 .setParameter("closedStatus", EvaluationStatus.CLOSED)
                 .getSingleResult();

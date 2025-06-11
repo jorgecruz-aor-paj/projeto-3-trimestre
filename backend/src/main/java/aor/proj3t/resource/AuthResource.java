@@ -85,6 +85,7 @@ public class AuthResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(LoginDTO loginDto) {
+        String userAgent = headers.getHeaderString("User-Agent");
         String ipAddress = headers.getHeaderString("X-Forwarded-For");
         if (ipAddress == null || ipAddress.isEmpty()) {
             ipAddress = headers.getHeaderString("X-Real-IP");
@@ -93,7 +94,7 @@ public class AuthResource {
             return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorResponse("Invalid data")).build();
         }
         try {
-            String sessionToken = serviceFactory.forUser().login(loginDto, ipAddress);
+            String sessionToken = serviceFactory.forUser().login(loginDto, ipAddress, userAgent);
             if (sessionToken != null && !sessionToken.isEmpty()) {
                 logger.info("Login successful for user with email {}", loginDto.getEmail());
                 return Response.status(Response.Status.OK).entity(sessionToken).build();

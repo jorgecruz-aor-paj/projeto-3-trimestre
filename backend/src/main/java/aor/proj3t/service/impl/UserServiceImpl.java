@@ -8,6 +8,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import aor.proj3t.dto.UserRegistrationDTO;
+import aor.proj3t.entities.*;
 import aor.proj3t.util.EmailUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,10 +17,6 @@ import aor.proj3t.config.AppConstants;
 import aor.proj3t.daos.DAOFactory;
 import aor.proj3t.dto.LoginDTO;
 import aor.proj3t.dto.UserDTO;
-import aor.proj3t.entities.PendingRegistration;
-import aor.proj3t.entities.Settings;
-import aor.proj3t.entities.User;
-import aor.proj3t.entities.Workplace;
 import aor.proj3t.enums.Role;
 import aor.proj3t.filters.UserFilter;
 import aor.proj3t.service.interfaces.UserService;
@@ -93,13 +90,17 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     @Override
-    public String login(LoginDTO loginDto, String ipAddress) throws Exception {
+    public String login(LoginDTO loginDto, String ipAddress, String userAgent) throws Exception {
         try {
             User user = getUserByEmail(loginDto.getEmail());
             Integer confirmationExpirationTime = getSettings().getConfirmationExpirationTime();
             if (verifyCredentials(user, loginDto)) {
-                return jwtUtil.generateSessionToken(user.getId(), user.getEmail(), user.getRole().getName(), ipAddress,
+                String token = jwtUtil.generateSessionToken(user.getId(), user.getEmail(), user.getRole().getName(), ipAddress,
                         confirmationExpirationTime);
+                Instant tokenLimit = jwtUtil.extractExpirationDate(token);
+                Session newSession = new Session(token,ipAddress,userAgent,user,tokenLimit);
+                daoFactory.forSession().create(newSession);
+                return token;
             }
             throw new JwtException("Invalid credentials");
         } catch (NoSuchElementException e) {
@@ -300,6 +301,7 @@ public class UserServiceImpl extends BaseService implements UserService {
             }
             Optional<PendingRegistration> pendingRegistrationOpt = daoFactory.forPendingRegistration()
                     .findByEmail(email);
+            //TODO if found and registration is expired return true and delete pending registration
             if (pendingRegistrationOpt.isPresent()) {
                 return false;
             }

@@ -6,8 +6,9 @@ import jakarta.ejb.Stateless;
 
 @Stateless
 public class WorkPlaceDAOimpl extends AbstractDAO<Workplace, Long> implements WorkplaceDAO {
-    
-   public WorkPlaceDAOimpl() {
-       super(Workplace.class);
-   }
+
+    @Override
+    protected Class<Workplace> getEntityClass() {
+        return Workplace.class;
+    }
 }

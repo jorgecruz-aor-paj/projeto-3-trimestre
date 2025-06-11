@@ -24,7 +24,7 @@ public class Session {
     @Column(name = "expiration_date", nullable = false)
     private Instant expirationDate;
 
-    @Column(name = "token", nullable = false, unique = true)
+    @Column(name = "token", nullable = false, unique = true, length = 800)
     private String sessionToken;
 
     @Column(name = "is_active",nullable = false)
@@ -39,6 +39,16 @@ public class Session {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    public Session() {}
+
+    public Session(String sessionToken,String ipAddress, String userAgent, User user,Instant expirationDate) {
+        this.sessionToken = sessionToken;
+        this.ipAddress = ipAddress;
+        this.userAgent = userAgent;
+        this.user = user;
+        this.expirationDate = expirationDate;
+    }
 
     public Long getId() {
         return id;
