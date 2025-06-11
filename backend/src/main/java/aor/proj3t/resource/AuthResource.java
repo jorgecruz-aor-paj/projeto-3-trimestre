@@ -1,26 +1,23 @@
 package aor.proj3t.resource;
 
-import aor.proj3t.dto.UserRegistrationDTO;
-import jakarta.ws.rs.*;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.ThreadContext;
 
 import aor.proj3t.dto.LoginDTO;
-import aor.proj3t.dto.UserDTO;
-import aor.proj3t.enums.Role;
+import aor.proj3t.dto.UserRegistrationDTO;
 import aor.proj3t.service.ServiceFactory;
 import aor.proj3t.util.JwtUtil;
 import aor.proj3t.util.ValidatorUtil;
-import aor.proj3t.util.authutils.Secured;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.HeaderParam;
+import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Context;
@@ -59,10 +56,7 @@ public class AuthResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response registerUser(LoginDTO loginDto) {
         try {
-            String ipAddress = headers.getHeaderString("X-Forwarded-For");
-            if (ipAddress == null || ipAddress.isEmpty()) {
-                ipAddress = headers.getHeaderString("X-Real-IP");
-            }
+            String ipAddress = ThreadContext.get("clientIp");
             if (!validatorUtil.isValidLoginDTO(loginDto)) {
                 return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorResponse("Invalid data")).build();
             }
@@ -71,7 +65,8 @@ public class AuthResource {
             if (success) {
                 return Response.status(Response.Status.CREATED).entity("User registered successfully").build();
             } else {
-                return Response.status(Response.Status.CONFLICT).entity(new ErrorResponse("Existing registration email")).build();
+                return Response.status(Response.Status.CONFLICT)
+                        .entity(new ErrorResponse("Existing registration email")).build();
             }
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -85,11 +80,10 @@ public class AuthResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(LoginDTO loginDto) {
+
         String userAgent = headers.getHeaderString("User-Agent");
-        String ipAddress = headers.getHeaderString("X-Forwarded-For");
-        if (ipAddress == null || ipAddress.isEmpty()) {
-            ipAddress = headers.getHeaderString("X-Real-IP");
-        }
+        String ipAddress = ThreadContext.get("clientIp");
+
         if (!validatorUtil.isValidLoginDTO(loginDto)) {
             return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorResponse("Invalid data")).build();
         }
@@ -121,10 +115,7 @@ public class AuthResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response confirmUser(@QueryParam("confirmationToken") String confirmationToken,
             UserRegistrationDTO userRegistrationDTO) {
-        String ipAddress = headers.getHeaderString("X-Forwarded-For");
-        if (ipAddress == null || ipAddress.isEmpty()) {
-            ipAddress = headers.getHeaderString("X-Real-IP");
-        }
+        String ipAddress = ThreadContext.get("clientIp");
         logger.info("Received confirmation request for token: {}", confirmationToken);
         if (!validatorUtil.isValidUserRegistrationDTO(userRegistrationDTO)) {
             return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorResponse("Invalid data")).build();
@@ -155,16 +146,12 @@ public class AuthResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getResetPasswordLink(@PathParam("email") String email) {
-        String ipAddress = headers.getHeaderString("X-Forwarded-For");
-        if (ipAddress == null || ipAddress.isEmpty()) {
-            ipAddress = headers.getHeaderString("X-Real-IP");
-        }
+        // IP address available from ThreadContext when needed
         logger.info("Received reset password request for email: {}", email);
         if (!validatorUtil.isValidEmail(email)) {
             return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorResponse("Invalid data")).build();
         }
         return Response.status(Response.Status.OK).build();
     }
-
 
 }
