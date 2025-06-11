@@ -1,16 +1,17 @@
 package aor.proj3t.util;
 
-import aor.proj3t.dto.LoginDTO;
-import aor.proj3t.dto.UserRegistrationDTO;
-
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 import java.util.regex.Pattern;
 
+import aor.proj3t.dto.LoginDTO;
+import aor.proj3t.dto.UserRegistrationDTO;
+import jakarta.enterprise.context.ApplicationScoped;
 
+@ApplicationScoped
 public class ValidatorUtil {
 
-    private ValidatorUtil() {
+    public ValidatorUtil() {
+        // Default constructor
     }
 
     private Boolean isValidEmail(String email) {
@@ -68,8 +69,8 @@ public class ValidatorUtil {
         return birthDate.isBefore(LocalDate.now());
     }
 
-    public Boolean isValidBiography (String biography){
-        if(biography.length() < 2 || biography.length() > 250){
+    public Boolean isValidBiography(String biography) {
+        if (biography.length() < 2 || biography.length() > 250) {
             return false;
         }
         return true;
@@ -81,7 +82,6 @@ public class ValidatorUtil {
         }
         return true;
     }
-
 
     public Boolean isValidLoginDTO(LoginDTO loginDTO) {
         return isValidEmail(loginDTO.getEmail()) && isValidPassword(loginDTO.getPassword());
@@ -96,6 +96,5 @@ public class ValidatorUtil {
                 isValidAddress(userRegistrationDTO.getAddress()) &&
                 isValidWorkplaceId(userRegistrationDTO.getWorkplaceId());
     }
-
 
 }

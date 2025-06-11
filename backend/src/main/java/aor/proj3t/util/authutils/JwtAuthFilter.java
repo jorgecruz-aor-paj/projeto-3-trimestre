@@ -9,6 +9,7 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.Provider;
 
 @Provider
+@Secured
 public class JwtAuthFilter implements ContainerRequestFilter {
 
     @Inject
@@ -18,7 +19,8 @@ public class JwtAuthFilter implements ContainerRequestFilter {
     public void filter(ContainerRequestContext requestContext) {
         String authHeader = requestContext.getHeaderString("Authorization");
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).entity("Missing or invalid token").build());
+            requestContext.abortWith(
+                    Response.status(Response.Status.UNAUTHORIZED).entity("Missing or invalid token").build());
             return;
         }
 
@@ -32,8 +34,8 @@ public class JwtAuthFilter implements ContainerRequestFilter {
             requestContext.setSecurityContext(new CustomSecurityContext(userId, role));
 
         } catch (Exception e) {
-            requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).entity("Invalid or expired token").build());
+            requestContext.abortWith(
+                    Response.status(Response.Status.UNAUTHORIZED).entity("Invalid or expired token").build());
         }
     }
 }
-

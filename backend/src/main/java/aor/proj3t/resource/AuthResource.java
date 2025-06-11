@@ -8,15 +8,22 @@ import org.apache.logging.log4j.Logger;
 
 import aor.proj3t.dto.LoginDTO;
 import aor.proj3t.dto.UserDTO;
+import aor.proj3t.dto.UserRegistrationDTO;
 import aor.proj3t.enums.Role;
 import aor.proj3t.service.ServiceFactory;
 import aor.proj3t.util.JwtUtil;
 import aor.proj3t.util.ValidatorUtil;
+import aor.proj3t.util.authutils.Secured;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.HeaderParam;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
@@ -49,7 +56,7 @@ public class AuthResource {
 
     @POST
     @Path("/register")
-    @RolesAllowed({"Admin", "Manager", "User"})
+    // Public endpoint - no @Secured annotation
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response registerUser(LoginDTO loginDto) {
@@ -66,7 +73,8 @@ public class AuthResource {
             if (success) {
                 return Response.status(Response.Status.CREATED).entity("User registered successfully").build();
             } else {
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ErrorResponse("Unexpected error")).build();
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                        .entity(new ErrorResponse("Unexpected error")).build();
             }
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -77,7 +85,7 @@ public class AuthResource {
 
     @POST
     @Path("/login")
-    @RolesAllowed({"Admin", "Manager", "User"})
+    @Secured
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(@HeaderParam("Authorization") String authHeader, LoginDTO loginDto) {
@@ -140,10 +148,11 @@ public class AuthResource {
 
     @POST
     @Path("/confirm")
-    @RolesAllowed({"Admin", "Manager", "User"})
+    @Secured
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response confirmUser(@QueryParam("confirmationToken") String confirmationToken, UserRegistrationDTO userRegistrationDTO) {
+    public Response confirmUser(@QueryParam("confirmationToken") String confirmationToken,
+            UserRegistrationDTO userRegistrationDTO) {
         String ipAddress = headers.getHeaderString("X-Forwarded-For");
         if (ipAddress == null || ipAddress.isEmpty()) {
             ipAddress = headers.getHeaderString("X-Real-IP");
@@ -164,10 +173,12 @@ public class AuthResource {
             if (success) {
                 return Response.status(Response.Status.OK).entity("User confirmed successfully").build();
             } else {
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ErrorResponse("Unexpected error")).build();
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                        .entity(new ErrorResponse("Unexpected error")).build();
             }
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ErrorResponse("Unexpected error")).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ErrorResponse("Unexpected error"))
+                    .build();
         }
     }
 

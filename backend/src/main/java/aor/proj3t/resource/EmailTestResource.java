@@ -141,6 +141,7 @@ public class EmailTestResource {
          */
         @POST
         @Path("/ping")
+        // No @Secured annotation = publicly accessible
         public Response ping() {
                 return Response
                                 .status(Response.Status.OK)
