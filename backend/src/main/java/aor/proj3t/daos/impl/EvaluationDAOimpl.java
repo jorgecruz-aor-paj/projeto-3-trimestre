@@ -22,10 +22,9 @@ import jakarta.transaction.Transactional;
 @Stateless
 public class EvaluationDAOimpl extends AbstractDAO<Evaluation, Long> implements EvaluationDAO {
 
-    @Override
-    protected Class<Evaluation> getEntityClass() {
-        return Evaluation.class;
-    }
+   public EvaluationDAOimpl() {
+       super(Evaluation.class);
+   }
 
     @Override
     public List<Evaluation> findByEvaluated(Long evaluatedId) {

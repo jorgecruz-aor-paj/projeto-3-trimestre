@@ -11,9 +11,8 @@ import jakarta.persistence.TypedQuery;
 @Stateless
 public class SessionDAOimpl extends AbstractDAO<Session, Long> implements SessionDAO {
 
-    @Override
-    protected Class<Session> getEntityClass() {
-        return Session.class;
+    public SessionDAOimpl() {
+        super(Session.class);
     }
 
     @Override

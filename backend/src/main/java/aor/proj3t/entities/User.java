@@ -55,7 +55,7 @@ public class User {
         this.createdAt = Instant.now();
     }
 
-    @Column(name = "photograph", nullable = false)
+    @Column(name = "photograph")
     private String photograph;
 
     @Enumerated(EnumType.STRING)

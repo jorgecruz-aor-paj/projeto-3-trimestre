@@ -53,16 +53,6 @@ public abstract class AbstractDAO<T, ID> implements BasicDAO<T, ID> {
     }
 
     /**
-     * Gets the class of the entity.
-     * 
-     * This method returns the Class object for the dao type T. It's used
-     * by the query creation process and for reflection-based operations.
-     * 
-     * @return The entity class
-     */
-    protected abstract Class<T> getEntityClass();
-
-    /**
      * Execute a named query with parameters.
      *
      * @param queryName   The name of the query

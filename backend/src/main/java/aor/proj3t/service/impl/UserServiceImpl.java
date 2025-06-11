@@ -62,13 +62,14 @@ public class UserServiceImpl extends BaseService implements UserService {
     public Boolean registerUser(LoginDTO loginDTO, String ipAddress) {
         Instant now = Instant.now();
         String email = loginDTO.getEmail();
-        String password = loginDTO.getPassword();
+        String password = passwordUtil.hashPassword(loginDTO.getPassword());
         Integer confirmationExpirationTime = getSettings().getConfirmationExpirationTime();
-        if (!isEmailValid(email)) {
-            logger.error("Error registering user with email {} due to pre-existing email.", email);
-            return false;
-        }
         try {
+            if (!isEmailValid(email)) {
+                logger.error("Error registering user with email {} due to pre-existing email.", email);
+                return false;
+            }
+
             PendingRegistration registration = new PendingRegistration(email, password);
             registration
                     .setConfirmationToken(
@@ -253,6 +254,7 @@ public class UserServiceImpl extends BaseService implements UserService {
             return settingsOpt.orElse(settings);
         } catch (Exception e) {
             logger.error("Error getting confirmation expiration window. ", e);
+            System.out.println(settings.getConfirmationExpirationTime()); //todo remove after utility expires
             return settings;
         }
     }
@@ -278,7 +280,7 @@ public class UserServiceImpl extends BaseService implements UserService {
         }
     }
 
-    private Boolean isEmailValid(String email) {
+    private Boolean isEmailValid(String email) throws Exception {
         try {
             Optional<User> userOpt = daoFactory.forUser().findByEmail(email);
             if (userOpt.isPresent()) {
@@ -291,11 +293,10 @@ public class UserServiceImpl extends BaseService implements UserService {
             }
             return true;
         } catch (NoSuchElementException e) {
-            logger.error("Used email during registration: " + email);
-            return false;
+            return true;
         } catch (Exception e) {
             logger.error("Error finding email for pre-registering validation. ", e);
-            return false;
+            throw new Exception("Unexpected error validating email");
         }
     }
 
@@ -330,6 +331,12 @@ public class UserServiceImpl extends BaseService implements UserService {
         if (userRegistrationDto.getBiography() != null) {
             newUser.setBiography(userRegistrationDto.getBiography());
         }
+        if(userRegistrationDto.getPhotograph() != null) {
+            newUser.setPhotograph(userRegistrationDto.getPhotograph());
+        }else {
+            newUser.setPhotograph("photo");
+        }
+        //todo remove photograph from hardcoded string to path
         return newUser;
     }
 

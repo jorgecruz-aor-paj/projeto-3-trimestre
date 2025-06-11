@@ -19,7 +19,7 @@ public class PendingRegistration {
     @Column(name = "email", nullable = false, unique = true,updatable = false)
     private String email;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password", nullable = false, length = 800)
     private String password;
 
 
@@ -31,7 +31,7 @@ public class PendingRegistration {
         this.createdAt = Instant.now();
     }
 
-    @Column(name = "confirmation_token", nullable = false)
+    @Column(name = "confirmation_token", nullable = false, length = 800)
     private String confirmationToken;
 
     @Column(name = "expiration_date", nullable = false)

@@ -27,8 +27,8 @@ public class ValidatorUtil {
         if (password == null || password.isEmpty()) {
             return false;
         }
-        String emailRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*#?&])\\S{8,}$";
-        Pattern pattern = Pattern.compile(emailRegex);
+        String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*#?&.-_])\\S{8,}$";
+        Pattern pattern = Pattern.compile(passwordRegex);
         return pattern.matcher(password).matches();
     }
 
@@ -77,7 +77,7 @@ public class ValidatorUtil {
     }
 
     public Boolean isValidWorkplaceId(Long workplaceId) {
-        if (workplaceId == null || workplaceId >= 0) {
+        if (workplaceId == null || workplaceId <= 0) {
             return false;
         }
         return true;

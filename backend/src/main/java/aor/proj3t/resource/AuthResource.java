@@ -72,8 +72,7 @@ public class AuthResource {
             if (success) {
                 return Response.status(Response.Status.CREATED).entity("User registered successfully").build();
             } else {
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                        .entity(new ErrorResponse("Unexpected error")).build();
+                return Response.status(Response.Status.CONFLICT).entity(new ErrorResponse("Existing registration email")).build();
             }
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -147,7 +146,6 @@ public class AuthResource {
 
     @POST
     @Path("/confirm")
-    @Secured
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response confirmUser(@QueryParam("confirmationToken") String confirmationToken,

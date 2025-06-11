@@ -11,9 +11,8 @@ import jakarta.persistence.TypedQuery;
 public class PendingRegistrationDAOimpl extends AbstractDAO<PendingRegistration, Long>
         implements PendingRegistrationDAO {
 
-    @Override
-    protected Class<PendingRegistration> getEntityClass() {
-        return PendingRegistration.class;
+    public PendingRegistrationDAOimpl() {
+        super(PendingRegistration.class);
     }
 
     @Override
