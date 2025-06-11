@@ -115,11 +115,12 @@ public class AuthResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response confirmUser(@QueryParam("confirmationToken") String confirmationToken,
             UserRegistrationDTO userRegistrationDTO) {
-        String ipAddress = ThreadContext.get("clientIp");
         logger.info("Received confirmation request for token: {}", confirmationToken);
+
         if (!validatorUtil.isValidUserRegistrationDTO(userRegistrationDTO)) {
             return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorResponse("Invalid data")).build();
         }
+
         try {
             if (!jwtUtil.validateToken(confirmationToken)) {
                 logger.warn("Invalid token");
@@ -146,11 +147,12 @@ public class AuthResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getResetPasswordLink(@PathParam("email") String email) {
-        // IP address available from ThreadContext when needed
         logger.info("Received reset password request for email: {}", email);
+
         if (!validatorUtil.isValidEmail(email)) {
             return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorResponse("Invalid data")).build();
         }
+
         return Response.status(Response.Status.OK).build();
     }
 
