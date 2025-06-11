@@ -331,6 +331,12 @@ public class UserServiceImpl extends BaseService implements UserService {
         if (userRegistrationDto.getBiography() != null) {
             newUser.setBiography(userRegistrationDto.getBiography());
         }
+        if(userRegistrationDto.getPhotograph() != null) {
+            newUser.setPhotograph(userRegistrationDto.getPhotograph());
+        }else {
+            newUser.setPhotograph("photo");
+        }
+        //todo remove photograph from hardcoded string to path
         return newUser;
     }
 

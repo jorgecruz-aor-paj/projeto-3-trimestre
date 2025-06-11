@@ -146,7 +146,6 @@ public class AuthResource {
 
     @POST
     @Path("/confirm")
-    @Secured
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response confirmUser(@QueryParam("confirmationToken") String confirmationToken,
