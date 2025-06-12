@@ -71,8 +71,28 @@ public class FileStorageUtil {
                 filePath = fileStoragePath.resolve(defaultProfilePicture).normalize();
             }
             return Files.readAllBytes(filePath);
-        } catch (Exception e) {
+        } catch (IOException e) {
+            logger.error("Error retrieving file: {}", fileName, e);
+            throw new RuntimeException("Could not retrieve file " + fileName, e);
         }
+    }
+
+    public Boolean deleteFile(String fileName) {
+        try {
+            if (fileName.equals(defaultProfilePicture)) {
+                return false; // Do not allow deletion of the default profile picture
+            }
+            Path filePath = fileStoragePath.resolve(fileName).normalize();
+            return Files.deleteIfExists(filePath);
+
+        } catch (IOException e) {
+            logger.error("Error deleting file: {}", fileName, e);
+            return false;
+        }
+    }
+
+    public String getDefaulStringtProfilePicture() {
+        return defaultProfilePicture;
     }
 
 }
