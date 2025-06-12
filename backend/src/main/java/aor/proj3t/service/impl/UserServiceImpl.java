@@ -243,6 +243,17 @@ public class UserServiceImpl extends BaseService implements UserService {
         }
     }
 
+    @Override
+    public Boolean sendResetPasswordLink(String email,String ipAddress){
+        try{
+            Settings settings = getSettings();
+            return sendResetPasswordEmail(email,ipAddress,settings.getResetPasswordExpirationTime());
+        }catch (Exception e){
+            logger.error("Error resetting password. ", e);
+            return false;
+        }
+    }
+
     private Settings getSettings() {
         Settings settings = new Settings(
                 AppConstants.Jwt.DEFAULT_CONFIRMATION_TOKEN_EXPIRATION_TIME,
@@ -355,6 +366,17 @@ public class UserServiceImpl extends BaseService implements UserService {
             String baseUrl = "https://localhost:8443/jorgeosorio-proj3t/api/auth";
             emailUtil.sendConfirmationEmail(email,confirmationToken,baseUrl);
             return true;
+        }catch (Exception e) {
+            logger.error("Error sending confirmation email to {}", email, e);
+            return false;
+        }
+    }
+
+    private Boolean sendResetPasswordEmail (String email, String ipAddress, Integer resetPasswordExpirationTime) {
+        try {
+            String resetPasswordToken = jwtUtil.generatePasswordResetToken(email, ipAddress, resetPasswordExpirationTime);
+            String baseUrl = "https://localhost:8443/jorgeosorio-proj3t/api/auth";
+            return emailUtil.sendPasswordResetEmail(email,resetPasswordToken,baseUrl);
         }catch (Exception e) {
             logger.error("Error sending confirmation email to {}", email, e);
             return false;

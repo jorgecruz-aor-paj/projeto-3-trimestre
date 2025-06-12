@@ -148,12 +148,15 @@ public class AuthResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getResetPasswordLink(@PathParam("email") String email) {
         logger.info("Received reset password request for email: {}", email);
-
-        if (!validatorUtil.isValidEmail(email)) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorResponse("Invalid data")).build();
+        String userAgent = headers.getHeaderString("User-Agent");
+        String ipAddress = ThreadContext.get("clientIp");
+        Boolean success = serviceFactory.forUser().sendResetPasswordLink(email, ipAddress);
+        if (success) {
+            return Response.status(Response.Status.OK).entity(new ErrorResponse("Email sent. Check your inbox")).build();
+        }else{
+            //TODO there is no validation of email on the response to not give away which emails are valid
+            return Response.status(Response.Status.OK).entity(new ErrorResponse("Email sent. Check your inbox")).build();
         }
-
-        return Response.status(Response.Status.OK).build();
     }
 
 }
