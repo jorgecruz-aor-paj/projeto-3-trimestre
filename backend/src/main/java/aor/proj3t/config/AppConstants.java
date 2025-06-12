@@ -1,5 +1,7 @@
 package aor.proj3t.config;
 
+import java.util.Set;
+
 public final class AppConstants {
 
     private AppConstants() {
@@ -73,5 +75,11 @@ public final class AppConstants {
          * This is set to 5 MB (5,000,000 bytes).
          */
         public static final int MAX_FILE_SIZE = 5_000_000;
+
+        /**
+         * Allowed MIME types for image uploads.
+         * This set includes JPEG, PNG, and GIF formats.
+         */
+        public static final Set<String> ALLOWED_IMAGE_TYPES = Set.of("image/jpeg", "image/png", "image/gif");
     }
 }
