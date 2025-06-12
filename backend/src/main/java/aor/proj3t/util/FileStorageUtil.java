@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,7 +19,7 @@ public class FileStorageUtil {
     private static final Logger logger = LogManager.getLogger(FileStorageUtil.class);
 
     private Path fileStoragePath;
-    private String defaultProfilePicture = "default-profile-picture.png";
+    private final String defaultProfilePicture = "default-profile-picture.png";
 
     @PostConstruct
     public void init() {
@@ -44,6 +45,33 @@ public class FileStorageUtil {
             }
         } catch (Exception e) {
             logger.error("Error checking default profile picture", e);
+        }
+    }
+
+    public String storeFile(byte[] fileContent, String fileName, String fileExtension) {
+        try {
+            String uniqueFileName = UUID.randomUUID().toString() + "." + fileExtension;
+            Path targetLocation = fileStoragePath.resolve(uniqueFileName);
+
+            Files.write(targetLocation, fileContent);
+            logger.info("Stored file: {} as {}", fileName, uniqueFileName);
+            return uniqueFileName;
+        } catch (IOException e) {
+            logger.error("Error storing file: {}", fileName, e);
+            throw new RuntimeException("Could not store file " + fileName, e);
+        }
+    }
+
+    public byte[] getFile(String fileName) {
+        try {
+            Path filePath = fileStoragePath.resolve(fileName).normalize();
+
+            if (!filePath.toFile().exists()) {
+                logger.warn("File not found: {}, using default profile picture", fileName);
+                filePath = fileStoragePath.resolve(defaultProfilePicture).normalize();
+            }
+            return Files.readAllBytes(filePath);
+        } catch (Exception e) {
         }
     }
 
