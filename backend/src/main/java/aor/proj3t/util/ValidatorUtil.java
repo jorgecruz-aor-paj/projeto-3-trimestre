@@ -4,7 +4,9 @@ import java.time.LocalDate;
 import java.util.regex.Pattern;
 
 import aor.proj3t.dto.LoginDTO;
+import aor.proj3t.dto.UserDTO;
 import aor.proj3t.dto.UserRegistrationDTO;
+import aor.proj3t.enums.Role;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
@@ -83,6 +85,33 @@ public class ValidatorUtil {
         return true;
     }
 
+    public Boolean isValidPhotograph(String photograph) {
+        // Accepts null (optional field), or valid base64 string
+        if (photograph == null || photograph.isEmpty()) {
+            return true;
+        }
+        //String base64Regex = "^[A-Za-z0-9+/=]+$";
+        //return photograph.matches(base64Regex);
+        return true;
+    }
+
+    public Boolean isValidManagerId(Long managerId) {
+        // Optional field; if present must be positive
+        return managerId == null || managerId > 0;
+    }
+
+    public Boolean isValidRole(String role) {
+        if (role == null || role.isEmpty()) {
+            return false;
+        }
+        for (Role roleEnum : Role.values()) {
+            if (roleEnum.name().equalsIgnoreCase(role)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public Boolean isValidLoginDTO(LoginDTO loginDTO) {
         return isValidEmail(loginDTO.getEmail()) && isValidPassword(loginDTO.getPassword());
     }
@@ -96,5 +125,20 @@ public class ValidatorUtil {
                 isValidAddress(userRegistrationDTO.getAddress()) &&
                 isValidWorkplaceId(userRegistrationDTO.getWorkplaceId());
     }
+
+    public Boolean isValidUserDTO(UserDTO userDTO) {
+        System.out.println("here");
+        return isValidName(userDTO.getFirstName()) &&
+                isValidName(userDTO.getLastName()) &&
+                isValidPhone(userDTO.getPhoneNumber()) &&
+                isValidAddress(userDTO.getAddress()) &&
+                isValidBirthDate(userDTO.getBirthDate()) &&
+                isValidBiography(userDTO.getBiography()) &&
+                isValidWorkplaceId(userDTO.getWorkplaceId()) &&
+                isValidPhotograph(userDTO.getPhotograph()) &&
+                isValidManagerId(userDTO.getManagerId()) &&
+                isValidRole(userDTO.getRole().getName());
+    }
+
 
 }

@@ -1,16 +1,15 @@
 package aor.proj3t.service.interfaces;
 
 import java.util.List;
-import java.util.Optional;
 
 import aor.proj3t.dto.LoginDTO;
 import aor.proj3t.entities.Session;
 
 public interface AuthService {
 
-    String login(LoginDTO loginDto, String ipAddress, String userAgent) throws Exception;
+    String login(LoginDTO loginDto, String ipAddress, String userAgent);
 
-    Boolean logout(Long userId, String token);
+    void logout(Long userId, String token);
 
     /**
      * Logout a user from all devices.
@@ -37,5 +36,9 @@ public interface AuthService {
     int cleanupExpiredSessions();
 
     Boolean isValidToken(String token);
+
+    Long getUserIdFromAuthHeader(String authHeader);
+    Long getUserIdFromToken(String token);
+
 
     }

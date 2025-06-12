@@ -1,16 +1,22 @@
 package aor.proj3t.enums;
 
 public enum Role {
-        ADMIN(1, "Admin"), USER(2,"User"), MANAGER(3,"Manager");
+        ADMIN(1, "Admin"),
+        USER(2,"User"),
+        MANAGER(3,"Manager");
+        
         private int id;
         private String name;
+
         Role(int id, String name) {
                 this.id = id;
                 this.name = name;
         }
+
         public int getId() {
                 return id;
         }
+
         public String getName() {
                 return name;
         }

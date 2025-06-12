@@ -9,6 +9,8 @@ import aor.proj3t.config.AppConstants;
 import aor.proj3t.dto.UserDTO;
 import aor.proj3t.entities.Settings;
 import aor.proj3t.entities.User;
+import aor.proj3t.exceptions.NotFoundException;
+import aor.proj3t.exceptions.UnauthorizedException;
 import aor.proj3t.resource.ErrorResponse;
 import aor.proj3t.service.ServiceFactory;
 import aor.proj3t.util.JwtUtil;
@@ -50,42 +52,35 @@ public class AuthServiceImpl extends BaseService implements AuthService {
     PasswordUtil passwordUtil;
 
     @Override
-    public String login(LoginDTO loginDto, String ipAddress, String userAgent) throws Exception {
+    public String login(LoginDTO loginDTO, String ipAddress, String userAgent) {
         try {
-            User user = getUserByEmail(loginDto.getEmail());
-            Integer confirmationExpirationTime = getSettings().getConfirmationExpirationTime();
-            if (verifyCredentials(user, loginDto)) {
-                String token = jwtUtil.generateSessionToken(user.getId(), user.getEmail(), user.getRole().getName(), ipAddress,
-                        confirmationExpirationTime);
-                Instant tokenLimit = jwtUtil.extractExpirationDate(token);
-                Session newSession = new Session(token,ipAddress,userAgent,user,tokenLimit);
-                daoFactory.forSession().create(newSession);
-                return token;
-            }else{
-                logger.warn("Invalid credentials on login for email {} ", loginDto.getEmail());
-                return "";
+            User user = daoFactory.forUser()
+                    .findByEmail(loginDTO.getEmail())
+                    .orElseThrow(() -> new UnauthorizedException("Invalid credentials"));
+
+            if (!passwordUtil.verifyPassword(loginDTO.getPassword(), user.getPassword())) {
+                throw new UnauthorizedException("Invalid credentials");
             }
-        } catch (NoSuchElementException e) {
-            logger.error("User with email {} not found", loginDto.getEmail(), e);
-            throw new NoSuchElementException("User with  email " + loginDto.getEmail() + " not found", e);
+            Integer sessionTimeoutMinutes = getSettings().getSessionExpirationTime();
+            String token = jwtUtil.generateSessionToken(user.getId(), user.getEmail(), user.getRole().getName(), ipAddress, sessionTimeoutMinutes);
+            Instant tokenLimit = jwtUtil.extractExpirationDate(token);
+            Session newSession = new Session(token,ipAddress,userAgent,user,tokenLimit);
+            daoFactory.forSession().create(newSession);
+            return token;
+
         } catch (Exception e) {
-            logger.error("Error logging in with email {}.", loginDto.getEmail(), e);
-            throw new Exception("Unknown Error");
+            logger.error("Unexpected login failure", e);
+            throw new RuntimeException("Unexpected login failure");
         }
     }
 
     @Override
-    public Boolean logout (Long userId, String token) {
-        try{
-            Session session = getSessionByToken(token);
-            session.setActive(false);
-            daoFactory.forSession().update(session);
-            return true;
-        } catch (Exception e) {
-            logger.error("Error logging out for user with id {} ",userId, e);
-            return false;
-        }
+    public void logout(Long userId, String token) {
+        Session session = getSessionByToken(token); // Throw a NotFoundException or UnauthorizedException here if not found
+        session.setActive(false);
+        daoFactory.forSession().update(session);
     }
+
 
 
     @Override
@@ -147,24 +142,17 @@ public class AuthServiceImpl extends BaseService implements AuthService {
             return daoFactory.forSession()
                     .findByToken(token)
                     .orElseThrow(() ->
-                            new NoSuchElementException("No session found with token: " + token));
-        } catch (NoSuchElementException e) {
-            logger.warn("Session not found for token: {}", token);
-            throw e;
+                            new NotFoundException("No session found for token: " + token));
         } catch (Exception e) {
-            logger.error("Unexpected error while fetching session with token {}.", token, e);
+            logger.error("Unexpected error while fetching session with token: {}", token, e);
             throw new RuntimeException("Failed to retrieve session for token: " + token, e);
         }
     }
 
+
     private User getUserByEmail(String email) {
-        try {
-            Optional<User> userOpt = daoFactory.forUser().findByEmail(email);
-            return userOpt.orElse(null);
-        } catch (Exception e) {
-            logger.error("Error getting user by email {}. ",email, e);
-            throw new NoSuchElementException("No user found with email " + email);
-        }
+        return daoFactory.forUser().findByEmail(email)
+                .orElseThrow(() -> new NotFoundException("No user found with email: " + email));
     }
 
     private Settings getSettings() {
@@ -181,10 +169,24 @@ public class AuthServiceImpl extends BaseService implements AuthService {
         }
     }
 
-    private Boolean verifyCredentials(User user, LoginDTO loginDto) {
-        return passwordUtil.verifyPassword(loginDto.getPassword(), user.getPassword()) &&
-                user.getEmail().equals(loginDto.getEmail());
+    public Long getUserIdFromAuthHeader(String authHeader) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            throw new UnauthorizedException("Missing or malformed token");
+        }
+        String token = authHeader.substring("Bearer ".length()).trim();
+        if (!serviceFactory.forAuth().isValidToken(token)) {
+            throw new UnauthorizedException("Invalid or expired token");
+        }
+        Claims claims = jwtUtil.extractAllClaims(token);
+        return Long.parseLong(claims.get("userId").toString());
+    }
 
+    public Long getUserIdFromToken(String token) {
+        if (!serviceFactory.forAuth().isValidToken(token)) {
+            throw new UnauthorizedException("Invalid or expired token");
+        }
+        Claims claims = jwtUtil.extractAllClaims(token);
+        return Long.parseLong(claims.get("userId").toString());
     }
 
 

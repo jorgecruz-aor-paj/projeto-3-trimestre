@@ -1,8 +1,6 @@
 package aor.proj3t.resource;
 
-import aor.proj3t.dto.ResetPasswordDTO;
-import aor.proj3t.dto.UserDTO;
-import aor.proj3t.enums.Role;
+import aor.proj3t.exceptions.UnauthorizedException;
 import jakarta.ws.rs.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,7 +12,6 @@ import aor.proj3t.service.ServiceFactory;
 import aor.proj3t.util.JwtUtil;
 import aor.proj3t.util.ValidatorUtil;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Context;
@@ -52,25 +49,19 @@ public class AuthResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response registerUser(LoginDTO loginDto) {
-        try {
-            String ipAddress = ThreadContext.get("clientIp");
-            if (!validatorUtil.isValidLoginDTO(loginDto)) {
-                return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorResponse("Invalid data")).build();
-            }
+        String ipAddress = ThreadContext.get("clientIp");
 
-            Boolean success = serviceFactory.forUser().registerUser(loginDto, ipAddress);
-            if (success) {
-                return Response.status(Response.Status.CREATED).entity("User registered successfully").build();
-            } else {
-                return Response.status(Response.Status.CONFLICT)
-                        .entity(new ErrorResponse("Existing registration email")).build();
-            }
-        } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity(new ErrorResponse("Unexpected error"))
+        if (!validatorUtil.isValidLoginDTO(loginDto)) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(new ErrorResponse("Invalid data"))
                     .build();
         }
+        serviceFactory.forUser().registerUser(loginDto, ipAddress);
+        return Response.status(Response.Status.CREATED)
+                .entity("User registered successfully")
+                .build();
     }
+
 
     @POST
     @Path("/login")
@@ -78,61 +69,35 @@ public class AuthResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(LoginDTO loginDto) {
         logger.info("Login request received for email {}", loginDto.getEmail());
+        if (!validatorUtil.isValidLoginDTO(loginDto)) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(new ErrorResponse("Invalid data"))
+                    .build();
+        }
         String userAgent = headers.getHeaderString("User-Agent");
         String ipAddress = ThreadContext.get("clientIp");
-        if (!validatorUtil.isValidLoginDTO(loginDto)) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorResponse("Invalid data")).build();
-        }
-        try {
-            String sessionToken = serviceFactory.forAuth().login(loginDto, ipAddress, userAgent);
-            if (sessionToken != null && !sessionToken.isEmpty()) {
-                logger.info("Login successful for user with email {}", loginDto.getEmail());
-                return Response.status(Response.Status.OK).entity(sessionToken).build();
-            } else {
-                return Response.status(Response.Status.UNAUTHORIZED)
-                        .entity(new ErrorResponse("Invalid credentials"))
-                        .build();
-            }
 
-        } catch (JwtException e) {
-            return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity(new ErrorResponse("Invalid credentials"))
-                    .build();
-        } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity(new ErrorResponse("Unexpected error"))
-                    .build();
-        }
+        String sessionToken = serviceFactory.forAuth().login(loginDto, ipAddress, userAgent);
+
+        logger.info("Login successful for user with email {}", loginDto.getEmail());
+
+        return Response.ok(sessionToken).build();
     }
+
 
     @POST
     @Path("/logout")
     @Produces(MediaType.APPLICATION_JSON)
     public Response logout(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader) {
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            return Response.status(Response.Status.UNAUTHORIZED).entity(new ErrorResponse("Invalid token")).build();
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity(new ErrorResponse("Missing or malformed token"))
+                    .build();
         }
         String token = authHeader.substring("Bearer ".length()).trim();
-
-        try {
-            if (!serviceFactory.forAuth().isValidToken(token)) {
-                logger.warn("Invalid or expired token");
-                return Response.status(Response.Status.UNAUTHORIZED)
-                        .entity(new ErrorResponse("Invalid or expired token")).build();
-            }
-            Claims claims = jwtUtil.extractAllClaims(token);
-            Long userId = Long.parseLong(claims.get("userId").toString());
-            Boolean success = serviceFactory.forAuth().logout(userId, token);
-            if (success) {
-                return Response.status(Response.Status.OK).entity("Logout successful").build();
-            } else {
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                        .entity(new ErrorResponse("Unexpected error")).build();
-            }
-        }catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity(new ErrorResponse("Unexpected error")).build();
-        }
+        Long userId = serviceFactory.forAuth().getUserIdFromAuthHeader(token);
+        serviceFactory.forAuth().logout(userId, token);
+        return Response.ok("Logout successful").build();
     }
 
 
@@ -141,78 +106,68 @@ public class AuthResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response confirmUser(@QueryParam("confirmationToken") String confirmationToken,
-            UserRegistrationDTO userRegistrationDTO) {
+                                UserRegistrationDTO userRegistrationDTO) {
         logger.info("Received confirmation request for token: {}", confirmationToken);
 
         if (!validatorUtil.isValidUserRegistrationDTO(userRegistrationDTO)) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorResponse("Invalid data")).build();
-        }
-
-        try {
-            if (!jwtUtil.validateToken(confirmationToken)) {
-                logger.warn("Invalid token");
-                return Response.status(Response.Status.UNAUTHORIZED)
-                        .entity(new ErrorResponse("Invalid or expired token")).build();
-            }
-            Claims claims = jwtUtil.extractAllClaims(confirmationToken);
-            String email = claims.get("email").toString();
-            Boolean success = serviceFactory.forUser().confirmUser(email, userRegistrationDTO);
-            if (success) {
-                return Response.status(Response.Status.OK).entity("User confirmed successfully").build();
-            } else {
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                        .entity(new ErrorResponse("Unexpected error")).build();
-            }
-        } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ErrorResponse("Unexpected error"))
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(new ErrorResponse("Invalid data"))
                     .build();
         }
+        if (!jwtUtil.validateToken(confirmationToken)) {
+            logger.warn("Invalid or expired token");
+            throw new UnauthorizedException("Invalid or expired token");
+        }
+        Claims claims = jwtUtil.extractAllClaims(confirmationToken);
+        String email = claims.get("email").toString();
+
+        serviceFactory.forUser().confirmUser(email, userRegistrationDTO);
+
+        return Response.ok("User confirmed successfully").build();
     }
+
 
     @GET
     @Path("/resetPassword/{email}")
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getResetPasswordLink(@PathParam("email") String email) {
         logger.info("Received reset password request for email: {}", email);
         String userAgent = headers.getHeaderString("User-Agent");
         String ipAddress = ThreadContext.get("clientIp");
-        Boolean success = serviceFactory.forUser().sendResetPasswordLink(email, ipAddress);
-        if (success) {
-            return Response.status(Response.Status.OK).entity(new ErrorResponse("Email sent. Check your inbox")).build();
-        }else{
-            //TODO there is no validation of email on the response to not give away which emails are valid
-            return Response.status(Response.Status.OK).entity(new ErrorResponse("Email sent. Check your inbox")).build();
-        }
+
+        serviceFactory.forUser().sendResetPasswordLink(email, ipAddress);
+
+        // Always return the same message to prevent email enumeration
+        return Response.ok(new ErrorResponse("Email sent. Check your inbox")).build();
     }
+
 
     @PATCH
     @Path("/resetPassword")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response resetPassword(@QueryParam("resetPasswordToken")String resetPasswordToken, LoginDTO loginDTO) {
+    public Response resetPassword(@QueryParam("resetPasswordToken") String resetPasswordToken,
+                                  LoginDTO loginDTO) {
         logger.info("Received reset password for token: {}", resetPasswordToken);
-        String userAgent = headers.getHeaderString("User-Agent");
-        String ipAddress = ThreadContext.get("clientIp");
-        try {
-            if (!jwtUtil.validateToken(resetPasswordToken)) {
-                logger.warn("Invalid token");
-                return Response.status(Response.Status.UNAUTHORIZED)
-                        .entity(new ErrorResponse("Invalid or expired token")).build();
-            }
-            Claims claims = jwtUtil.extractAllClaims(resetPasswordToken);
-            Long userId = Long.parseLong(claims.get("userId").toString());
-            Boolean success = serviceFactory.forUser().changePassword(userId,loginDTO.getPassword());
-            if (success) {
-                return Response.status(Response.Status.OK).entity("User password changed successfully").build();
-            } else {
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                        .entity(new ErrorResponse("Unexpected error")).build();
-            }
-        } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ErrorResponse("Unexpected error"))
+
+        if (!jwtUtil.validateToken(resetPasswordToken)) {
+            logger.warn("Invalid or expired token");
+            throw new UnauthorizedException("Invalid or expired token");
+        }
+
+        if (!validatorUtil.isValidLoginDTO(loginDTO)) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(new ErrorResponse("Invalid data"))
                     .build();
         }
+
+        Claims claims = jwtUtil.extractAllClaims(resetPasswordToken);
+        Long userId = Long.parseLong(claims.get("userId").toString());
+
+        serviceFactory.forUser().changePassword(userId, loginDTO.getPassword());
+
+        return Response.ok("User password changed successfully").build();
     }
+
 
 }
