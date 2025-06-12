@@ -98,13 +98,7 @@ public class ImageUploadResource {
             byte[] imageData = fileStorageUtil.getFile(pictureName);
 
             // Determine content type based on file extension
-            String contentType = "image/jpeg"; // default
-            if (pictureName.endsWith(".png")) {
-                contentType = "image/png";
-            } else if (pictureName.endsWith(".gif")) {
-                contentType = "image/gif";
-            }
-
+            String contentType = determineContentType(pictureName);
             return Response.ok(imageData)
                     .header("Content-Type", contentType)
                     .header("Content-Disposition", "inline; filename=\"" + pictureName + "\"")
@@ -116,4 +110,31 @@ public class ImageUploadResource {
         }
     }
 
+    /**
+     * Determines the content type based on the file extension.
+     * 
+     * @param fileName The filename to analyze
+     * @return The corresponding MIME type
+     */
+    private String determineContentType(String fileName) {
+        if (fileName == null) {
+            return "image/jpeg"; // default
+        }
+
+        fileName = fileName.toLowerCase();
+
+        if (fileName.endsWith(".png")) {
+            return "image/png";
+        } else if (fileName.endsWith(".gif")) {
+            return "image/gif";
+        } else if (fileName.endsWith(".webp")) {
+            return "image/webp";
+        } else if (fileName.endsWith(".svg")) {
+            return "image/svg+xml";
+        } else if (fileName.endsWith(".bmp")) {
+            return "image/bmp";
+        } else {
+            return "image/jpeg"; // default for .jpg, .jpeg and others
+        }
+    }
 }
