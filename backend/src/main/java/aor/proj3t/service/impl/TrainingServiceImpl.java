@@ -33,7 +33,7 @@ public class TrainingServiceImpl extends BaseService implements TrainingService 
         try {
             TrainingArea trainingArea = getEntity(
                     daoFactory.forTrainingArea().findById(trainingDTO.getTrainingAreaId()),
-                    trainingDTO.getTrainingAreaId());
+                    trainingDTO.getTrainingAreaId(), "Training area");
             Training training = new Training(
                     trainingDTO.getTitle(),
                     trainingDTO.getDuration(),
@@ -57,8 +57,8 @@ public class TrainingServiceImpl extends BaseService implements TrainingService 
         try {
             TrainingArea trainingArea = getEntity(
                     daoFactory.forTrainingArea().findById(trainingDTO.getTrainingAreaId()),
-                    trainingDTO.getTrainingAreaId());
-            Training training = getEntity(daoFactory.forTraining().findById(trainingDTO.getId()), trainingDTO.getId());
+                    trainingDTO.getTrainingAreaId(), "Training area");
+            Training training = getEntity(daoFactory.forTraining().findById(trainingDTO.getId()), trainingDTO.getId(), "Training");
             training.setTitle(trainingDTO.getTitle());
             training.setDuration(trainingDTO.getDuration());
             training.setDescription(trainingDTO.getDescription());
@@ -80,7 +80,7 @@ public class TrainingServiceImpl extends BaseService implements TrainingService 
     @Override
     public Boolean deactivateTraining(Long trainingId) {
         try {
-            Training training = getEntity(daoFactory.forTraining().findById(trainingId), trainingId);
+            Training training = getEntity(daoFactory.forTraining().findById(trainingId), trainingId, "Training");
             training.setActive(false);
             daoFactory.forTraining().update(training);
             return true;
@@ -106,7 +106,7 @@ public class TrainingServiceImpl extends BaseService implements TrainingService 
 
     @Override
     public TrainingDTO getTrainingById(Long trainingId) {
-        Training training = getEntity(daoFactory.forTraining().findById(trainingId), trainingId);
+        Training training = getEntity(daoFactory.forTraining().findById(trainingId), trainingId, "Training");
         return converterFactory.forTraining().toDTO(training);
     }
 

@@ -48,7 +48,7 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     @Override
     public UserDTO getUser(Long userId) {
-        User user = getEntity(daoFactory.forUser().findById(userId), userId);
+        User user = getEntity(daoFactory.forUser().findById(userId), userId, "User");
         return converterFactory.forUser().toDTO(user);
     }
 
@@ -100,7 +100,7 @@ public class UserServiceImpl extends BaseService implements UserService {
 
         Workplace workplace = getEntity(
                 daoFactory.forWorkplace().findById(userRegistrationDto.getWorkplaceId()),
-                userRegistrationDto.getWorkplaceId()
+                userRegistrationDto.getWorkplaceId(), "Workplace"
         );
         if (workplace == null) {
             logger.warn("Workplace ID {} does not exist", userRegistrationDto.getWorkplaceId());
@@ -117,7 +117,7 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     @Override
     public void changePassword(Long userId, String newRawPassword) {
-        User user = getEntity(daoFactory.forUser().findById(userId), userId);
+        User user = getEntity(daoFactory.forUser().findById(userId), userId, "User");
         user.setPassword(passwordUtil.hashPassword(newRawPassword));
         daoFactory.forUser().update(user);
     }
@@ -126,8 +126,8 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Override
     public Boolean assignManager(Long userId, Long managerId) {
         try {
-            User user = getEntity(daoFactory.forUser().findById(userId), userId);
-            User manager = getEntity(daoFactory.forUser().findById(managerId), managerId);
+            User user = getEntity(daoFactory.forUser().findById(userId), userId, "User");
+            User manager = getEntity(daoFactory.forUser().findById(managerId), managerId, "User");
             user.setManager(manager);
             daoFactory.forUser().update(user);
             if (!manager.getRole().equals(Role.MANAGER)) {
@@ -152,7 +152,7 @@ public class UserServiceImpl extends BaseService implements UserService {
             return true;
         }
         try {
-            User manager = getEntity(daoFactory.forUser().findById(managerId), managerId);
+            User manager = getEntity(daoFactory.forUser().findById(managerId), managerId, "User");
             List<User> users = getUserListFromIds(userIds);
             if (users == null || users.isEmpty()) {
                 logger.error("No valid users Id's assigning manager in bulk. ");
@@ -174,8 +174,8 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     @Override
     public void updateUser(Long requesterId, UserDTO userDto) {
-        User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId);
-        User targetUser = getEntity(daoFactory.forUser().findById(userDto.getId()), userDto.getId());
+        User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
+        User targetUser = getEntity(daoFactory.forUser().findById(userDto.getId()), userDto.getId(), "User");
         if (!requester.getRole().equals(Role.ADMIN) && !Objects.equals(requesterId, userDto.getId())) {
             throw new ForbiddenException("Permission denied: cannot update user with ID " + userDto.getId());
         }
@@ -240,7 +240,7 @@ public class UserServiceImpl extends BaseService implements UserService {
         try {
             List<User> users = new ArrayList<>(userIds.length);
             for (Long userId : userIds) {
-                User user = getEntity(daoFactory.forUser().findById(userId), userId);
+                User user = getEntity(daoFactory.forUser().findById(userId), userId, "User");
                 if (user != null) {
                     users.add(user);
                 } else {
@@ -310,7 +310,7 @@ public class UserServiceImpl extends BaseService implements UserService {
 
         Workplace workplace = getEntity(
                 daoFactory.forWorkplace().findById(userDto.getWorkplaceId()),
-                userDto.getWorkplaceId());
+                userDto.getWorkplaceId(), "Workplace");
         user.setWorkplace(workplace);
         return user;
     }

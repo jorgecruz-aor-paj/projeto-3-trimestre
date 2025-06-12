@@ -33,10 +33,10 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
     @Override
     public Boolean createEvaluation(Long evaluatedUserId, Long evaluatorUserId, Long evaluationCycleId) {
         try {
-            User evaluated = getEntity(daoFactory.forUser().findById(evaluatedUserId), evaluatedUserId);
-            User evaluator = getEntity(daoFactory.forUser().findById(evaluatorUserId), evaluatorUserId);
+            User evaluated = getEntity(daoFactory.forUser().findById(evaluatedUserId), evaluatedUserId, "User");
+            User evaluator = getEntity(daoFactory.forUser().findById(evaluatorUserId), evaluatorUserId, "User");
             EvaluationCycle cycle = getEntity(daoFactory.forEvaluationCycle().findById(evaluationCycleId),
-                    evaluationCycleId);
+                    evaluationCycleId, "Evaluation cycle");
             Evaluation evaluation = new Evaluation(cycle, evaluated, evaluator);
             daoFactory.forEvaluation().create(evaluation);
             return true;
@@ -53,7 +53,7 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
     public EvaluationDTO getEvaluationById(Long evaluationId) {
         try {
             return converterFactory.forEvaluation()
-                    .toDTO(getEntity(daoFactory.forEvaluation().findById(evaluationId), evaluationId));
+                    .toDTO(getEntity(daoFactory.forEvaluation().findById(evaluationId), evaluationId, "Evaluation"));
         } catch (NoSuchElementException e) {
             logger.error("Evaluation with id {} not found", evaluationId);
             return null;
@@ -66,7 +66,7 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
     @Override
     public Boolean updateEvaluation(Long evaluationId, Integer score, String feedback) {
         try {
-            Evaluation evaluation = getEntity(daoFactory.forEvaluation().findById(evaluationId), evaluationId);
+            Evaluation evaluation = getEntity(daoFactory.forEvaluation().findById(evaluationId), evaluationId, "Evaluation");
             evaluation.setScale(EvaluationScale.getByScore(score));
             evaluation.setFeedback(feedback);
             daoFactory.forEvaluation().update(evaluation);
@@ -127,7 +127,7 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
     @Override
     public Boolean completeEvaluation(Long evaluationId) {
         try {
-            Evaluation evaluation = getEntity(daoFactory.forEvaluation().findById(evaluationId), evaluationId);
+            Evaluation evaluation = getEntity(daoFactory.forEvaluation().findById(evaluationId), evaluationId, "Evaluation");
             evaluation.setStatus(EvaluationStatus.COMPLETED);
             return true;
         } catch (NoSuchElementException e) {
@@ -142,7 +142,7 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
     @Override
     public Boolean closeEvaluation(Long evaluationId) {
         try {
-            Evaluation evaluation = getEntity(daoFactory.forEvaluation().findById(evaluationId), evaluationId);
+            Evaluation evaluation = getEntity(daoFactory.forEvaluation().findById(evaluationId), evaluationId, "Evaluation");
             evaluation.setStatus(EvaluationStatus.CLOSED);
             checkAndCloseEvaluationCycle(evaluation.getEvaluationCycle().getId());
             return true;
@@ -197,7 +197,7 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
         try {
             List<Evaluation> evaluations = new ArrayList<>(evaluationIds.length);
             for (Long evaluationId : evaluationIds) {
-                Evaluation evaluation = getEntity(daoFactory.forEvaluation().findById(evaluationId), evaluationId);
+                Evaluation evaluation = getEntity(daoFactory.forEvaluation().findById(evaluationId), evaluationId, "Evaluation");
                 if (evaluation != null) {
                     evaluations.add(evaluation);
                 } else {

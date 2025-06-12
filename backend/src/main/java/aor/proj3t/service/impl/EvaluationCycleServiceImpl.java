@@ -36,7 +36,7 @@ public class EvaluationCycleServiceImpl extends BaseService implements Evaluatio
                 logger.warn("Unable to start cycle. Users without manager");
                 return false;
             }
-            User admin = getEntity(daoFactory.forUser().findById(adminId), adminId);
+            User admin = getEntity(daoFactory.forUser().findById(adminId), adminId, "User");
             EvaluationCycle evaluationCycle = new EvaluationCycle(startTime, endTime, admin);
             daoFactory.forEvaluationCycle().create(evaluationCycle);
             return createNewEvaluations(evaluationCycle);
@@ -82,7 +82,7 @@ public class EvaluationCycleServiceImpl extends BaseService implements Evaluatio
     @Override
     public Boolean updateCycleStatus(Long cycleId, EvaluationCycleStatus status) {
         try {
-            EvaluationCycle cycle = getEntity(daoFactory.forEvaluationCycle().findById(cycleId), cycleId);
+            EvaluationCycle cycle = getEntity(daoFactory.forEvaluationCycle().findById(cycleId), cycleId, "User");
             cycle.setStatus(status);
             daoFactory.forEvaluationCycle().update(cycle);
             return null;

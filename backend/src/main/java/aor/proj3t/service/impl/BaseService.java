@@ -10,9 +10,9 @@ import org.apache.logging.log4j.Logger;
 public abstract class BaseService {
     private static final Logger logger = LogManager.getLogger(BaseService.class);
 
-    protected <T> T getEntity(Optional<T> entityOpt, Long id) {
+    protected <T> T getEntity(Optional<T> entityOpt, Long id, String fieldName) {
         return entityOpt.orElseThrow(
-                () -> new NotFoundException(entityOpt.getClass().getSimpleName() + " not found with ID: " + id));
+                () -> new NotFoundException(fieldName + " not found with ID: " + id));
     }
 
 

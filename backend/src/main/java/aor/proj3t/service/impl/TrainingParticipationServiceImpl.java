@@ -31,7 +31,7 @@ public class TrainingParticipationServiceImpl extends BaseService implements Tra
     @Override
     public List<TrainingParticipationDTO> findTrainingParticipationsByUser(Long userId) {
         try {
-            User user = getEntity(daoFactory.forUser().findById(userId), userId);
+            User user = getEntity(daoFactory.forUser().findById(userId), userId, "User");
             List<TrainingParticipation> trainingParticipationList = daoFactory.forTrainingParticipation()
                     .findByParticipantId(user.getId());
             return converterFactory.forTrainingParticipation().toDTOList(trainingParticipationList);
@@ -47,7 +47,7 @@ public class TrainingParticipationServiceImpl extends BaseService implements Tra
     @Override
     public List<TrainingDTO> getTrainingsUnparticipatedByUser(Long userId) {
         try {
-            User user = getEntity(daoFactory.forUser().findById(userId), userId);
+            User user = getEntity(daoFactory.forUser().findById(userId), userId, "User");
             List<Training> trainingList = daoFactory.forTraining().findTrainingsNotParticipatedByUser(user.getId());
             return converterFactory.forTraining().toDTOList(trainingList);
         } catch (NoSuchElementException e) {
@@ -63,15 +63,15 @@ public class TrainingParticipationServiceImpl extends BaseService implements Tra
     public Boolean registerTrainingParticipation(TrainingParticipationDTO trainingParticipationDTO) {
         try {
             User participant = getEntity(daoFactory.forUser().findById(trainingParticipationDTO.getParticipantId()),
-                    trainingParticipationDTO.getParticipantId());
+                    trainingParticipationDTO.getParticipantId(), "User");
             User manager = getEntity(daoFactory.forUser().findById(trainingParticipationDTO.getManagerId()),
-                    trainingParticipationDTO.getManagerId());
+                    trainingParticipationDTO.getManagerId(), "User");
             if (manager.getId() != participant.getManager().getId()) {
                 logger.warn("User manager and trainingParticipation manager id's are a mismatch");
                 return false;
             }
             Training training = getEntity(daoFactory.forTraining().findById(trainingParticipationDTO.getTrainingId()),
-                    trainingParticipationDTO.getTrainingId());
+                    trainingParticipationDTO.getTrainingId(), "Training");
             TrainingParticipation trainingParticipation = new TrainingParticipation(
                     participant,
                     manager,
@@ -92,7 +92,7 @@ public class TrainingParticipationServiceImpl extends BaseService implements Tra
 
     public Map<Integer, Integer> getTrainingParticipationTimeByYearByUser(Long userId) {
         try {
-            User user = getEntity(daoFactory.forUser().findById(userId), userId);
+            User user = getEntity(daoFactory.forUser().findById(userId), userId, "User");
             return daoFactory.forTrainingParticipation().trainingTimeByYearByParticipantId(user.getId());
         } catch (NoSuchElementException e) {
             logger.error("No user found with id {}", userId);
