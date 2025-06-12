@@ -22,12 +22,13 @@ public class FileStorageUtil {
     private static final Logger logger = LogManager.getLogger(FileStorageUtil.class);
 
     private Path fileStoragePath;
-    private final String defaultProfilePicture = "default-profile-picture.png";
+    private final String defaultProfilePicture = AppConstants.FileStorage.DEFAULT_PROFILE_PICTURE;
+    private final String defaultProfilePictureDir = AppConstants.FileStorage.DEFAULT_PROFILE_PICTURE_DIR;
 
     @PostConstruct
     public void init() {
         try {
-            String uploadDir = System.getProperty("jboss.server.data.dir") + File.separator + "profile-pictures";
+            String uploadDir = System.getProperty("jboss.server.data.dir") + File.separator + defaultProfilePictureDir;
             this.fileStoragePath = Paths.get(uploadDir).toAbsolutePath().normalize();
             Files.createDirectories(fileStoragePath);
             logger.info("File storage path initialized: {}", fileStoragePath);
@@ -110,7 +111,7 @@ public class FileStorageUtil {
         }
     }
 
-    public String getDefaulStringtProfilePicture() {
+    public String getDefaultProfilePicture() {
         return defaultProfilePicture;
     }
 
