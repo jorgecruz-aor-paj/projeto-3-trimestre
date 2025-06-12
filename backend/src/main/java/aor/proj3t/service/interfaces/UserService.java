@@ -11,8 +11,6 @@ public interface UserService {
 
     UserDTO getUser(Long userId);
 
-    String login(LoginDTO loginDto, String ipAddress, String userAgent) throws Exception;
-
     Boolean registerUser(LoginDTO loginDTO, String ipAddress);
 
     Boolean confirmUser(String email, UserRegistrationDTO userRegistrationDTO);

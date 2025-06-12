@@ -42,6 +42,7 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     @Inject
     PasswordUtil passwordUtil;
+
     @Inject
     private EmailUtil emailUtil;
 
@@ -81,32 +82,6 @@ public class UserServiceImpl extends BaseService implements UserService {
         } catch (Exception e) {
             logger.error("Error registering user with email {}.  {}", email, e);
             return false;
-        }
-    }
-
-    @Override
-    public String login(LoginDTO loginDto, String ipAddress, String userAgent) throws Exception {
-        try {
-            User user = getUserByEmail(loginDto.getEmail());
-            Integer confirmationExpirationTime = getSettings().getConfirmationExpirationTime();
-            if (verifyCredentials(user, loginDto)) {
-                System.out.println("here"); //TODO remove after utility expired
-                String token = jwtUtil.generateSessionToken(user.getId(), user.getEmail(), user.getRole().getName(), ipAddress,
-                        confirmationExpirationTime);
-                Instant tokenLimit = jwtUtil.extractExpirationDate(token);
-                Session newSession = new Session(token,ipAddress,userAgent,user,tokenLimit);
-                daoFactory.forSession().create(newSession);
-                return token;
-            }else{
-                logger.warn("Invalid credentials on login for email {} ", loginDto.getEmail());
-                return "";
-            }
-        } catch (NoSuchElementException e) {
-            logger.error("User with email {} not found", loginDto.getEmail(), e);
-            throw new NoSuchElementException("User with  email " + loginDto.getEmail() + " not found", e);
-        } catch (Exception e) {
-            logger.error("Error logging in with email {}.", loginDto.getEmail(), e);
-            throw new Exception("Unknown Error");
         }
     }
 
@@ -326,12 +301,6 @@ public class UserServiceImpl extends BaseService implements UserService {
             logger.error("Error finding email for pre-registering validation. ", e);
             throw new Exception("Unexpected error validating email");
         }
-    }
-
-    private Boolean verifyCredentials(User user, LoginDTO loginDto) {
-        return passwordUtil.verifyPassword(loginDto.getPassword(), user.getPassword()) &&
-                user.getEmail().equals(loginDto.getEmail());
-
     }
 
     private PendingRegistration getPendingRegistration(String email) {

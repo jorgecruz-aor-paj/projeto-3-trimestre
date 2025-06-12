@@ -14,4 +14,6 @@ public abstract class BaseService {
                 () -> new NoSuchElementException(entityOpt.getClass().getSimpleName() + " not found with ID: " + id));
     }
 
+
+
 }

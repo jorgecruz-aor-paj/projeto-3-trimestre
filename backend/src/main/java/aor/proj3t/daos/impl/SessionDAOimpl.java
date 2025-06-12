@@ -6,6 +6,7 @@ import java.util.Optional;
 import aor.proj3t.daos.interfaces.SessionDAO;
 import aor.proj3t.entities.Session;
 import jakarta.ejb.Stateless;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 
 @Stateless
@@ -34,12 +35,22 @@ public class SessionDAOimpl extends AbstractDAO<Session, Long> implements Sessio
     }
 
     @Override
-    public List<Session> findSessionByUserId(Long userId) {
+    public List<Session> findSessionsByUserId(Long userId) {
         TypedQuery<Session> query = em.createQuery(
                 "SELECT s FROM Session s WHERE s.user.id = :userId", Session.class);
         query.setParameter("userId", userId);
 
         return query.getResultList();
     }
+
+    @Override
+    public Integer deleteSessionsByUserId(Long userId) {
+        Query query = em.createQuery(
+                "DELETE FROM Session s WHERE s.user.id = :userId"
+        );
+        query.setParameter("userId", userId);
+        return query.executeUpdate();
+    }
+
 
 }

@@ -1,8 +1,15 @@
 package aor.proj3t.service.impl;
 
+import java.time.Instant;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import aor.proj3t.config.AppConstants;
+import aor.proj3t.entities.Settings;
+import aor.proj3t.entities.User;
+import aor.proj3t.util.JwtUtil;
+import aor.proj3t.util.PasswordUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,31 +35,56 @@ public class AuthServiceImpl extends BaseService implements AuthService {
     @Inject
     ConverterFactory converterFactory;
 
+    @Inject
+    JwtUtil jwtUtil;
+
+    @Inject
+    PasswordUtil passwordUtil;
+
     @Override
-    public Session login(LoginDTO loginDTO, String userAgent, String ipAddress) {
-        logger.info("Login attempt for user: {}", loginDTO.getEmail());
-        // Implement login logic
-        return null;
+    public String login(LoginDTO loginDto, String ipAddress, String userAgent) throws Exception {
+        try {
+            User user = getUserByEmail(loginDto.getEmail());
+            Integer confirmationExpirationTime = getSettings().getConfirmationExpirationTime();
+            if (verifyCredentials(user, loginDto)) {
+                String token = jwtUtil.generateSessionToken(user.getId(), user.getEmail(), user.getRole().getName(), ipAddress,
+                        confirmationExpirationTime);
+                Instant tokenLimit = jwtUtil.extractExpirationDate(token);
+                Session newSession = new Session(token,ipAddress,userAgent,user,tokenLimit);
+                daoFactory.forSession().create(newSession);
+                return token;
+            }else{
+                logger.warn("Invalid credentials on login for email {} ", loginDto.getEmail());
+                return "";
+            }
+        } catch (NoSuchElementException e) {
+            logger.error("User with email {} not found", loginDto.getEmail(), e);
+            throw new NoSuchElementException("User with  email " + loginDto.getEmail() + " not found", e);
+        } catch (Exception e) {
+            logger.error("Error logging in with email {}.", loginDto.getEmail(), e);
+            throw new Exception("Unknown Error");
+        }
     }
 
     @Override
-    public boolean logout(String sessionToken) {
-        logger.info("Logout attempt for session: {}", sessionToken);
-        // Implement logout logic
-        return false;
+    public Boolean logout (Long userId, String token) {
+        try{
+            Session session = getSessionByToken(token);
+            session.setActive(false);
+            daoFactory.forSession().update(session);
+            return true;
+        } catch (Exception e) {
+            logger.error("Error logging out for user with id {} ",userId, e);
+            return false;
+        }
     }
+
 
     @Override
     public int logoutAll(Long userId) {
         logger.info("Logout all sessions for user ID: {}", userId);
         // Implement logout all logic
         return 0;
-    }
-
-    @Override
-    public Optional<Session> getSession(String token) {
-        // Implement get session logic
-        return Optional.empty();
     }
 
     @Override
@@ -67,4 +99,55 @@ public class AuthServiceImpl extends BaseService implements AuthService {
         // Implement cleanup logic
         return 0;
     }
+
+    public Boolean isTokenActive(String token) {
+        Session session = getSessionByToken(token);
+        return session.getActive();
+    }
+
+    private Session getSessionByToken(String token) {
+        try {
+            return daoFactory.forSession()
+                    .findByToken(token)
+                    .orElseThrow(() ->
+                            new NoSuchElementException("No session found with token: " + token));
+        } catch (NoSuchElementException e) {
+            logger.warn("Session not found for token: {}", token);
+            throw e;
+        } catch (Exception e) {
+            logger.error("Unexpected error while fetching session with token {}.", token, e);
+            throw new RuntimeException("Failed to retrieve session for token: " + token, e);
+        }
+    }
+
+    private User getUserByEmail(String email) {
+        try {
+            Optional<User> userOpt = daoFactory.forUser().findByEmail(email);
+            return userOpt.orElse(null);
+        } catch (Exception e) {
+            logger.error("Error getting user by email {}. ",email, e);
+            throw new NoSuchElementException("No user found with email " + email);
+        }
+    }
+
+    private Settings getSettings() {
+        Settings settings = new Settings(
+                AppConstants.Jwt.DEFAULT_CONFIRMATION_TOKEN_EXPIRATION_TIME,
+                AppConstants.Jwt.DEFAULT_TOKEN_EXPIRATION_TIME,
+                AppConstants.Jwt.DEFAULT_RESET_PASSWORD_TOKEN_EXPIRATION_TIME);
+        try {
+            Optional<Settings> settingsOpt = daoFactory.forSettings().getLatestSettings();
+            return settingsOpt.orElse(settings);
+        } catch (Exception e) {
+            logger.error("Error getting confirmation expiration window. ", e);
+            return settings;
+        }
+    }
+
+    private Boolean verifyCredentials(User user, LoginDTO loginDto) {
+        return passwordUtil.verifyPassword(loginDto.getPassword(), user.getPassword()) &&
+                user.getEmail().equals(loginDto.getEmail());
+
+    }
+
 }

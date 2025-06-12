@@ -11,5 +11,7 @@ public interface SessionDAO extends BasicDAO<Session, Long> {
 
     Boolean isValidToken(String token);
 
-    List<Session> findSessionByUserId(Long userId);
+    List<Session> findSessionsByUserId(Long userId);
+
+    Integer deleteSessionsByUserId(Long userId);
 }
