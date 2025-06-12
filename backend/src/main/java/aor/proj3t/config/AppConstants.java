@@ -51,4 +51,27 @@ public final class AppConstants {
          */
         public static final int DEFAULT_PASSWORD_RESET_EXPIRATION_MINUTES = 60;
     }
+
+    public static final class FileStorage {
+        private FileStorage() {
+            // Prevent instantiation
+        }
+
+        /**
+         * Default directory for storing profile pictures.
+         * This directory is relative to the JBoss server's data directory.
+         */
+        public static final String DEFAULT_PROFILE_PICTURE_DIR = "profile-pictures";
+
+        /**
+         * Default profile picture file name.
+         */
+        public static final String DEFAULT_PROFILE_PICTURE = "default-profile-picture.png";
+
+        /**
+         * Maximum file size for uploads in bytes.
+         * This is set to 5 MB (5,000,000 bytes).
+         */
+        public static final int MAX_FILE_SIZE = 5_000_000;
+    }
 }
