@@ -5,11 +5,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import aor.proj3t.config.AppConstants;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -50,12 +53,28 @@ public class FileStorageUtil {
 
     public String storeFile(byte[] fileContent, String fileName, String fileExtension) {
         try {
-            String uniqueFileName = UUID.randomUUID().toString() + "." + fileExtension;
-            Path targetLocation = fileStoragePath.resolve(uniqueFileName);
+            if (fileContent == null || fileContent.length == 0) {
+                logger.warn("Empty file content for file: {}", fileName);
+                throw new IllegalArgumentException("File content cannot be empty");
+            }
 
+            if (fileContent.length > AppConstants.FileStorage.MAX_FILE_SIZE) {
+                logger.warn("File size exceeds limit for file: {}", fileName);
+                throw new IllegalArgumentException(
+                        "File size exceeds maximum allowed (5MB)");
+            }
+
+            // TODO: Validar MIME type da imagem
+
+            String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+            String uniqueId = UUID.randomUUID().toString();
+            String versionedFileName = String.format("%s_%s.%s", uniqueId, timestamp, fileExtension);
+
+            Path targetLocation = fileStoragePath.resolve(versionedFileName);
             Files.write(targetLocation, fileContent);
-            logger.info("Stored file: {} as {}", fileName, uniqueFileName);
-            return uniqueFileName;
+            logger.info("Stored file: {} as {}", fileName, versionedFileName);
+
+            return versionedFileName;
         } catch (IOException e) {
             logger.error("Error storing file: {}", fileName, e);
             throw new RuntimeException("Could not store file " + fileName, e);
