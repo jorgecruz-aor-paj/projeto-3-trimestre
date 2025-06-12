@@ -189,8 +189,8 @@ public class EmailUtil {
      */
     public boolean sendPasswordResetEmail(String toEmail, String token, String baseUrl) {
         String subject = AppConstants.Email.DEFAULT_PASSWORD_RESET_SUBJECT;
-        String resetLink = baseUrl + "/reset-password?token=" + token;
-
+        String resetLink = baseUrl + "/resetPassword?resetPasswordToken=" + token;
+        System.out.println(resetLink); //TODO delete when utility expires
         String body = "<h1>Password Reset</h1>" +
                 "<p>You requested a password reset. Please click the link below to reset your password:</p>" +
                 "<p><a href=\"" + resetLink + "\">Reset Password</a></p>" +

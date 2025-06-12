@@ -90,14 +90,17 @@ public class UserServiceImpl extends BaseService implements UserService {
             User user = getUserByEmail(loginDto.getEmail());
             Integer confirmationExpirationTime = getSettings().getConfirmationExpirationTime();
             if (verifyCredentials(user, loginDto)) {
+                System.out.println("here"); //TODO remove after utility expired
                 String token = jwtUtil.generateSessionToken(user.getId(), user.getEmail(), user.getRole().getName(), ipAddress,
                         confirmationExpirationTime);
                 Instant tokenLimit = jwtUtil.extractExpirationDate(token);
                 Session newSession = new Session(token,ipAddress,userAgent,user,tokenLimit);
                 daoFactory.forSession().create(newSession);
                 return token;
+            }else{
+                logger.warn("Invalid credentials on login for email {} ", loginDto.getEmail());
+                return "";
             }
-            throw new JwtException("Invalid credentials");
         } catch (NoSuchElementException e) {
             logger.error("User with email {} not found", loginDto.getEmail(), e);
             throw new NoSuchElementException("User with  email " + loginDto.getEmail() + " not found", e);
@@ -246,8 +249,13 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Override
     public Boolean sendResetPasswordLink(String email,String ipAddress){
         try{
+            User user = getUserByEmail(email);
+            if(user == null){
+                logger.warn("User with email {} not found for password reset", email);
+                return false;
+            }
             Settings settings = getSettings();
-            return sendResetPasswordEmail(email,ipAddress,settings.getResetPasswordExpirationTime());
+            return sendResetPasswordEmail(email, user.getId(),ipAddress,settings.getResetPasswordExpirationTime());
         }catch (Exception e){
             logger.error("Error resetting password. ", e);
             return false;
@@ -372,9 +380,9 @@ public class UserServiceImpl extends BaseService implements UserService {
         }
     }
 
-    private Boolean sendResetPasswordEmail (String email, String ipAddress, Integer resetPasswordExpirationTime) {
+    private Boolean sendResetPasswordEmail (String email, Long userId, String ipAddress, Integer resetPasswordExpirationTime) {
         try {
-            String resetPasswordToken = jwtUtil.generatePasswordResetToken(email, ipAddress, resetPasswordExpirationTime);
+            String resetPasswordToken = jwtUtil.generatePasswordResetToken(email, userId, ipAddress, resetPasswordExpirationTime);
             String baseUrl = "https://localhost:8443/jorgeosorio-proj3t/api/auth";
             return emailUtil.sendPasswordResetEmail(email,resetPasswordToken,baseUrl);
         }catch (Exception e) {

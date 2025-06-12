@@ -85,6 +85,7 @@ public class EmailTestResource {
                                 case "reset":
                                         String resetToken = jwtUtil.generatePasswordResetToken(
                                                         emailTestDTO.getRecipient(),
+                                                        1L,
                                                         "127.0.0.1", // Sample IP address
                                                         null // Use default expiration
                                         );

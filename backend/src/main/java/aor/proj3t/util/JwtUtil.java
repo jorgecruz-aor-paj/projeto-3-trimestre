@@ -146,12 +146,13 @@ public class JwtUtil {
      *                        default
      * @return The JWT password reset token
      */
-    public String generatePasswordResetToken(String userEmail, String ipAddress, Integer validityMinutes) {
+    public String generatePasswordResetToken(String userEmail, Long userId, String ipAddress, Integer validityMinutes) {
         int minutes = (validityMinutes != null) ? validityMinutes : DEFAULT_TOKEN_EXPIRATION_TIME;
 
         Map<String, Object> claims = new HashMap<>();
         claims.put("email", userEmail);
         claims.put("ipAddress", ipAddress);
+        claims.put("userId",userId);
 
         try {
             String token = createToken(userEmail, TokenType.PASSWORD_RESET, claims, minutes);

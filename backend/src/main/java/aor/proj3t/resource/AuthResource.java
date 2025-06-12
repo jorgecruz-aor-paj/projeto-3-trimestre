@@ -1,5 +1,7 @@
 package aor.proj3t.resource;
 
+import aor.proj3t.dto.ResetPasswordDTO;
+import jakarta.ws.rs.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.ThreadContext;
@@ -13,13 +15,6 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
@@ -156,6 +151,35 @@ public class AuthResource {
         }else{
             //TODO there is no validation of email on the response to not give away which emails are valid
             return Response.status(Response.Status.OK).entity(new ErrorResponse("Email sent. Check your inbox")).build();
+        }
+    }
+
+    @PATCH
+    @Path("/resetPassword")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response resetPassword(@QueryParam("resetPasswordToken")String resetPasswordToken, LoginDTO loginDTO) {
+        logger.info("Received reset password for token: {}", resetPasswordToken);
+        String userAgent = headers.getHeaderString("User-Agent");
+        String ipAddress = ThreadContext.get("clientIp");
+        try {
+            if (!jwtUtil.validateToken(resetPasswordToken)) {
+                logger.warn("Invalid token");
+                return Response.status(Response.Status.UNAUTHORIZED)
+                        .entity(new ErrorResponse("Invalid or expired token")).build();
+            }
+            Claims claims = jwtUtil.extractAllClaims(resetPasswordToken);
+            Long userId = Long.parseLong(claims.get("userId").toString());
+            Boolean success = serviceFactory.forUser().changePassword(userId,loginDTO.getPassword());
+            if (success) {
+                return Response.status(Response.Status.OK).entity("User password changed successfully").build();
+            } else {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                        .entity(new ErrorResponse("Unexpected error")).build();
+            }
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ErrorResponse("Unexpected error"))
+                    .build();
         }
     }
 
