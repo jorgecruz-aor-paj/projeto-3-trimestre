@@ -382,13 +382,12 @@ public class UserServiceImpl extends BaseService implements UserService {
             String oldPicture = user.getPhotograph();
             if (oldPicture != null && !oldPicture.equals(fileStorageUtil.getDefaultProfilePicture())) {
                 fileStorageUtil.deleteFile(oldPicture);
-            }
-
-            // Store the new picture
-            String fileName = fileStorageUtil.storeFile(
+            } // Store the new picture with resizing
+            String fileName = fileStorageUtil.storeProfilePicture(
                     fileUploadDTO.getFileContent(),
                     fileUploadDTO.getFileName(),
-                    fileUploadDTO.getFileExtension());
+                    fileUploadDTO.getFileExtension(),
+                    fileUploadDTO.getFileMimeType());
 
             // Update user entity
             user.setPhotograph(fileName);

@@ -1,5 +1,9 @@
 package aor.proj3t.util;
 
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -8,6 +12,8 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
+
+import javax.imageio.ImageIO;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -52,7 +58,7 @@ public class FileStorageUtil {
         }
     }
 
-    public String storeFile(byte[] fileContent, String fileName, String fileExtension) {
+    public String storeFile(byte[] fileContent, String fileName, String fileExtension, String mimeType) {
         try {
             if (fileContent == null || fileContent.length == 0) {
                 logger.warn("Empty file content for file: {}", fileName);
@@ -65,7 +71,10 @@ public class FileStorageUtil {
                         "File size exceeds maximum allowed (5MB)");
             }
 
-            // TODO: Validar MIME type da imagem
+            if (!AppConstants.FileStorage.ALLOWED_IMAGE_TYPES.contains(mimeType)) {
+                logger.warn("Invalid file type: {} for file: {}", mimeType, fileName);
+                throw new IllegalArgumentException("File type not allowed. Only JPEG, PNG and GIF are supported");
+            }
 
             String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
             String uniqueId = UUID.randomUUID().toString();
@@ -115,4 +124,91 @@ public class FileStorageUtil {
         return defaultProfilePicture;
     }
 
+    /**
+     * Stores a profile picture after resizing it to the target dimensions.
+     * 
+     * @param fileContent   The raw byte content of the image file
+     * @param fileName      Original file name
+     * @param fileExtension File extension (jpg, png, etc.)
+     * @param mimeType      The MIME type of the image
+     * @return The unique name of the stored file
+     */
+    public String storeProfilePicture(byte[] fileContent, String fileName, String fileExtension, String mimeType) {
+        try {
+            // Validate file as before (this is handled in storeFile method)
+            logger.info("Resizing profile picture: {} ({} bytes)", fileName, fileContent.length);
+
+            // Resize image for profile (300x300)
+            byte[] resizedContent = resizeImage(fileContent, 300, 300);
+
+            // Log size reduction
+            int originalSize = fileContent.length;
+            int newSize = resizedContent.length;
+            double reductionPercent = ((originalSize - newSize) / (double) originalSize) * 100.0;
+            logger.info("Image resized: {} bytes to {} bytes (reduced by {:.2f}%)",
+                    originalSize, newSize, reductionPercent);
+
+            // Continue with storing as before
+            return storeFile(resizedContent, fileName, fileExtension, mimeType);
+        } catch (Exception e) {
+            logger.error("Error processing profile picture: {}", fileName, e);
+            throw new RuntimeException("Could not process profile picture " + fileName, e);
+        }
+    }
+
+    /**
+     * Resizes an image to the specified dimensions.
+     * 
+     * @param imageData    The raw byte content of the image
+     * @param targetWidth  The desired width in pixels
+     * @param targetHeight The desired height in pixels
+     * @return The raw byte content of the resized image
+     */
+    private byte[] resizeImage(byte[] imageData, int targetWidth, int targetHeight) {
+        try {
+            ByteArrayInputStream bis = new ByteArrayInputStream(imageData);
+            BufferedImage image = ImageIO.read(bis);
+
+            if (image == null) {
+                logger.warn("Could not read image for resizing, returning original");
+                return imageData;
+            }
+
+            // Calculate dimensions that preserve aspect ratio
+            int originalWidth = image.getWidth();
+            int originalHeight = image.getHeight();
+
+            // Calculate scaling factors
+            double widthScale = (double) targetWidth / originalWidth;
+            double heightScale = (double) targetHeight / originalHeight;
+
+            // Use the smaller scaling factor to ensure the image fits within the target
+            // dimensions
+            double scale = Math.min(widthScale, heightScale);
+
+            // Calculate new dimensions
+            int scaledWidth = (int) (originalWidth * scale);
+            int scaledHeight = (int) (originalHeight * scale);
+
+            // Create a transparent image with target dimensions
+            BufferedImage resized = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g = resized.createGraphics();
+
+            // Center the image
+            int x = (targetWidth - scaledWidth) / 2;
+            int y = (targetHeight - scaledHeight) / 2;
+
+            // Draw the image with high quality settings
+            g.drawImage(image, x, y, scaledWidth, scaledHeight, null);
+            g.dispose();
+
+            // Convert to JPEG format
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            ImageIO.write(resized, "png", bos); // Using PNG to preserve transparency
+            return bos.toByteArray();
+        } catch (IOException e) {
+            logger.error("Error resizing image", e);
+            return imageData; // Return original if resizing fails
+        }
+    }
 }
