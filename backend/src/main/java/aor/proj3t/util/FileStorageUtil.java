@@ -34,8 +34,17 @@ public class FileStorageUtil {
     }
 
     private void ensureDefaultProfilePictureExists() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'ensureDefaultProfilePictureExists'");
+        try {
+            Path defaultPicturePath = fileStoragePath.resolve(defaultProfilePicture);
+            if (!Files.exists(defaultPicturePath)) {
+                logger.warn("Default profile picture not found at {}. Please ensure the file is manually placed there.",
+                        defaultPicturePath);
+            } else {
+                logger.info("Default profile picture found at {}", defaultPicturePath);
+            }
+        } catch (Exception e) {
+            logger.error("Error checking default profile picture", e);
+        }
     }
 
 }
