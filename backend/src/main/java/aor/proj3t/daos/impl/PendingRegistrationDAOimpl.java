@@ -1,5 +1,6 @@
 package aor.proj3t.daos.impl;
 
+import java.time.Instant;
 import java.util.Optional;
 
 import aor.proj3t.daos.interfaces.PendingRegistrationDAO;
@@ -40,4 +41,14 @@ public class PendingRegistrationDAOimpl extends AbstractDAO<PendingRegistration,
         query.setParameter("token", token);
         return query.getSingleResult() > 0;
     }
+
+    @Override
+    public void deleteExpired() {
+        String jpql = "DELETE FROM PendingRegistration p WHERE p.expirationDate < :now";
+        em.createQuery(jpql)
+                .setParameter("now", Instant.now())
+                .executeUpdate();
+    }
+
+
 }

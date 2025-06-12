@@ -9,5 +9,6 @@ public interface PendingRegistrationDAO extends BasicDAO<PendingRegistration,Lon
     Optional<PendingRegistration> findByToken(String token);
     Optional<PendingRegistration> findByEmail(String email);
     Boolean isValidToken(String token);
+    void deleteExpired();
 
 }
