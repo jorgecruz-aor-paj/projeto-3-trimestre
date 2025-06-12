@@ -115,19 +115,13 @@ public class AuthResource {
         String token = authHeader.substring("Bearer ".length()).trim();
 
         try {
-            if (!jwtUtil.validateToken(token) || !serviceFactory.forAuth().isTokenActive(token)) {
+            if (!serviceFactory.forAuth().isValidToken(token)) {
                 logger.warn("Invalid or expired token");
                 return Response.status(Response.Status.UNAUTHORIZED)
                         .entity(new ErrorResponse("Invalid or expired token")).build();
             }
             Claims claims = jwtUtil.extractAllClaims(token);
             Long userId = Long.parseLong(claims.get("userId").toString());
-            UserDTO user = serviceFactory.forUser().getUser(userId);
-            if (user == null) {
-                return Response.status(Response.Status.NOT_FOUND)
-                        .entity(new ErrorResponse("Invalid token userId"))
-                        .build();
-            }
             Boolean success = serviceFactory.forAuth().logout(userId, token);
             if (success) {
                 return Response.status(Response.Status.OK).entity("Logout successful").build();

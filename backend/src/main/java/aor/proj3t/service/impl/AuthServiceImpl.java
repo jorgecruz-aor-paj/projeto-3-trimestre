@@ -6,10 +6,15 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import aor.proj3t.config.AppConstants;
+import aor.proj3t.dto.UserDTO;
 import aor.proj3t.entities.Settings;
 import aor.proj3t.entities.User;
+import aor.proj3t.resource.ErrorResponse;
+import aor.proj3t.service.ServiceFactory;
 import aor.proj3t.util.JwtUtil;
 import aor.proj3t.util.PasswordUtil;
+import io.jsonwebtoken.Claims;
+import jakarta.ws.rs.core.Response;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -34,6 +39,9 @@ public class AuthServiceImpl extends BaseService implements AuthService {
 
     @Inject
     ConverterFactory converterFactory;
+
+    @Inject
+    ServiceFactory serviceFactory;
 
     @Inject
     JwtUtil jwtUtil;
@@ -100,6 +108,35 @@ public class AuthServiceImpl extends BaseService implements AuthService {
         return 0;
     }
 
+    @Override
+    public Boolean isValidToken(String token) {
+        boolean valid = jwtUtil.validateToken(token);
+        if (!valid) {
+            logger.warn("Invalid token");
+            return false;
+        }
+        boolean expired = jwtUtil.isTokenExpired(token);
+        if(expired) {
+            logger.warn("Expired session token {}", token);
+            return false;
+        }
+        boolean active = isTokenActive(token);
+        if(!active) {
+            logger.warn("Inactive session token {}", token);
+            return false;
+        }
+        Claims claims = jwtUtil.extractAllClaims(token);
+        Long userId = Long.parseLong(claims.get("userId").toString());
+        UserDTO user = serviceFactory.forUser().getUser(userId);
+        boolean validUserId = user != null;
+        if(!validUserId) {
+            logger.warn("Invalid user id {} inside session token {}", userId,token);
+            return false;
+        }
+        return true;
+    }
+
+
     public Boolean isTokenActive(String token) {
         Session session = getSessionByToken(token);
         return session.getActive();
@@ -149,5 +186,7 @@ public class AuthServiceImpl extends BaseService implements AuthService {
                 user.getEmail().equals(loginDto.getEmail());
 
     }
+
+
 
 }

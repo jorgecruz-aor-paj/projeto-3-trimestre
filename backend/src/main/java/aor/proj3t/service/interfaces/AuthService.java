@@ -36,6 +36,6 @@ public interface AuthService {
      */
     int cleanupExpiredSessions();
 
-    Boolean isTokenActive(String token);
+    Boolean isValidToken(String token);
 
     }

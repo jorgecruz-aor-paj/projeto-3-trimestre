@@ -251,7 +251,7 @@ public class JwtUtil {
                     .requireIssuer(issuer)
                     .build()
                     .parseSignedClaims(token);
-            return !isTokenExpired(token);
+            return true;
         } catch (SignatureException e) {
             logger.error("Invalid JWT signature - invalid Base64 encoding", e);
             return false;
