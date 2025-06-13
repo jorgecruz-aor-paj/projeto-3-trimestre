@@ -82,18 +82,9 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Override
     public void confirmUser(String email, UserRegistrationDTO userRegistrationDto) {
         PendingRegistration registration = getPendingRegistration(email);
-        if (registration == null) {
-            logger.warn("No pending registration found for email {}", email);
-            throw new NotFoundException("No pending registration found for this email");
-        }
-
         Workplace workplace = getEntity(
                 daoFactory.forWorkplace().findById(userRegistrationDto.getWorkplaceId()),
                 userRegistrationDto.getWorkplaceId(), "Workplace");
-        if (workplace == null) {
-            logger.warn("Workplace ID {} does not exist", userRegistrationDto.getWorkplaceId());
-            throw new NotFoundException("Selected workplace does not exist");
-        }
 
         User newUser = createNewUser(userRegistrationDto, registration, workplace, fileStorageUtil);
         daoFactory.forUser().create(newUser);
@@ -143,8 +134,6 @@ public class UserServiceImpl extends BaseService implements UserService {
         if (!manager.getRole().equals(Role.ADMIN)) {
             logger.error("Admin with id {} to marked as manager by admin with id {}", manager.getId(),
                     requester.getId());
-            logger.error("Admin with id {} to marked as manager by admin with id {}", manager.getId(),
-                    requester.getId());
             throw new ForbiddenException("Permission denied");
         }
         if (users.contains(manager)) {
@@ -175,6 +164,7 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     @Override
     public List<UserDTO> getUsersByFilters(UserFilter filter) {
+        //TODO update to use custom exceptions
         try {
             return converterFactory.forUser().toDTOList(daoFactory.forUser().getUsersByFilters(filter));
         } catch (Exception e) {
@@ -188,7 +178,7 @@ public class UserServiceImpl extends BaseService implements UserService {
         Optional<User> userOpt = daoFactory.forUser().findByEmail(email);
         if (userOpt.isEmpty()) {
             logger.warn("User with email {} not found for password reset", email);
-            return;
+            throw new NotFoundException("User with email " + email + " not found for password reset");
         }
         User user = userOpt.get();
         Settings settings = getSettings();
@@ -213,16 +203,6 @@ public class UserServiceImpl extends BaseService implements UserService {
         }
     }
 
-    private User getUserByEmail(String email) {
-        try {
-            Optional<User> userOpt = daoFactory.forUser().findByEmail(email);
-            return userOpt.orElse(null);
-        } catch (Exception e) {
-            logger.error("Error getting user by email {}. ", email, e);
-            throw new NoSuchElementException("No user found with email " + email);
-        }
-    }
-
     private List<User> getUserListFromIds(List<Long> userIds) {
         List<User> users = new ArrayList<>(userIds.size());
         for (Long userId : userIds) {
@@ -237,14 +217,14 @@ public class UserServiceImpl extends BaseService implements UserService {
             Optional<PendingRegistration> pendingRegistrationOpt = daoFactory.forPendingRegistration()
                     .findByEmail(email);
             return pendingRegistrationOpt.orElse(null);
-        } catch (Exception e) {
+        } catch (NotFoundException e) {
             logger.error("Error getting pending registration. ", e);
-            return null;
+            throw new NotFoundException("No pending registration found for email " + email);
         }
     }
 
     private static User createNewUser(UserRegistrationDTO userRegistrationDto, PendingRegistration registration,
-            Workplace workplace, FileStorageUtil fileStorageUtil) {
+                                      Workplace workplace, FileStorageUtil fileStorageUtil) {
         User newUser = new User(
                 registration.getEmail(),
                 registration.getPassword(),
@@ -259,14 +239,12 @@ public class UserServiceImpl extends BaseService implements UserService {
         if (userRegistrationDto.getBiography() != null) {
             newUser.setBiography(userRegistrationDto.getBiography());
         }
-
         newUser.setPhotograph(fileStorageUtil.getDefaultProfilePicture());
-
         return newUser;
     }
 
     private void sendResetPasswordEmail(String email, Long userId, String ipAddress,
-            Integer resetPasswordExpirationTime) {
+                                        Integer resetPasswordExpirationTime) {
         String resetPasswordToken = jwtUtil.generatePasswordResetToken(email, userId, ipAddress,
                 resetPasswordExpirationTime);
         String baseUrl = "https://localhost:8443/jorgeosorio-proj3t/api/auth";
@@ -310,14 +288,9 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     private void sendConfirmationEmail(String email, String ipAddress, Integer confirmationExpirationTime) {
-        try {
             String token = jwtUtil.generateConfirmationToken(email, ipAddress, confirmationExpirationTime);
             String baseUrl = "https://localhost:8443/jorgeosorio-proj3t/api/auth";
             emailUtil.sendConfirmationEmail(email, token, baseUrl);
-        } catch (Exception e) {
-            logger.error("Error sending confirmation email to {}", email, e);
-            throw new RuntimeException("Failed to send confirmation email to " + email);
-        }
     }
 
     @Override
