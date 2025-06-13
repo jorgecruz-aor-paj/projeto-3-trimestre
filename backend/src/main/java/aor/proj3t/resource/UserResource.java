@@ -3,16 +3,12 @@ package aor.proj3t.resource;
 import aor.proj3t.dto.ManagerAssignDTO;
 import aor.proj3t.dto.UserDTO;
 import aor.proj3t.enums.Role;
-import aor.proj3t.exceptions.UnauthorizedException;
 import aor.proj3t.service.ServiceFactory;
-import aor.proj3t.util.JwtUtil;
 import aor.proj3t.util.ValidatorUtil;
 import aor.proj3t.util.authutils.Secured;
-import io.jsonwebtoken.Claims;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -32,18 +28,12 @@ import org.apache.logging.log4j.Logger;
 public class UserResource {
     private static final Logger logger = LogManager.getLogger(UserResource.class);
 
-
-    @Context
-    private HttpHeaders headers;
-
     @Inject
     ServiceFactory serviceFactory;
 
     @Inject
     ValidatorUtil validatorUtil;
 
-    @Inject
-    JwtUtil jwtUtil;
 
     @GET
     @Path("/me")

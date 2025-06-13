@@ -95,7 +95,7 @@ public class AuthResource {
                                 UserRegistrationDTO userRegistrationDTO) {
         logger.info("Received confirmation request for token: {}", confirmationToken);
         if (!jwtUtil.validateToken(confirmationToken)) {
-            logger.warn("Invalid or expired token");
+            logger.warn("Invalid or expired confirmation token");
             throw new UnauthorizedException("Invalid or expired token");
         }
         validatorUtil.validateUserRegistrationDTO(userRegistrationDTO);
@@ -131,7 +131,7 @@ public class AuthResource {
         logger.info("Received reset password for token: {}", resetPasswordToken);
 
         if (!jwtUtil.validateToken(resetPasswordToken)) {
-            logger.warn("Invalid or expired token");
+            logger.warn("Invalid or expired reset Password token");
             throw new UnauthorizedException("Invalid or expired token");
         }
         validatorUtil.validateLoginDTO(loginDTO);
