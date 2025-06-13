@@ -70,9 +70,9 @@ public class ValidatorUtil {
         }
     }
 
-    public void validateWorkplaceId(Long workplaceId) {
-        if (workplaceId == null || workplaceId <= 0) {
-            throw new InvalidDataException("Workplace ID must be a positive number");
+    public void validateId(Long id, String entity) {
+        if (id == null || id <= 0) {
+            throw new InvalidDataException(entity + " ID must be a positive number");
         }
     }
 
@@ -84,18 +84,6 @@ public class ValidatorUtil {
             //     throw new InvalidDataException("Invalid base64 format for photograph");
             // }
             //TODO check validation logic
-        }
-    }
-
-    public void validateManagerId(Long managerId) {
-        if (managerId != null && managerId <= 0) {
-            throw new InvalidDataException("Manager ID, if provided, must be positive");
-        }
-    }
-
-    public void validateUserId(Long userId) {
-        if (userId == null || userId <= 0) {
-            throw new InvalidDataException("User ID must be a positive number");
         }
     }
 
@@ -118,16 +106,6 @@ public class ValidatorUtil {
     public void validateUserIdList(List<Long> userIdList) {
         if (userIdList == null || userIdList.isEmpty()) {
             throw new InvalidDataException("User list must not be empty");
-        }
-    }
-
-
-    public void validateTrainingId(Long id) {
-        if (id == null) {
-            throw new InvalidDataException("Training ID is required");
-        }
-        if (id <= 0) {
-            throw new InvalidDataException("Training ID must be positive");
         }
     }
 
@@ -157,7 +135,7 @@ public class ValidatorUtil {
             if (link.length() > 500) {
                 throw new InvalidDataException("Link must not exceed 500 characters");
             }
-            String urlRegex = "^(https?|ftp)://[\\w.-]+(?:\\.[\\w\\.-]+)+(?:[/?#][^\\s]*)?$";
+            String urlRegex = "^(https?|ftp)://[\\w.-]+(?:\\.[\\w.-]+)+(?:[/?#]\\S*)?$";
             if (!Pattern.matches(urlRegex, link)) {
                 throw new InvalidDataException("Link is not a valid URL format");
             }
@@ -170,11 +148,6 @@ public class ValidatorUtil {
         }
     }
 
-    public void validateTrainingAreaId(Long trainingAreaId) {
-        if (trainingAreaId == null || trainingAreaId <= 0) {
-            throw new InvalidDataException("Training Area ID must be a positive number");
-        }
-    }
 
 
 
@@ -191,36 +164,45 @@ public class ValidatorUtil {
         validateBirthDate(dto.getBirthDate());
         validateBiography(dto.getBiography());
         validateAddress(dto.getAddress());
-        validateWorkplaceId(dto.getWorkplaceId());
+        validateId(dto.getWorkplaceId(), "Workplace");
     }
 
     public void validateUserDTO(UserDTO dto) {
-        validateUserId(dto.getId());
+        validateId(dto.getId(), "User");
         validateName(dto.getFirstName());
         validateName(dto.getLastName());
         validatePhone(dto.getPhoneNumber());
         validateAddress(dto.getAddress());
         validateBirthDate(dto.getBirthDate());
         validateBiography(dto.getBiography());
-        validateWorkplaceId(dto.getWorkplaceId());
+        validateId(dto.getWorkplaceId(), "Workplace");
         validatePhotograph(dto.getPhotograph());
-        validateManagerId(dto.getManagerId());
+        validateId(dto.getManagerId(), "Manager");
         validateRole(dto.getRole().getName());
     }
 
     public void validateManagerAssignDTO(ManagerAssignDTO dto) {
-        validateUserId(dto.getManagerId());
+        validateId(dto.getManagerId(), "Manager");
         validateUserIdList(dto.getUserIds());
     }
 
     public void validateNewTrainingDTO(NewTrainingDTO newTrainingDto) {
-        validateTrainingId(newTrainingDto.getId());
         validateTrainingTitle(newTrainingDto.getTitle());
         validateTrainingDuration(newTrainingDto.getDuration());
         validateTrainingDescription(newTrainingDto.getDescription());
         validateTrainingLink(newTrainingDto.getLink());
         validateTrainingLanguage(newTrainingDto.getLanguage());
-        validateTrainingAreaId(newTrainingDto.getTrainingAreaId());
+        validateId(newTrainingDto.getTrainingAreaId(), "Training Area");
+    }
+
+    public void validateTrainingDTO(TrainingDTO trainingDto) {
+        validateId(trainingDto.getId(), "Training");
+        validateTrainingTitle(trainingDto.getTitle());
+        validateTrainingDuration(trainingDto.getDuration());
+        validateTrainingDescription(trainingDto.getDescription());
+        validateTrainingLink(trainingDto.getLink());
+        validateTrainingLanguage(trainingDto.getLanguage());
+        validateId(trainingDto.getTrainingAreaId(), "Training Area");
     }
 
 }
