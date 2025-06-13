@@ -4,10 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import aor.proj3t.dto.LoginDTO;
-import aor.proj3t.dto.ManagerAssignDTO;
-import aor.proj3t.dto.UserDTO;
-import aor.proj3t.dto.UserRegistrationDTO;
+import aor.proj3t.dto.*;
 import aor.proj3t.enums.Role;
 import aor.proj3t.exceptions.InvalidDataException;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -40,7 +37,7 @@ public class ValidatorUtil {
     }
 
     public void validateName(String name) {
-        if (name == null || name.isEmpty() || name.length() < 2 || name.length() > 30) {
+        if (name == null || name.length() < 2 || name.length() > 30) {
             throw new InvalidDataException("Name must be between 2 and 30 characters");
         }
     }
@@ -86,6 +83,7 @@ public class ValidatorUtil {
             // if (!photograph.matches(base64Regex)) {
             //     throw new InvalidDataException("Invalid base64 format for photograph");
             // }
+            //TODO check validation logic
         }
     }
 
@@ -123,6 +121,64 @@ public class ValidatorUtil {
         }
     }
 
+
+    public void validateTrainingId(Long id) {
+        if (id == null) {
+            throw new InvalidDataException("Training ID is required");
+        }
+        if (id <= 0) {
+            throw new InvalidDataException("Training ID must be positive");
+        }
+    }
+
+    public void validateTrainingTitle(String title) {
+        if (title == null || title.trim().isEmpty()) {
+            throw new InvalidDataException("Title is required");
+        }
+        if (title.length() > 100) {
+            throw new InvalidDataException("Title must not exceed 100 characters");
+        }
+    }
+
+    public void validateTrainingDuration(Integer duration) {
+        if (duration == null || duration <= 0) {
+            throw new InvalidDataException("Duration must be a positive number of minutes");
+        }
+    }
+
+    public void validateTrainingDescription(String description) {
+        if (description == null || description.length() < 10 || description.length() > 1000) {
+            throw new InvalidDataException("Description must be between 10 and 1000 characters");
+        }
+    }
+
+    public void validateTrainingLink(String link) {
+        if (link != null && !link.isEmpty()) {
+            if (link.length() > 500) {
+                throw new InvalidDataException("Link must not exceed 500 characters");
+            }
+            String urlRegex = "^(https?|ftp)://[\\w.-]+(?:\\.[\\w\\.-]+)+(?:[/?#][^\\s]*)?$";
+            if (!Pattern.matches(urlRegex, link)) {
+                throw new InvalidDataException("Link is not a valid URL format");
+            }
+        }
+    }
+
+    public void validateTrainingLanguage(String language) {
+        if (language == null || language.trim().isEmpty()) {
+            throw new InvalidDataException("Language is required");
+        }
+    }
+
+    public void validateTrainingAreaId(Long trainingAreaId) {
+        if (trainingAreaId == null || trainingAreaId <= 0) {
+            throw new InvalidDataException("Training Area ID must be a positive number");
+        }
+    }
+
+
+
+
     public void validateLoginDTO(LoginDTO loginDTO) {
         validateEmail(loginDTO.getEmail());
         validatePassword(loginDTO.getPassword());
@@ -156,5 +212,16 @@ public class ValidatorUtil {
         validateUserId(dto.getManagerId());
         validateUserIdList(dto.getUserIds());
     }
+
+    public void validateNewTrainingDTO(NewTrainingDTO newTrainingDto) {
+        validateTrainingId(newTrainingDto.getId());
+        validateTrainingTitle(newTrainingDto.getTitle());
+        validateTrainingDuration(newTrainingDto.getDuration());
+        validateTrainingDescription(newTrainingDto.getDescription());
+        validateTrainingLink(newTrainingDto.getLink());
+        validateTrainingLanguage(newTrainingDto.getLanguage());
+        validateTrainingAreaId(newTrainingDto.getTrainingAreaId());
+    }
+
 }
 

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import aor.proj3t.dto.NewTrainingDTO;
 import aor.proj3t.dto.TrainingAreaDTO;
 import aor.proj3t.dto.TrainingDTO;
 import aor.proj3t.dto.TrainingParticipationDTO;
@@ -20,7 +21,7 @@ public interface TrainingService {
      * @param trainingDTO the training to be added to the database
      * @return The created training
      */
-    Boolean createTraining(TrainingDTO trainingDTO);
+    void createTraining(NewTrainingDTO newTrainingDTO);
 
     /**
      * Update an existing training.

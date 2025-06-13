@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import aor.proj3t.dto.NewTrainingDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -29,27 +30,18 @@ public class TrainingServiceImpl extends BaseService implements TrainingService 
     ConverterFactory converterFactory;
 
     @Override
-    public Boolean createTraining(TrainingDTO trainingDTO) {
-        try {
-            TrainingArea trainingArea = getEntity(
-                    daoFactory.forTrainingArea().findById(trainingDTO.getTrainingAreaId()),
-                    trainingDTO.getTrainingAreaId(), "Training area");
-            Training training = new Training(
-                    trainingDTO.getTitle(),
-                    trainingDTO.getDuration(),
-                    trainingDTO.getDescription(),
-                    trainingDTO.getLink(),
-                    trainingDTO.getLanguage(),
-                    trainingArea);
-            daoFactory.forTraining().create(training);
-            return true;
-        } catch (NoSuchElementException e) {
-            logger.error("Training area not found with id: " + trainingDTO.getTrainingAreaId());
-            return false;
-        } catch (Exception e) {
-            logger.error("Error creating training", e);
-            return false;
-        }
+    public void createTraining(NewTrainingDTO newTrainingDto) {
+        TrainingArea trainingArea = getEntity(
+                daoFactory.forTrainingArea().findById(newTrainingDto.getTrainingAreaId()),
+                newTrainingDto.getTrainingAreaId(), "Training area");
+        Training training = new Training(
+                newTrainingDto.getTitle(),
+                newTrainingDto.getDuration(),
+                newTrainingDto.getDescription(),
+                newTrainingDto.getLink(),
+                newTrainingDto.getLanguage(),
+                trainingArea);
+        daoFactory.forTraining().create(training);
     }
 
     @Override

@@ -20,10 +20,10 @@ public class Training {
     @Column(name = "duration", nullable = false)
     private Integer duration; // Duration in minutes
 
-    @Column(name = "description")
+    @Column(name = "description",length = 1000)
     private String description;
 
-    @Column(name = "link")
+    @Column(name = "link",length = 500)
     private String link;
 
     @Column(name = "language", nullable = false)
