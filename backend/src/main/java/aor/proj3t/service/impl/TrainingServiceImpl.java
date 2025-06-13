@@ -30,7 +30,7 @@ public class TrainingServiceImpl extends BaseService implements TrainingService 
     ConverterFactory converterFactory;
 
     @Override
-    public void createTraining(NewTrainingDTO newTrainingDto) {
+    public TrainingDTO createTraining(NewTrainingDTO newTrainingDto) {
         TrainingArea trainingArea = getEntity(
                 daoFactory.forTrainingArea().findById(newTrainingDto.getTrainingAreaId()),
                 newTrainingDto.getTrainingAreaId(), "Training area");
@@ -42,10 +42,11 @@ public class TrainingServiceImpl extends BaseService implements TrainingService 
                 newTrainingDto.getLanguage(),
                 trainingArea);
         daoFactory.forTraining().create(training);
+        return converterFactory.forTraining().toDTO(training);
     }
 
     @Override
-    public void updateTraining(TrainingDTO trainingDTO) {
+    public TrainingDTO updateTraining(TrainingDTO trainingDTO) {
             TrainingArea trainingArea = getEntity(
                     daoFactory.forTrainingArea().findById(trainingDTO.getTrainingAreaId()),
                     trainingDTO.getTrainingAreaId(), "Training area");
@@ -57,6 +58,7 @@ public class TrainingServiceImpl extends BaseService implements TrainingService 
             training.setLanguage(trainingDTO.getLanguage());
             training.setTrainingArea(trainingArea);
             daoFactory.forTraining().update(training);
+            return converterFactory.forTraining().toDTO(training);
     }
 
     @Override
@@ -98,15 +100,11 @@ public class TrainingServiceImpl extends BaseService implements TrainingService 
     }
 
     @Override
-    public Boolean addTrainingArea(TrainingAreaDTO trainingAreaDTO) {
-        try {
+    public TrainingAreaDTO addTrainingArea(TrainingAreaDTO trainingAreaDTO) {
             TrainingArea trainingArea = new TrainingArea(trainingAreaDTO.getName());
+            //TODO add logic to prevent repeated names
             daoFactory.forTrainingArea().create(trainingArea);
-            return true;
-        } catch (Exception e) {
-            logger.error("Error adding training area", e);
-            return false;
-        }
+            return converterFactory.forTrainingArea().toDTO(trainingArea);
     }
 
     @Override

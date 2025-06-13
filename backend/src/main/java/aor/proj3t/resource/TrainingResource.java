@@ -1,6 +1,7 @@
 package aor.proj3t.resource;
 
 import aor.proj3t.dto.NewTrainingDTO;
+import aor.proj3t.dto.TrainingAreaDTO;
 import aor.proj3t.dto.TrainingDTO;
 import aor.proj3t.entities.User;
 import aor.proj3t.enums.Role;
@@ -35,18 +36,30 @@ public class TrainingResource {
     @Secured(Role.ADMIN)
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createTraining(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader, NewTrainingDTO newTrainingDto) {
+    public Response createTraining(NewTrainingDTO newTrainingDto) {
         validatorUtil.validateNewTrainingDTO(newTrainingDto);
-        serviceFactory.forTraining().createTraining(newTrainingDto);
-        return Response.status(Response.Status.CREATED).entity("Training has been created").build();
+        TrainingDTO training = serviceFactory.forTraining().createTraining(newTrainingDto);
+        return Response.status(Response.Status.CREATED).entity(training).build();
     }
 
     @PUT
     @Secured(Role.ADMIN)
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateUser(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader, TrainingDTO trainingDto){
+    public Response updateUser(TrainingDTO trainingDto){
         validatorUtil.validateTrainingDTO(trainingDto);
-        serviceFactory.forTraining().updateTraining(trainingDto);
+        TrainingDTO trainingDTO = serviceFactory.forTraining().updateTraining(trainingDto);
+        return Response.status(Response.Status.OK).entity(trainingDTO).build();
+    }
+
+    @POST
+    @Path("/area")
+    @Secured(Role.ADMIN)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getTrainings(TrainingAreaDTO trainingAreaDTO) {
+        validatorUtil.validateTrainingAreaDTO(trainingAreaDTO);
+        TrainingAreaDTO trainingAreaDto = serviceFactory.forTraining().addTrainingArea(trainingAreaDTO);
+        return Response.status(Response.Status.OK).entity(trainingAreaDto).build();
     }
 }

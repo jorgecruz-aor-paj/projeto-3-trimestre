@@ -205,5 +205,9 @@ public class ValidatorUtil {
         validateId(trainingDto.getTrainingAreaId(), "Training Area");
     }
 
+    public void validateTrainingAreaDTO(TrainingAreaDTO trainingAreaDto) {
+        validateTrainingTitle(trainingAreaDto.getName());
+    }
+
 }
 

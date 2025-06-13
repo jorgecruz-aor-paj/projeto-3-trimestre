@@ -21,7 +21,7 @@ public interface TrainingService {
      * @param newTrainingDTO the training to be added to the database
      * @return The created training
      */
-    void createTraining(NewTrainingDTO newTrainingDTO);
+    TrainingDTO createTraining(NewTrainingDTO newTrainingDTO);
 
     /**
      * Update an existing training.
@@ -29,7 +29,7 @@ public interface TrainingService {
      * @param trainingDTO the training to be added to the database
      * @return The updated training
      */
-    void updateTraining(TrainingDTO trainingDTO);
+    TrainingDTO updateTraining(TrainingDTO trainingDTO);
 
     /**
      * Deactivate a training.
@@ -45,7 +45,7 @@ public interface TrainingService {
 
     List<TrainingAreaDTO> getAllTrainingAreas();
 
-    Boolean addTrainingArea(TrainingAreaDTO trainingAreaDTO);
+    TrainingAreaDTO addTrainingArea(TrainingAreaDTO trainingAreaDTO);
 
 
 
