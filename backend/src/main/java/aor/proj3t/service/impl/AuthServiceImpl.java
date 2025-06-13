@@ -52,13 +52,13 @@ public class AuthServiceImpl extends BaseService implements AuthService {
     PasswordUtil passwordUtil;
 
     @Override
-    public String login(LoginDTO loginDTO, String ipAddress, String userAgent) {
+    public String login(LoginDTO loginDto, String ipAddress, String userAgent) {
         try {
             User user = daoFactory.forUser()
-                    .findByEmail(loginDTO.getEmail())
+                    .findByEmail(loginDto.getEmail())
                     .orElseThrow(() -> new UnauthorizedException("Invalid credentials"));
 
-            if (!passwordUtil.verifyPassword(loginDTO.getPassword(), user.getPassword())) {
+            if (!passwordUtil.verifyPassword(loginDto.getPassword(), user.getPassword())) {
                 throw new UnauthorizedException("Invalid credentials");
             }
             Integer sessionTimeoutMinutes = getSettings().getSessionExpirationTime();
@@ -66,6 +66,7 @@ public class AuthServiceImpl extends BaseService implements AuthService {
             Instant tokenLimit = jwtUtil.extractExpirationDate(token);
             Session newSession = new Session(token,ipAddress,userAgent,user,tokenLimit);
             daoFactory.forSession().create(newSession);
+            logger.info("Login successful for user with email {}", loginDto.getEmail());
             return token;
 
         } catch (Exception e) {

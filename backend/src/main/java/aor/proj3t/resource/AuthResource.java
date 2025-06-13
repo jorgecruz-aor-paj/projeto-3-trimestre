@@ -50,12 +50,7 @@ public class AuthResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response registerUser(LoginDTO loginDto) {
         String ipAddress = ThreadContext.get("clientIp");
-
-        if (!validatorUtil.isValidLoginDTO(loginDto)) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity(new ErrorResponse("Invalid data"))
-                    .build();
-        }
+        validatorUtil.validateLoginDTO(loginDto);
         serviceFactory.forUser().registerUser(loginDto, ipAddress);
         return Response.status(Response.Status.CREATED)
                 .entity("User registered successfully")
@@ -69,18 +64,10 @@ public class AuthResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(LoginDTO loginDto) {
         logger.info("Login request received for email {}", loginDto.getEmail());
-        if (!validatorUtil.isValidLoginDTO(loginDto)) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity(new ErrorResponse("Invalid data"))
-                    .build();
-        }
+        validatorUtil.validateLoginDTO(loginDto);
         String userAgent = headers.getHeaderString("User-Agent");
         String ipAddress = ThreadContext.get("clientIp");
-
         String sessionToken = serviceFactory.forAuth().login(loginDto, ipAddress, userAgent);
-
-        logger.info("Login successful for user with email {}", loginDto.getEmail());
-
         return Response.ok(sessionToken).build();
     }
 
@@ -108,16 +95,11 @@ public class AuthResource {
     public Response confirmUser(@QueryParam("confirmationToken") String confirmationToken,
                                 UserRegistrationDTO userRegistrationDTO) {
         logger.info("Received confirmation request for token: {}", confirmationToken);
-
-        if (!validatorUtil.isValidUserRegistrationDTO(userRegistrationDTO)) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity(new ErrorResponse("Invalid data"))
-                    .build();
-        }
         if (!jwtUtil.validateToken(confirmationToken)) {
             logger.warn("Invalid or expired token");
             throw new UnauthorizedException("Invalid or expired token");
         }
+        validatorUtil.validateUserRegistrationDTO(userRegistrationDTO);
         Claims claims = jwtUtil.extractAllClaims(confirmationToken);
         String email = claims.get("email").toString();
 
@@ -132,9 +114,8 @@ public class AuthResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getResetPasswordLink(@PathParam("email") String email) {
         logger.info("Received reset password request for email: {}", email);
-        String userAgent = headers.getHeaderString("User-Agent");
         String ipAddress = ThreadContext.get("clientIp");
-
+        validatorUtil.validateEmail(email);
         serviceFactory.forUser().sendResetPasswordLink(email, ipAddress);
 
         // Always return the same message to prevent email enumeration
@@ -154,18 +135,10 @@ public class AuthResource {
             logger.warn("Invalid or expired token");
             throw new UnauthorizedException("Invalid or expired token");
         }
-
-        if (!validatorUtil.isValidLoginDTO(loginDTO)) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity(new ErrorResponse("Invalid data"))
-                    .build();
-        }
-
+        validatorUtil.validateLoginDTO(loginDTO);
         Claims claims = jwtUtil.extractAllClaims(resetPasswordToken);
         Long userId = Long.parseLong(claims.get("userId").toString());
-
         serviceFactory.forUser().changePassword(userId, loginDTO.getPassword());
-
         return Response.ok("User password changed successfully").build();
     }
 

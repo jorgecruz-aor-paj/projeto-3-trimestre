@@ -1,12 +1,15 @@
 package aor.proj3t.util;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import aor.proj3t.dto.LoginDTO;
+import aor.proj3t.dto.ManagerAssignDTO;
 import aor.proj3t.dto.UserDTO;
 import aor.proj3t.dto.UserRegistrationDTO;
 import aor.proj3t.enums.Role;
+import aor.proj3t.exceptions.InvalidDataException;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
@@ -16,129 +19,142 @@ public class ValidatorUtil {
         // Default constructor
     }
 
-    public Boolean isValidEmail(String email) {
+    public void validateEmail(String email) {
         if (email == null || email.isEmpty()) {
-            return false;
+            throw new InvalidDataException("Email cannot be null or empty");
         }
         String emailRegex = "^(?=.{1,64}@.{1,255}$)([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,})$";
-        Pattern pattern = Pattern.compile(emailRegex);
-        return pattern.matcher(email).matches();
+        if (!Pattern.compile(emailRegex).matcher(email).matches()) {
+            throw new InvalidDataException("Email format is invalid");
+        }
     }
 
-    public Boolean isValidPassword(String password) {
+    public void validatePassword(String password) {
         if (password == null || password.isEmpty()) {
-            return false;
+            throw new InvalidDataException("Password cannot be null or empty");
         }
         String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*#?&.-_])\\S{8,}$";
-        Pattern pattern = Pattern.compile(passwordRegex);
-        return pattern.matcher(password).matches();
+        if (!Pattern.compile(passwordRegex).matcher(password).matches()) {
+            throw new InvalidDataException("Password does not meet complexity requirements");
+        }
     }
 
-    public Boolean isValidName(String name) {
-        if (name == null || name.isEmpty()) {
-            return false;
+    public void validateName(String name) {
+        if (name == null || name.isEmpty() || name.length() < 2 || name.length() > 30) {
+            throw new InvalidDataException("Name must be between 2 and 30 characters");
         }
-        if (name.length() < 2 || name.length() > 30) {
-            return false;
-        }
-        return true;
     }
 
-    public Boolean isValidPhone(String phoneNumber) {
+    public void validatePhone(String phoneNumber) {
         if (phoneNumber == null || phoneNumber.isEmpty()) {
-            return false;
+            throw new InvalidDataException("Phone number cannot be empty");
         }
-        String emailRegex = "^\\d{9}$";
-        Pattern pattern = Pattern.compile(emailRegex);
-        return pattern.matcher(phoneNumber).matches();
-
+        String phoneRegex = "^\\d{9}$";
+        if (!Pattern.compile(phoneRegex).matcher(phoneNumber).matches()) {
+            throw new InvalidDataException("Phone number must be 9 digits");
+        }
     }
 
-    public Boolean isValidAddress(String address) {
-        if (address == null || address.isEmpty()) {
-            return false;
+    public void validateAddress(String address) {
+        if (address == null || address.isEmpty() || address.length() < 2 || address.length() > 100) {
+            throw new InvalidDataException("Address must be between 2 and 100 characters");
         }
-        if (address.length() < 2 || address.length() > 100) {
-            return false;
-        }
-        return true;
     }
 
-    public Boolean isValidBirthDate(LocalDate birthDate) {
-        if (birthDate == null) {
-            return false;
+    public void validateBirthDate(LocalDate birthDate) {
+        if (birthDate == null || !birthDate.isBefore(LocalDate.now())) {
+            throw new InvalidDataException("Birth date must be in the past");
         }
-        return birthDate.isBefore(LocalDate.now());
     }
 
-    public Boolean isValidBiography(String biography) {
-        if (biography.length() < 2 || biography.length() > 250) {
-            return false;
+    public void validateBiography(String biography) {
+        if (biography == null || biography.length() < 2 || biography.length() > 250) {
+            throw new InvalidDataException("Biography must be between 2 and 250 characters");
         }
-        return true;
     }
 
-    public Boolean isValidWorkplaceId(Long workplaceId) {
+    public void validateWorkplaceId(Long workplaceId) {
         if (workplaceId == null || workplaceId <= 0) {
-            return false;
+            throw new InvalidDataException("Workplace ID must be a positive number");
         }
-        return true;
     }
 
-    public Boolean isValidPhotograph(String photograph) {
-        // Accepts null (optional field), or valid base64 string
-        if (photograph == null || photograph.isEmpty()) {
-            return true;
+    public void validatePhotograph(String photograph) {
+        if (photograph != null && !photograph.isEmpty()) {
+            // Optional: add base64 format check if needed
+            // String base64Regex = "^[A-Za-z0-9+/=]+$";
+            // if (!photograph.matches(base64Regex)) {
+            //     throw new InvalidDataException("Invalid base64 format for photograph");
+            // }
         }
-        //String base64Regex = "^[A-Za-z0-9+/=]+$";
-        //return photograph.matches(base64Regex);
-        return true;
     }
 
-    public Boolean isValidManagerId(Long managerId) {
-        // Optional field; if present must be positive
-        return managerId == null || managerId > 0;
+    public void validateManagerId(Long managerId) {
+        if (managerId != null && managerId <= 0) {
+            throw new InvalidDataException("Manager ID, if provided, must be positive");
+        }
     }
 
-    public Boolean isValidRole(String role) {
+    public void validateUserId(Long userId) {
+        if (userId == null || userId <= 0) {
+            throw new InvalidDataException("User ID must be a positive number");
+        }
+    }
+
+    public void validateRole(String role) {
         if (role == null || role.isEmpty()) {
-            return false;
+            throw new InvalidDataException("Role cannot be null or empty");
         }
+        boolean matched = false;
         for (Role roleEnum : Role.values()) {
             if (roleEnum.name().equalsIgnoreCase(role)) {
-                return true;
+                matched = true;
+                break;
             }
         }
-        return false;
+        if (!matched) {
+            throw new InvalidDataException("Invalid role: " + role);
+        }
     }
 
-    public Boolean isValidLoginDTO(LoginDTO loginDTO) {
-        return isValidEmail(loginDTO.getEmail()) && isValidPassword(loginDTO.getPassword());
+    public void validateUserIdList(List<Long> userIdList) {
+        if (userIdList == null || userIdList.isEmpty()) {
+            throw new InvalidDataException("User list must not be empty");
+        }
     }
 
-    public Boolean isValidUserRegistrationDTO(UserRegistrationDTO userRegistrationDTO) {
-        return isValidName(userRegistrationDTO.getFirstName()) &&
-                isValidName(userRegistrationDTO.getLastName()) &&
-                isValidPhone(userRegistrationDTO.getPhoneNumber()) &&
-                isValidBirthDate(userRegistrationDTO.getBirthDate()) &&
-                isValidBiography(userRegistrationDTO.getBiography()) &&
-                isValidAddress(userRegistrationDTO.getAddress()) &&
-                isValidWorkplaceId(userRegistrationDTO.getWorkplaceId());
+    public void validateLoginDTO(LoginDTO loginDTO) {
+        validateEmail(loginDTO.getEmail());
+        validatePassword(loginDTO.getPassword());
     }
 
-    public Boolean isValidUserDTO(UserDTO userDTO) {
-        System.out.println("here");
-        return isValidName(userDTO.getFirstName()) &&
-                isValidName(userDTO.getLastName()) &&
-                isValidPhone(userDTO.getPhoneNumber()) &&
-                isValidAddress(userDTO.getAddress()) &&
-                isValidBirthDate(userDTO.getBirthDate()) &&
-                isValidBiography(userDTO.getBiography()) &&
-                isValidWorkplaceId(userDTO.getWorkplaceId()) &&
-                isValidPhotograph(userDTO.getPhotograph()) &&
-                isValidManagerId(userDTO.getManagerId()) &&
-                isValidRole(userDTO.getRole().getName());
+    public void validateUserRegistrationDTO(UserRegistrationDTO dto) {
+        validateName(dto.getFirstName());
+        validateName(dto.getLastName());
+        validatePhone(dto.getPhoneNumber());
+        validateBirthDate(dto.getBirthDate());
+        validateBiography(dto.getBiography());
+        validateAddress(dto.getAddress());
+        validateWorkplaceId(dto.getWorkplaceId());
     }
 
+    public void validateUserDTO(UserDTO dto) {
+        validateUserId(dto.getId());
+        validateName(dto.getFirstName());
+        validateName(dto.getLastName());
+        validatePhone(dto.getPhoneNumber());
+        validateAddress(dto.getAddress());
+        validateBirthDate(dto.getBirthDate());
+        validateBiography(dto.getBiography());
+        validateWorkplaceId(dto.getWorkplaceId());
+        validatePhotograph(dto.getPhotograph());
+        validateManagerId(dto.getManagerId());
+        validateRole(dto.getRole().getName());
+    }
 
+    public void validateManagerAssignDTO(ManagerAssignDTO dto) {
+        validateUserId(dto.getManagerId());
+        validateUserIdList(dto.getUserIds());
+    }
 }
+
