@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
+import aor.proj3t.dto.ManagerAssignDTO;
 import aor.proj3t.dto.UserRegistrationDTO;
 import aor.proj3t.entities.*;
 import aor.proj3t.exceptions.ConflictException;
@@ -23,7 +24,6 @@ import aor.proj3t.service.interfaces.UserService;
 import aor.proj3t.util.JwtUtil;
 import aor.proj3t.util.PasswordUtil;
 import aor.proj3t.util.converterutils.ConverterFactory;
-import io.jsonwebtoken.JwtException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
@@ -78,6 +78,7 @@ public class UserServiceImpl extends BaseService implements UserService {
             throw new ConflictException("User with email " + email + " already exists");
         }
     }
+
     private void sendConfirmationEmail(String email, String ipAddress, Integer confirmationExpirationTime) {
         try {
             String token = jwtUtil.generateConfirmationToken(email, ipAddress, confirmationExpirationTime);
@@ -114,7 +115,6 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
 
-
     @Override
     public void changePassword(Long userId, String newRawPassword) {
         User user = getEntity(daoFactory.forUser().findById(userId), userId, "User");
@@ -146,30 +146,27 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     @Override
-    public Boolean assignManagerBulk(Long managerId, Long[] userIds) {
-        if (userIds.length == 0) {
-            logger.warn("No user IDs provided for assigning manager");
-            return true;
+    public void assignManagerBulk(Long userId, ManagerAssignDTO managerAssignDto) {
+        User requester = getEntity(daoFactory.forUser().findById(userId), userId, "User");
+        User manager = getEntity(daoFactory.forUser().findById(managerAssignDto.getManagerId()), managerAssignDto.getManagerId(), "User");
+        List<User> users = getUserListFromIds(managerAssignDto.getUserIds());
+        if(!requester.getRole().equals(Role.ADMIN)) {
+            logger.error("Manager assignment request by nonAdmin user with id {}", requester.getId());
+            throw new ForbiddenException("Permission denied");
         }
-        try {
-            User manager = getEntity(daoFactory.forUser().findById(managerId), managerId, "User");
-            List<User> users = getUserListFromIds(userIds);
-            if (users == null || users.isEmpty()) {
-                logger.error("No valid users Id's assigning manager in bulk. ");
-                return false;
-            }
-            for (User user : users) {
-                user.setManager(manager);
-                daoFactory.forUser().update(user);
-            }
-            if (!manager.getRole().equals(Role.MANAGER)) {
-                manager.setRole(Role.MANAGER);
-            }
-            return true;
-        } catch (Exception e) {
-            logger.error("Error assigning manager with id {} in bulk. ", e);
-            return false;
+        if(users.contains(manager)) {
+            logger.error("User with id {} cannot manage himself", manager.getId());
+            throw new ForbiddenException("Permission denied");
         }
+        for (User user : users) {
+            user.setManager(manager);
+            daoFactory.forUser().update(user);
+        }
+        if (manager.getRole().equals(Role.USER)) {
+            manager.setRole(Role.MANAGER);
+            daoFactory.forUser().update(manager);
+        }
+        demoteManagersWithoutUsers();
     }
 
     @Override
@@ -236,25 +233,13 @@ public class UserServiceImpl extends BaseService implements UserService {
         }
     }
 
-    private List<User> getUserListFromIds(Long[] userIds) {
-        try {
-            List<User> users = new ArrayList<>(userIds.length);
-            for (Long userId : userIds) {
-                User user = getEntity(daoFactory.forUser().findById(userId), userId, "User");
-                if (user != null) {
-                    users.add(user);
-                } else {
-                    logger.error("User not found with ID: " + userId);
-                }
-            }
-            return users;
-        } catch (NoSuchElementException e) {
-            logger.error("User not found with ID: " + userIds[0]);
-            return null;
-        } catch (Exception e) {
-            logger.error("Error getting user list. ", e);
-            return null;
+    private List<User> getUserListFromIds(List<Long> userIds) {
+        List<User> users = new ArrayList<>(userIds.size());
+        for (Long userId : userIds) {
+            User user = getEntity(daoFactory.forUser().findById(userId), userId, "User");
+            users.add(user);
         }
+        return users;
     }
 
 
@@ -298,7 +283,7 @@ public class UserServiceImpl extends BaseService implements UserService {
         emailUtil.sendPasswordResetEmail(email, resetPasswordToken, baseUrl);
     }
 
-    private User updateUserFields(User user, UserDTO userDto) {
+    private void updateUserFields(User user, UserDTO userDto) {
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
         user.setPhoneNumber(userDto.getPhoneNumber());
@@ -312,8 +297,16 @@ public class UserServiceImpl extends BaseService implements UserService {
                 daoFactory.forWorkplace().findById(userDto.getWorkplaceId()),
                 userDto.getWorkplaceId(), "Workplace");
         user.setWorkplace(workplace);
-        return user;
     }
+
+    private void demoteManagersWithoutUsers() {
+        List<User> emptyManagers = daoFactory.forUser().findManagersWithoutUsers();
+        for (User manager : emptyManagers) {
+            manager.setRole(Role.USER);
+            daoFactory.forUser().update(manager);
+        }
+    }
+
 
 }
 

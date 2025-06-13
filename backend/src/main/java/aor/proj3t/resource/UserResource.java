@@ -1,10 +1,13 @@
 package aor.proj3t.resource;
 
+import aor.proj3t.dto.ManagerAssignDTO;
 import aor.proj3t.dto.UserDTO;
+import aor.proj3t.enums.Role;
 import aor.proj3t.exceptions.UnauthorizedException;
 import aor.proj3t.service.ServiceFactory;
 import aor.proj3t.util.JwtUtil;
 import aor.proj3t.util.ValidatorUtil;
+import aor.proj3t.util.authutils.Secured;
 import io.jsonwebtoken.Claims;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
@@ -44,42 +47,35 @@ public class UserResource {
 
     @GET
     @Path("/me")
+    @Secured
     @Produces(MediaType.APPLICATION_JSON)
     public Response getMe(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader) {
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            throw new UnauthorizedException("Missing or malformed token");
-        }
-
-        String token = authHeader.substring("Bearer ".length()).trim();
-        logger.info("Received request to get own user info with token {}", token);
         Long userId = serviceFactory.forAuth().getUserIdFromAuthHeader(authHeader);
-
         UserDTO user = serviceFactory.forUser().getUser(userId);
         return Response.ok(user).build();
     }
 
     @PUT
+    @Secured
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateUser(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader, UserDTO userDTO) {
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            throw new UnauthorizedException("Missing or malformed token");
-        }
-        String token = authHeader.substring("Bearer ".length()).trim();
-        logger.info("Received request to update user info with token {}", token);
-        if (!serviceFactory.forAuth().isValidToken(token)) {
-            throw new UnauthorizedException("Invalid or expired token");
-        }
-        if (!validatorUtil.isValidUserDTO(userDTO)) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity(new ErrorResponse("Invalid data"))
-                    .build();
-        }
-        Long requesterId = serviceFactory.forAuth().getUserIdFromToken(token);
+        Long requesterId = serviceFactory.forAuth().getUserIdFromAuthHeader(authHeader);
+        validatorUtil.validateUserDTO(userDTO);
         serviceFactory.forUser().updateUser(requesterId, userDTO);
         return Response.ok(userDTO).build();
     }
 
+    @PATCH
+    @Secured(Role.ADMIN)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response assignManager(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader, ManagerAssignDTO managerAssignDto) {
+        Long requesterId = serviceFactory.forAuth().getUserIdFromAuthHeader(authHeader);
+        validatorUtil.validateManagerAssignDTO(managerAssignDto);
+        serviceFactory.forUser().assignManagerBulk(requesterId,managerAssignDto);
+        return Response.ok().build();
+    }
 
 }
 

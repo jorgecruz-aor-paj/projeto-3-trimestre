@@ -63,7 +63,6 @@ public class AuthResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(LoginDTO loginDto) {
-        logger.info("Login request received for email {}", loginDto.getEmail());
         validatorUtil.validateLoginDTO(loginDto);
         String userAgent = headers.getHeaderString("User-Agent");
         String ipAddress = ThreadContext.get("clientIp");

@@ -1,6 +1,7 @@
 package aor.proj3t.service.interfaces;
 
 import aor.proj3t.dto.LoginDTO;
+import aor.proj3t.dto.ManagerAssignDTO;
 import aor.proj3t.dto.UserDTO;
 import aor.proj3t.dto.UserRegistrationDTO;
 import aor.proj3t.filters.UserFilter;
@@ -19,7 +20,7 @@ public interface UserService {
 
     Boolean assignManager(Long userId, Long managerId);
 
-    Boolean assignManagerBulk(Long managerId, Long[] userIds);
+    void assignManagerBulk(Long userId, ManagerAssignDTO managerAssignDto);
 
     void updateUser(Long userId, UserDTO userDto);
 
