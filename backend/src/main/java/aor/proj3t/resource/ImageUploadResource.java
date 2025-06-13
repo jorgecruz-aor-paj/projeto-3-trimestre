@@ -1,7 +1,14 @@
 package aor.proj3t.resource;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jboss.resteasy.plugins.providers.multipart.InputPart;
+import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
 import aor.proj3t.dto.FileUploadDTO;
 import aor.proj3t.service.ServiceFactory;
@@ -35,19 +42,44 @@ public class ImageUploadResource {
 
     @POST
     @Path("/picture")
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed({ "USER", "ADMIN" })
-    public Response uploadProfilePicture(@PathParam("userId") Long userId, FileUploadDTO fileUploadDTO,
-            @Context SecurityContext securityContext) {
+    public Response uploadProfilePicture(@PathParam("userId") Long userId,
+            MultipartFormDataInput input) {
         try {
-            // Security check - only the user themselves or an admin can upload their
-            // profile picture
-            String userIdStr = securityContext.getUserPrincipal().getName();
-            if (!userIdStr.equals(userId.toString()) && !securityContext.isUserInRole("ADMIN")) {
-                return Response.status(Response.Status.FORBIDDEN).entity("Not authorized to update this user's profile")
-                        .build();
+            // Process the multipart form data
+            Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
+
+            // Get file input part
+            List<InputPart> inputParts = uploadForm.get("file");
+            if (inputParts == null || inputParts.isEmpty()) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .entity("No file part found in the request").build();
             }
+
+            InputPart inputPart = inputParts.get(0);
+
+            // Get file content
+            InputStream inputStream = inputPart.getBody(InputStream.class, null);
+            byte[] fileContent = inputStream.readAllBytes();
+
+            // Get content disposition headers for filename
+            String contentDisposition = inputPart.getHeaders().getFirst("Content-Disposition");
+            String filename = getFileName(contentDisposition);
+
+            // Get the MIME type
+            String mimeType = inputPart.getMediaType().toString();
+
+            // Get file extension
+            String fileExtension = getFileExtension(filename);
+
+            // Create DTO with the extracted data
+            FileUploadDTO fileUploadDTO = new FileUploadDTO();
+            fileUploadDTO.setFileName(filename);
+            fileUploadDTO.setFileContent(fileContent);
+            fileUploadDTO.setFileMimeType(mimeType);
+            fileUploadDTO.setFileExtension(fileExtension);
 
             Boolean success = serviceFactory.forUser().uploadProfilePicture(userId, fileUploadDTO);
             if (success) {
@@ -55,10 +87,54 @@ public class ImageUploadResource {
             } else {
                 return Response.status(Response.Status.BAD_REQUEST).entity("Failed to update profile picture").build();
             }
+        } catch (IOException e) {
+            logger.error("Error processing uploaded file for user ID: {}", userId, e);
+            return Response.status(Response.Status.BAD_REQUEST).entity("Error processing uploaded file").build();
         } catch (Exception e) {
             logger.error("Error uploading profile picture for user ID: {}", userId, e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Internal server error").build();
         }
+    }
+
+    /**
+     * Extracts the filename from the Content-Disposition header.
+     * 
+     * @param contentDisposition The Content-Disposition header value
+     * @return The extracted filename
+     */
+    private String getFileName(String contentDisposition) {
+        if (contentDisposition == null) {
+            return "unknown_file";
+        }
+
+        String[] items = contentDisposition.split(";");
+        for (String item : items) {
+            item = item.trim();
+            if (item.startsWith("filename=")) {
+                String fileName = item.substring(item.indexOf('=') + 1).trim().replace("\"", "");
+                return fileName;
+            }
+        }
+        return "unknown_file";
+    }
+
+    /**
+     * Extracts the file extension from the filename.
+     * 
+     * @param fileName The filename
+     * @return The file extension (without the dot)
+     */
+    private String getFileExtension(String fileName) {
+        if (fileName == null) {
+            return "jpg"; // Default extension
+        }
+
+        int lastDotPos = fileName.lastIndexOf(".");
+        if (lastDotPos > 0) {
+            return fileName.substring(lastDotPos + 1).toLowerCase();
+        }
+
+        return "jpg"; // Default extension
     }
 
     @DELETE
