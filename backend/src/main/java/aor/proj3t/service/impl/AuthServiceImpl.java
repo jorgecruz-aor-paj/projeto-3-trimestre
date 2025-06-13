@@ -9,6 +9,7 @@ import aor.proj3t.config.AppConstants;
 import aor.proj3t.dto.UserDTO;
 import aor.proj3t.entities.Settings;
 import aor.proj3t.entities.User;
+import aor.proj3t.enums.Role;
 import aor.proj3t.exceptions.NotFoundException;
 import aor.proj3t.exceptions.UnauthorizedException;
 import aor.proj3t.resource.ErrorResponse;
@@ -170,18 +171,21 @@ public class AuthServiceImpl extends BaseService implements AuthService {
         }
     }
 
-    public Long getUserIdFromAuthHeader(String authHeader) {
+    private Claims extractClaims(String authHeader) {
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             throw new UnauthorizedException("Missing or malformed token");
         }
         String token = authHeader.substring("Bearer ".length()).trim();
-        if (!serviceFactory.forAuth().isValidToken(token)) {
+
+        if (!isValidToken(token)) {
             throw new UnauthorizedException("Invalid or expired token");
         }
-        Claims claims = jwtUtil.extractAllClaims(token);
-        return Long.parseLong(claims.get("userId").toString());
+
+        return jwtUtil.extractAllClaims(token);
     }
 
+
+    @Override
     public Long getUserIdFromToken(String token) {
         if (!serviceFactory.forAuth().isValidToken(token)) {
             throw new UnauthorizedException("Invalid or expired token");
@@ -189,6 +193,24 @@ public class AuthServiceImpl extends BaseService implements AuthService {
         Claims claims = jwtUtil.extractAllClaims(token);
         return Long.parseLong(claims.get("userId").toString());
     }
+
+    @Override
+    public Long getUserIdFromAuthHeader(String authHeader) {
+        Claims claims = extractClaims(authHeader);
+        return Long.parseLong(claims.get("userId").toString());
+    }
+
+    @Override
+    public Role getRoleFromAuthHeader(String authHeader) {
+        Claims claims = extractClaims(authHeader);
+        try {
+            return Role.valueOf(claims.get("role", String.class).toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new UnauthorizedException("Invalid role in token");
+        }
+    }
+
+
 
 
 

@@ -67,30 +67,6 @@ public class UserServiceImpl extends BaseService implements UserService {
         sendConfirmationEmail(email, ipAddress, confirmationExpirationTime);
     }
 
-    private void validateEmail(String email) {
-        daoFactory.forPendingRegistration().deleteExpired();
-        Optional<User> userOpt = daoFactory.forUser().findByEmail(email);
-        if (userOpt.isPresent()) {
-            throw new ConflictException("User with email " + email + " already exists");
-        }
-        Optional<PendingRegistration> pendingOpt = daoFactory.forPendingRegistration().findByEmail(email);
-        if (pendingOpt.isPresent()) {
-            throw new ConflictException("User with email " + email + " already exists");
-        }
-    }
-
-    private void sendConfirmationEmail(String email, String ipAddress, Integer confirmationExpirationTime) {
-        try {
-            String token = jwtUtil.generateConfirmationToken(email, ipAddress, confirmationExpirationTime);
-            String baseUrl = "https://localhost:8443/jorgeosorio-proj3t/api/auth";
-            emailUtil.sendConfirmationEmail(email, token, baseUrl);
-        } catch (Exception e) {
-            logger.error("Error sending confirmation email to {}", email, e);
-            throw new RuntimeException("Failed to send confirmation email to " + email);
-        }
-    }
-
-
     @Override
     public void confirmUser(String email, UserRegistrationDTO userRegistrationDto) {
         PendingRegistration registration = getPendingRegistration(email);
@@ -114,14 +90,12 @@ public class UserServiceImpl extends BaseService implements UserService {
         logger.info("User with email {} successfully registered and confirmed.", registration.getEmail());
     }
 
-
     @Override
     public void changePassword(Long userId, String newRawPassword) {
         User user = getEntity(daoFactory.forUser().findById(userId), userId, "User");
         user.setPassword(passwordUtil.hashPassword(newRawPassword));
         daoFactory.forUser().update(user);
     }
-
 
     @Override
     public Boolean assignManager(Long userId, Long managerId) {
@@ -150,15 +124,15 @@ public class UserServiceImpl extends BaseService implements UserService {
         User requester = getEntity(daoFactory.forUser().findById(userId), userId, "User");
         User manager = getEntity(daoFactory.forUser().findById(managerAssignDto.getManagerId()), managerAssignDto.getManagerId(), "User");
         List<User> users = getUserListFromIds(managerAssignDto.getUserIds());
-        if(!requester.getRole().equals(Role.ADMIN)) {
+        if (!requester.getRole().equals(Role.ADMIN)) {
             logger.error("Manager assignment request by nonAdmin user with id {}", requester.getId());
             throw new ForbiddenException("Permission denied");
         }
-        if(!manager.getRole().equals(Role.ADMIN)) {
-            logger.error("Admin with id {} to marked as manager by admin with id {}", manager.getId(),requester.getId());
+        if (!manager.getRole().equals(Role.ADMIN)) {
+            logger.error("Admin with id {} to marked as manager by admin with id {}", manager.getId(), requester.getId());
             throw new ForbiddenException("Permission denied");
         }
-        if(users.contains(manager)) {
+        if (users.contains(manager)) {
             logger.error("User with id {} cannot manage himself", manager.getId());
             throw new ForbiddenException("Permission denied");
         }
@@ -183,7 +157,6 @@ public class UserServiceImpl extends BaseService implements UserService {
         updateUserFields(targetUser, userDto);
         daoFactory.forUser().update(targetUser);
     }
-
 
     @Override
     public List<UserDTO> getUsersByFilters(UserFilter filter) {
@@ -211,7 +184,6 @@ public class UserServiceImpl extends BaseService implements UserService {
                 settings.getResetPasswordExpirationTime()
         );
     }
-
 
     private Settings getSettings() {
         Settings settings = new Settings(
@@ -245,7 +217,6 @@ public class UserServiceImpl extends BaseService implements UserService {
         }
         return users;
     }
-
 
     private PendingRegistration getPendingRegistration(String email) {
         try {
@@ -311,6 +282,28 @@ public class UserServiceImpl extends BaseService implements UserService {
         }
     }
 
+    private void validateEmail(String email) {
+        daoFactory.forPendingRegistration().deleteExpired();
+        Optional<User> userOpt = daoFactory.forUser().findByEmail(email);
+        if (userOpt.isPresent()) {
+            throw new ConflictException("User with email " + email + " already exists");
+        }
+        Optional<PendingRegistration> pendingOpt = daoFactory.forPendingRegistration().findByEmail(email);
+        if (pendingOpt.isPresent()) {
+            throw new ConflictException("User with email " + email + " already exists");
+        }
+    }
+
+    private void sendConfirmationEmail(String email, String ipAddress, Integer confirmationExpirationTime) {
+        try {
+            String token = jwtUtil.generateConfirmationToken(email, ipAddress, confirmationExpirationTime);
+            String baseUrl = "https://localhost:8443/jorgeosorio-proj3t/api/auth";
+            emailUtil.sendConfirmationEmail(email, token, baseUrl);
+        } catch (Exception e) {
+            logger.error("Error sending confirmation email to {}", email, e);
+            throw new RuntimeException("Failed to send confirmation email to " + email);
+        }
+    }
 
 }
 

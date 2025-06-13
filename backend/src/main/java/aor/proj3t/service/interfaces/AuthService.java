@@ -4,6 +4,7 @@ import java.util.List;
 
 import aor.proj3t.dto.LoginDTO;
 import aor.proj3t.entities.Session;
+import aor.proj3t.enums.Role;
 
 public interface AuthService {
 
@@ -38,7 +39,9 @@ public interface AuthService {
     Boolean isValidToken(String token);
 
     Long getUserIdFromAuthHeader(String authHeader);
+
     Long getUserIdFromToken(String token);
 
+    Role getRoleFromAuthHeader(String authHeader);
 
-    }
+}

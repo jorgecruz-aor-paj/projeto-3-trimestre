@@ -1,41 +1,54 @@
 package aor.proj3t.util.authutils;
 
+import aor.proj3t.enums.Role;
+import aor.proj3t.exceptions.ForbiddenException;
+import aor.proj3t.exceptions.UnauthorizedException;
+import aor.proj3t.service.interfaces.AuthService;
 import aor.proj3t.util.JwtUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;
+import jakarta.ws.rs.container.ResourceInfo;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.Provider;
+
+import java.util.Arrays;
+
 
 @Provider
 @Secured
 public class JwtAuthFilter implements ContainerRequestFilter {
 
+    @Context
+    private ResourceInfo resourceInfo;
+
     @Inject
     JwtUtil jwtUtil;
 
+    @Inject
+    AuthService authService;
+
     @Override
     public void filter(ContainerRequestContext requestContext) {
+
         String authHeader = requestContext.getHeaderString("Authorization");
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            requestContext.abortWith(
-                    Response.status(Response.Status.UNAUTHORIZED).entity("Missing or invalid token").build());
-            return;
+        Role role = authService.getRoleFromAuthHeader(authHeader);
+        Long userId = authService.getUserIdFromAuthHeader(authHeader);
+        requestContext.setSecurityContext(new CustomSecurityContext(userId.toString(), role.getName()));
+
+        Secured secured = resourceInfo.getResourceMethod().getAnnotation(Secured.class);
+        if (secured == null) {
+            secured = resourceInfo.getResourceClass().getAnnotation(Secured.class);
         }
 
-        String token = authHeader.substring("Bearer ".length()).trim();
-        try {
-            Claims claims = jwtUtil.extractAllClaims(token);
-            String role = claims.get("role", String.class);
-            String userId = claims.get("userId").toString();
-
-            // Attach role and user details to security context
-            requestContext.setSecurityContext(new CustomSecurityContext(userId, role));
-
-        } catch (Exception e) {
-            requestContext.abortWith(
-                    Response.status(Response.Status.UNAUTHORIZED).entity("Invalid or expired token").build());
+        if (secured != null && secured.value().length > 0) {
+            Role[] allowedRoles = secured.value();
+            boolean allowed = Arrays.stream(allowedRoles).anyMatch(r -> r == role);
+            if (!allowed) {
+                throw new ForbiddenException("You do not have permission to access this resource");
+            }
         }
     }
 }
