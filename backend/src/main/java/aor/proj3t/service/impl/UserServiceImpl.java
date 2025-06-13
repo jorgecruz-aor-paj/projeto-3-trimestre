@@ -2,25 +2,34 @@ package aor.proj3t.service.impl;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Objects;
+import java.util.Optional;
 
-import aor.proj3t.dto.ManagerAssignDTO;
-import aor.proj3t.dto.UserRegistrationDTO;
-import aor.proj3t.entities.*;
-import aor.proj3t.exceptions.ConflictException;
-import aor.proj3t.exceptions.ForbiddenException;
-import aor.proj3t.exceptions.NotFoundException;
-import aor.proj3t.util.EmailUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import aor.proj3t.config.AppConstants;
 import aor.proj3t.daos.DAOFactory;
+import aor.proj3t.dto.FileUploadDTO;
 import aor.proj3t.dto.LoginDTO;
+import aor.proj3t.dto.ManagerAssignDTO;
 import aor.proj3t.dto.UserDTO;
+import aor.proj3t.dto.UserRegistrationDTO;
+import aor.proj3t.entities.PendingRegistration;
+import aor.proj3t.entities.Settings;
+import aor.proj3t.entities.User;
+import aor.proj3t.entities.Workplace;
 import aor.proj3t.enums.Role;
+import aor.proj3t.exceptions.ConflictException;
+import aor.proj3t.exceptions.ForbiddenException;
+import aor.proj3t.exceptions.NotFoundException;
 import aor.proj3t.filters.UserFilter;
 import aor.proj3t.service.interfaces.UserService;
+import aor.proj3t.util.EmailUtil;
+import aor.proj3t.util.FileStorageUtil;
 import aor.proj3t.util.JwtUtil;
 import aor.proj3t.util.PasswordUtil;
 import aor.proj3t.util.converterutils.ConverterFactory;
@@ -45,6 +54,9 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     @Inject
     private EmailUtil emailUtil;
+
+    @Inject
+    private FileStorageUtil fileStorageUtil;
 
     @Override
     public UserDTO getUser(Long userId) {
@@ -77,14 +89,13 @@ public class UserServiceImpl extends BaseService implements UserService {
 
         Workplace workplace = getEntity(
                 daoFactory.forWorkplace().findById(userRegistrationDto.getWorkplaceId()),
-                userRegistrationDto.getWorkplaceId(), "Workplace"
-        );
+                userRegistrationDto.getWorkplaceId(), "Workplace");
         if (workplace == null) {
             logger.warn("Workplace ID {} does not exist", userRegistrationDto.getWorkplaceId());
             throw new NotFoundException("Selected workplace does not exist");
         }
 
-        User newUser = createNewUser(userRegistrationDto, registration, workplace);
+        User newUser = createNewUser(userRegistrationDto, registration, workplace, fileStorageUtil);
         daoFactory.forUser().create(newUser);
         daoFactory.forPendingRegistration().deleteById(registration.getId());
         logger.info("User with email {} successfully registered and confirmed.", registration.getEmail());
@@ -122,14 +133,16 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Override
     public void assignManagerBulk(Long userId, ManagerAssignDTO managerAssignDto) {
         User requester = getEntity(daoFactory.forUser().findById(userId), userId, "User");
-        User manager = getEntity(daoFactory.forUser().findById(managerAssignDto.getManagerId()), managerAssignDto.getManagerId(), "User");
+        User manager = getEntity(daoFactory.forUser().findById(managerAssignDto.getManagerId()),
+                managerAssignDto.getManagerId(), "User");
         List<User> users = getUserListFromIds(managerAssignDto.getUserIds());
         if (!requester.getRole().equals(Role.ADMIN)) {
             logger.error("Manager assignment request by nonAdmin user with id {}", requester.getId());
             throw new ForbiddenException("Permission denied");
         }
         if (!manager.getRole().equals(Role.ADMIN)) {
-            logger.error("Admin with id {} to marked as manager by admin with id {}", manager.getId(), requester.getId());
+            logger.error("Admin with id {} to marked as manager by admin with id {}", manager.getId(),
+                    requester.getId());
             throw new ForbiddenException("Permission denied");
         }
         if (users.contains(manager)) {
@@ -181,8 +194,7 @@ public class UserServiceImpl extends BaseService implements UserService {
                 user.getEmail(),
                 user.getId(),
                 ipAddress,
-                settings.getResetPasswordExpirationTime()
-        );
+                settings.getResetPasswordExpirationTime());
     }
 
     private Settings getSettings() {
@@ -220,7 +232,8 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     private PendingRegistration getPendingRegistration(String email) {
         try {
-            Optional<PendingRegistration> pendingRegistrationOpt = daoFactory.forPendingRegistration().findByEmail(email);
+            Optional<PendingRegistration> pendingRegistrationOpt = daoFactory.forPendingRegistration()
+                    .findByEmail(email);
             return pendingRegistrationOpt.orElse(null);
         } catch (Exception e) {
             logger.error("Error getting pending registration. ", e);
@@ -228,7 +241,8 @@ public class UserServiceImpl extends BaseService implements UserService {
         }
     }
 
-    private static User createNewUser(UserRegistrationDTO userRegistrationDto, PendingRegistration registration, Workplace workplace) {
+    private static User createNewUser(UserRegistrationDTO userRegistrationDto, PendingRegistration registration,
+            Workplace workplace, FileStorageUtil fileStorageUtil) {
         User newUser = new User(
                 registration.getEmail(),
                 registration.getPassword(),
@@ -243,17 +257,16 @@ public class UserServiceImpl extends BaseService implements UserService {
         if (userRegistrationDto.getBiography() != null) {
             newUser.setBiography(userRegistrationDto.getBiography());
         }
-        if (userRegistrationDto.getPhotograph() != null) {
-            newUser.setPhotograph(userRegistrationDto.getPhotograph());
-        } else {
-            newUser.setPhotograph("photo");
-        }
-        //todo remove photograph from hardcoded string to path
+
+        newUser.setPhotograph(fileStorageUtil.getDefaultProfilePicture());
+
         return newUser;
     }
 
-    private void sendResetPasswordEmail(String email, Long userId, String ipAddress, Integer resetPasswordExpirationTime) {
-        String resetPasswordToken = jwtUtil.generatePasswordResetToken(email, userId, ipAddress, resetPasswordExpirationTime);
+    private void sendResetPasswordEmail(String email, Long userId, String ipAddress,
+            Integer resetPasswordExpirationTime) {
+        String resetPasswordToken = jwtUtil.generatePasswordResetToken(email, userId, ipAddress,
+                resetPasswordExpirationTime);
         String baseUrl = "https://localhost:8443/jorgeosorio-proj3t/api/auth";
         emailUtil.sendPasswordResetEmail(email, resetPasswordToken, baseUrl);
     }
@@ -305,5 +318,62 @@ public class UserServiceImpl extends BaseService implements UserService {
         }
     }
 
-}
+    @Override
+    public Boolean uploadProfilePicture(Long userId, FileUploadDTO fileUploadDTO) {
+        try {
+            User user = getEntity(daoFactory.forUser().findById(userId), userId, "User");
+            if (user == null) {
+                logger.warn("User not found with ID: {} for profile picture upload", userId);
+                return false;
+            }
 
+            // Delete old profile picture ONLY if it's not the default one
+            String oldPicture = user.getPhotograph();
+            if (oldPicture != null && !oldPicture.equals(fileStorageUtil.getDefaultProfilePicture())) {
+                fileStorageUtil.deleteFile(oldPicture);
+            } // Store the new picture with resizing
+            String fileName = fileStorageUtil.storeProfilePicture(
+                    fileUploadDTO.getFileContent(),
+                    fileUploadDTO.getFileName(),
+                    fileUploadDTO.getFileExtension(),
+                    fileUploadDTO.getFileMimeType());
+
+            // Update user entity
+            user.setPhotograph(fileName);
+            daoFactory.forUser().update(user);
+
+            logger.info("Profile picture updated for user ID: {}", userId);
+            return true;
+        } catch (Exception e) {
+            logger.error("Error uploading profile picture for user ID: {}", userId, e);
+            return false;
+        }
+    }
+
+    @Override
+    public Boolean resetProfilePicture(Long userId) {
+        try {
+            User user = getEntity(daoFactory.forUser().findById(userId), userId, "User");
+            if (user == null) {
+                logger.warn("User not found with ID: {} for profile picture reset", userId);
+                return false;
+            }
+
+            // Delete old profile picture if it's not the default one
+            String oldPicture = user.getPhotograph();
+            if (oldPicture != null && !oldPicture.equals(fileStorageUtil.getDefaultProfilePicture())) {
+                fileStorageUtil.deleteFile(oldPicture);
+            }
+
+            // Set default picture
+            user.setPhotograph(fileStorageUtil.getDefaultProfilePicture());
+            daoFactory.forUser().update(user);
+
+            logger.info("Profile picture reset to default for user ID: {}", userId);
+            return true;
+        } catch (Exception e) {
+            logger.error("Error resetting profile picture for user ID: {}", userId, e);
+            return false;
+        }
+    }
+}
