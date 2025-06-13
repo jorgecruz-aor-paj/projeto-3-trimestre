@@ -1,12 +1,13 @@
 package aor.proj3t.service.interfaces;
 
+import java.util.List;
+
+import aor.proj3t.dto.FileUploadDTO;
 import aor.proj3t.dto.LoginDTO;
 import aor.proj3t.dto.ManagerAssignDTO;
 import aor.proj3t.dto.UserDTO;
 import aor.proj3t.dto.UserRegistrationDTO;
 import aor.proj3t.filters.UserFilter;
-
-import java.util.List;
 
 public interface UserService {
 
@@ -28,4 +29,8 @@ public interface UserService {
 
     void sendResetPasswordLink(String email, String ipAddress);
 
-    }
+    Boolean uploadProfilePicture(Long userId, FileUploadDTO fileUploadDTO);
+
+    Boolean resetProfilePicture(Long userId);
+
+}
