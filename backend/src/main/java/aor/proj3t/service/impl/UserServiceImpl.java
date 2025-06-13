@@ -13,7 +13,6 @@ import org.apache.logging.log4j.Logger;
 
 import aor.proj3t.config.AppConstants;
 import aor.proj3t.daos.DAOFactory;
-import aor.proj3t.dto.FileUploadDTO;
 import aor.proj3t.dto.LoginDTO;
 import aor.proj3t.dto.ManagerAssignDTO;
 import aor.proj3t.dto.UserDTO;
@@ -28,7 +27,7 @@ import aor.proj3t.exceptions.ForbiddenException;
 import aor.proj3t.exceptions.NotFoundException;
 import aor.proj3t.filters.UserFilter;
 import aor.proj3t.service.interfaces.UserService;
-import aor.proj3t.util.EmailUtil;
+
 import aor.proj3t.util.FileStorageUtil;
 import aor.proj3t.util.JwtUtil;
 import aor.proj3t.util.PasswordUtil;
@@ -90,11 +89,13 @@ public class UserServiceImpl extends BaseService implements UserService {
         Workplace workplace = getEntity(
                 daoFactory.forWorkplace().findById(userRegistrationDto.getWorkplaceId()),
                 userRegistrationDto.getWorkplaceId(), "Workplace");
+                userRegistrationDto.getWorkplaceId(), "Workplace");
         if (workplace == null) {
             logger.warn("Workplace ID {} does not exist", userRegistrationDto.getWorkplaceId());
             throw new NotFoundException("Selected workplace does not exist");
         }
 
+        User newUser = createNewUser(userRegistrationDto, registration, workplace, fileStorageUtil);
         User newUser = createNewUser(userRegistrationDto, registration, workplace, fileStorageUtil);
         daoFactory.forUser().create(newUser);
         daoFactory.forPendingRegistration().deleteById(registration.getId());
@@ -135,12 +136,16 @@ public class UserServiceImpl extends BaseService implements UserService {
         User requester = getEntity(daoFactory.forUser().findById(userId), userId, "User");
         User manager = getEntity(daoFactory.forUser().findById(managerAssignDto.getManagerId()),
                 managerAssignDto.getManagerId(), "User");
+        User manager = getEntity(daoFactory.forUser().findById(managerAssignDto.getManagerId()),
+                managerAssignDto.getManagerId(), "User");
         List<User> users = getUserListFromIds(managerAssignDto.getUserIds());
         if (!requester.getRole().equals(Role.ADMIN)) {
             logger.error("Manager assignment request by nonAdmin user with id {}", requester.getId());
             throw new ForbiddenException("Permission denied");
         }
         if (!manager.getRole().equals(Role.ADMIN)) {
+            logger.error("Admin with id {} to marked as manager by admin with id {}", manager.getId(),
+                    requester.getId());
             logger.error("Admin with id {} to marked as manager by admin with id {}", manager.getId(),
                     requester.getId());
             throw new ForbiddenException("Permission denied");
@@ -194,6 +199,7 @@ public class UserServiceImpl extends BaseService implements UserService {
                 user.getEmail(),
                 user.getId(),
                 ipAddress,
+                settings.getResetPasswordExpirationTime());
                 settings.getResetPasswordExpirationTime());
     }
 
@@ -262,6 +268,11 @@ public class UserServiceImpl extends BaseService implements UserService {
 
         return newUser;
     }
+
+    private void sendResetPasswordEmail(String email, Long userId, String ipAddress,
+            Integer resetPasswordExpirationTime) {
+        String resetPasswordToken = jwtUtil.generatePasswordResetToken(email, userId, ipAddress,
+                resetPasswordExpirationTime);
 
     private void sendResetPasswordEmail(String email, Long userId, String ipAddress,
             Integer resetPasswordExpirationTime) {
