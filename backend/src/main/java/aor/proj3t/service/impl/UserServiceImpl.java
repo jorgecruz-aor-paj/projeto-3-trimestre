@@ -154,6 +154,10 @@ public class UserServiceImpl extends BaseService implements UserService {
             logger.error("Manager assignment request by nonAdmin user with id {}", requester.getId());
             throw new ForbiddenException("Permission denied");
         }
+        if(!manager.getRole().equals(Role.ADMIN)) {
+            logger.error("Admin with id {} to marked as manager by admin with id {}", manager.getId(),requester.getId());
+            throw new ForbiddenException("Permission denied");
+        }
         if(users.contains(manager)) {
             logger.error("User with id {} cannot manage himself", manager.getId());
             throw new ForbiddenException("Permission denied");
