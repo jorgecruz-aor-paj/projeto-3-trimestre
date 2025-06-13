@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import aor.proj3t.daos.interfaces.UserDAO;
 import aor.proj3t.entities.User;
+import aor.proj3t.enums.Role;
 import aor.proj3t.filters.UserFilter;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -19,7 +20,7 @@ import jakarta.persistence.criteria.Root;
  * This class extends AbstractDAO to leverage common database operations and
  * implements
  * the UserDAO interface to provide user-specific data access methods.
- * 
+ *
  * <p>
  * This implementation uses a combination of helper methods from AbstractDAO and
  * direct Criteria API
@@ -28,7 +29,7 @@ import jakarta.persistence.criteria.Root;
  * while complex filtering operations use direct Criteria API for more
  * flexibility.
  * </p>
- * 
+ *
  * <p>
  * The class provides methods for:
  * <ul>
@@ -38,17 +39,17 @@ import jakarta.persistence.criteria.Root;
  * <li>Complex filtering with multiple conditions</li>
  * </ul>
  * </p>
- * 
+ *
  * <p>
  * Example usage:
- * 
+ *
  * <pre>
  * UserDAOimpl userDAO = new UserDAOimpl();
  * Optional<User> user = userDAO.findByEmail("user@example.com");
  * List<User> subordinates = userDAO.findByManager(managerId);
  * </pre>
  * </p>
- * 
+ *
  * @author Jorge Cruz & João Osório - Gr4
  * @see AbstractDAO
  * @see UserDAO
@@ -64,7 +65,7 @@ public class UserDAOimpl extends AbstractDAO<User, Long> implements UserDAO {
 
     /**
      * Find a user by their email address.
-     * 
+     *
      * @param email The email address to search for
      * @return Optional containing the user if found, empty otherwise
      */
@@ -75,7 +76,7 @@ public class UserDAOimpl extends AbstractDAO<User, Long> implements UserDAO {
 
     /**
      * Find all users managed by a specific manager.
-     * 
+     *
      * @param managerId The ID of the manager
      * @return A list of users who report to the specified manager
      */
@@ -86,9 +87,9 @@ public class UserDAOimpl extends AbstractDAO<User, Long> implements UserDAO {
 
     /**
      * Check if all users in the system have a manager assigned.
-     * 
+     *
      * @return true if all users have a manager assigned, false if any users have
-     *         null manager
+     * null manager
      */
     @Override
     public boolean allUsersHaveManager() {
@@ -98,7 +99,7 @@ public class UserDAOimpl extends AbstractDAO<User, Long> implements UserDAO {
 
     /**
      * Count the total number of users in the system.
-     * 
+     *
      * @return The total number of users
      */
     @Override
@@ -108,7 +109,7 @@ public class UserDAOimpl extends AbstractDAO<User, Long> implements UserDAO {
 
     /**
      * Count the number of users that don't have a manager assigned.
-     * 
+     *
      * @return The count of users with null manager
      */
     @Override
@@ -118,7 +119,7 @@ public class UserDAOimpl extends AbstractDAO<User, Long> implements UserDAO {
 
     /**
      * Count the number of users that have a manager assigned.
-     * 
+     *
      * @return The count of users with a non-null manager
      */
     @Override
@@ -128,7 +129,7 @@ public class UserDAOimpl extends AbstractDAO<User, Long> implements UserDAO {
 
     /**
      * Get users based on multiple filter criteria.
-     * 
+     *
      * <p>
      * This method allows for complex filtering of users based on various properties
      * including ID, manager, workplace, and text search across name and email
@@ -136,7 +137,7 @@ public class UserDAOimpl extends AbstractDAO<User, Long> implements UserDAO {
      * Results can be sorted according to the sort field and direction specified in
      * the filter.
      * </p>
-     * 
+     *
      * @param filters The filter criteria to apply
      * @return A list of users matching all specified criteria
      */
@@ -181,5 +182,10 @@ public class UserDAOimpl extends AbstractDAO<User, Long> implements UserDAO {
 
         return em.createQuery(query).getResultList();
     }
+
+    public List<User> findManagersWithoutUsers() {
+        return executeNamedQuery("User.findManagersWithoutUsers", User.class, "role", Role.MANAGER);
+    }
+
 
 }

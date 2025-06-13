@@ -13,7 +13,12 @@ import aor.proj3t.enums.Role;
 @Table(name = "users")
 
 @NamedQueries({
-        @NamedQuery(name = "users.allUsersHaveManager", query = "SELECT COUNT(u) FROM User u WHERE u.manager IS NULL")
+        @NamedQuery(name = "users.allUsersHaveManager", query = "SELECT COUNT(u) FROM User u WHERE u.manager IS NULL"),
+        @NamedQuery(
+                name = "User.findManagersWithoutUsers",
+                query = "SELECT u FROM User u WHERE u.role = :role AND SIZE(u.managedUsers) = 0"
+        )
+
 })
 
 public class User {
@@ -73,7 +78,8 @@ public class User {
     @JoinColumn(name = "workplace_id")
     private Workplace workplace;
 
-    public User(){}
+    public User() {
+    }
 
     public User(String email, String password, String firstName, String lastName, String phoneNumber, String Address, LocalDate birthDate, Role role, Workplace workplace) {
         this.email = email;

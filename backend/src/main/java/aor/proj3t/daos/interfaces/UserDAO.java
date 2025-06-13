@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import aor.proj3t.entities.User;
+import aor.proj3t.enums.Role;
 import aor.proj3t.filters.UserFilter;
 
 /**
@@ -46,4 +47,7 @@ public interface UserDAO extends BasicDAO<User, Long> {
     Long countUsersWithManager();
 
     List<User> getUsersByFilters(UserFilter filters);
+
+    List<User> findManagersWithoutUsers();
+
 }
