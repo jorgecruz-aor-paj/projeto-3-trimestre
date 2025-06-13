@@ -18,7 +18,7 @@ public interface TrainingService {
     /**
      * Create a new training.
      * 
-     * @param trainingDTO the training to be added to the database
+     * @param newTrainingDTO the training to be added to the database
      * @return The created training
      */
     void createTraining(NewTrainingDTO newTrainingDTO);
@@ -29,7 +29,7 @@ public interface TrainingService {
      * @param trainingDTO the training to be added to the database
      * @return The updated training
      */
-    Boolean updateTraining(TrainingDTO trainingDTO);
+    void updateTraining(TrainingDTO trainingDTO);
 
     /**
      * Deactivate a training.

@@ -45,8 +45,7 @@ public class TrainingServiceImpl extends BaseService implements TrainingService 
     }
 
     @Override
-    public Boolean updateTraining(TrainingDTO trainingDTO) {
-        try {
+    public void updateTraining(TrainingDTO trainingDTO) {
             TrainingArea trainingArea = getEntity(
                     daoFactory.forTrainingArea().findById(trainingDTO.getTrainingAreaId()),
                     trainingDTO.getTrainingAreaId(), "Training area");
@@ -58,15 +57,6 @@ public class TrainingServiceImpl extends BaseService implements TrainingService 
             training.setLanguage(trainingDTO.getLanguage());
             training.setTrainingArea(trainingArea);
             daoFactory.forTraining().update(training);
-            return true;
-        } catch (NoSuchElementException e) {
-            logger.error("Training area with id {} or training with id {} not found while updating training",
-                    trainingDTO.getTrainingAreaId(), trainingDTO.getId());
-            return false;
-        } catch (Exception e) {
-            logger.error("Error updating training", e);
-            return false;
-        }
     }
 
     @Override

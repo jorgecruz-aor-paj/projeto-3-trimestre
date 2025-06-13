@@ -38,5 +38,15 @@ public class TrainingResource {
     public Response createTraining(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader, NewTrainingDTO newTrainingDto) {
         validatorUtil.validateNewTrainingDTO(newTrainingDto);
         serviceFactory.forTraining().createTraining(newTrainingDto);
+        return Response.status(Response.Status.CREATED).entity("Training has been created").build();
+    }
+
+    @PUT
+    @Secured(Role.ADMIN)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateUser(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader, TrainingDTO trainingDto){
+        validatorUtil.validateTrainingDTO(trainingDto);
+        serviceFactory.forTraining().updateTraining(trainingDto);
     }
 }
