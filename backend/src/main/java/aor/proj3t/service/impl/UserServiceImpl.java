@@ -4,12 +4,17 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
+import aor.proj3t.dto.ManagerAssignDTO;
+import aor.proj3t.exceptions.ConflictException;
+import aor.proj3t.exceptions.ForbiddenException;
+import aor.proj3t.exceptions.NotFoundException;
+import aor.proj3t.util.EmailUtil;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import aor.proj3t.config.AppConstants;
 import aor.proj3t.daos.DAOFactory;
-import aor.proj3t.dto.FileUploadDTO;
 import aor.proj3t.dto.LoginDTO;
 import aor.proj3t.dto.UserDTO;
 import aor.proj3t.dto.UserRegistrationDTO;
@@ -20,7 +25,7 @@ import aor.proj3t.entities.Workplace;
 import aor.proj3t.enums.Role;
 import aor.proj3t.filters.UserFilter;
 import aor.proj3t.service.interfaces.UserService;
-import aor.proj3t.util.EmailUtil;
+
 import aor.proj3t.util.FileStorageUtil;
 import aor.proj3t.util.JwtUtil;
 import aor.proj3t.util.PasswordUtil;
@@ -62,52 +67,35 @@ public class UserServiceImpl extends BaseService implements UserService {
         String email = loginDTO.getEmail();
         String password = passwordUtil.hashPassword(loginDTO.getPassword());
         Integer confirmationExpirationTime = getSettings().getConfirmationExpirationTime();
-        try {
-            if (!isEmailValid(email)) {
-                logger.error("Error registering user with email {} due to pre-existing email.", email);
-                return false;
-            }
-
-            PendingRegistration registration = new PendingRegistration(email, password);
-            registration
-                    .setConfirmationToken(
-                            jwtUtil.generateConfirmationToken(email, ipAddress, confirmationExpirationTime));
-            registration
-                    .setExpirationDate(now.plus(confirmationExpirationTime, ChronoUnit.MINUTES));
-            daoFactory.forPendingRegistration().create(registration);
-            return sendConfirmationEmail(email, ipAddress, confirmationExpirationTime);
-        } catch (Exception e) {
-            logger.error("Error registering user with email {}.  {}", email, e);
-            return false;
-        }
+        validateEmail(email);
+        PendingRegistration registration = new PendingRegistration(email, password);
+        registration.setConfirmationToken(
+                jwtUtil.generateConfirmationToken(email, ipAddress, confirmationExpirationTime));
+        registration.setExpirationDate(now.plus(confirmationExpirationTime, ChronoUnit.MINUTES));
+        daoFactory.forPendingRegistration().create(registration);
+        sendConfirmationEmail(email, ipAddress, confirmationExpirationTime);
     }
 
     @Override
-    public Boolean confirmUser(String email, UserRegistrationDTO userRegistrationDto) {
-        try {
-
-            PendingRegistration registration = getPendingRegistration(email);
-            if (registration == null) {
-                logger.warn("Failed to confirm user: No pending registration found for email {}", email);
-                return false;
-            }
-            Workplace workplace = getEntity(daoFactory.forWorkplace().findById(userRegistrationDto.getWorkplaceId()),
-                    userRegistrationDto.getWorkplaceId());
-            if (workplace == null) {
-                logger.warn("Failed to confirm user: Workplace ID {} does not exist",
-                        userRegistrationDto.getWorkplaceId());
-                return false;
-            }
-
-            User newUser = createNewUser(userRegistrationDto, registration, workplace, fileStorageUtil);
-            daoFactory.forUser().create(newUser);
-            daoFactory.forPendingRegistration().deleteById(registration.getId());
-            logger.info("User with email {} successfully registered and confirmed.", registration.getEmail());
-            return true;
-        } catch (Exception e) {
-            logger.error("Error confirming registration with email {}.", email, e);
-            return false;
+    public void confirmUser(String email, UserRegistrationDTO userRegistrationDto) {
+        PendingRegistration registration = getPendingRegistration(email);
+        if (registration == null) {
+            logger.warn("No pending registration found for email {}", email);
+            throw new NotFoundException("No pending registration found for this email");
         }
+
+        Workplace workplace = getEntity(
+                daoFactory.forWorkplace().findById(userRegistrationDto.getWorkplaceId()),
+                userRegistrationDto.getWorkplaceId(), "Workplace");
+        if (workplace == null) {
+            logger.warn("Workplace ID {} does not exist", userRegistrationDto.getWorkplaceId());
+            throw new NotFoundException("Selected workplace does not exist");
+        }
+
+        User newUser = createNewUser(userRegistrationDto, registration, workplace, fileStorageUtil);
+        daoFactory.forUser().create(newUser);
+        daoFactory.forPendingRegistration().deleteById(registration.getId());
+        logger.info("User with email {} successfully registered and confirmed.", registration.getEmail());
     }
 
     @Override
@@ -191,19 +179,19 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     @Override
-    public Boolean sendResetPasswordLink(String email, String ipAddress) {
-        try {
-            User user = getUserByEmail(email);
-            if (user == null) {
-                logger.warn("User with email {} not found for password reset", email);
-                return false;
-            }
-            Settings settings = getSettings();
-            return sendResetPasswordEmail(email, user.getId(), ipAddress, settings.getResetPasswordExpirationTime());
-        } catch (Exception e) {
-            logger.error("Error resetting password. ", e);
-            return false;
+    public void sendResetPasswordLink(String email, String ipAddress) {
+        Optional<User> userOpt = daoFactory.forUser().findByEmail(email);
+        if (userOpt.isEmpty()) {
+            logger.warn("User with email {} not found for password reset", email);
+            return;
         }
+        User user = userOpt.get();
+        Settings settings = getSettings();
+        sendResetPasswordEmail(
+                user.getEmail(),
+                user.getId(),
+                ipAddress,
+                settings.getResetPasswordExpirationTime());
     }
 
     private Settings getSettings() {
@@ -275,28 +263,59 @@ public class UserServiceImpl extends BaseService implements UserService {
         return newUser;
     }
 
-    private Boolean sendConfirmationEmail(String email, String ipAddress, Integer confirmationExpirationTime) {
-        try {
-            String confirmationToken = jwtUtil.generateConfirmationToken(email, ipAddress, confirmationExpirationTime);
-            String baseUrl = "https://localhost:8443/jorgeosorio-proj3t/api/auth";
-            emailUtil.sendConfirmationEmail(email, confirmationToken, baseUrl);
-            return true;
-        } catch (Exception e) {
-            logger.error("Error sending confirmation email to {}", email, e);
-            return false;
+    private void sendResetPasswordEmail(String email, Long userId, String ipAddress,
+            Integer resetPasswordExpirationTime) {
+        String resetPasswordToken = jwtUtil.generatePasswordResetToken(email, userId, ipAddress,
+                resetPasswordExpirationTime);
+        String baseUrl = "https://localhost:8443/jorgeosorio-proj3t/api/auth";
+        emailUtil.sendPasswordResetEmail(email, resetPasswordToken, baseUrl);
+    }
+
+    private void updateUserFields(User user, UserDTO userDto) {
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
+        user.setPhoneNumber(userDto.getPhoneNumber());
+        user.setAddress(userDto.getAddress());
+        user.setRole(userDto.getRole());
+        user.setBiography(userDto.getBiography());
+        user.setBirthDate(userDto.getBirthDate());
+        user.setPhotograph(userDto.getPhotograph());
+
+        Workplace workplace = getEntity(
+                daoFactory.forWorkplace().findById(userDto.getWorkplaceId()),
+                userDto.getWorkplaceId(), "Workplace");
+        user.setWorkplace(workplace);
+    }
+
+    private void demoteManagersWithoutUsers() {
+        List<User> emptyManagers = daoFactory.forUser().findManagersWithoutUsers();
+        for (User manager : emptyManagers) {
+            manager.setRole(Role.USER);
+            daoFactory.forUser().update(manager);
         }
     }
 
-    private Boolean sendResetPasswordEmail(String email, Long userId, String ipAddress,
-            Integer resetPasswordExpirationTime) {
+    private void validateEmail(String email) {
+        daoFactory.forPendingRegistration().deleteExpired();
+        Optional<User> userOpt = daoFactory.forUser().findByEmail(email);
+        if (userOpt.isPresent()) {
+            throw new ConflictException("User with email " + email + " already exists");
+        }
+        Optional<PendingRegistration> pendingOpt = daoFactory.forPendingRegistration().findByEmail(email);
+        if (pendingOpt.isPresent()) {
+            throw new ConflictException("User with email " + email + " already exists");
+        }
+    }
+
+    private void sendConfirmationEmail(String email, String ipAddress, Integer confirmationExpirationTime) {
         try {
-            String resetPasswordToken = jwtUtil.generatePasswordResetToken(email, userId, ipAddress,
-                    resetPasswordExpirationTime);
+            String token = jwtUtil.generateConfirmationToken(email, ipAddress, confirmationExpirationTime);
             String baseUrl = "https://localhost:8443/jorgeosorio-proj3t/api/auth";
-            return emailUtil.sendPasswordResetEmail(email, resetPasswordToken, baseUrl);
+            emailUtil.sendConfirmationEmail(email, token, baseUrl);
         } catch (Exception e) {
             logger.error("Error sending confirmation email to {}", email, e);
             throw new RuntimeException("Failed to send confirmation email to " + email);
         }
     }
+
 }
