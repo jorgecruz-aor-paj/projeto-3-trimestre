@@ -1,4 +1,4 @@
-package aor.proj3t.exceptions;
+package aor.proj3t.exceptions.mapper;
 
 import aor.proj3t.resource.ErrorResponse;
 import jakarta.ws.rs.core.Response;
