@@ -1,19 +1,27 @@
 package aor.proj3t.resource;
 
-import aor.proj3t.exceptions.UnauthorizedException;
-import jakarta.ws.rs.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.ThreadContext;
 
 import aor.proj3t.dto.LoginDTO;
 import aor.proj3t.dto.UserRegistrationDTO;
+import aor.proj3t.exceptions.UnauthorizedException;
 import aor.proj3t.service.ServiceFactory;
-import aor.proj3t.util.JwtUtil;
 import aor.proj3t.util.ValidatorUtil;
+import aor.proj3t.util.authutils.JwtUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.HeaderParam;
+import jakarta.ws.rs.PATCH;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
@@ -57,7 +65,6 @@ public class AuthResource {
                 .build();
     }
 
-
     @POST
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -69,7 +76,6 @@ public class AuthResource {
         String sessionToken = serviceFactory.forAuth().login(loginDto, ipAddress, userAgent);
         return Response.ok(sessionToken).build();
     }
-
 
     @POST
     @Path("/logout")
@@ -86,13 +92,12 @@ public class AuthResource {
         return Response.ok("Logout successful").build();
     }
 
-
     @POST
     @Path("/confirm")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response confirmUser(@QueryParam("confirmationToken") String confirmationToken,
-                                UserRegistrationDTO userRegistrationDTO) {
+            UserRegistrationDTO userRegistrationDTO) {
         logger.info("Received confirmation request for token: {}", confirmationToken);
         if (!jwtUtil.validateToken(confirmationToken)) {
             logger.warn("Invalid or expired confirmation token");
@@ -107,7 +112,6 @@ public class AuthResource {
         return Response.ok("User confirmed successfully").build();
     }
 
-
     @GET
     @Path("/resetPassword/{email}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -121,13 +125,12 @@ public class AuthResource {
         return Response.ok(new ErrorResponse("Email sent. Check your inbox")).build();
     }
 
-
     @PATCH
     @Path("/resetPassword")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response resetPassword(@QueryParam("resetPasswordToken") String resetPasswordToken,
-                                  LoginDTO loginDTO) {
+            LoginDTO loginDTO) {
         logger.info("Received reset password for token: {}", resetPasswordToken);
 
         if (!jwtUtil.validateToken(resetPasswordToken)) {
@@ -140,6 +143,5 @@ public class AuthResource {
         serviceFactory.forUser().changePassword(userId, loginDTO.getPassword());
         return Response.ok("User password changed successfully").build();
     }
-
 
 }

@@ -5,7 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import aor.proj3t.dto.EmailTestDTO;
 import aor.proj3t.util.EmailUtil;
-import aor.proj3t.util.JwtUtil;
+import aor.proj3t.util.authutils.JwtUtil;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;

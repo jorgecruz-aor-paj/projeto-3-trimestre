@@ -30,8 +30,8 @@ import aor.proj3t.filters.UserFilter;
 import aor.proj3t.service.interfaces.UserService;
 import aor.proj3t.util.EmailUtil;
 import aor.proj3t.util.FileStorageUtil;
-import aor.proj3t.util.JwtUtil;
-import aor.proj3t.util.PasswordUtil;
+import aor.proj3t.util.authutils.JwtUtil;
+import aor.proj3t.util.authutils.PasswordUtil;
 import aor.proj3t.util.converterutils.ConverterFactory;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -164,7 +164,7 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     @Override
     public List<UserDTO> getUsersByFilters(UserFilter filter) {
-        //TODO update to use custom exceptions
+        // TODO update to use custom exceptions
         try {
             return converterFactory.forUser().toDTOList(daoFactory.forUser().getUsersByFilters(filter));
         } catch (Exception e) {
@@ -224,7 +224,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     private static User createNewUser(UserRegistrationDTO userRegistrationDto, PendingRegistration registration,
-                                      Workplace workplace, FileStorageUtil fileStorageUtil) {
+            Workplace workplace, FileStorageUtil fileStorageUtil) {
         User newUser = new User(
                 registration.getEmail(),
                 registration.getPassword(),
@@ -244,7 +244,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     private void sendResetPasswordEmail(String email, Long userId, String ipAddress,
-                                        Integer resetPasswordExpirationTime) {
+            Integer resetPasswordExpirationTime) {
         String resetPasswordToken = jwtUtil.generatePasswordResetToken(email, userId, ipAddress,
                 resetPasswordExpirationTime);
         String baseUrl = "https://localhost:8443/jorgeosorio-proj3t/api/auth";
@@ -288,9 +288,9 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     private void sendConfirmationEmail(String email, String ipAddress, Integer confirmationExpirationTime) {
-            String token = jwtUtil.generateConfirmationToken(email, ipAddress, confirmationExpirationTime);
-            String baseUrl = "https://localhost:8443/jorgeosorio-proj3t/api/auth";
-            emailUtil.sendConfirmationEmail(email, token, baseUrl);
+        String token = jwtUtil.generateConfirmationToken(email, ipAddress, confirmationExpirationTime);
+        String baseUrl = "https://localhost:8443/jorgeosorio-proj3t/api/auth";
+        emailUtil.sendConfirmationEmail(email, token, baseUrl);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package aor.proj3t.util;
+package aor.proj3t.util.authutils;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -8,9 +8,6 @@ import java.util.Map;
 
 import javax.crypto.SecretKey;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.security.SignatureException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -152,7 +149,7 @@ public class JwtUtil {
         Map<String, Object> claims = new HashMap<>();
         claims.put("email", userEmail);
         claims.put("ipAddress", ipAddress);
-        claims.put("userId",userId);
+        claims.put("userId", userId);
 
         try {
             String token = createToken(userEmail, TokenType.PASSWORD_RESET, claims, minutes);
@@ -331,7 +328,5 @@ public class JwtUtil {
         Instant expirationDate = extractExpirationDate(token);
         return expirationDate.isBefore(Instant.now());
     }
-
-
 
 }

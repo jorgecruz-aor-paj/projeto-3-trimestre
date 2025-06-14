@@ -2,30 +2,27 @@ package aor.proj3t.service.impl;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import aor.proj3t.config.AppConstants;
+import aor.proj3t.daos.DAOFactory;
+import aor.proj3t.dto.LoginDTO;
 import aor.proj3t.dto.UserDTO;
+import aor.proj3t.entities.Session;
 import aor.proj3t.entities.Settings;
 import aor.proj3t.entities.User;
 import aor.proj3t.enums.Role;
 import aor.proj3t.exceptions.NotFoundException;
 import aor.proj3t.exceptions.UnauthorizedException;
-import aor.proj3t.resource.ErrorResponse;
 import aor.proj3t.service.ServiceFactory;
-import aor.proj3t.util.JwtUtil;
-import aor.proj3t.util.PasswordUtil;
-import io.jsonwebtoken.Claims;
-import jakarta.ws.rs.core.Response;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import aor.proj3t.daos.DAOFactory;
-import aor.proj3t.dto.LoginDTO;
-import aor.proj3t.entities.Session;
 import aor.proj3t.service.interfaces.AuthService;
+import aor.proj3t.util.authutils.JwtUtil;
+import aor.proj3t.util.authutils.PasswordUtil;
 import aor.proj3t.util.converterutils.ConverterFactory;
+import io.jsonwebtoken.Claims;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
@@ -63,9 +60,10 @@ public class AuthServiceImpl extends BaseService implements AuthService {
                 throw new UnauthorizedException("Invalid credentials");
             }
             Integer sessionTimeoutMinutes = getSettings().getSessionExpirationTime();
-            String token = jwtUtil.generateSessionToken(user.getId(), user.getEmail(), user.getRole().getName(), ipAddress, sessionTimeoutMinutes);
+            String token = jwtUtil.generateSessionToken(user.getId(), user.getEmail(), user.getRole().getName(),
+                    ipAddress, sessionTimeoutMinutes);
             Instant tokenLimit = jwtUtil.extractExpirationDate(token);
-            Session newSession = new Session(token,ipAddress,userAgent,user,tokenLimit);
+            Session newSession = new Session(token, ipAddress, userAgent, user, tokenLimit);
             daoFactory.forSession().create(newSession);
             logger.info("Login successful for user with email {}", loginDto.getEmail());
             return token;
@@ -78,12 +76,11 @@ public class AuthServiceImpl extends BaseService implements AuthService {
 
     @Override
     public void logout(Long userId, String token) {
-        Session session = getSessionByToken(token); // Throw a NotFoundException or UnauthorizedException here if not found
+        Session session = getSessionByToken(token); // Throw a NotFoundException or UnauthorizedException here if not
+                                                    // found
         session.setActive(false);
         daoFactory.forSession().update(session);
     }
-
-
 
     @Override
     public int logoutAll(Long userId) {
@@ -107,7 +104,7 @@ public class AuthServiceImpl extends BaseService implements AuthService {
 
     @Override
     public Boolean isValidToken(String token) {
-        System.out.println("here"); //TODO remove after use
+        System.out.println("here"); // TODO remove after use
         System.out.println(token);
         boolean valid = jwtUtil.validateToken(token);
         if (!valid) {
@@ -115,12 +112,12 @@ public class AuthServiceImpl extends BaseService implements AuthService {
             return false;
         }
         boolean expired = jwtUtil.isTokenExpired(token);
-        if(expired) {
+        if (expired) {
             logger.warn("Expired session token {}", token);
             return false;
         }
         boolean active = isTokenActive(token);
-        if(!active) {
+        if (!active) {
             logger.warn("Inactive session token {}", token);
             return false;
         }
@@ -128,13 +125,12 @@ public class AuthServiceImpl extends BaseService implements AuthService {
         Long userId = Long.parseLong(claims.get("userId").toString());
         UserDTO user = serviceFactory.forUser().getUser(userId);
         boolean validUserId = user != null;
-        if(!validUserId) {
-            logger.warn("Invalid user id {} inside session token {}", userId,token);
+        if (!validUserId) {
+            logger.warn("Invalid user id {} inside session token {}", userId, token);
             return false;
         }
         return true;
     }
-
 
     public Boolean isTokenActive(String token) {
         Session session = getSessionByToken(token);
@@ -145,14 +141,12 @@ public class AuthServiceImpl extends BaseService implements AuthService {
         try {
             return daoFactory.forSession()
                     .findByToken(token)
-                    .orElseThrow(() ->
-                            new NotFoundException("No session found for token: " + token));
+                    .orElseThrow(() -> new NotFoundException("No session found for token: " + token));
         } catch (Exception e) {
             logger.error("Unexpected error while fetching session with token: {}", token, e);
             throw new RuntimeException("Failed to retrieve session for token: " + token, e);
         }
     }
-
 
     private User getUserByEmail(String email) {
         return daoFactory.forUser().findByEmail(email)
@@ -186,7 +180,6 @@ public class AuthServiceImpl extends BaseService implements AuthService {
         return jwtUtil.extractAllClaims(token);
     }
 
-
     @Override
     public Long getUserIdFromToken(String token) {
         if (!serviceFactory.forAuth().isValidToken(token)) {
@@ -211,9 +204,5 @@ public class AuthServiceImpl extends BaseService implements AuthService {
             throw new UnauthorizedException("Invalid role in token");
         }
     }
-
-
-
-
 
 }
