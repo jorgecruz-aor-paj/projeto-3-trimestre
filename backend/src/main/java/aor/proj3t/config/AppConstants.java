@@ -82,4 +82,22 @@ public final class AppConstants {
          */
         public static final Set<String> ALLOWED_IMAGE_TYPES = Set.of("image/jpeg", "image/png", "image/gif");
     }
+
+    public static final class Pagination {
+        private Pagination() {
+            // Prevent instantiation
+        }
+
+        /**
+         * Default page size for paginated results.
+         * This is set to 10 items per page.
+         */
+        public static final int DEFAULT_PAGE_SIZE = 10;
+
+        /**
+         * Default page number for paginated results.
+         * This is set to the first page (0).
+         */
+        public static final int DEFAULT_PAGE_NUMBER = 0;
+    }
 }
