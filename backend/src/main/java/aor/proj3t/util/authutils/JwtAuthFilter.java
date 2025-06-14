@@ -10,6 +10,7 @@ import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;
 import jakarta.ws.rs.container.ResourceInfo;
 import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.ext.Provider;
 
 @Provider
@@ -28,7 +29,7 @@ public class JwtAuthFilter implements ContainerRequestFilter {
     @Override
     public void filter(ContainerRequestContext requestContext) {
 
-        String authHeader = requestContext.getHeaderString("Authorization");
+        String authHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
         Role role = authService.getRoleFromAuthHeader(authHeader);
         Long userId = authService.getUserIdFromAuthHeader(authHeader);
         requestContext.setSecurityContext(new CustomSecurityContext(userId.toString(), role.getName()));
