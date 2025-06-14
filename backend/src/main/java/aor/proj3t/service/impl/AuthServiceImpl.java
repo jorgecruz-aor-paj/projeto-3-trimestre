@@ -107,8 +107,6 @@ public class AuthServiceImpl extends BaseService implements AuthService {
 
     @Override
     public Boolean isValidToken(String token) {
-        System.out.println("here"); //TODO remove after use
-        System.out.println(token);
         boolean valid = jwtUtil.validateToken(token);
         if (!valid) {
             logger.warn("Invalid token");
