@@ -1,21 +1,17 @@
 package aor.proj3t.util.authutils;
 
+import java.util.Arrays;
+
 import aor.proj3t.enums.Role;
 import aor.proj3t.exceptions.ForbiddenException;
-import aor.proj3t.exceptions.UnauthorizedException;
 import aor.proj3t.service.interfaces.AuthService;
-import aor.proj3t.util.JwtUtil;
-import io.jsonwebtoken.Claims;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;
 import jakarta.ws.rs.container.ResourceInfo;
 import jakarta.ws.rs.core.Context;
-import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.ext.Provider;
-
-import java.util.Arrays;
-
 
 @Provider
 @Secured
@@ -33,7 +29,7 @@ public class JwtAuthFilter implements ContainerRequestFilter {
     @Override
     public void filter(ContainerRequestContext requestContext) {
 
-        String authHeader = requestContext.getHeaderString("Authorization");
+        String authHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
         Role role = authService.getRoleFromAuthHeader(authHeader);
         Long userId = authService.getUserIdFromAuthHeader(authHeader);
         requestContext.setSecurityContext(new CustomSecurityContext(userId.toString(), role.getName()));

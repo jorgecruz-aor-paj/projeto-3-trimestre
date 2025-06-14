@@ -7,6 +7,7 @@ import aor.proj3t.dto.LoginDTO;
 import aor.proj3t.dto.ManagerAssignDTO;
 import aor.proj3t.dto.UserDTO;
 import aor.proj3t.dto.UserRegistrationDTO;
+import aor.proj3t.dto.paginated.UserPaginationDTO;
 import aor.proj3t.filters.UserFilter;
 
 public interface UserService {
@@ -32,5 +33,7 @@ public interface UserService {
     Boolean uploadProfilePicture(Long userId, FileUploadDTO fileUploadDTO);
 
     Boolean resetProfilePicture(Long userId);
+
+    UserPaginationDTO getPaginatedUsers(UserFilter userFilter, int page, int size, String sortString);
 
 }

@@ -19,6 +19,7 @@ import aor.proj3t.dto.LoginDTO;
 import aor.proj3t.dto.ManagerAssignDTO;
 import aor.proj3t.dto.UserDTO;
 import aor.proj3t.dto.UserRegistrationDTO;
+import aor.proj3t.dto.paginated.UserPaginationDTO;
 import aor.proj3t.entities.PendingRegistration;
 import aor.proj3t.entities.Settings;
 import aor.proj3t.entities.User;
@@ -31,8 +32,8 @@ import aor.proj3t.filters.UserFilter;
 import aor.proj3t.service.interfaces.UserService;
 import aor.proj3t.util.EmailUtil;
 import aor.proj3t.util.FileStorageUtil;
-import aor.proj3t.util.JwtUtil;
-import aor.proj3t.util.PasswordUtil;
+import aor.proj3t.util.authutils.JwtUtil;
+import aor.proj3t.util.authutils.PasswordUtil;
 import aor.proj3t.util.converterutils.ConverterFactory;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -169,7 +170,7 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     @Override
     public List<UserDTO> getUsersByFilters(UserFilter filter) {
-        //TODO update to use custom exceptions
+        // TODO update to use custom exceptions
         try {
             return converterFactory.forUser().toDTOList(daoFactory.forUser().getUsersByFilters(filter));
         } catch (Exception e) {
@@ -207,9 +208,18 @@ public class UserServiceImpl extends BaseService implements UserService {
                         "No pending registration found for email " + email));
     }
 
-
-    private static User createNewUser(UserRegistrationDTO userRegistrationDto, PendingRegistration registration, Workplace workplace, FileStorageUtil fileStorageUtil) {
-        User newUser = new User(registration.getEmail(), registration.getPassword(), userRegistrationDto.getFirstName(), userRegistrationDto.getLastName(), userRegistrationDto.getPhoneNumber(), userRegistrationDto.getAddress(), userRegistrationDto.getBirthDate(), Role.USER, workplace);
+    private static User createNewUser(UserRegistrationDTO userRegistrationDto, PendingRegistration registration,
+                                      Workplace workplace, FileStorageUtil fileStorageUtil) {
+        User newUser = new User(
+                registration.getEmail(),
+                registration.getPassword(),
+                userRegistrationDto.getFirstName(),
+                userRegistrationDto.getLastName(),
+                userRegistrationDto.getPhoneNumber(),
+                userRegistrationDto.getAddress(),
+                userRegistrationDto.getBirthDate(),
+                Role.USER,
+                workplace);
 
         if (userRegistrationDto.getBiography() != null) {
             newUser.setBiography(userRegistrationDto.getBiography());
@@ -321,5 +331,14 @@ public class UserServiceImpl extends BaseService implements UserService {
             logger.error("Error resetting profile picture for user ID: {}", userId, e);
             return false;
         }
+    }
+
+    /**
+     * Get users with pagination and sorting
+     */
+    @Override
+    public UserPaginationDTO getPaginatedUsers(UserFilter filter, int page, int size, String sortString) {
+        // TODO implement pagination and sorting logic
+        return new UserPaginationDTO();
     }
 }
