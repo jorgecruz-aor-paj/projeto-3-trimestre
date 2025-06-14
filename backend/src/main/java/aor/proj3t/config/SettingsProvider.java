@@ -1,5 +1,6 @@
 package aor.proj3t.config;
 
+import aor.proj3t.daos.DAOFactory;
 import aor.proj3t.daos.impl.SettingsDAOimpl;
 import aor.proj3t.daos.interfaces.SettingsDAO;
 import aor.proj3t.entities.Settings;
@@ -15,7 +16,7 @@ public class SettingsProvider {
 
 
     @Inject
-    SettingsDAOimpl settingsDao;
+    DAOFactory daoFactory;
 
     private static final Settings DEFAULT_SETTINGS = new Settings(
             AppConstants.Jwt.DEFAULT_CONFIRMATION_TOKEN_EXPIRATION_TIME,
@@ -25,7 +26,7 @@ public class SettingsProvider {
 
     public Settings getSettings() {
         try {
-            return settingsDao.getLatestSettings().orElse(DEFAULT_SETTINGS);
+            return daoFactory.forSettings().getLatestSettings().orElse(DEFAULT_SETTINGS);
         } catch (Exception e) {
             logger.error("Error retrieving application settings", e);
             return DEFAULT_SETTINGS;
