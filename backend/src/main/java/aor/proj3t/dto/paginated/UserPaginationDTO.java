@@ -25,7 +25,8 @@ public class UserPaginationDTO extends PaginatedResponseDTO<UserDTO> {
      * @param pageSize    The number of users per page
      * @param currentPage The current page number (0-based)
      */
-    public UserPaginationDTO(List<UserDTO> users, long totalCount, int pageSize, int currentPage) {
-        super(users, totalCount, pageSize, currentPage);
+    public UserPaginationDTO(List<UserDTO> users, long totalCount, int pageSize, int currentPage,
+            SortInfo sortInfo) {
+        super(users, totalCount, pageSize, currentPage, sortInfo);
     }
 }

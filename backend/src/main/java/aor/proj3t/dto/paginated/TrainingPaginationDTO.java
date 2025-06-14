@@ -25,7 +25,8 @@ public class TrainingPaginationDTO extends PaginatedResponseDTO<TrainingDTO> {
      * @param pageSize    The number of trainings per page
      * @param currentPage The current page number (0-based)
      */
-    public TrainingPaginationDTO(List<TrainingDTO> trainings, long totalCount, int pageSize, int currentPage) {
-        super(trainings, totalCount, pageSize, currentPage);
+    public TrainingPaginationDTO(List<TrainingDTO> trainings, long totalCount, int pageSize, int currentPage,
+            SortInfo sortInfo) {
+        super(trainings, totalCount, pageSize, currentPage, sortInfo);
     }
 }

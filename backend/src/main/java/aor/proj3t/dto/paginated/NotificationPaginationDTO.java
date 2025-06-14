@@ -27,7 +27,7 @@ public class NotificationPaginationDTO extends PaginatedResponseDTO<Notification
      * @param currentPage   The current page number (0-based)
      */
     public NotificationPaginationDTO(List<NotificationDTO> notifications, long totalCount, int pageSize,
-            int currentPage) {
-        super(notifications, totalCount, pageSize, currentPage);
+            int currentPage, SortInfo sortInfo) {
+        super(notifications, totalCount, pageSize, currentPage, sortInfo);
     }
 }

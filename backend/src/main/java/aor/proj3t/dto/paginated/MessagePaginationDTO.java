@@ -25,7 +25,8 @@ public class MessagePaginationDTO extends PaginatedResponseDTO<MessageDTO> {
      * @param pageSize    The number of messages per page
      * @param currentPage The current page number (0-based)
      */
-    public MessagePaginationDTO(List<MessageDTO> messages, long totalCount, int pageSize, int currentPage) {
-        super(messages, totalCount, pageSize, currentPage);
+    public MessagePaginationDTO(List<MessageDTO> messages, long totalCount, int pageSize, int currentPage,
+            SortInfo sortInfo) {
+        super(messages, totalCount, pageSize, currentPage, sortInfo);
     }
 }

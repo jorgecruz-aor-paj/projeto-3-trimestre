@@ -2,6 +2,8 @@ package aor.proj3t.dto.paginated;
 
 import java.util.List;
 
+import aor.proj3t.config.AppConstants;
+
 /**
  * Generic Data Transfer Object for paginated responses.
  * 
@@ -14,6 +16,7 @@ public class PaginatedResponseDTO<T> {
     private int pageSize;
     private int currentPage;
     private int totalPages;
+    private SortInfo sortInfo;
 
     // Default constructor
     public PaginatedResponseDTO() {
@@ -27,12 +30,13 @@ public class PaginatedResponseDTO<T> {
      * @param pageSize    The number of entities per page
      * @param currentPage The current page number (0-based)
      */
-    public PaginatedResponseDTO(List<T> entities, long totalCount, int pageSize, int currentPage) {
+    public PaginatedResponseDTO(List<T> entities, long totalCount, int pageSize, int currentPage, SortInfo sortInfo) {
         this.entities = entities;
         this.totalCount = totalCount;
-        this.pageSize = pageSize;
-        this.currentPage = currentPage;
+        this.pageSize = validatePageSize(pageSize);
+        this.currentPage = validatePageNumber(currentPage);
         this.totalPages = calculateTotalPages(totalCount, pageSize);
+        this.sortInfo = sortInfo != null ? sortInfo : new SortInfo();
     }
 
     // Getters and setters
@@ -74,6 +78,14 @@ public class PaginatedResponseDTO<T> {
         return totalPages;
     }
 
+    public SortInfo getSortInfo() {
+        return sortInfo;
+    }
+
+    public void setSortInfo(SortInfo sortInfo) {
+        this.sortInfo = sortInfo;
+    }
+
     /**
      * Calculates the total number of pages based on item count and page size.
      */
@@ -82,5 +94,16 @@ public class PaginatedResponseDTO<T> {
             return 0;
         }
         return (int) Math.ceil((double) totalCount / pageSize);
+    }
+
+    private int validatePageSize(int pageSize) {
+        if (pageSize <= 0) {
+            return AppConstants.Pagination.DEFAULT_PAGE_SIZE;
+        }
+        return Math.min(pageSize, AppConstants.Pagination.MAX_PAGE_SIZE);
+    }
+
+    private int validatePageNumber(int pageNumber) {
+        return Math.max(0, pageNumber);
     }
 }

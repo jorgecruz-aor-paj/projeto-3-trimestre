@@ -26,7 +26,8 @@ public class EvaluationPaginationDTO extends PaginatedResponseDTO<EvaluationDTO>
      * @param pageSize    The number of evaluations per page
      * @param currentPage The current page number (0-based)
      */
-    public EvaluationPaginationDTO(List<EvaluationDTO> evaluations, long totalCount, int pageSize, int currentPage) {
-        super(evaluations, totalCount, pageSize, currentPage);
+    public EvaluationPaginationDTO(List<EvaluationDTO> evaluations, long totalCount, int pageSize, int currentPage,
+            SortInfo sortInfo) {
+        super(evaluations, totalCount, pageSize, currentPage, sortInfo);
     }
 }
