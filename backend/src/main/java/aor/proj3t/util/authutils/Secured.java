@@ -1,7 +1,6 @@
 package aor.proj3t.util.authutils;
 
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.ElementType.TYPE;
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
@@ -17,7 +16,7 @@ import jakarta.ws.rs.NameBinding;
  */
 @NameBinding
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ TYPE, METHOD })
+@Target({ ElementType.TYPE, ElementType.METHOD })
 public @interface Secured {
     /**
      * The roles allowed to access the endpoint.
