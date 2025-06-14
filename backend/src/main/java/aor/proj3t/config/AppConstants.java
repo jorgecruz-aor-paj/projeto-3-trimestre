@@ -2,20 +2,49 @@ package aor.proj3t.config;
 
 import java.util.Set;
 
+/**
+ * Application-wide constants used throughout the system.
+ * 
+ * This utility class provides centralized access to various configuration
+ * constants
+ * used across different parts of the application, including JWT settings, email
+ * configuration,
+ * file storage parameters, and pagination defaults.
+ * 
+ * @author Jorge Cruz & João Osório - Gr4
+ * @version 1.0
+ */
 public final class AppConstants {
 
     private AppConstants() {
         // Prevent instantiation
     }
 
+    /**
+     * Constants for JWT (JSON Web Token) configuration.
+     * 
+     * This inner class contains constants related to token expiration times
+     * and authentication scheme used in the application's security framework.
+     * 
+     * @author Jorge Cruz & João Osório - Gr4
+     * @version 1.0
+     */
     public static final class Jwt {
         private Jwt() {
             // Prevent instantiation
         }
 
-        public static final int DEFAULT_TOKEN_EXPIRATION_TIME = 60; // value in minutes
-        public static final int DEFAULT_RESET_PASSWORD_TOKEN_EXPIRATION_TIME = 60; // value in minutes
-        public static final int DEFAULT_CONFIRMATION_TOKEN_EXPIRATION_TIME = 60; // value in minutes
+        /** Default token expiration time in minutes */
+        public static final int DEFAULT_TOKEN_EXPIRATION_TIME = 60;
+
+        /** Default reset password token expiration time in minutes */
+        public static final int DEFAULT_RESET_PASSWORD_TOKEN_EXPIRATION_TIME = 60;
+
+        /** Default account confirmation token expiration time in minutes */
+        public static final int DEFAULT_CONFIRMATION_TOKEN_EXPIRATION_TIME = 60;
+
+        /** Authentication scheme used for JWT tokens */
+        public static final String AUTHENTICATION_SCHEME = "Bearer";
     }
 
     /**
@@ -43,17 +72,20 @@ public final class AppConstants {
         public static final String DEFAULT_PASSWORD_RESET_SUBJECT = "Password Reset Request";
 
         /**
-         * Default expiration time for confirmation links in minutes
-         * (This is the same value as Jwt.DEFAULT_CONFIRMATION_TOKEN_EXPIRATION_TIME)
-         */
-        public static final int DEFAULT_CONFIRMATION_EXPIRATION_MINUTES = 60;
-
-        /**
          * Default expiration time for password reset links in minutes
          */
         public static final int DEFAULT_PASSWORD_RESET_EXPIRATION_MINUTES = 60;
     }
 
+    /**
+     * Constants for file storage configuration.
+     * 
+     * This class provides constants related to file storage functionality,
+     * including directory paths, file size limitations, and allowed file types.
+     * 
+     * @author Jorge Cruz & João Osório - Gr4
+     * @version 1.0
+     */
     public static final class FileStorage {
         private FileStorage() {
             // Prevent instantiation
@@ -83,6 +115,16 @@ public final class AppConstants {
         public static final Set<String> ALLOWED_IMAGE_TYPES = Set.of("image/jpeg", "image/png", "image/gif");
     }
 
+    /**
+     * Constants for pagination configuration.
+     * 
+     * This class provides default values and limits for paginated data retrieval
+     * operations throughout the application, including page size, page numbering,
+     * and sorting parameters.
+     * 
+     * @author Jorge Cruz & João Osório - Gr4
+     * @version 1.0
+     */
     public static final class Pagination {
         private Pagination() {
             // Prevent instantiation
@@ -99,5 +141,23 @@ public final class AppConstants {
          * This is set to the first page (0).
          */
         public static final int DEFAULT_PAGE_NUMBER = 0;
+
+        /**
+         * Maximum page size allowed for paginated results.
+         * This is set to 100 items per page.
+         */
+        public static final int MAX_PAGE_SIZE = 100;
+
+        /**
+         * Default sort order for paginated results.
+         * This is set to sort by "createdAt" in descending order.
+         */
+        public static final String DEFAULT_SORT_ORDER = "createdAt,desc";
+
+        /**
+         * Default sort field for paginated results.
+         * This is set to "createdAt".
+         */
+        public static final String DEFAULT_SORT_FIELD = "createdAt";
     }
 }
