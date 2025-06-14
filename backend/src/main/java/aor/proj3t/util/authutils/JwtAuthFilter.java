@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import aor.proj3t.enums.Role;
 import aor.proj3t.exceptions.ForbiddenException;
-import aor.proj3t.service.interfaces.AuthService;
+import aor.proj3t.service.impl.TokenService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;
@@ -24,14 +24,14 @@ public class JwtAuthFilter implements ContainerRequestFilter {
     JwtUtil jwtUtil;
 
     @Inject
-    AuthService authService;
+    TokenService tokenService;
 
     @Override
     public void filter(ContainerRequestContext requestContext) {
 
         String authHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
-        Role role = authService.getRoleFromAuthHeader(authHeader);
-        Long userId = authService.getUserIdFromAuthHeader(authHeader);
+        Role role = tokenService.getRoleFromAuthHeader(authHeader);
+        Long userId = tokenService.getUserIdFromAuthHeader(authHeader);
         requestContext.setSecurityContext(new CustomSecurityContext(userId.toString(), role.getName()));
 
         Secured secured = resourceInfo.getResourceMethod().getAnnotation(Secured.class);

@@ -40,7 +40,7 @@ public class UserResource {
     @Secured
     @Produces(MediaType.APPLICATION_JSON)
     public Response getMe(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader) {
-        Long userId = serviceFactory.forAuth().getUserIdFromAuthHeader(authHeader);
+        Long userId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
         UserDTO user = serviceFactory.forUser().getUser(userId);
         return Response.ok(user).build();
     }
@@ -50,7 +50,7 @@ public class UserResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateUser(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader, UserDTO userDTO) {
-        Long requesterId = serviceFactory.forAuth().getUserIdFromAuthHeader(authHeader);
+        Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
         validatorUtil.validateUserDTO(userDTO);
         serviceFactory.forUser().updateUser(requesterId, userDTO);
         return Response.ok(userDTO).build();
@@ -61,7 +61,7 @@ public class UserResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response assignManager(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader, ManagerAssignDTO managerAssignDto) {
-        Long requesterId = serviceFactory.forAuth().getUserIdFromAuthHeader(authHeader);
+        Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
         validatorUtil.validateManagerAssignDTO(managerAssignDto);
         serviceFactory.forUser().assignManagerBulk(requesterId,managerAssignDto);
         return Response.ok("Managers assigned successfully").build();

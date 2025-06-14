@@ -20,7 +20,6 @@ public interface AuthService {
      */
     int logoutAll(Long userId);
 
-
     /**
      * Get all active sessions for a user.
      * 
@@ -36,12 +35,5 @@ public interface AuthService {
      */
     int cleanupExpiredSessions();
 
-    Boolean isValidToken(String token);
-
-    Long getUserIdFromAuthHeader(String authHeader);
-
-    Long getUserIdFromToken(String token);
-
-    Role getRoleFromAuthHeader(String authHeader);
 
 }

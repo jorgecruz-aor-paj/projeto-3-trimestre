@@ -241,7 +241,7 @@ public class JwtUtil {
      * @param token The JWT token
      * @return true if the token is valid, false otherwise
      */
-    public boolean validateToken(String token) {
+    public Boolean validateToken(String token) {
         try {
             Jwts.parser()
                     .verifyWith(getSigningKey())

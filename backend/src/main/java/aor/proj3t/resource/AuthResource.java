@@ -1,5 +1,6 @@
 package aor.proj3t.resource;
 
+import aor.proj3t.util.authutils.TokenUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.ThreadContext;
@@ -81,13 +82,8 @@ public class AuthResource {
     @Path("/logout")
     @Produces(MediaType.APPLICATION_JSON)
     public Response logout(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader) {
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity(new ErrorResponse("Missing or malformed token"))
-                    .build();
-        }
-        String token = authHeader.substring("Bearer ".length()).trim();
-        Long userId = serviceFactory.forAuth().getUserIdFromAuthHeader(token);
+        String token = TokenUtil.extractToken(authHeader);
+        Long userId = serviceFactory.forToken().getUserIdFromToken(token);
         serviceFactory.forAuth().logout(userId, token);
         return Response.ok("Logout successful").build();
     }
@@ -97,8 +93,7 @@ public class AuthResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response confirmUser(@QueryParam("confirmationToken") String confirmationToken,
-            UserRegistrationDTO userRegistrationDTO) {
-        logger.info("Received confirmation request for token: {}", confirmationToken);
+                                UserRegistrationDTO userRegistrationDTO) {
         if (!jwtUtil.validateToken(confirmationToken)) {
             logger.warn("Invalid or expired confirmation token");
             throw new UnauthorizedException("Invalid or expired token");
@@ -130,7 +125,7 @@ public class AuthResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response resetPassword(@QueryParam("resetPasswordToken") String resetPasswordToken,
-            LoginDTO loginDTO) {
+                                  LoginDTO loginDTO) {
         logger.info("Received reset password for token: {}", resetPasswordToken);
 
         if (!jwtUtil.validateToken(resetPasswordToken)) {

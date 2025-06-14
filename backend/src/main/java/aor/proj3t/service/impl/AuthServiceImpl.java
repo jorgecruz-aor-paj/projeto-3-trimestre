@@ -50,6 +50,7 @@ public class AuthServiceImpl extends BaseService implements AuthService {
     @Inject
     PasswordUtil passwordUtil;
 
+
     @Override
     public String login(LoginDTO loginDto, String ipAddress, String userAgent) {
         User user = daoFactory.forUser()
@@ -75,7 +76,7 @@ public class AuthServiceImpl extends BaseService implements AuthService {
 
     @Override
     public void logout(Long userId, String token) {
-        Session session = getSessionByToken(token); // Throw a NotFoundException or UnauthorizedException here if not found
+        Session session = serviceFactory.forToken().getSessionByToken(token);
         session.setActive(false);
         daoFactory.forSession().update(session);
     }
@@ -100,94 +101,7 @@ public class AuthServiceImpl extends BaseService implements AuthService {
         return 0;
     }
 
-    private Session getSessionByToken(String token) {
-        return daoFactory.forSession()
-                .findByToken(token)
-                .orElseThrow(() ->
-                        new NotFoundException(
-                                "Invalid or expired token",
-                                "No session found for token: " + token));
-    }
 
-    private Claims extractClaims(String token) {
-        if (!isValidToken(token)) {
-            throw new UnauthorizedException("Invalid or expired token");
-        }
-        return jwtUtil.extractAllClaims(token);
-    }
-
-    private Claims parseAuthHeader(String authHeader) {
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            throw new UnauthorizedException("Missing or malformed token");
-        }
-        String token = authHeader.substring("Bearer ".length()).trim();
-        return extractClaims(token);
-    }
-
-    @Override
-    public Long getUserIdFromToken(String token) {
-        return extractUserId(extractClaims(token));
-    }
-
-    @Override
-    public Long getUserIdFromAuthHeader(String authHeader) {
-        return extractUserId(parseAuthHeader(authHeader));
-    }
-
-    @Override
-    public Role getRoleFromAuthHeader(String authHeader) {
-        return extractRole(parseAuthHeader(authHeader));
-    }
-
-    private Long extractUserId(Claims claims) {
-        return Long.parseLong(claims.get("userId").toString());
-    }
-
-    private Role extractRole(Claims claims) {
-        try {
-            return Role.valueOf(claims.get("role", String.class).toUpperCase());
-        } catch (IllegalArgumentException e) {
-            throw new UnauthorizedException("Invalid or expired token", "Invalid role in token");
-        }
-    }
-
-    @Override
-    public Boolean isValidToken(String token) {
-        boolean valid = jwtUtil.validateToken(token);
-        if (!valid) {
-            logger.warn("Invalid token");
-            return false;
-        }
-        boolean expired = jwtUtil.isTokenExpired(token);
-        if (expired) {
-            logger.warn("Expired session token {}", token);
-            return false;
-        }
-        boolean active = isTokenActive(token);
-        if (!active) {
-            logger.warn("Inactive session token {}", token);
-            return false;
-        }
-        Claims claims = jwtUtil.extractAllClaims(token);
-        Long userId = Long.parseLong(claims.get("userId").toString());
-        UserDTO user = serviceFactory.forUser().getUser(userId);
-        boolean validUserId = user != null;
-        if (!validUserId) {
-            logger.warn("Invalid user id {} inside session token {}", userId, token);
-            return false;
-        }
-        return true;
-    }
-
-    public Boolean isTokenActive(String token) {
-        try {
-            Session session = getSessionByToken(token);
-            return session.getActive();
-        } catch (NotFoundException e) {
-            logger.warn("Token is not associated with any session: {}", token);
-            return false;
-        }
-    }
 
 
 

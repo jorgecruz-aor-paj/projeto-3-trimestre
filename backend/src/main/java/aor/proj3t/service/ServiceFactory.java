@@ -1,5 +1,6 @@
 package aor.proj3t.service;
 
+import aor.proj3t.service.impl.TokenService;
 import aor.proj3t.service.interfaces.AuthService;
 import aor.proj3t.service.interfaces.EvaluationCycleService;
 import aor.proj3t.service.interfaces.EvaluationService;
@@ -52,9 +53,11 @@ public class ServiceFactory {
     @Inject
     private EvaluationCycleService evaluationCycleService;
 
+    @Inject
+    private TokenService tokenService;
+
     /**
      * Get the service for User operations
-     *
      * This method provides access to the service responsible for user-related
      * business logic and operations. The returned service handles all user
      * management
@@ -110,5 +113,14 @@ public class ServiceFactory {
      */
     public EvaluationCycleService forEvaluationCycle() {
         return evaluationCycleService;
+    }
+
+    /**
+     * Get the service for Token operations
+     *
+     * @return The TokenService instance
+     */
+    public TokenService forToken() {
+        return tokenService;
     }
 }
