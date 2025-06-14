@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import aor.proj3t.config.AppConstants;
+import aor.proj3t.config.SettingsProvider;
 import aor.proj3t.dto.UserDTO;
 import aor.proj3t.entities.Settings;
 import aor.proj3t.entities.User;
@@ -41,7 +42,7 @@ public class AuthServiceImpl extends BaseService implements AuthService {
     DAOFactory daoFactory;
 
     @Inject
-    ConverterFactory converterFactory;
+    SettingsProvider settingsProvider;
 
     @Inject
     ServiceFactory serviceFactory;
@@ -66,7 +67,7 @@ public class AuthServiceImpl extends BaseService implements AuthService {
                         "User with email " + loginDto.getEmail() + " provided wrong password on login"
                 );
             }
-            Integer sessionTimeoutMinutes = getSettings().getSessionExpirationTime();
+            Integer sessionTimeoutMinutes = settingsProvider.getSettings().getSessionExpirationTime();
             String token = jwtUtil.generateSessionToken(user.getId(), user.getEmail(), user.getRole().getName(), ipAddress, sessionTimeoutMinutes);
             Instant tokenLimit = jwtUtil.extractExpirationDate(token);
             Session newSession = new Session(token,ipAddress,userAgent,user,tokenLimit);
@@ -145,20 +146,6 @@ public class AuthServiceImpl extends BaseService implements AuthService {
                             new NotFoundException(
                                     "Invalid or expired token",
                                     "No session found for token: " + token));
-    }
-
-    private Settings getSettings() {
-        Settings settings = new Settings(
-                AppConstants.Jwt.DEFAULT_CONFIRMATION_TOKEN_EXPIRATION_TIME,
-                AppConstants.Jwt.DEFAULT_TOKEN_EXPIRATION_TIME,
-                AppConstants.Jwt.DEFAULT_RESET_PASSWORD_TOKEN_EXPIRATION_TIME);
-        try {
-            Optional<Settings> settingsOpt = daoFactory.forSettings().getLatestSettings();
-            return settingsOpt.orElse(settings);
-        } catch (Exception e) {
-            logger.error("Error getting confirmation expiration window. ", e);
-            return settings;
-        }
     }
 
     private Claims extractClaims(String authHeader) {

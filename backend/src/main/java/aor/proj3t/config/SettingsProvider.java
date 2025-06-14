@@ -1,0 +1,35 @@
+package aor.proj3t.config;
+
+import aor.proj3t.daos.impl.SettingsDAOimpl;
+import aor.proj3t.daos.interfaces.SettingsDAO;
+import aor.proj3t.entities.Settings;
+import aor.proj3t.service.impl.UserServiceImpl;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+@ApplicationScoped
+public class SettingsProvider {
+    private static final Logger logger = LogManager.getLogger(SettingsProvider.class);
+
+
+    @Inject
+    SettingsDAOimpl settingsDao;
+
+    private static final Settings DEFAULT_SETTINGS = new Settings(
+            AppConstants.Jwt.DEFAULT_CONFIRMATION_TOKEN_EXPIRATION_TIME,
+            AppConstants.Jwt.DEFAULT_TOKEN_EXPIRATION_TIME,
+            AppConstants.Jwt.DEFAULT_RESET_PASSWORD_TOKEN_EXPIRATION_TIME
+    );
+
+    public Settings getSettings() {
+        try {
+            return settingsDao.getLatestSettings().orElse(DEFAULT_SETTINGS);
+        } catch (Exception e) {
+            logger.error("Error retrieving application settings", e);
+            return DEFAULT_SETTINGS;
+        }
+    }
+}
+

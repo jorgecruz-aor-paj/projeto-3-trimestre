@@ -8,6 +8,7 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 
+import aor.proj3t.config.SettingsProvider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -59,6 +60,9 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Inject
     private FileStorageUtil fileStorageUtil;
 
+    @Inject
+    SettingsProvider settingsProvider;
+
     @Override
     public UserDTO getUser(Long userId) {
         User user = getEntity(daoFactory.forUser().findById(userId), userId, "User");
@@ -70,7 +74,7 @@ public class UserServiceImpl extends BaseService implements UserService {
         Instant now = Instant.now();
         String email = loginDTO.getEmail();
         String password = passwordUtil.hashPassword(loginDTO.getPassword());
-        Integer confirmationExpirationTime = getSettings().getConfirmationExpirationTime();
+        Integer confirmationExpirationTime = settingsProvider.getSettings().getConfirmationExpirationTime();
         validateEmail(email);
         PendingRegistration registration = new PendingRegistration(email, password);
         registration.setConfirmationToken(jwtUtil.generateConfirmationToken(email, ipAddress, confirmationExpirationTime));
@@ -182,20 +186,10 @@ public class UserServiceImpl extends BaseService implements UserService {
             return;
         }
         User user = userOpt.get();
-        Settings settings = getSettings();
-        sendResetPasswordEmail(user.getEmail(), user.getId(), ipAddress, settings.getResetPasswordExpirationTime());
+        Integer resetPasswordExpirationTime = settingsProvider.getSettings().getResetPasswordExpirationTime();
+        sendResetPasswordEmail(user.getEmail(), user.getId(), ipAddress, resetPasswordExpirationTime);
     }
 
-    private Settings getSettings() {
-        Settings settings = new Settings(AppConstants.Jwt.DEFAULT_CONFIRMATION_TOKEN_EXPIRATION_TIME, AppConstants.Jwt.DEFAULT_TOKEN_EXPIRATION_TIME, AppConstants.Jwt.DEFAULT_RESET_PASSWORD_TOKEN_EXPIRATION_TIME);
-        try {
-            Optional<Settings> settingsOpt = daoFactory.forSettings().getLatestSettings();
-            return settingsOpt.orElse(settings);
-        } catch (Exception e) {
-            logger.error("Error getting confirmation expiration window. ", e);
-            return settings;
-        }
-    }
 
     private List<User> getUserListFromIds(List<Long> userIds) {
         List<User> users = new ArrayList<>(userIds.size());
