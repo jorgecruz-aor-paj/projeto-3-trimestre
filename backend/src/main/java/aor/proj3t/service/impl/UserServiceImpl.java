@@ -18,6 +18,7 @@ import aor.proj3t.dto.LoginDTO;
 import aor.proj3t.dto.ManagerAssignDTO;
 import aor.proj3t.dto.UserDTO;
 import aor.proj3t.dto.UserRegistrationDTO;
+import aor.proj3t.dto.paginated.UserPaginationDTO;
 import aor.proj3t.entities.PendingRegistration;
 import aor.proj3t.entities.Settings;
 import aor.proj3t.entities.User;
@@ -350,5 +351,14 @@ public class UserServiceImpl extends BaseService implements UserService {
             logger.error("Error resetting profile picture for user ID: {}", userId, e);
             return false;
         }
+    }
+
+    /**
+     * Get users with pagination and sorting
+     */
+    @Override
+    public UserPaginationDTO getPaginatedUsers(UserFilter filter, int page, int size, String sortString) {
+        // TODO implement pagination and sorting logic
+        return new UserPaginationDTO();
     }
 }
