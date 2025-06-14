@@ -160,4 +160,18 @@ public final class AppConstants {
          */
         public static final String DEFAULT_SORT_FIELD = "createdAt";
     }
+
+    public static final class Password {
+        private Password() {
+            // Prevent instantiation
+        }
+
+        public static final int BCRYPT_WORK_FACTOR = 12;
+
+        /**
+         * Default password length for user accounts.
+         * This is set to 8 characters.
+         */
+        public static final int MIN_PASSWORD_LENGTH = 8;
+    }
 }
