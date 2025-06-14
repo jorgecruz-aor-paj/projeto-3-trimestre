@@ -35,6 +35,7 @@ import aor.proj3t.util.PasswordUtil;
 import aor.proj3t.util.converterutils.ConverterFactory;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import org.eclipse.angus.mail.imap.protocol.ID;
 
 @ApplicationScoped
 public class UserServiceImpl extends BaseService implements UserService {
@@ -72,8 +73,7 @@ public class UserServiceImpl extends BaseService implements UserService {
         Integer confirmationExpirationTime = getSettings().getConfirmationExpirationTime();
         validateEmail(email);
         PendingRegistration registration = new PendingRegistration(email, password);
-        registration.setConfirmationToken(
-                jwtUtil.generateConfirmationToken(email, ipAddress, confirmationExpirationTime));
+        registration.setConfirmationToken(jwtUtil.generateConfirmationToken(email, ipAddress, confirmationExpirationTime));
         registration.setExpirationDate(now.plus(confirmationExpirationTime, ChronoUnit.MINUTES));
         daoFactory.forPendingRegistration().create(registration);
         sendConfirmationEmail(email, ipAddress, confirmationExpirationTime);
@@ -82,9 +82,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Override
     public void confirmUser(String email, UserRegistrationDTO userRegistrationDto) {
         PendingRegistration registration = getPendingRegistration(email);
-        Workplace workplace = getEntity(
-                daoFactory.forWorkplace().findById(userRegistrationDto.getWorkplaceId()),
-                userRegistrationDto.getWorkplaceId(), "Workplace");
+        Workplace workplace = getEntity(daoFactory.forWorkplace().findById(userRegistrationDto.getWorkplaceId()), userRegistrationDto.getWorkplaceId(), "Workplace");
 
         User newUser = createNewUser(userRegistrationDto, registration, workplace, fileStorageUtil);
         daoFactory.forUser().create(newUser);
@@ -124,21 +122,22 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Override
     public void assignManagerBulk(Long userId, ManagerAssignDTO managerAssignDto) {
         User requester = getEntity(daoFactory.forUser().findById(userId), userId, "User");
-        User manager = getEntity(daoFactory.forUser().findById(managerAssignDto.getManagerId()),
-                managerAssignDto.getManagerId(), "User");
+        User manager = getEntity(daoFactory.forUser().findById(managerAssignDto.getManagerId()), managerAssignDto.getManagerId(), "User");
         List<User> users = getUserListFromIds(managerAssignDto.getUserIds());
         if (!requester.getRole().equals(Role.ADMIN)) {
-            logger.error("Manager assignment request by nonAdmin user with id {}", requester.getId());
-            throw new ForbiddenException("Permission denied");
+            throw new ForbiddenException(
+                    "Permission denied",
+                    "Manager assignment request by nonAdmin user with id " + requester.getId());
         }
         if (manager.getRole().equals(Role.ADMIN)) {
-            logger.error("Admin with id {} to marked as manager by admin with id {}", manager.getId(),
-                    requester.getId());
-            throw new ForbiddenException("Permission denied");
+            throw new ForbiddenException(
+                    "Permission denied",
+                    "Manager assignment request by nonAdmin user with id " + requester.getId());
         }
         if (users.contains(manager)) {
-            logger.error("User with id {} cannot manage himself", manager.getId());
-            throw new ForbiddenException("Permission denied");
+            throw new ForbiddenException(
+                    "Permission denied",
+                    "User with id " + manager.getId() + " cannot manage himself");
         }
         for (User user : users) {
             user.setManager(manager);
@@ -156,7 +155,9 @@ public class UserServiceImpl extends BaseService implements UserService {
         User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
         User targetUser = getEntity(daoFactory.forUser().findById(userDto.getId()), userDto.getId(), "User");
         if (!requester.getRole().equals(Role.ADMIN) && !Objects.equals(requesterId, userDto.getId())) {
-            throw new ForbiddenException("Permission denied: cannot update user with ID " + userDto.getId());
+            throw new ForbiddenException(
+                    "Permission denied",
+                    "Non admin user with ID " + requesterId + " cannot update user with ID " + userDto.getId());
         }
         updateUserFields(targetUser, userDto);
         daoFactory.forUser().update(targetUser);
@@ -178,22 +179,15 @@ public class UserServiceImpl extends BaseService implements UserService {
         Optional<User> userOpt = daoFactory.forUser().findByEmail(email);
         if (userOpt.isEmpty()) {
             logger.warn("User with email {} not found for password reset", email);
-            throw new NotFoundException("User with email " + email + " not found for password reset");
+            return;
         }
         User user = userOpt.get();
         Settings settings = getSettings();
-        sendResetPasswordEmail(
-                user.getEmail(),
-                user.getId(),
-                ipAddress,
-                settings.getResetPasswordExpirationTime());
+        sendResetPasswordEmail(user.getEmail(), user.getId(), ipAddress, settings.getResetPasswordExpirationTime());
     }
 
     private Settings getSettings() {
-        Settings settings = new Settings(
-                AppConstants.Jwt.DEFAULT_CONFIRMATION_TOKEN_EXPIRATION_TIME,
-                AppConstants.Jwt.DEFAULT_TOKEN_EXPIRATION_TIME,
-                AppConstants.Jwt.DEFAULT_RESET_PASSWORD_TOKEN_EXPIRATION_TIME);
+        Settings settings = new Settings(AppConstants.Jwt.DEFAULT_CONFIRMATION_TOKEN_EXPIRATION_TIME, AppConstants.Jwt.DEFAULT_TOKEN_EXPIRATION_TIME, AppConstants.Jwt.DEFAULT_RESET_PASSWORD_TOKEN_EXPIRATION_TIME);
         try {
             Optional<Settings> settingsOpt = daoFactory.forSettings().getLatestSettings();
             return settingsOpt.orElse(settings);
@@ -213,28 +207,15 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     private PendingRegistration getPendingRegistration(String email) {
-        try {
-            Optional<PendingRegistration> pendingRegistrationOpt = daoFactory.forPendingRegistration()
-                    .findByEmail(email);
-            return pendingRegistrationOpt.orElse(null);
-        } catch (NotFoundException e) {
-            logger.error("Error getting pending registration. ", e);
-            throw new NotFoundException("No pending registration found for email " + email);
-        }
+        return daoFactory.forPendingRegistration()
+                .findByEmail(email)
+                .orElseThrow(() -> new NotFoundException(
+                        "No pending registration found for email " + email));
     }
 
-    private static User createNewUser(UserRegistrationDTO userRegistrationDto, PendingRegistration registration,
-                                      Workplace workplace, FileStorageUtil fileStorageUtil) {
-        User newUser = new User(
-                registration.getEmail(),
-                registration.getPassword(),
-                userRegistrationDto.getFirstName(),
-                userRegistrationDto.getLastName(),
-                userRegistrationDto.getPhoneNumber(),
-                userRegistrationDto.getAddress(),
-                userRegistrationDto.getBirthDate(),
-                Role.USER,
-                workplace);
+
+    private static User createNewUser(UserRegistrationDTO userRegistrationDto, PendingRegistration registration, Workplace workplace, FileStorageUtil fileStorageUtil) {
+        User newUser = new User(registration.getEmail(), registration.getPassword(), userRegistrationDto.getFirstName(), userRegistrationDto.getLastName(), userRegistrationDto.getPhoneNumber(), userRegistrationDto.getAddress(), userRegistrationDto.getBirthDate(), Role.USER, workplace);
 
         if (userRegistrationDto.getBiography() != null) {
             newUser.setBiography(userRegistrationDto.getBiography());
@@ -243,10 +224,8 @@ public class UserServiceImpl extends BaseService implements UserService {
         return newUser;
     }
 
-    private void sendResetPasswordEmail(String email, Long userId, String ipAddress,
-                                        Integer resetPasswordExpirationTime) {
-        String resetPasswordToken = jwtUtil.generatePasswordResetToken(email, userId, ipAddress,
-                resetPasswordExpirationTime);
+    private void sendResetPasswordEmail(String email, Long userId, String ipAddress, Integer resetPasswordExpirationTime) {
+        String resetPasswordToken = jwtUtil.generatePasswordResetToken(email, userId, ipAddress, resetPasswordExpirationTime);
         String baseUrl = "https://localhost:8443/jorgeosorio-proj3t/api/auth";
         emailUtil.sendPasswordResetEmail(email, resetPasswordToken, baseUrl);
     }
@@ -261,9 +240,7 @@ public class UserServiceImpl extends BaseService implements UserService {
         user.setBirthDate(userDto.getBirthDate());
         user.setPhotograph(userDto.getPhotograph());
 
-        Workplace workplace = getEntity(
-                daoFactory.forWorkplace().findById(userDto.getWorkplaceId()),
-                userDto.getWorkplaceId(), "Workplace");
+        Workplace workplace = getEntity(daoFactory.forWorkplace().findById(userDto.getWorkplaceId()), userDto.getWorkplaceId(), "Workplace");
         user.setWorkplace(workplace);
     }
 
@@ -279,18 +256,22 @@ public class UserServiceImpl extends BaseService implements UserService {
         daoFactory.forPendingRegistration().deleteExpired();
         Optional<User> userOpt = daoFactory.forUser().findByEmail(email);
         if (userOpt.isPresent()) {
-            throw new ConflictException("User with email " + email + " already exists");
+            throw new ConflictException(
+                    "Email already exists",
+                    "User with email " + email + " already exists");
         }
         Optional<PendingRegistration> pendingOpt = daoFactory.forPendingRegistration().findByEmail(email);
         if (pendingOpt.isPresent()) {
-            throw new ConflictException("User with email " + email + " already exists");
+            throw new ConflictException(
+                    "Email already exists",
+                    "User with email " + email + " already exists");
         }
     }
 
     private void sendConfirmationEmail(String email, String ipAddress, Integer confirmationExpirationTime) {
-            String token = jwtUtil.generateConfirmationToken(email, ipAddress, confirmationExpirationTime);
-            String baseUrl = "https://localhost:8443/jorgeosorio-proj3t/api/auth";
-            emailUtil.sendConfirmationEmail(email, token, baseUrl);
+        String token = jwtUtil.generateConfirmationToken(email, ipAddress, confirmationExpirationTime);
+        String baseUrl = "https://localhost:8443/jorgeosorio-proj3t/api/auth";
+        emailUtil.sendConfirmationEmail(email, token, baseUrl);
     }
 
     @Override
@@ -307,11 +288,7 @@ public class UserServiceImpl extends BaseService implements UserService {
             if (oldPicture != null && !oldPicture.equals(fileStorageUtil.getDefaultProfilePicture())) {
                 fileStorageUtil.deleteFile(oldPicture);
             } // Store the new picture with resizing
-            String fileName = fileStorageUtil.storeProfilePicture(
-                    fileUploadDTO.getFileContent(),
-                    fileUploadDTO.getFileName(),
-                    fileUploadDTO.getFileExtension(),
-                    fileUploadDTO.getFileMimeType());
+            String fileName = fileStorageUtil.storeProfilePicture(fileUploadDTO.getFileContent(), fileUploadDTO.getFileName(), fileUploadDTO.getFileExtension(), fileUploadDTO.getFileMimeType());
 
             // Update user entity
             user.setPhotograph(fileName);

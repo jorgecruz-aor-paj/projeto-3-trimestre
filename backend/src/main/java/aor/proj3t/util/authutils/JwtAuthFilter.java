@@ -47,7 +47,13 @@ public class JwtAuthFilter implements ContainerRequestFilter {
             Role[] allowedRoles = secured.value();
             boolean allowed = Arrays.stream(allowedRoles).anyMatch(r -> r == role);
             if (!allowed) {
-                throw new ForbiddenException("You do not have permission to access this resource");
+                throw new ForbiddenException(
+                        "Permission denied",
+                        "Unauthorized access attempt: userId=" + userId +
+                                ", method=" + requestContext.getMethod() +
+                                ", path=" + requestContext.getUriInfo().getPath()
+                );
+
             }
         }
     }

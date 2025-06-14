@@ -54,13 +54,17 @@ public class AuthServiceImpl extends BaseService implements AuthService {
 
     @Override
     public String login(LoginDTO loginDto, String ipAddress, String userAgent) {
-        try {
             User user = daoFactory.forUser()
                     .findByEmail(loginDto.getEmail())
-                    .orElseThrow(() -> new UnauthorizedException("Invalid credentials"));
-
+                    .orElseThrow(() -> new UnauthorizedException(
+                            "Invalid credentials",
+                            "User with email " + loginDto.getEmail() + " not found on login"
+                    ));
             if (!passwordUtil.verifyPassword(loginDto.getPassword(), user.getPassword())) {
-                throw new UnauthorizedException("Invalid credentials");
+                throw new UnauthorizedException(
+                        "Invalid credentials",
+                        "User with email " + loginDto.getEmail() + " provided wrong password on login"
+                );
             }
             Integer sessionTimeoutMinutes = getSettings().getSessionExpirationTime();
             String token = jwtUtil.generateSessionToken(user.getId(), user.getEmail(), user.getRole().getName(), ipAddress, sessionTimeoutMinutes);
@@ -69,11 +73,6 @@ public class AuthServiceImpl extends BaseService implements AuthService {
             daoFactory.forSession().create(newSession);
             logger.info("Login successful for user with email {}", loginDto.getEmail());
             return token;
-
-        } catch (Exception e) {
-            logger.error("Unexpected login failure", e);
-            throw new RuntimeException("Unexpected login failure");
-        }
     }
 
     @Override
@@ -140,21 +139,12 @@ public class AuthServiceImpl extends BaseService implements AuthService {
     }
 
     private Session getSessionByToken(String token) {
-        try {
             return daoFactory.forSession()
                     .findByToken(token)
                     .orElseThrow(() ->
-                            new NotFoundException("No session found for token: " + token));
-        } catch (Exception e) {
-            logger.error("Unexpected error while fetching session with token: {}", token, e);
-            throw new RuntimeException("Failed to retrieve session for token: " + token, e);
-        }
-    }
-
-
-    private User getUserByEmail(String email) {
-        return daoFactory.forUser().findByEmail(email)
-                .orElseThrow(() -> new NotFoundException("No user found with email: " + email));
+                            new NotFoundException(
+                                    "Invalid or expired token",
+                                    "No session found for token: " + token));
     }
 
     private Settings getSettings() {
@@ -206,7 +196,7 @@ public class AuthServiceImpl extends BaseService implements AuthService {
         try {
             return Role.valueOf(claims.get("role", String.class).toUpperCase());
         } catch (IllegalArgumentException e) {
-            throw new UnauthorizedException("Invalid role in token");
+            throw new UnauthorizedException("Invalid or expired token","Invalid role in token");
         }
     }
 
