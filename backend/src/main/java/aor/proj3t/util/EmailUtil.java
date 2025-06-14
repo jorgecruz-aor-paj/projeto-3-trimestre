@@ -168,12 +168,12 @@ public class EmailUtil {
     public boolean sendConfirmationEmail(String toEmail, String token, String baseUrl) {
         String subject = AppConstants.Email.DEFAULT_CONFIRMATION_SUBJECT;
         String confirmationLink = baseUrl + "/confirm?confirmationToken=" + token;
-        System.out.println(confirmationLink); //TODO delete when utility is over
+        System.out.println(confirmationLink); // TODO delete when utility is over
         String body = "<h1>Account Confirmation</h1>" +
                 "<p>Thank you for registering. Please click the link below to confirm your account:</p>" +
                 "<p><a href=\"" + confirmationLink + "\">Confirm Account</a></p>" +
                 "<p>If you didn't request this, you can safely ignore this email.</p>" +
-                "<p>This link will expire in " + AppConstants.Email.DEFAULT_CONFIRMATION_EXPIRATION_MINUTES
+                "<p>This link will expire in " + AppConstants.Jwt.DEFAULT_CONFIRMATION_TOKEN_EXPIRATION_TIME
                 + " minutes.</p>";
 
         return sendEmail(toEmail, subject, body);
@@ -190,7 +190,7 @@ public class EmailUtil {
     public boolean sendPasswordResetEmail(String toEmail, String token, String baseUrl) {
         String subject = AppConstants.Email.DEFAULT_PASSWORD_RESET_SUBJECT;
         String resetLink = baseUrl + "/resetPassword?resetPasswordToken=" + token;
-        System.out.println(resetLink); //TODO delete when utility expires
+        System.out.println(resetLink); // TODO delete when utility expires
         String body = "<h1>Password Reset</h1>" +
                 "<p>You requested a password reset. Please click the link below to reset your password:</p>" +
                 "<p><a href=\"" + resetLink + "\">Reset Password</a></p>" +
