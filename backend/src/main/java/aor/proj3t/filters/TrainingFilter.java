@@ -1,6 +1,5 @@
 package aor.proj3t.filters;
 
-import aor.proj3t.entities.TrainingArea;
 import aor.proj3t.enums.TrainingSortField;
 import jakarta.ws.rs.QueryParam;
 
@@ -29,8 +28,8 @@ public class TrainingFilter {
     @QueryParam("searchText")
     private String searchText;
 
-
-    public TrainingFilter() {}
+    public TrainingFilter() {
+    }
 
     public Long getId() {
         return id;

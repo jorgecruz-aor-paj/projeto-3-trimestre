@@ -1,20 +1,27 @@
 package aor.proj3t.resource;
 
+import java.util.List;
+
 import aor.proj3t.dto.NewTrainingDTO;
 import aor.proj3t.dto.TrainingAreaDTO;
 import aor.proj3t.dto.TrainingDTO;
 import aor.proj3t.enums.Role;
 import aor.proj3t.filters.TrainingFilter;
 import aor.proj3t.service.ServiceFactory;
-import aor.proj3t.util.validatorutils.TrainingValidator;
 import aor.proj3t.util.authutils.Secured;
+import aor.proj3t.util.validatorutils.FilterValidator;
+import aor.proj3t.util.validatorutils.TrainingValidator;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.*;
+import jakarta.ws.rs.BeanParam;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-
-import java.util.List;
 
 /**
  * REST endpoint for training-related operations.
@@ -33,18 +40,19 @@ public class TrainingResource {
     @Inject
     TrainingValidator validator;
 
+    @Inject
+    FilterValidator filterValidator;
 
     @GET
     @Secured()
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTrainings(@BeanParam TrainingFilter filters) {
+        filterValidator.validate(filters);
         System.out.println(filters);
         List<TrainingDTO> trainings = serviceFactory.forTraining().getTrainingsByFilters(filters);
         return Response.ok(trainings).build();
-
     }
-
 
     @POST
     @Secured(Role.ADMIN)
@@ -60,7 +68,7 @@ public class TrainingResource {
     @Secured(Role.ADMIN)
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateTraining(TrainingDTO trainingDto){
+    public Response updateTraining(TrainingDTO trainingDto) {
         validator.validateTrainingDTO(trainingDto);
         TrainingDTO trainingDTO = serviceFactory.forTraining().updateTraining(trainingDto);
         return Response.status(Response.Status.OK).entity(trainingDTO).build();
@@ -76,6 +84,5 @@ public class TrainingResource {
         TrainingAreaDTO trainingAreaDto = serviceFactory.forTraining().addTrainingArea(trainingAreaDTO);
         return Response.status(Response.Status.OK).entity(trainingAreaDto).build();
     }
-
 
 }

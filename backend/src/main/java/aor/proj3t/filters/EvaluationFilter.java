@@ -1,25 +1,25 @@
 package aor.proj3t.filters;
 
-import aor.proj3t.enums.EvaluationCycleStatus;
+import java.time.LocalDate;
+
 import aor.proj3t.enums.EvaluationScale;
 import aor.proj3t.enums.EvaluationSortField;
 import aor.proj3t.enums.EvaluationStatus;
 
-import java.time.LocalDate;
-
 public class EvaluationFilter {
-private Long evaluationId;
-private Long evaluatedId;
-private Long evaluatorId;
-private EvaluationStatus evaluationStatus;
-private LocalDate date;
-private EvaluationScale evaluationScale;
-private EvaluationSortField evaluationSortField = EvaluationSortField.DATE;
-private Boolean ascending = false;
-private DateRange dateRange;
-private String searchText;
+    private Long evaluationId;
+    private Long evaluatedId;
+    private Long evaluatorId;
+    private EvaluationStatus evaluationStatus;
+    private LocalDate date;
+    private EvaluationScale evaluationScale;
+    private EvaluationSortField evaluationSortField = EvaluationSortField.DATE;
+    private Boolean ascending = false;
+    private DateRange dateRange;
+    private String searchText;
 
-public EvaluationFilter() {}
+    public EvaluationFilter() {
+    }
 
     public Long getEvaluationId() {
         return evaluationId;

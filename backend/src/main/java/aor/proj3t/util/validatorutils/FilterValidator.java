@@ -1,0 +1,125 @@
+package aor.proj3t.util.validatorutils;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.regex.Pattern;
+
+import aor.proj3t.enums.TrainingSortField;
+import aor.proj3t.exceptions.InvalidDataException;
+import aor.proj3t.filters.TrainingFilter;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validator;
+
+@ApplicationScoped
+public class FilterValidator {
+
+    @Inject
+    private Validator validator;
+
+    private static final Pattern LANGUAGE_PATTERN = Pattern.compile("^[a-zA-Z ]+$");
+    private static final Pattern DATE_PATTERN = Pattern.compile("^\\d{4}-\\d{2}-\\d{2}$");
+    private static final int MAX_SEARCH_TEXT_LENGTH = 255;
+    private static final int MIN_LANGUAGE_LENGTH = 2;
+    private static final int MAX_LANGUAGE_LENGTH = 50;
+    private static final int MIN_DURATION = 1;
+    private static final int MAX_DURATION = 1000;
+
+    public void validate(TrainingFilter filter) {
+        // Jakarta Bean Validation
+        Set<ConstraintViolation<TrainingFilter>> violations = validator.validate(filter);
+        if (!violations.isEmpty()) {
+            throw new InvalidDataException(
+                    "Invalid filter data",
+                    "Validation error");
+        }
+
+        List<String> validationErrors = new ArrayList<>();
+
+        // Manual validations equivalent to annotations
+        validateId(filter, validationErrors);
+        validateTrainingAreaId(filter, validationErrors);
+        validateLanguage(filter, validationErrors);
+        validateDuration(filter, validationErrors);
+        validateStartDate(filter, validationErrors);
+        validateSearchText(filter, validationErrors);
+        validateSortField(filter);
+
+        // If there are validation errors, throw exception with all errors
+        if (!validationErrors.isEmpty()) {
+            throw new InvalidDataException(
+                    "Invalid filter data",
+                    String.join("; ", validationErrors));
+        }
+    }
+
+    private void validateId(TrainingFilter filter, List<String> validationErrors) {
+        if (filter.getId() != null && filter.getId() < 1) {
+            validationErrors.add("ID must be a positive number");
+        }
+    }
+
+    private void validateTrainingAreaId(TrainingFilter filter, List<String> validationErrors) {
+        if (filter.getTrainingAreaId() != null && filter.getTrainingAreaId() < 1) {
+            validationErrors.add("Training area ID must be a positive number");
+        }
+    }
+
+    private void validateLanguage(TrainingFilter filter, List<String> validationErrors) {
+        String language = filter.getLanguage();
+        if (language != null) {
+            if (language.length() < MIN_LANGUAGE_LENGTH || language.length() > MAX_LANGUAGE_LENGTH) {
+                validationErrors.add("Language must be between 2 and 50 characters");
+            }
+
+            if (!LANGUAGE_PATTERN.matcher(language).matches()) {
+                validationErrors.add("Language can only contain letters and spaces");
+            }
+        }
+    }
+
+    private void validateDuration(TrainingFilter filter, List<String> validationErrors) {
+        Integer duration = filter.getDuration();
+        if (duration != null) {
+            if (duration < MIN_DURATION) {
+                validationErrors.add("Duration must be a positive number");
+            }
+
+            if (duration > MAX_DURATION) {
+                validationErrors.add("Duration cannot exceed 1000");
+            }
+        }
+    }
+
+    private void validateStartDate(TrainingFilter filter, List<String> validationErrors) {
+        String startDate = filter.getStartDate();
+        if (startDate != null && !startDate.isEmpty()) {
+            if (!DATE_PATTERN.matcher(startDate).matches()) {
+                validationErrors.add("Date must be in format YYYY-MM-DD");
+            } else {
+                try {
+                    LocalDate.parse(startDate);
+                } catch (DateTimeParseException e) {
+                    validationErrors.add("The date must be in the format YYYY-MM-DD");
+                }
+            }
+        }
+    }
+
+    private void validateSearchText(TrainingFilter filter, List<String> validationErrors) {
+        String searchText = filter.getSearchText();
+        if (searchText != null && searchText.length() > MAX_SEARCH_TEXT_LENGTH) {
+            validationErrors.add("Search text cannot exceed 255 characters");
+        }
+    }
+
+    private void validateSortField(TrainingFilter filter) {
+        if (filter.getSortField() == null) {
+            filter.setSortField(TrainingSortField.DATE); // Set default if null
+        }
+    }
+}

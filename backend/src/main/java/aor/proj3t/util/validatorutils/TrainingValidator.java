@@ -1,13 +1,12 @@
 package aor.proj3t.util.validatorutils;
 
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.Date;
 import java.util.regex.Pattern;
 
-import aor.proj3t.dto.*;
-import aor.proj3t.enums.Role;
+import aor.proj3t.dto.NewTrainingDTO;
+import aor.proj3t.dto.TrainingAreaDTO;
+import aor.proj3t.dto.TrainingDTO;
 import aor.proj3t.enums.TrainingSortField;
 import aor.proj3t.exceptions.InvalidDataException;
 import aor.proj3t.filters.TrainingFilter;
@@ -89,7 +88,6 @@ public class TrainingValidator {
         }
     }
 
-
     public void validateNewTrainingDTO(NewTrainingDTO newTrainingDto) {
         validateTrainingTitle(newTrainingDto.getTitle());
         validateTrainingDuration(newTrainingDto.getDuration());
@@ -123,6 +121,4 @@ public class TrainingValidator {
         validateTrainingTitle(filters.getSearchText());
     }
 
-
 }
-
