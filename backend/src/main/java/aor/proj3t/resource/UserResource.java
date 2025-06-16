@@ -3,7 +3,9 @@ package aor.proj3t.resource;
 import aor.proj3t.dto.ManagerAssignDTO;
 import aor.proj3t.dto.UserDTO;
 import aor.proj3t.enums.Role;
+import aor.proj3t.filters.UserFilter;
 import aor.proj3t.service.ServiceFactory;
+import aor.proj3t.util.validatorutils.FilterValidator;
 import aor.proj3t.util.validatorutils.UserValidator;
 import aor.proj3t.util.authutils.Secured;
 import jakarta.enterprise.context.RequestScoped;
@@ -14,6 +16,8 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.List;
 
 /**
  * REST endpoint for user-related operations.
@@ -34,6 +38,8 @@ public class UserResource {
     @Inject
     UserValidator validator;
 
+    @Inject
+    FilterValidator filterValidator;
 
     @GET
     @Path("/me")
@@ -43,6 +49,16 @@ public class UserResource {
         Long userId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
         UserDTO user = serviceFactory.forUser().getUser(userId);
         return Response.ok(user).build();
+    }
+
+    @GET
+    @Secured
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUsers(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader, @BeanParam UserFilter filters) {
+        Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
+        //filterValidator.validate(filters);
+        List<UserDTO> users = serviceFactory.forUser().getUsersByFilters(requesterId, filters);
+        return Response.ok(users).build();
     }
 
     @PUT
@@ -63,7 +79,7 @@ public class UserResource {
     public Response assignManager(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader, ManagerAssignDTO managerAssignDto) {
         Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
         validator.validateManagerAssignDTO(managerAssignDto);
-        serviceFactory.forUser().assignManagerBulk(requesterId,managerAssignDto);
+        serviceFactory.forUser().assignManagerBulk(requesterId, managerAssignDto);
         return Response.ok("Managers assigned successfully").build();
     }
 
