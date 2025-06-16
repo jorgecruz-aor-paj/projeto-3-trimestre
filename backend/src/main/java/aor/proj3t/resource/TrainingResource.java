@@ -9,8 +9,8 @@ import aor.proj3t.enums.Role;
 import aor.proj3t.filters.TrainingFilter;
 import aor.proj3t.service.ServiceFactory;
 import aor.proj3t.util.authutils.Secured;
-import aor.proj3t.util.validatorutils.FilterValidator;
-import aor.proj3t.util.validatorutils.TrainingValidator;
+import aor.proj3t.util.validatorutils.fordto.TrainingValidator;
+import aor.proj3t.util.validatorutils.forfilters.FilterValidatorFactory;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.BeanParam;
@@ -33,7 +33,6 @@ import jakarta.ws.rs.core.Response;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class TrainingResource {
-
     @Inject
     ServiceFactory serviceFactory;
 
@@ -41,14 +40,14 @@ public class TrainingResource {
     TrainingValidator validator;
 
     @Inject
-    FilterValidator filterValidator;
+    FilterValidatorFactory validatorFactory;
 
     @GET
     @Secured()
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTrainings(@BeanParam TrainingFilter filters) {
-        filterValidator.validate(filters);
+        validatorFactory.validate(filters);
         System.out.println(filters);
         List<TrainingDTO> trainings = serviceFactory.forTraining().getTrainingsByFilters(filters);
         return Response.ok(trainings).build();

@@ -1,19 +1,27 @@
 package aor.proj3t.resource;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import aor.proj3t.dto.ManagerAssignDTO;
 import aor.proj3t.dto.UserDTO;
 import aor.proj3t.enums.Role;
 import aor.proj3t.service.ServiceFactory;
-import aor.proj3t.util.validatorutils.UserValidator;
 import aor.proj3t.util.authutils.Secured;
+import aor.proj3t.util.validatorutils.fordto.UserValidator;
+import aor.proj3t.util.validatorutils.forfilters.FilterValidatorFactory;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.*;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.HeaderParam;
+import jakarta.ws.rs.PATCH;
+import jakarta.ws.rs.PUT;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * REST endpoint for user-related operations.
@@ -27,13 +35,14 @@ import org.apache.logging.log4j.Logger;
 @Consumes(MediaType.APPLICATION_JSON)
 public class UserResource {
     private static final Logger logger = LogManager.getLogger(UserResource.class);
-
     @Inject
     ServiceFactory serviceFactory;
 
     @Inject
     UserValidator validator;
 
+    @Inject
+    FilterValidatorFactory validatorFactory;
 
     @GET
     @Path("/me")
@@ -60,12 +69,12 @@ public class UserResource {
     @Secured(Role.ADMIN)
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response assignManager(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader, ManagerAssignDTO managerAssignDto) {
+    public Response assignManager(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader,
+            ManagerAssignDTO managerAssignDto) {
         Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
         validator.validateManagerAssignDTO(managerAssignDto);
-        serviceFactory.forUser().assignManagerBulk(requesterId,managerAssignDto);
+        serviceFactory.forUser().assignManagerBulk(requesterId, managerAssignDto);
         return Response.ok("Managers assigned successfully").build();
     }
 
 }
-

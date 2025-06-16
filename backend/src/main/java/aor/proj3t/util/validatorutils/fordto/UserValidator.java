@@ -1,4 +1,8 @@
-package aor.proj3t.util.validatorutils;
+package aor.proj3t.util.validatorutils.fordto;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.regex.Pattern;
 
 import aor.proj3t.dto.LoginDTO;
 import aor.proj3t.dto.ManagerAssignDTO;
@@ -8,13 +12,8 @@ import aor.proj3t.enums.Role;
 import aor.proj3t.exceptions.InvalidDataException;
 import jakarta.enterprise.context.ApplicationScoped;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.regex.Pattern;
-
 @ApplicationScoped
 public class UserValidator {
-
 
     public void validateEmail(String email) {
         if (email == null || email.isEmpty()) {
@@ -81,9 +80,9 @@ public class UserValidator {
             // Optional: add base64 format check if needed
             // String base64Regex = "^[A-Za-z0-9+/=]+$";
             // if (!photograph.matches(base64Regex)) {
-            //     throw new InvalidDataException("Invalid base64 format for photograph");
+            // throw new InvalidDataException("Invalid base64 format for photograph");
             // }
-            //TODO check validation logic
+            // TODO check validation logic
         }
     }
 
