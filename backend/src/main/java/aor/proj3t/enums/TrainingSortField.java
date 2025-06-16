@@ -6,10 +6,10 @@ public enum TrainingSortField {
 
     TRAINING_ID(1L, "id"),
     TITLE(2L, "title"),
-    DATE(3L, "created_at"),
+    DATE(3L, "createdAt"),
     DURATION(4L, "duration"),
     LANGUAGE(5L, "language"),
-    AREA(6L, "training_area");
+    AREA(6L, "trainingArea");
 
     private final Long id;
     private final String fieldName;
