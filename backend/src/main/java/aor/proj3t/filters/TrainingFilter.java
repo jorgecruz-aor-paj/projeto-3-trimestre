@@ -19,6 +19,9 @@ public class TrainingFilter {
     @QueryParam("startDate")
     private String startDate;
 
+    @QueryParam("activeOnly")
+    private Boolean activeOnly = true;
+
     @QueryParam("sortField")
     private TrainingSortField sortField = TrainingSortField.DATE;
 
@@ -95,6 +98,14 @@ public class TrainingFilter {
         this.searchText = searchText;
     }
 
+    public Boolean getActiveOnly() {
+        return activeOnly;
+    }
+
+    public void setActiveOnly(Boolean activeOnly) {
+        this.activeOnly = activeOnly;
+    }
+
     @Override
     public String toString() {
         return "TrainingFilter{" +
@@ -106,6 +117,7 @@ public class TrainingFilter {
                 ", sortField=" + sortField +
                 ", sortAscending=" + sortAscending +
                 ", searchText='" + searchText + '\'' +
+                ", activeOnly=" + activeOnly +
                 '}';
     }
 }
