@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import aor.proj3t.dto.EvaluationDTO;
 import aor.proj3t.entities.Evaluation;
+import aor.proj3t.filters.EvaluationFilter;
 
 public interface EvaluationService {
 
@@ -87,6 +88,9 @@ public interface EvaluationService {
      * 
      * @return The number of evaluations that were closed
      */
-    int closeAllCompletedEvaluations();
+    Integer closeAllCompletedEvaluations();
+
+    List<EvaluationDTO> getEvaluationsByFilter(Long requesterId, EvaluationFilter filter);
+
 
    }
