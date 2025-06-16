@@ -4,7 +4,6 @@ import aor.proj3t.service.impl.TokenService;
 import aor.proj3t.service.interfaces.AuthService;
 import aor.proj3t.service.interfaces.EvaluationCycleService;
 import aor.proj3t.service.interfaces.EvaluationService;
-import aor.proj3t.service.interfaces.TokenRevocationService;
 import aor.proj3t.service.interfaces.TrainingParticipationService;
 import aor.proj3t.service.interfaces.TrainingService;
 import aor.proj3t.service.interfaces.UserService;
@@ -56,9 +55,6 @@ public class ServiceFactory {
 
     @Inject
     private TokenService tokenService;
-
-    @Inject
-    private TokenRevocationService tokenRevocationService;
 
     /**
      * Get the service for User operations
@@ -126,14 +122,5 @@ public class ServiceFactory {
      */
     public TokenService forToken() {
         return tokenService;
-    }
-
-    /**
-     * Get the service for TokenRevocation operations
-     *
-     * @return The TokenRevocationService instance
-     */
-    public TokenRevocationService forTokenRevocation() {
-        return tokenRevocationService;
     }
 }
