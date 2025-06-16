@@ -1,7 +1,5 @@
 package aor.proj3t.resource;
 
-import aor.proj3t.util.authutils.TokenUtil;
-import aor.proj3t.util.validatorutils.UserValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.ThreadContext;
@@ -11,6 +9,8 @@ import aor.proj3t.dto.UserRegistrationDTO;
 import aor.proj3t.exceptions.UnauthorizedException;
 import aor.proj3t.service.ServiceFactory;
 import aor.proj3t.util.authutils.JwtUtil;
+import aor.proj3t.util.authutils.TokenUtil;
+import aor.proj3t.util.validatorutils.fordto.UserValidator;
 import io.jsonwebtoken.Claims;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
@@ -43,7 +43,6 @@ public class AuthResource {
 
     @Context
     private HttpHeaders headers;
-
     @Inject
     ServiceFactory serviceFactory;
 
@@ -93,7 +92,7 @@ public class AuthResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response confirmUser(@QueryParam("confirmationToken") String confirmationToken,
-                                UserRegistrationDTO userRegistrationDTO) {
+            UserRegistrationDTO userRegistrationDTO) {
         if (!jwtUtil.validateToken(confirmationToken)) {
             logger.warn("Invalid or expired confirmation token");
             throw new UnauthorizedException("Invalid or expired token");
@@ -125,7 +124,7 @@ public class AuthResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response resetPassword(@QueryParam("resetPasswordToken") String resetPasswordToken,
-                                  LoginDTO loginDTO) {
+            LoginDTO loginDTO) {
         logger.info("Received reset password for token: {}", resetPasswordToken);
 
         if (!jwtUtil.validateToken(resetPasswordToken)) {

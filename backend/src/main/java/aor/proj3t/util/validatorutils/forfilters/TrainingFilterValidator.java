@@ -1,25 +1,20 @@
-package aor.proj3t.util.validatorutils;
+package aor.proj3t.util.validatorutils.forfilters;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 import aor.proj3t.enums.TrainingSortField;
-import aor.proj3t.exceptions.InvalidDataException;
 import aor.proj3t.filters.TrainingFilter;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validator;
 
+/**
+ * Validator for TrainingFilter objects.
+ * Validates all fields in TrainingFilter according to business rules.
+ */
 @ApplicationScoped
-public class FilterValidator {
-
-    @Inject
-    private Validator validator;
+public class TrainingFilterValidator extends BaseFilterValidator<TrainingFilter> {
 
     private static final Pattern LANGUAGE_PATTERN = Pattern.compile("^[a-zA-Z ]+$");
     private static final Pattern DATE_PATTERN = Pattern.compile("^\\d{4}-\\d{2}-\\d{2}$");
@@ -29,17 +24,8 @@ public class FilterValidator {
     private static final int MIN_DURATION = 1;
     private static final int MAX_DURATION = 1000;
 
-    public void validate(TrainingFilter filter) {
-        // Jakarta Bean Validation
-        Set<ConstraintViolation<TrainingFilter>> violations = validator.validate(filter);
-        if (!violations.isEmpty()) {
-            throw new InvalidDataException(
-                    "Invalid filter data",
-                    "Validation error");
-        }
-
-        List<String> validationErrors = new ArrayList<>();
-
+    @Override
+    protected void doValidate(TrainingFilter filter, List<String> validationErrors) {
         // Manual validations equivalent to annotations
         validateId(filter, validationErrors);
         validateTrainingAreaId(filter, validationErrors);
@@ -48,13 +34,6 @@ public class FilterValidator {
         validateStartDate(filter, validationErrors);
         validateSearchText(filter, validationErrors);
         validateSortField(filter);
-
-        // If there are validation errors, throw exception with all errors
-        if (!validationErrors.isEmpty()) {
-            throw new InvalidDataException(
-                    "Invalid filter data",
-                    String.join("; ", validationErrors));
-        }
     }
 
     private void validateId(TrainingFilter filter, List<String> validationErrors) {
