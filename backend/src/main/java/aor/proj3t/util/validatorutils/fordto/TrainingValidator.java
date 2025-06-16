@@ -64,29 +64,9 @@ public class TrainingValidator {
         }
     }
 
-    public void validateStartDateFilter(String startDate) {
-        try {
-            LocalDate.parse(startDate);
-        } catch (DateTimeParseException e) {
-            throw new InvalidDataException(
-                    "Invalid date filter",
-                    "Invalid start date " + startDate + " is not a valid date to filter trainings");
-        }
-    }
 
-    public void validateTrainingSortField(String field) {
-        boolean matched = false;
-        for (TrainingSortField trainingSortField : TrainingSortField.values()) {
-            if (trainingSortField.getFieldName().equalsIgnoreCase(field)) {
-                matched = true;
-                break;
-            }
-        }
-        if (!matched) {
-            throw new InvalidDataException(
-                    "Invalid training sort fields : " + field);
-        }
-    }
+
+
 
     public void validateNewTrainingDTO(NewTrainingDTO newTrainingDto) {
         validateTrainingTitle(newTrainingDto.getTitle());
@@ -111,14 +91,5 @@ public class TrainingValidator {
         validateTrainingTitle(trainingAreaDto.getName());
     }
 
-    public void validateTrainingFilters(TrainingFilter filters) {
-        validateId(filters.getId(), "Training");
-        validateId(filters.getTrainingAreaId(), "Training Area");
-        validateTrainingLanguage(filters.getLanguage());
-        validateTrainingDuration(filters.getDuration());
-        validateStartDateFilter(filters.getStartDate());
-        validateTrainingSortField(filters.getSortField().getFieldName());
-        validateTrainingTitle(filters.getSearchText());
-    }
 
 }
