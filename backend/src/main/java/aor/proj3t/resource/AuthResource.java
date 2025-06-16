@@ -1,6 +1,7 @@
 package aor.proj3t.resource;
 
 import aor.proj3t.util.authutils.TokenUtil;
+import aor.proj3t.util.validatorutils.UserValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.ThreadContext;
@@ -9,7 +10,6 @@ import aor.proj3t.dto.LoginDTO;
 import aor.proj3t.dto.UserRegistrationDTO;
 import aor.proj3t.exceptions.UnauthorizedException;
 import aor.proj3t.service.ServiceFactory;
-import aor.proj3t.util.ValidatorUtil;
 import aor.proj3t.util.authutils.JwtUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.enterprise.context.RequestScoped;
@@ -48,7 +48,7 @@ public class AuthResource {
     ServiceFactory serviceFactory;
 
     @Inject
-    ValidatorUtil validatorUtil;
+    UserValidator validator;
 
     @Inject
     JwtUtil jwtUtil;
@@ -59,7 +59,7 @@ public class AuthResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response registerUser(LoginDTO loginDto) {
         String ipAddress = ThreadContext.get("clientIp");
-        validatorUtil.validateLoginDTO(loginDto);
+        validator.validateLoginDTO(loginDto);
         serviceFactory.forUser().registerUser(loginDto, ipAddress);
         return Response.status(Response.Status.CREATED)
                 .entity("User registered successfully")
@@ -71,7 +71,7 @@ public class AuthResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(LoginDTO loginDto) {
-        validatorUtil.validateLoginDTO(loginDto);
+        validator.validateLoginDTO(loginDto);
         String userAgent = headers.getHeaderString("User-Agent");
         String ipAddress = ThreadContext.get("clientIp");
         String sessionToken = serviceFactory.forAuth().login(loginDto, ipAddress, userAgent);
@@ -98,7 +98,7 @@ public class AuthResource {
             logger.warn("Invalid or expired confirmation token");
             throw new UnauthorizedException("Invalid or expired token");
         }
-        validatorUtil.validateUserRegistrationDTO(userRegistrationDTO);
+        validator.validateUserRegistrationDTO(userRegistrationDTO);
         Claims claims = jwtUtil.extractAllClaims(confirmationToken);
         String email = claims.get("email").toString();
 
@@ -113,7 +113,7 @@ public class AuthResource {
     public Response getResetPasswordLink(@PathParam("email") String email) {
         logger.info("Received reset password request for email: {}", email);
         String ipAddress = ThreadContext.get("clientIp");
-        validatorUtil.validateEmail(email);
+        validator.validateEmail(email);
         serviceFactory.forUser().sendResetPasswordLink(email, ipAddress);
 
         // Always return the same message to prevent email enumeration
@@ -132,7 +132,7 @@ public class AuthResource {
             logger.warn("Invalid or expired reset Password token");
             throw new UnauthorizedException("Invalid or expired token");
         }
-        validatorUtil.validateLoginDTO(loginDTO);
+        validator.validateLoginDTO(loginDTO);
         Claims claims = jwtUtil.extractAllClaims(resetPasswordToken);
         Long userId = Long.parseLong(claims.get("userId").toString());
         serviceFactory.forUser().changePassword(userId, loginDTO.getPassword());

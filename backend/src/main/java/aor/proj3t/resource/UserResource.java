@@ -4,7 +4,7 @@ import aor.proj3t.dto.ManagerAssignDTO;
 import aor.proj3t.dto.UserDTO;
 import aor.proj3t.enums.Role;
 import aor.proj3t.service.ServiceFactory;
-import aor.proj3t.util.ValidatorUtil;
+import aor.proj3t.util.validatorutils.UserValidator;
 import aor.proj3t.util.authutils.Secured;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
@@ -32,7 +32,7 @@ public class UserResource {
     ServiceFactory serviceFactory;
 
     @Inject
-    ValidatorUtil validatorUtil;
+    UserValidator validator;
 
 
     @GET
@@ -51,7 +51,7 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateUser(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader, UserDTO userDTO) {
         Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
-        validatorUtil.validateUserDTO(userDTO);
+        validator.validateUserDTO(userDTO);
         serviceFactory.forUser().updateUser(requesterId, userDTO);
         return Response.ok(userDTO).build();
     }
@@ -62,7 +62,7 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response assignManager(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader, ManagerAssignDTO managerAssignDto) {
         Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
-        validatorUtil.validateManagerAssignDTO(managerAssignDto);
+        validator.validateManagerAssignDTO(managerAssignDto);
         serviceFactory.forUser().assignManagerBulk(requesterId,managerAssignDto);
         return Response.ok("Managers assigned successfully").build();
     }
