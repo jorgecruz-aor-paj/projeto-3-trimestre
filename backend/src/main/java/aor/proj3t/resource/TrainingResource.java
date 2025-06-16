@@ -98,4 +98,13 @@ public class TrainingResource {
         return Response.ok(trainingAreas).build();
     }
 
+    @PATCH
+    @Path("/{trainingId}")
+    @Secured(Role.ADMIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deactivateTraining(@PathParam("trainingId") Long id) {
+        serviceFactory.forTraining().deactivateTraining(id);
+        return Response.ok("Training deactivated successfully").build();
+
+    }
 }
