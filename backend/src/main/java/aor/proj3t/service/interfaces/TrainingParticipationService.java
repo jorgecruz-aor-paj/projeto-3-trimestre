@@ -1,5 +1,6 @@
 package aor.proj3t.service.interfaces;
 
+import aor.proj3t.dto.NewTrainingParticipationDTO;
 import aor.proj3t.dto.TrainingDTO;
 import aor.proj3t.dto.TrainingParticipationDTO;
 
@@ -8,12 +9,10 @@ import java.util.Map;
 
 public interface TrainingParticipationService {
 
-    Boolean registerTrainingParticipation(TrainingParticipationDTO trainingParticipationDTO);
+   void registerTrainingParticipation(Long requesterId, NewTrainingParticipationDTO newTrainingParticipationDTO);
 
     Map<Integer, Integer> getTrainingParticipationTimeByYearByUser(Long userId);
 
-    List<TrainingParticipationDTO> findTrainingParticipationsByUser(Long userId);
-
-    List<TrainingDTO> getTrainingsUnparticipatedByUser(Long userId);
+    List<TrainingParticipationDTO> findTrainingParticipationsByUser(Long requesterId, Long userId);
 
 }

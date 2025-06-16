@@ -114,7 +114,6 @@ public class TrainingServiceImpl extends BaseService implements TrainingService 
     @Override
     public List<TrainingDTO> getTrainingsByFilters(Long requesterId, TrainingFilter filters) {
         User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
-        //TODO remove if no filter limits are needed for users
         if (requester.getRole() != Role.ADMIN && !filters.getActiveOnly()) {
             throw new ForbiddenException(
                     "Permission denied",

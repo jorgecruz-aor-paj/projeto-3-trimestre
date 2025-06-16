@@ -3,7 +3,11 @@ package aor.proj3t.service.impl;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
+import aor.proj3t.dto.NewTrainingParticipationDTO;
+import aor.proj3t.enums.Role;
+import aor.proj3t.exceptions.ForbiddenException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,7 +24,7 @@ import jakarta.inject.Inject;
 
 @ApplicationScoped
 public class TrainingParticipationServiceImpl extends BaseService implements TrainingParticipationService {
-    private static final Logger logger = LogManager.getLogger(TrainingParticipationService.class);
+    private static final Logger logger = LogManager.getLogger(TrainingParticipationServiceImpl.class);
 
     @Inject
     DAOFactory daoFactory;
@@ -29,65 +33,43 @@ public class TrainingParticipationServiceImpl extends BaseService implements Tra
     ConverterFactory converterFactory;
 
     @Override
-    public List<TrainingParticipationDTO> findTrainingParticipationsByUser(Long userId) {
-        try {
+    public List<TrainingParticipationDTO> findTrainingParticipationsByUser(Long requesterId, Long userId) {
+            User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
             User user = getEntity(daoFactory.forUser().findById(userId), userId, "User");
-            List<TrainingParticipation> trainingParticipationList = daoFactory.forTrainingParticipation()
+            //access to Admins, the user himself, or the user's manager
+        if (!requester.getId().equals(user.getId()) &&
+                (requester.getRole() != Role.ADMIN &&
+                        (user.getManager() == null || !user.getManager().getId().equals(requesterId)))) {
+            throw new ForbiddenException(
+                    "Permission denied",
+                    "User with id " + requesterId + " requested invalid access to user with id " + userId + " training participation");
+        }
+
+        List<TrainingParticipation> trainingParticipationList = daoFactory.forTrainingParticipation()
                     .findByParticipantId(user.getId());
             return converterFactory.forTrainingParticipation().toDTOList(trainingParticipationList);
-        } catch (NoSuchElementException e) {
-            logger.error("No user found with id {}", userId);
-            return null;
-        } catch (Exception e) {
-            logger.error("Error finding training participations", e);
-            return null;
-        }
     }
 
     @Override
-    public List<TrainingDTO> getTrainingsUnparticipatedByUser(Long userId) {
-        try {
-            User user = getEntity(daoFactory.forUser().findById(userId), userId, "User");
-            List<Training> trainingList = daoFactory.forTraining().findTrainingsNotParticipatedByUser(user.getId());
-            return converterFactory.forTraining().toDTOList(trainingList);
-        } catch (NoSuchElementException e) {
-            logger.error("No user found with id {}", userId);
-            return null;
-        } catch (Exception e) {
-            logger.error("Error finding trainigs not participated by user", e);
-            return null;
-        }
-    }
-
-    @Override
-    public Boolean registerTrainingParticipation(TrainingParticipationDTO trainingParticipationDTO) {
-        try {
-            User participant = getEntity(daoFactory.forUser().findById(trainingParticipationDTO.getParticipantId()),
-                    trainingParticipationDTO.getParticipantId(), "User");
-            User manager = getEntity(daoFactory.forUser().findById(trainingParticipationDTO.getManagerId()),
-                    trainingParticipationDTO.getManagerId(), "User");
-            if (manager.getId() != participant.getManager().getId()) {
-                logger.warn("User manager and trainingParticipation manager id's are a mismatch");
-                return false;
+    public void registerTrainingParticipation(Long requesterId, NewTrainingParticipationDTO newTrainingParticipationDto) {
+            User participant = getEntity(daoFactory.forUser().findById(newTrainingParticipationDto.getParticipantId()),
+                    newTrainingParticipationDto.getParticipantId(), "User");
+            User manager = getEntity(daoFactory.forUser().findById(newTrainingParticipationDto.getManagerId()),
+                    newTrainingParticipationDto.getManagerId(), "User");
+            //access by admin, or the user's manager
+            if (manager.getRole() != Role.ADMIN && !Objects.equals(manager.getId(), participant.getManager().getId())) {
+                throw new ForbiddenException(
+                        "Permission denied",
+                        "User with id " + manager.getId() + " adding participation to unmanaged user with id " + participant.getId());
             }
-            Training training = getEntity(daoFactory.forTraining().findById(trainingParticipationDTO.getTrainingId()),
-                    trainingParticipationDTO.getTrainingId(), "Training");
+            Training training = getEntity(daoFactory.forTraining().findById(newTrainingParticipationDto.getTrainingId()),
+                    newTrainingParticipationDto.getTrainingId(), "Training");
             TrainingParticipation trainingParticipation = new TrainingParticipation(
                     participant,
                     manager,
                     training,
-                    trainingParticipationDTO.getParticipatedAt());
+                    newTrainingParticipationDto.getParticipatedAt());
             daoFactory.forTrainingParticipation().create(trainingParticipation);
-            return true;
-        } catch (NoSuchElementException e) {
-            logger.error("Invalid id for participant {}, manager {} or training {}, while registering participation",
-                    trainingParticipationDTO.getParticipantId(), trainingParticipationDTO.getManagerId(),
-                    trainingParticipationDTO.getTrainingId(), e);
-            return false;
-        } catch (Exception e) {
-            logger.error("Error registering participation", e);
-            return false;
-        }
     }
 
     public Map<Integer, Integer> getTrainingParticipationTimeByYearByUser(Long userId) {

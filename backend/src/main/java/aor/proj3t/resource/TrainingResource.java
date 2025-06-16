@@ -2,9 +2,8 @@ package aor.proj3t.resource;
 
 import java.util.List;
 
-import aor.proj3t.dto.NewTrainingDTO;
-import aor.proj3t.dto.TrainingAreaDTO;
-import aor.proj3t.dto.TrainingDTO;
+import aor.proj3t.dto.*;
+import aor.proj3t.entities.TrainingParticipation;
 import aor.proj3t.enums.Role;
 import aor.proj3t.filters.TrainingFilter;
 import aor.proj3t.service.ServiceFactory;
@@ -41,7 +40,7 @@ public class TrainingResource {
     @GET
     @Secured()
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTrainings(@HeaderParam(HttpHeaders.AUTHORIZATION)String authHeader, @BeanParam TrainingFilter filters) {
+    public Response getTrainings(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader, @BeanParam TrainingFilter filters) {
         Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
         validatorFactory.validate(filters);
         List<TrainingDTO> trainings = serviceFactory.forTraining().getTrainingsByFilters(requesterId, filters);
@@ -81,7 +80,7 @@ public class TrainingResource {
 
     @GET
     @Path("/unparticipated/{userId}")
-    @Secured(Role.MANAGER)
+    @Secured({Role.MANAGER, Role.ADMIN})
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUnparticipatedTrainings(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader, @PathParam("userId") Long userId) {
         Long managerId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
@@ -94,6 +93,7 @@ public class TrainingResource {
     @Secured(Role.ADMIN)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTrainingAreas() {
+        System.out.println("here"); //TODO delete when utility expires
         List<TrainingAreaDTO> trainingAreas = serviceFactory.forTraining().getAllTrainingAreas();
         return Response.ok(trainingAreas).build();
     }
@@ -105,6 +105,29 @@ public class TrainingResource {
     public Response deactivateTraining(@PathParam("trainingId") Long id) {
         serviceFactory.forTraining().deactivateTraining(id);
         return Response.ok("Training deactivated successfully").build();
-
     }
+
+    @POST
+    @Path("/participation")
+    @Secured({Role.MANAGER, Role.ADMIN})
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response registerTrainingParticipation(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader, NewTrainingParticipationDTO newTrainingParticipationDto) {
+        Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
+        serviceFactory.forTrainingParticipation().registerTrainingParticipation(requesterId, newTrainingParticipationDto);
+        return Response.ok("Training participation successfully registered").build();
+    }
+
+    @GET
+    @Path("/participation/{userId}")
+    @Secured
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getTrainingParticipation(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader , @PathParam("userId") Long userId) {
+        Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
+        List<TrainingParticipationDTO> participations = serviceFactory.forTrainingParticipation().findTrainingParticipationsByUser(requesterId,userId);
+        return Response.ok(participations).build();
+    }
+
+
 }
