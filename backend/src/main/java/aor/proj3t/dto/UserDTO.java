@@ -16,7 +16,7 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class UserDTO {
     @XmlElement(name = "id")
-    private long id;
+    private Long id;
 
     @XmlElement(name = "email")
     private String email;
@@ -74,11 +74,11 @@ public class UserDTO {
         this.workplaceId = workplaceId;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

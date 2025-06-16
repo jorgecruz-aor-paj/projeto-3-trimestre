@@ -26,7 +26,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, unique = true, updatable = false)
-    private long id;
+    private Long id;
 
     @Column(name = "email", nullable = false, unique = true, updatable = false)
     private String email;
@@ -93,11 +93,11 @@ public class User {
         this.workplace = workplace;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
