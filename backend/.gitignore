@@ -45,3 +45,4 @@ logs/app.log
 ### Artifacts ###
 .out/
 out/
+.env

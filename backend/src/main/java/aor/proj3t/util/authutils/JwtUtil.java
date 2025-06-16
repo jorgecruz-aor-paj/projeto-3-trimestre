@@ -5,7 +5,6 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.crypto.SecretKey;
 
@@ -185,10 +184,6 @@ public class JwtUtil {
         Map<String, Object> claims = new HashMap<>(additionalClaims);
         claims.put("tokenType", tokenType.name());
 
-        // FIXME Store token id instead of all the token in the DB logic:
-        // Add unique token ID for revocation support
-        String tokenId = UUID.randomUUID().toString();
-
         try {
             Instant now = Instant.now();
             Instant expiration = now.plus(Duration.ofMinutes(validityMinutes));
@@ -201,21 +196,11 @@ public class JwtUtil {
                     .claims(claims)
                     .subject(subject)
                     .issuer(issuer)
-                    .id(tokenId)
                     .issuedAt(Date.from(now))
                     .notBefore(Date.from(now.minusSeconds(60))) // Allow a 60 seconds grace period
                     .expiration(Date.from(expiration))
                     .signWith(getSigningKey())
                     .compact();
-
-            // FIXME: Store the token ID in the database for revocation support
-            // Put this logic where it makes sense, as it will handle the storage of the
-            // token ID in the database;
-            // This is the entity like store logic:
-            // storeTokenId(tokenId, subject, TokenType.SESSION.equals(tokenType));
-            // We will need some RevocationService to handle the token revocation logic
-            // and check if the token is revoked before validating it.
-            // Tekinolódgia!!!
 
             logger.debug("JWT token created successfully");
             return token;
