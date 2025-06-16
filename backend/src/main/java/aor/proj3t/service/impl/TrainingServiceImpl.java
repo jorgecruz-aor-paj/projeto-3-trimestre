@@ -124,4 +124,17 @@ public class TrainingServiceImpl extends BaseService implements TrainingService 
 
     }
 
+    @Override
+    public List<TrainingDTO> getUnparticipatedTrainingsByUserId(Long managerId, Long userId) {
+        User manager = getEntity(daoFactory.forUser().findById(managerId), userId, "User");
+        User user = getEntity(daoFactory.forUser().findById(userId), userId, "User");
+        if(user.getManager().getId() != manager.getId()){
+            throw new ForbiddenException(
+                    "Permission denied",
+                    "Manager with ID " + managerId + " accessed unparticipated trainings for a non-managed user with ID " + userId
+            );
+        }
+        return converterFactory.forTraining().toDTOList(daoFactory.forTraining().findTrainingsNotParticipatedByUser(userId));
+    }
+
 }

@@ -47,7 +47,7 @@ public interface TrainingService {
 
     TrainingAreaDTO addTrainingArea(TrainingAreaDTO trainingAreaDTO);
 
-
+    List<TrainingDTO> getUnparticipatedTrainingsByUserId(Long managerId, Long userId);
 
     List<TrainingDTO> getTrainingsByFilters(Long requesterId, TrainingFilter filters);
 

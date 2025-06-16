@@ -44,7 +44,6 @@ public class TrainingResource {
     public Response getTrainings(@HeaderParam(HttpHeaders.AUTHORIZATION)String authHeader, @BeanParam TrainingFilter filters) {
         Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
         filterValidator.validate(filters);
-
         List<TrainingDTO> trainings = serviceFactory.forTraining().getTrainingsByFilters(requesterId, filters);
         return Response.ok(trainings).build();
     }
@@ -78,6 +77,25 @@ public class TrainingResource {
         validator.validateTrainingAreaDTO(trainingAreaDTO);
         TrainingAreaDTO trainingAreaDto = serviceFactory.forTraining().addTrainingArea(trainingAreaDTO);
         return Response.status(Response.Status.OK).entity(trainingAreaDto).build();
+    }
+
+    @GET
+    @Path("/unparticipated/{userId}")
+    @Secured(Role.MANAGER)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUnparticipatedTrainings(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader, @PathParam("userId") Long userId) {
+        Long managerId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
+        List<TrainingDTO> trainings = serviceFactory.forTraining().getUnparticipatedTrainingsByUserId(managerId, userId);
+        return Response.ok(trainings).build();
+    }
+
+    @GET
+    @Path("/area")
+    @Secured(Role.ADMIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getTrainingAreas() {
+        List<TrainingAreaDTO> trainingAreas = serviceFactory.forTraining().getAllTrainingAreas();
+        return Response.ok(trainingAreas).build();
     }
 
 }
