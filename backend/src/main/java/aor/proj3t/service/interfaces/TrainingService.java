@@ -49,6 +49,6 @@ public interface TrainingService {
 
 
 
-    List<TrainingDTO> getTrainingsByFilters(TrainingFilter filters);
+    List<TrainingDTO> getTrainingsByFilters(Long requesterId, TrainingFilter filters);
 
 }

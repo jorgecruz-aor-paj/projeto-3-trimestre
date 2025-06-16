@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import aor.proj3t.dto.NewTrainingDTO;
+import aor.proj3t.entities.User;
+import aor.proj3t.enums.Role;
+import aor.proj3t.exceptions.ForbiddenException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -47,18 +50,18 @@ public class TrainingServiceImpl extends BaseService implements TrainingService 
 
     @Override
     public TrainingDTO updateTraining(TrainingDTO trainingDTO) {
-            TrainingArea trainingArea = getEntity(
-                    daoFactory.forTrainingArea().findById(trainingDTO.getTrainingAreaId()),
-                    trainingDTO.getTrainingAreaId(), "Training area");
-            Training training = getEntity(daoFactory.forTraining().findById(trainingDTO.getId()), trainingDTO.getId(), "Training");
-            training.setTitle(trainingDTO.getTitle());
-            training.setDuration(trainingDTO.getDuration());
-            training.setDescription(trainingDTO.getDescription());
-            training.setLink(trainingDTO.getLink());
-            training.setLanguage(trainingDTO.getLanguage());
-            training.setTrainingArea(trainingArea);
-            daoFactory.forTraining().update(training);
-            return converterFactory.forTraining().toDTO(training);
+        TrainingArea trainingArea = getEntity(
+                daoFactory.forTrainingArea().findById(trainingDTO.getTrainingAreaId()),
+                trainingDTO.getTrainingAreaId(), "Training area");
+        Training training = getEntity(daoFactory.forTraining().findById(trainingDTO.getId()), trainingDTO.getId(), "Training");
+        training.setTitle(trainingDTO.getTitle());
+        training.setDuration(trainingDTO.getDuration());
+        training.setDescription(trainingDTO.getDescription());
+        training.setLink(trainingDTO.getLink());
+        training.setLanguage(trainingDTO.getLanguage());
+        training.setTrainingArea(trainingArea);
+        daoFactory.forTraining().update(training);
+        return converterFactory.forTraining().toDTO(training);
     }
 
     @Override
@@ -101,21 +104,24 @@ public class TrainingServiceImpl extends BaseService implements TrainingService 
 
     @Override
     public TrainingAreaDTO addTrainingArea(TrainingAreaDTO trainingAreaDTO) {
-            TrainingArea trainingArea = new TrainingArea(trainingAreaDTO.getName());
-            //TODO add logic to prevent repeated names
-            //TODO add logic if the ID already exists and throw conflict exception
-            daoFactory.forTrainingArea().create(trainingArea);
-            return converterFactory.forTrainingArea().toDTO(trainingArea);
+        TrainingArea trainingArea = new TrainingArea(trainingAreaDTO.getName());
+        //TODO add logic to prevent repeated names
+        //TODO add logic if the ID already exists and throw conflict exception
+        daoFactory.forTrainingArea().create(trainingArea);
+        return converterFactory.forTrainingArea().toDTO(trainingArea);
     }
 
     @Override
-    public List<TrainingDTO> getTrainingsByFilters(TrainingFilter filters) {
-        try {
-            return converterFactory.forTraining().toDTOList(daoFactory.forTraining().getTrainingsByFilters(filters));
-        } catch (Exception e) {
-            logger.error("Error finding trainings by filter", e);
-            return null;
+    public List<TrainingDTO> getTrainingsByFilters(Long requesterId, TrainingFilter filters) {
+        User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
+        //TODO remove if no filter limits are needed for users
+        if (requester.getRole() != Role.ADMIN && filters.getTrainingAreaId() != null) {
+            throw new ForbiddenException(
+                    "Permission denied",
+                    "User with ID " + requesterId + " accessed forbidden user filters");
         }
+        return converterFactory.forTraining().toDTOList(daoFactory.forTraining().getTrainingsByFilters(filters));
+
     }
 
 }
