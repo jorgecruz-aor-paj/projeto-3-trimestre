@@ -26,7 +26,7 @@ public interface UserService {
 
     void updateUser(Long userId, UserDTO userDto);
 
-    List<UserDTO> getUsersByFilters(UserFilter userFilter);
+    List<UserDTO> getUsersByFilters(Long requesterId, UserFilter userFilter);
 
     void sendResetPasswordLink(String email, String ipAddress);
 
