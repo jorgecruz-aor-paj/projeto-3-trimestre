@@ -41,13 +41,9 @@ public class TrainingResource {
     @GET
     @Secured()
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTrainings(@BeanParam TrainingFilter filters) {
-        validatorFactory.validate(filters);
-        System.out.println(filters);
-        List<TrainingDTO> trainings = serviceFactory.forTraining().getTrainingsByFilters(filters);
     public Response getTrainings(@HeaderParam(HttpHeaders.AUTHORIZATION)String authHeader, @BeanParam TrainingFilter filters) {
         Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
-        filterValidator.validate(filters);
+        validatorFactory.validate(filters);
         List<TrainingDTO> trainings = serviceFactory.forTraining().getTrainingsByFilters(requesterId, filters);
         return Response.ok(trainings).build();
     }

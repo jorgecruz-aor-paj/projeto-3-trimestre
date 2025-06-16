@@ -1,5 +1,6 @@
 package aor.proj3t.resource;
 
+import jakarta.ws.rs.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -8,20 +9,12 @@ import aor.proj3t.dto.UserDTO;
 import aor.proj3t.enums.Role;
 import aor.proj3t.filters.UserFilter;
 import aor.proj3t.service.ServiceFactory;
-import aor.proj3t.util.validatorutils.FilterValidator;
-import aor.proj3t.util.validatorutils.UserValidator;
+import aor.proj3t.util.validatorutils.fordto.UserValidator;
 import aor.proj3t.util.authutils.Secured;
 import aor.proj3t.util.validatorutils.fordto.UserValidator;
 import aor.proj3t.util.validatorutils.forfilters.FilterValidatorFactory;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.HeaderParam;
-import jakarta.ws.rs.PATCH;
-import jakarta.ws.rs.PUT;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -65,7 +58,7 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUsers(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader, @BeanParam UserFilter filters) {
         Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
-        //filterValidator.validate(filters);
+        validatorFactory.validate(filters);
         List<UserDTO> users = serviceFactory.forUser().getUsersByFilters(requesterId, filters);
         return Response.ok(users).build();
     }
