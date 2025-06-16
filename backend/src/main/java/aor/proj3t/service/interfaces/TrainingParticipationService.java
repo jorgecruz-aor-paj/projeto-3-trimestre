@@ -11,8 +11,8 @@ public interface TrainingParticipationService {
 
    void registerTrainingParticipation(Long requesterId, NewTrainingParticipationDTO newTrainingParticipationDTO);
 
-    Map<Integer, Integer> getTrainingParticipationTimeByYearByUser(Long userId);
-
     List<TrainingParticipationDTO> findTrainingParticipationsByUser(Long requesterId, Long userId);
+
+    Map<Integer,Long> getTrainingParticipationTimeByYearByUser(Long requesterId, Long userId);
 
 }

@@ -72,16 +72,18 @@ public class TrainingParticipationServiceImpl extends BaseService implements Tra
             daoFactory.forTrainingParticipation().create(trainingParticipation);
     }
 
-    public Map<Integer, Integer> getTrainingParticipationTimeByYearByUser(Long userId) {
-        try {
+    @Override
+    public Map<Integer,Long> getTrainingParticipationTimeByYearByUser(Long requesterId, Long userId) {
+        User requester = getEntity(daoFactory.forUser().findById(requesterId),requesterId, "User");
             User user = getEntity(daoFactory.forUser().findById(userId), userId, "User");
-            return daoFactory.forTrainingParticipation().trainingTimeByYearByParticipantId(user.getId());
-        } catch (NoSuchElementException e) {
-            logger.error("No user found with id {}", userId);
-            return null;
-        } catch (Exception e) {
-            logger.error("Error finding training participation time by year for user with id {}", e);
-            return null;
+        if (!requester.getId().equals(user.getId()) &&
+                (requester.getRole() != Role.ADMIN &&
+                        (user.getManager() == null || !user.getManager().getId().equals(requesterId)))) {
+            throw new ForbiddenException(
+                    "Permission denied",
+                    "User with id " + requesterId + " requested invalid access to user with id " + userId + " participation times by year");
         }
+            return daoFactory.forTrainingParticipation().trainingTimeByYearByParticipantId(user.getId());
+
     }
 }

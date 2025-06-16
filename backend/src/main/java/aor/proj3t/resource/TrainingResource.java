@@ -1,6 +1,7 @@
 package aor.proj3t.resource;
 
 import java.util.List;
+import java.util.Map;
 
 import aor.proj3t.dto.*;
 import aor.proj3t.entities.TrainingParticipation;
@@ -123,10 +124,20 @@ public class TrainingResource {
     @Secured
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTrainingParticipation(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader , @PathParam("userId") Long userId) {
+    public Response getTrainingParticipation(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader, @PathParam("userId") Long userId) {
         Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
-        List<TrainingParticipationDTO> participations = serviceFactory.forTrainingParticipation().findTrainingParticipationsByUser(requesterId,userId);
+        List<TrainingParticipationDTO> participations = serviceFactory.forTrainingParticipation().findTrainingParticipationsByUser(requesterId, userId);
         return Response.ok(participations).build();
+    }
+
+    @GET
+    @Path("/participation/stats/{userId}")
+    @Secured
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getTrainingParticipationStats(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader, @PathParam("userId") Long userId) {
+        Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
+        Map<Integer, Long> stats = serviceFactory.forTrainingParticipation().getTrainingParticipationTimeByYearByUser(requesterId, userId);
+        return Response.ok(stats).build();
     }
 
 

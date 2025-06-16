@@ -13,6 +13,6 @@ public interface TrainingParticipationDAO extends BasicDAO<TrainingParticipation
 
     List<TrainingParticipation> findByManagerId(Long managerId);
 
-    Map<Integer, Integer> trainingTimeByYearByParticipantId(Long participationId);
+    Map<Integer,Long> trainingTimeByYearByParticipantId(Long participationId);
 
 }

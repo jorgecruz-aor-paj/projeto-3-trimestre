@@ -42,7 +42,7 @@ public class TrainingParticipationDAOimpl extends AbstractDAO<TrainingParticipat
     }
 
     @Override
-    public Map<Integer, Integer> trainingTimeByYearByParticipantId(Long participantId) {
+    public Map<Integer,Long> trainingTimeByYearByParticipantId(Long participantId) {
         String query = """
                     SELECT YEAR(tp.participatedAt), SUM(tp.training.duration)
                     FROM TrainingParticipation tp
@@ -54,9 +54,9 @@ public class TrainingParticipationDAOimpl extends AbstractDAO<TrainingParticipat
                 .setParameter("participantId", participantId)
                 .getResultList();
 
-        Map<Integer, Integer> trainingTimeByYear = new HashMap<>();
+        Map<Integer,Long> trainingTimeByYear = new HashMap<>();
         for (Object[] row : results) {
-            trainingTimeByYear.put((Integer) row[0], ((Integer) row[1]));
+            trainingTimeByYear.put( (Integer) row[0], ( (Long)row[1]));
         }
 
         return trainingTimeByYear;
