@@ -4,6 +4,8 @@ import aor.proj3t.service.impl.TokenService;
 import aor.proj3t.service.interfaces.AuthService;
 import aor.proj3t.service.interfaces.EvaluationCycleService;
 import aor.proj3t.service.interfaces.EvaluationService;
+import aor.proj3t.service.interfaces.MessageService;
+import aor.proj3t.service.interfaces.NotificationService;
 import aor.proj3t.service.interfaces.TrainingParticipationService;
 import aor.proj3t.service.interfaces.TrainingService;
 import aor.proj3t.service.interfaces.UserService;
@@ -52,9 +54,14 @@ public class ServiceFactory {
 
     @Inject
     private EvaluationCycleService evaluationCycleService;
-
     @Inject
     private TokenService tokenService;
+
+    @Inject
+    private MessageService messageService;
+
+    @Inject
+    private NotificationService notificationService;
 
     /**
      * Get the service for User operations
@@ -116,11 +123,29 @@ public class ServiceFactory {
     }
 
     /**
-     * Get the service for Token operations
-     *
+     * Get the service for Token operations *
+     * 
      * @return The TokenService instance
      */
     public TokenService forToken() {
         return tokenService;
+    }
+
+    /**
+     * Get the service for Message operations
+     * 
+     * @return The MessageService instance
+     */
+    public MessageService forMessage() {
+        return messageService;
+    }
+
+    /**
+     * Get the service for Notification operations
+     * 
+     * @return The NotificationService instance
+     */
+    public NotificationService forNotification() {
+        return notificationService;
     }
 }
