@@ -103,6 +103,7 @@ public class TrainingServiceImpl extends BaseService implements TrainingService 
     public TrainingAreaDTO addTrainingArea(TrainingAreaDTO trainingAreaDTO) {
             TrainingArea trainingArea = new TrainingArea(trainingAreaDTO.getName());
             //TODO add logic to prevent repeated names
+            //TODO add logic if the ID already exists and throw conflict exception
             daoFactory.forTrainingArea().create(trainingArea);
             return converterFactory.forTrainingArea().toDTO(trainingArea);
     }

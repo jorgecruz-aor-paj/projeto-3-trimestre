@@ -55,11 +55,11 @@ public class TrainingDAOimpl extends AbstractDAO<Training, Long> implements Trai
 
         List<Predicate> predicates = new ArrayList<>();
 
-        if (filters.getTrainingId() != null) {
-            predicates.add(cb.equal(root.get("id"), filters.getTrainingId()));
+        if (filters.getId() != null) {
+            predicates.add(cb.equal(root.get("id"), filters.getId()));
         }
-        if (filters.getTrainingArea() != null) {
-            predicates.add(cb.equal(root.get("trainingArea"), filters.getTrainingArea()));
+        if (filters.getTrainingAreaId() != null) {
+            predicates.add(cb.equal(root.get("trainingArea").get("id"), filters.getTrainingAreaId()));
         }
         if (filters.getLanguage() != null) {
             predicates.add(cb.equal(root.get("language"), filters.getLanguage()));

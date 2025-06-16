@@ -1,9 +1,16 @@
 package aor.proj3t.util.validatorutils;
 
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.Date;
 import java.util.regex.Pattern;
 
 import aor.proj3t.dto.*;
+import aor.proj3t.enums.Role;
+import aor.proj3t.enums.TrainingSortField;
 import aor.proj3t.exceptions.InvalidDataException;
+import aor.proj3t.filters.TrainingFilter;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
@@ -58,6 +65,31 @@ public class TrainingValidator {
         }
     }
 
+    public void validateStartDateFilter(String startDate) {
+        try {
+            LocalDate.parse(startDate);
+        } catch (DateTimeParseException e) {
+            throw new InvalidDataException(
+                    "Invalid date filter",
+                    "Invalid start date " + startDate + " is not a valid date to filter trainings");
+        }
+    }
+
+    public void validateTrainingSortField(String field) {
+        boolean matched = false;
+        for (TrainingSortField trainingSortField : TrainingSortField.values()) {
+            if (trainingSortField.getFieldName().equalsIgnoreCase(field)) {
+                matched = true;
+                break;
+            }
+        }
+        if (!matched) {
+            throw new InvalidDataException(
+                    "Invalid training sort fields : " + field);
+        }
+    }
+
+
     public void validateNewTrainingDTO(NewTrainingDTO newTrainingDto) {
         validateTrainingTitle(newTrainingDto.getTitle());
         validateTrainingDuration(newTrainingDto.getDuration());
@@ -80,6 +112,17 @@ public class TrainingValidator {
     public void validateTrainingAreaDTO(TrainingAreaDTO trainingAreaDto) {
         validateTrainingTitle(trainingAreaDto.getName());
     }
+
+    public void validateTrainingFilters(TrainingFilter filters) {
+        validateId(filters.getId(), "Training");
+        validateId(filters.getTrainingAreaId(), "Training Area");
+        validateTrainingLanguage(filters.getLanguage());
+        validateTrainingDuration(filters.getDuration());
+        validateStartDateFilter(filters.getStartDate());
+        validateTrainingSortField(filters.getSortField().getFieldName());
+        validateTrainingTitle(filters.getSearchText());
+    }
+
 
 }
 

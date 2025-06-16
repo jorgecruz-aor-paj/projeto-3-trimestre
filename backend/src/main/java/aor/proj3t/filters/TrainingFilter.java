@@ -2,33 +2,50 @@ package aor.proj3t.filters;
 
 import aor.proj3t.entities.TrainingArea;
 import aor.proj3t.enums.TrainingSortField;
+import jakarta.ws.rs.QueryParam;
 
 public class TrainingFilter {
-    private Long trainingId;
-    private TrainingArea trainingArea;
+    @QueryParam("id")
+    private Long id;
+
+    @QueryParam("trainingAreaId")
+    private Long trainingAreaId;
+
+    @QueryParam("language")
     private String language;
+
+    @QueryParam("duration")
     private Integer duration;
+
+    @QueryParam("startDate")
     private String startDate;
+
+    @QueryParam("sortField")
     private TrainingSortField sortField = TrainingSortField.DATE;
+
+    @QueryParam("sortAscending")
     private Boolean sortAscending = false;
+
+    @QueryParam("searchText")
     private String searchText;
+
 
     public TrainingFilter() {}
 
-    public Long getTrainingId() {
-        return trainingId;
+    public Long getId() {
+        return id;
     }
 
-    public void setTrainingId(Long trainingId) {
-        this.trainingId = trainingId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public TrainingArea getTrainingArea() {
-        return trainingArea;
+    public Long getTrainingAreaId() {
+        return trainingAreaId;
     }
 
-    public void setTrainingArea(TrainingArea trainingArea) {
-        this.trainingArea = trainingArea;
+    public void setTrainingAreaId(Long trainingAreaId) {
+        this.trainingAreaId = trainingAreaId;
     }
 
     public String getLanguage() {
@@ -77,5 +94,19 @@ public class TrainingFilter {
 
     public void setSearchText(String searchText) {
         this.searchText = searchText;
+    }
+
+    @Override
+    public String toString() {
+        return "TrainingFilter{" +
+                "id=" + id +
+                ", trainingAreaId=" + trainingAreaId +
+                ", language='" + language + '\'' +
+                ", duration=" + duration +
+                ", startDate='" + startDate + '\'' +
+                ", sortField=" + sortField +
+                ", sortAscending=" + sortAscending +
+                ", searchText='" + searchText + '\'' +
+                '}';
     }
 }

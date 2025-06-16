@@ -14,6 +14,8 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+import java.util.List;
+
 /**
  * REST endpoint for training-related operations.
  * This class is responsible for handling requests related to training sessions,
@@ -35,8 +37,11 @@ public class TrainingResource {
     @GET
     @Secured()
     @Consumes(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getTrainings(@BeanParam TrainingFilter filters) {
+        System.out.println(filters);
+        List<TrainingDTO> trainings = serviceFactory.forTraining().getTrainingsByFilters(filters);
+        return Response.ok(trainings).build();
 
     }
 
