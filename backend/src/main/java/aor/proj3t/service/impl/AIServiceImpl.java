@@ -1,153 +1,275 @@
 package aor.proj3t.service.impl;
 
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
+import java.io.StringReader;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import aor.proj3t.dto.ai.ChatRequestDTO;
 import aor.proj3t.dto.ai.ChatResponseDTO;
-import aor.proj3t.dto.ai.FeedbackDTO;
 import aor.proj3t.dto.ai.PerformancePredictionDTO;
-import aor.proj3t.dto.ai.PredictionRequestDTO;
-import aor.proj3t.dto.ai.ReportRequestDTO;
 import aor.proj3t.dto.ai.ReportResponseDTO;
 import aor.proj3t.dto.ai.SentimentResponseDTO;
 import aor.proj3t.dto.ai.TrainingRecommendationDTO;
-import aor.proj3t.dto.ai.TrainingRequestDTO;
 import aor.proj3t.service.interfaces.AIService;
+import aor.proj3t.util.HttpClientUtil;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.json.bind.Jsonb;
-import jakarta.json.bind.JsonbBuilder;
+import jakarta.json.Json;
+import jakarta.json.JsonArrayBuilder;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonObjectBuilder;
+import jakarta.json.JsonReader;
 
 /**
- * Implementation of AI service that communicates with the AI microservice
+ * Implementation of AIService that communicates with the AI microservice
  */
 @ApplicationScoped
 public class AIServiceImpl implements AIService {
 
-    private static final Logger logger = LogManager.getLogger(AIServiceImpl.class);
-    // This should be configurable via environment variable or properties file
+    private static final Logger LOGGER = LogManager.getLogger(AIServiceImpl.class);
     private static final String AI_SERVICE_BASE_URL = "http://localhost:8000";
 
-    private final HttpClient httpClient;
-    private final Jsonb jsonb;
-
-    public AIServiceImpl() {
-        this.httpClient = HttpClient.newHttpClient();
-        this.jsonb = JsonbBuilder.create();
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SentimentResponseDTO analyzeSentiment(String text) {
         try {
-            FeedbackDTO request = new FeedbackDTO(text);
-            String requestBody = jsonb.toJson(request);
+            JsonObject payload = Json.createObjectBuilder()
+                    .add("text", text)
+                    .build();
 
-            HttpResponse<String> response = sendPostRequest("/analyze-sentiment", requestBody);
-            if (response.statusCode() != 200) {
-                logger.error("Error analyzing sentiment. Status code: {}", response.statusCode());
-                return null;
+            String responseBody = HttpClientUtil.post(AI_SERVICE_BASE_URL + "/analyze-sentiment",
+                    payload.toString());
+
+            // Parse the JSON response
+            try (JsonReader jsonReader = Json.createReader(new StringReader(responseBody))) {
+                JsonObject jsonObject = jsonReader.readObject();
+
+                // Create and populate DTO from JSON
+                SentimentResponseDTO dto = new SentimentResponseDTO();
+                dto.setPolarity((float) jsonObject.getJsonNumber("polarity").doubleValue());
+                dto.setSubjectivity((float) jsonObject.getJsonNumber("subjectivity").doubleValue());
+                dto.setSentiment(jsonObject.getString("sentiment"));
+
+                return dto;
             }
-
-            return jsonb.fromJson(response.body(), SentimentResponseDTO.class);
         } catch (Exception e) {
-            logger.error("Error analyzing sentiment", e);
-            return null;
-        }
-    }
-
-    @Override
-    public TrainingRecommendationDTO recommendTraining(List<String> evaluations, List<String> skills,
-            List<String> trainingsHistory) {
-        try {
-            TrainingRequestDTO request = new TrainingRequestDTO(evaluations, skills, trainingsHistory);
-            String requestBody = jsonb.toJson(request);
-
-            HttpResponse<String> response = sendPostRequest("/recommend-training", requestBody);
-            if (response.statusCode() != 200) {
-                logger.error("Error recommending training. Status code: {}", response.statusCode());
-                return null;
-            }
-
-            return jsonb.fromJson(response.body(), TrainingRecommendationDTO.class);
-        } catch (Exception e) {
-            logger.error("Error recommending training", e);
-            return null;
-        }
-    }
-
-    @Override
-    public PerformancePredictionDTO predictPerformance(List<Float> historicalScores) {
-        try {
-            PredictionRequestDTO request = new PredictionRequestDTO(historicalScores);
-            String requestBody = jsonb.toJson(request);
-
-            HttpResponse<String> response = sendPostRequest("/predict-performance", requestBody);
-            if (response.statusCode() != 200) {
-                logger.error("Error predicting performance. Status code: {}", response.statusCode());
-                return null;
-            }
-
-            return jsonb.fromJson(response.body(), PerformancePredictionDTO.class);
-        } catch (Exception e) {
-            logger.error("Error predicting performance", e);
-            return null;
-        }
-    }
-
-    @Override
-    public ChatResponseDTO getChatbotResponse(String message) {
-        try {
-            ChatRequestDTO request = new ChatRequestDTO(message);
-            String requestBody = jsonb.toJson(request);
-
-            HttpResponse<String> response = sendPostRequest("/chatbot", requestBody);
-            if (response.statusCode() != 200) {
-                logger.error("Error getting chatbot response. Status code: {}", response.statusCode());
-                return null;
-            }
-
-            return jsonb.fromJson(response.body(), ChatResponseDTO.class);
-        } catch (Exception e) {
-            logger.error("Error getting chatbot response", e);
-            return null;
-        }
-    }
-
-    @Override
-    public ReportResponseDTO generateReport(List<Float> evaluations, List<String> comments) {
-        try {
-            ReportRequestDTO request = new ReportRequestDTO(evaluations, comments);
-            String requestBody = jsonb.toJson(request);
-
-            HttpResponse<String> response = sendPostRequest("/generate-report", requestBody);
-            if (response.statusCode() != 200) {
-                logger.error("Error generating report. Status code: {}", response.statusCode());
-                return null;
-            }
-
-            return jsonb.fromJson(response.body(), ReportResponseDTO.class);
-        } catch (Exception e) {
-            logger.error("Error generating report", e);
-            return null;
+            LOGGER.error("Error analyzing sentiment", e);
+            return createDefaultSentimentResponse();
         }
     }
 
     /**
-     * Helper method to send HTTP POST requests to the AI microservice
+     * {@inheritDoc}
      */
-    private HttpResponse<String> sendPostRequest(String endpoint, String requestBody) throws Exception {
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(AI_SERVICE_BASE_URL + endpoint))
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                .build();
+    @Override
+    public TrainingRecommendationDTO recommendTraining(List<String> evaluations, List<String> skills,
+            List<String> trainingsHistory) {
+        try {
+            JsonObjectBuilder payloadBuilder = Json.createObjectBuilder();
 
-        return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            // Add evaluations
+            JsonArrayBuilder evaluationsArray = Json.createArrayBuilder();
+            for (String evaluation : evaluations) {
+                evaluationsArray.add(evaluation);
+            }
+            payloadBuilder.add("evaluations", evaluationsArray);
+
+            // Add skills if provided
+            if (skills != null && !skills.isEmpty()) {
+                JsonArrayBuilder skillsArray = Json.createArrayBuilder();
+                for (String skill : skills) {
+                    skillsArray.add(skill);
+                }
+                payloadBuilder.add("skills", skillsArray);
+            }
+
+            // Add training history if provided
+            if (trainingsHistory != null && !trainingsHistory.isEmpty()) {
+                JsonArrayBuilder historyArray = Json.createArrayBuilder();
+                for (String training : trainingsHistory) {
+                    historyArray.add(training);
+                }
+                payloadBuilder.add("trainings_history", historyArray);
+            }
+
+            String responseBody = HttpClientUtil.post(AI_SERVICE_BASE_URL + "/recommend-training",
+                    payloadBuilder.build().toString());
+
+            // Parse the JSON response
+            try (JsonReader jsonReader = Json.createReader(new StringReader(responseBody))) {
+                JsonObject jsonObject = jsonReader.readObject();
+
+                // Create and populate DTO from JSON
+                TrainingRecommendationDTO dto = new TrainingRecommendationDTO();
+                dto.setRecommendedTraining(jsonObject.getString("recommended_training"));
+                dto.setReason(jsonObject.getString("reason"));
+
+                return dto;
+            }
+        } catch (Exception e) {
+            LOGGER.error("Error recommending training", e);
+            return createDefaultTrainingRecommendation();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PerformancePredictionDTO predictPerformance(List<Float> historicalScores) {
+        try {
+            JsonObjectBuilder payloadBuilder = Json.createObjectBuilder();
+
+            // Add historical scores
+            JsonArrayBuilder scoresArray = Json.createArrayBuilder();
+            for (Float score : historicalScores) {
+                scoresArray.add(score);
+            }
+            payloadBuilder.add("historical_scores", scoresArray);
+
+            String responseBody = HttpClientUtil.post(AI_SERVICE_BASE_URL + "/predict-performance",
+                    payloadBuilder.build().toString());
+
+            // Parse the JSON response
+            try (JsonReader jsonReader = Json.createReader(new StringReader(responseBody))) {
+                JsonObject jsonObject = jsonReader.readObject();
+
+                // Create and populate DTO from JSON
+                PerformancePredictionDTO dto = new PerformancePredictionDTO();
+                dto.setPredictedScore((float) jsonObject.getJsonNumber("predicted_score").doubleValue());
+                dto.setConfidence((float) jsonObject.getJsonNumber("confidence").doubleValue());
+
+                return dto;
+            }
+        } catch (Exception e) {
+            LOGGER.error("Error predicting performance", e);
+            return createDefaultPerformancePrediction();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ChatResponseDTO getChatbotResponse(String message) {
+        try {
+            JsonObject payload = Json.createObjectBuilder()
+                    .add("message", message)
+                    .build();
+
+            String responseBody = HttpClientUtil.post(AI_SERVICE_BASE_URL + "/chatbot",
+                    payload.toString());
+
+            // Parse the JSON response
+            try (JsonReader jsonReader = Json.createReader(new StringReader(responseBody))) {
+                JsonObject jsonObject = jsonReader.readObject();
+
+                // Create and populate DTO from JSON
+                ChatResponseDTO dto = new ChatResponseDTO();
+                dto.setReply(jsonObject.getString("reply"));
+
+                return dto;
+            }
+        } catch (Exception e) {
+            LOGGER.error("Error getting chatbot response", e);
+            return createDefaultChatResponse();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ReportResponseDTO generateReport(List<Float> evaluations, List<String> comments) {
+        try {
+            JsonObjectBuilder payloadBuilder = Json.createObjectBuilder();
+
+            // Add evaluations
+            JsonArrayBuilder evaluationsArray = Json.createArrayBuilder();
+            for (Float evaluation : evaluations) {
+                evaluationsArray.add(evaluation);
+            }
+            payloadBuilder.add("evaluations", evaluationsArray);
+
+            // Add comments if provided
+            if (comments != null && !comments.isEmpty()) {
+                JsonArrayBuilder commentsArray = Json.createArrayBuilder();
+                for (String comment : comments) {
+                    commentsArray.add(comment);
+                }
+                payloadBuilder.add("comments", commentsArray);
+            }
+
+            String responseBody = HttpClientUtil.post(AI_SERVICE_BASE_URL + "/generate-report",
+                    payloadBuilder.build().toString());
+
+            // Parse the JSON response
+            try (JsonReader jsonReader = Json.createReader(new StringReader(responseBody))) {
+                JsonObject jsonObject = jsonReader.readObject();
+
+                // Create and populate DTO from JSON
+                ReportResponseDTO dto = new ReportResponseDTO();
+                dto.setAverageScore((float) jsonObject.getJsonNumber("average_score").doubleValue());
+                dto.setReport(jsonObject.getString("report"));
+
+                return dto;
+            }
+        } catch (Exception e) {
+            LOGGER.error("Error generating report", e);
+            return createDefaultReportResponse();
+        }
+    }
+
+    /**
+     * Create a default sentiment response in case of error
+     */
+    private SentimentResponseDTO createDefaultSentimentResponse() {
+        SentimentResponseDTO response = new SentimentResponseDTO();
+        response.setPolarity(0.0f);
+        response.setSubjectivity(0.0f);
+        response.setSentiment("neutral");
+        return response;
+    }
+
+    /**
+     * Create a default training recommendation in case of error
+     */
+    private TrainingRecommendationDTO createDefaultTrainingRecommendation() {
+        TrainingRecommendationDTO response = new TrainingRecommendationDTO();
+        response.setRecommendedTraining("General Skills Training");
+        response.setReason("Unable to process the recommendation request. This is a default recommendation.");
+        return response;
+    }
+
+    /**
+     * Create a default performance prediction in case of error
+     */
+    private PerformancePredictionDTO createDefaultPerformancePrediction() {
+        PerformancePredictionDTO response = new PerformancePredictionDTO();
+        response.setPredictedScore(3.0f); // Assuming a scale of 1-5
+        response.setConfidence(0.5f); // Low confidence as this is a default
+        return response;
+    }
+
+    /**
+     * Create a default chat response in case of error
+     */
+    private ChatResponseDTO createDefaultChatResponse() {
+        ChatResponseDTO response = new ChatResponseDTO();
+        response.setReply(
+                "I'm sorry, but I'm having trouble processing your request at the moment. Please try again later.");
+        return response;
+    }
+
+    /**
+     * Create a default report response in case of error
+     */
+    private ReportResponseDTO createDefaultReportResponse() {
+        ReportResponseDTO response = new ReportResponseDTO();
+        response.setAverageScore(0.0f);
+        response.setReport("Unable to generate report due to a technical issue. Please try again later.");
+        return response;
     }
 }
