@@ -5,10 +5,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import aor.proj3t.dto.EvaluationCloseDTO;
+import aor.proj3t.enums.EvaluationCycleStatus;
 import aor.proj3t.enums.Role;
+import aor.proj3t.exceptions.BadRequestException;
 import aor.proj3t.exceptions.ForbiddenException;
+import aor.proj3t.exceptions.InvalidDataException;
+import aor.proj3t.exceptions.NotFoundException;
 import aor.proj3t.filters.EvaluationFilter;
 import aor.proj3t.util.LoggingContextFilter;
+import jakarta.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -150,31 +156,42 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
     }
 
     @Override
-    public Boolean closeEvaluationsBulk(Long[] evaluationIds) {
-        try {
-            if (evaluationIds.length == 0) {
-                logger.warn("No evaluation IDs provided for closing evaluations in bulk");
-                return true;
-            }
-            List<Evaluation> evaluations = getEvaluationListFromIds(evaluationIds);
-            if (evaluations == null || evaluations.isEmpty()) {
-                logger.error("No valid users Id's assigning manager in bulk. ");
-                return false;
-            }
-            for (Evaluation evaluation : evaluations) {
-                evaluation.setStatus(EvaluationStatus.CLOSED);
-                daoFactory.forEvaluation().update(evaluation);
-            }
-            checkAndCloseEvaluationCycle(evaluations.get(0).getEvaluationCycle().getId());
-            return true;
-        } catch (NoSuchElementException e) {
-            logger.error("Evaluation not found while closing in bulk", e);
-            return false;
-        } catch (Exception e) {
-            logger.error("Error while marking evaluations as closed in bulk", e);
-            return false;
+    @Transactional // Rollback if any RuntimeException occurs
+    public void closeEvaluationsBulk(Long requesterId, EvaluationCloseDTO dto) {
+        User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
+        checkIfRequesterIsAdmin(requester);
+        EvaluationCycle cycle = getEntity(
+                daoFactory.forEvaluationCycle().findById(dto.getCycleId()),
+                dto.getCycleId(),
+                "Evaluation cycle");
+        if (!cycle.getStatus().equals(EvaluationCycleStatus.ACTIVE)) {
+            throw new BadRequestException(
+                    "Evaluation cycle has already been closed",
+                    "User with id " + requesterId + " tried closing evaluations from closed cycle with id " + dto.getCycleId());
         }
+        List<Evaluation> evaluations = getEvaluationListFromIds(dto.getEvaluationIds());
+        if (evaluations.isEmpty()) {
+            throw new NotFoundException(
+                    "No valid evaluations",
+                    "User with id " + requesterId + " attempted to close evaluations with no valid IDs");
+        }
+        for (Evaluation eval : evaluations) {
+            if (!eval.getEvaluationCycle().getId().equals(cycle.getId())) {
+                throw new BadRequestException(
+                        "Evaluation belongs to a different cycle",
+                        "Evaluation ID " + eval.getId() + " does not belong to cycle ID " + cycle.getId());
+            }
+            if (eval.getEvaluationCycle().getStatus().equals(EvaluationCycleStatus.CLOSED)) {
+                throw new BadRequestException(
+                        "Evaluation already closed",
+                        "Evaluation ID " + eval.getId() + " is already part of a closed cycle");
+            }
+            eval.setStatus(EvaluationStatus.CLOSED);
+            daoFactory.forEvaluation().update(eval);
+        }
+        checkAndCloseEvaluationCycle(dto.getCycleId());
     }
+
 
     @Override
     public Integer closeAllCompletedEvaluations() {
@@ -228,9 +245,9 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
     }
 
 
-    private List<Evaluation> getEvaluationListFromIds(Long[] evaluationIds) {
-        try {
-            List<Evaluation> evaluations = new ArrayList<>(evaluationIds.length);
+    private List<Evaluation> getEvaluationListFromIds(List <Long> evaluationIds) {
+
+            List<Evaluation> evaluations = new ArrayList<>(evaluationIds.size());
             for (Long evaluationId : evaluationIds) {
                 Evaluation evaluation = getEntity(daoFactory.forEvaluation().findById(evaluationId), evaluationId, "Evaluation");
                 if (evaluation != null) {
@@ -240,13 +257,6 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
                 }
             }
             return evaluations;
-        } catch (NoSuchElementException e) {
-            logger.error("Evaluation not found with ID: " + evaluationIds[0]);
-            return null;
-        } catch (Exception e) {
-            logger.error("Error getting user list. ", e);
-            return null;
-        }
     }
 
     private void checkAndCloseEvaluationCycle(Long evaluationCycleId) {

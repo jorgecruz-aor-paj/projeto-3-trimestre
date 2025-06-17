@@ -1,9 +1,6 @@
 package aor.proj3t.util.validatorutils.fordto;
 
-import aor.proj3t.dto.EvaluationDTO;
-import aor.proj3t.dto.NewTrainingDTO;
-import aor.proj3t.dto.TrainingAreaDTO;
-import aor.proj3t.dto.TrainingDTO;
+import aor.proj3t.dto.*;
 import aor.proj3t.enums.EvaluationScale;
 import aor.proj3t.enums.EvaluationStatus;
 import aor.proj3t.enums.Role;
@@ -12,6 +9,7 @@ import aor.proj3t.filters.DateRange;
 import jakarta.enterprise.context.ApplicationScoped;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.regex.Pattern;
 
 @ApplicationScoped
@@ -75,6 +73,12 @@ public class EvaluationValidator {
         validateFeedback(dto.getFeedback());
     }
 
+    public void validateEvaluationIdList(List<Long> evaluationIdList) {
+        if (evaluationIdList == null || evaluationIdList.isEmpty()) {
+            throw new InvalidDataException("Evaluation list must not be empty");
+        }
+    }
+
     public void newCycleDateRangeValidation(DateRange dateRange) throws InvalidDataException {
         if (dateRange == null) {
             throw new InvalidDataException("Date range must not be null");
@@ -94,5 +98,10 @@ public class EvaluationValidator {
                     "start date should be after current time",
                     "Evaluation cycle started without start date previous to current time");
         }
+    }
+
+    public void validateEvaluationCloseDTO(EvaluationCloseDTO dto) {
+        validateId(dto.getCycleId(), "Evaluation Cycle");
+        validateEvaluationIdList(dto.getEvaluationIds());
     }
 }

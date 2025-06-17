@@ -1,5 +1,6 @@
 package aor.proj3t.resource;
 
+import aor.proj3t.dto.EvaluationCloseDTO;
 import aor.proj3t.dto.EvaluationCycleDTO;
 import aor.proj3t.dto.EvaluationDTO;
 import aor.proj3t.entities.Evaluation;
@@ -65,6 +66,17 @@ public class EvaluationResource {
         serviceFactory.forEvaluation().updateEvaluation(requesterId, evaluationDTO);
         return Response.ok().build();
     }
+
+    @PATCH
+    @Secured(Role.ADMIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response closeEvaluation(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader, EvaluationCloseDTO evaluationCloseDto) {
+        validator.validateEvaluationCloseDTO(evaluationCloseDto);
+        Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
+        serviceFactory.forEvaluation().closeEvaluationsBulk(requesterId, evaluationCloseDto);
+        return Response.ok().build();
+    }
+
 
     @POST
     @Secured(Role.ADMIN)

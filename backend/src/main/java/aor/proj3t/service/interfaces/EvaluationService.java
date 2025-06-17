@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
+import aor.proj3t.dto.EvaluationCloseDTO;
 import aor.proj3t.dto.EvaluationDTO;
 import aor.proj3t.entities.Evaluation;
 import aor.proj3t.filters.EvaluationFilter;
@@ -79,7 +80,7 @@ public interface EvaluationService {
 
     Boolean closeEvaluation (Long evaluationId);
 
-    Boolean closeEvaluationsBulk (Long[] evaluationIds);
+    void closeEvaluationsBulk (Long requesterId, EvaluationCloseDTO evaluationCloseDto);
 
     /**
      * Close all completed evaluations.
