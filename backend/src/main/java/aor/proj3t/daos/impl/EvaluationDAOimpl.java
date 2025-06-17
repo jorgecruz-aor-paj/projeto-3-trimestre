@@ -97,10 +97,11 @@ public class EvaluationDAOimpl extends AbstractDAO<Evaluation, Long> implements 
             predicates.add(cb.equal(root.get("scale"), filters.getEvaluationScale()));
         }
         if (filters.getDateRange() != null) {
-            predicates.add(cb.between(root.get("createdAt"),
-                    filters.getDateRange().getStartDate().atStartOfDay(),
-                    filters.getDateRange().getEndDate().atTime(23, 59, 59)));
+            Instant start = filters.getDateRange().getStartDate();
+            Instant end = filters.getDateRange().getEndDate();
+            predicates.add(cb.between(root.get("createdAt"), start, end));
         }
+
         if (filters.getSearchText() != null && !filters.getSearchText().isEmpty()) {
             predicates.add(cb.like(cb.lower(root.get("feedback")), "%" + filters.getSearchText().toLowerCase() + "%"));
         }

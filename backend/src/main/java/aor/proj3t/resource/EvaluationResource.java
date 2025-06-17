@@ -1,9 +1,14 @@
 package aor.proj3t.resource;
 
+import aor.proj3t.dto.EvaluationCycleDTO;
 import aor.proj3t.dto.EvaluationDTO;
+import aor.proj3t.entities.Evaluation;
+import aor.proj3t.enums.Role;
+import aor.proj3t.filters.DateRange;
 import aor.proj3t.filters.EvaluationFilter;
 import aor.proj3t.service.ServiceFactory;
 import aor.proj3t.util.authutils.Secured;
+import aor.proj3t.util.validatorutils.fordto.EvaluationValidator;
 import aor.proj3t.util.validatorutils.fordto.TrainingValidator;
 import aor.proj3t.util.validatorutils.forfilters.FilterValidatorFactory;
 import jakarta.enterprise.context.RequestScoped;
@@ -35,7 +40,7 @@ public class EvaluationResource {
     ServiceFactory serviceFactory;
 
     @Inject
-    TrainingValidator validator;
+    EvaluationValidator validator;
 
     @Inject
     FilterValidatorFactory validatorFactory;
@@ -48,6 +53,28 @@ public class EvaluationResource {
         Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
         List<EvaluationDTO> evaluations = serviceFactory.forEvaluation().getEvaluationsByFilter(requesterId, filters);
         return Response.ok(evaluations).build();
+    }
+
+    @POST
+    @Secured(Role.ADMIN)
+    @Path("/cycle")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response startCycle(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader, DateRange dateRange){
+    validator.newCycleDateRangeValidation(dateRange);
+    Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
+    serviceFactory.forEvaluationCycle().startCycle(requesterId,dateRange);
+    return Response.ok().build();
+    }
+
+    @GET
+    @Path("/current")
+    @Secured(Role.ADMIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getCurrentCycle(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader){
+        Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
+        EvaluationCycleDTO cycle = serviceFactory.forEvaluationCycle().getActiveCycle(requesterId);
+        return Response.ok(cycle).build();
     }
 
 

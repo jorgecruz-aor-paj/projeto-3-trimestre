@@ -1,26 +1,26 @@
 package aor.proj3t.filters;
 
-import java.time.LocalDate;
+import java.time.Instant;
 
 public class DateRange {
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private Instant startDate;
+    private Instant endDate;
 
-    public DateRange(LocalDate startDate, LocalDate endDate) {
+    public DateRange(Instant startDate, Instant endDate) {
         this.startDate = startDate;
         this.endDate = endDate;
     }
 
-    public LocalDate getStartDate() {
+    public Instant getStartDate() {
         return startDate;
     }
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(Instant startDate) {
         this.startDate = startDate;
     }
-    public LocalDate getEndDate() {
+    public Instant getEndDate() {
         return endDate;
     }
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(Instant endDate) {
         this.endDate = endDate;
     }
 

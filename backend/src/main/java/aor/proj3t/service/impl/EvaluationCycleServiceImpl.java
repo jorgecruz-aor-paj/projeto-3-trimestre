@@ -4,6 +4,10 @@ import java.time.Instant;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import aor.proj3t.exceptions.ConflictException;
+import aor.proj3t.exceptions.ForbiddenException;
+import aor.proj3t.exceptions.InvalidDataException;
+import aor.proj3t.filters.DateRange;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -30,43 +34,37 @@ public class EvaluationCycleServiceImpl extends BaseService implements Evaluatio
     private ConverterFactory converterFactory;
 
     @Override
-    public Boolean startCycle(Long adminId, Instant startTime, Instant endTime) {
-        try {
-            if (daoFactory.forUser().countUsersWithoutManager() != 0) {
-                logger.warn("Unable to start cycle. Users without manager");
-                return false;
-            }
-            User admin = getEntity(daoFactory.forUser().findById(adminId), adminId, "User");
-            EvaluationCycle evaluationCycle = new EvaluationCycle(startTime, endTime, admin);
-            daoFactory.forEvaluationCycle().create(evaluationCycle);
-            return createNewEvaluations(evaluationCycle);
-        } catch (NoSuchElementException e) {
-            logger.error("User with id {} not found", adminId);
-            return false;
-        } catch (Exception e) {
-            logger.error("Error while starting evaluation cycle", e);
-            return false;
+    public void startCycle(Long requesterId, DateRange dateRange) {
+        User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
+        checkIfRequesterIsAdmin(requester);
+        if (daoFactory.forUser().countUsersWithoutManager() != 0) {
+            throw new InvalidDataException(
+                    "There are users without manager",
+                    "Admin with id " + requesterId + " started evaluation cycle with unmanaged users"
+            );
         }
+        if (daoFactory.forEvaluationCycle().findActive().size() > 1) {
+            throw new InvalidDataException(
+                    "There is an active evaluation cycle running",
+                    "Admin with id " + requesterId + " started evaluation cycle while another is active"
+            );
+        }
+        EvaluationCycle evaluationCycle = new EvaluationCycle(dateRange.getStartDate(), dateRange.getEndDate(), requester);
+        daoFactory.forEvaluationCycle().create(evaluationCycle);
     }
 
     @Override
-    public EvaluationCycleDTO getActiveCycle() {
-        try {
-            List<EvaluationCycle> cyles = daoFactory.forEvaluationCycle().findActive();
-            if (cyles.size() > 1) {
-                logger.warn("Two or more active evaluation cycles found");
-                // todo figure out what to do in this case
-                return null;
-            } else if (cyles.size() == 1) {
-                return converterFactory.forEvaluationCycle().toDTO(cyles.getFirst());
-            } else {
-                logger.info("No active evaluation cycles found");
-                return null;
-            }
-        } catch (Exception e) {
-            logger.error("Error while getting active cycle", e);
-            return null;
+    public EvaluationCycleDTO getActiveCycle(Long requesterId) {
+        User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
+        checkIfRequesterIsAdmin(requester);
+        List<EvaluationCycle> cycles = daoFactory.forEvaluationCycle().findActive();
+        if (cycles.size() > 1) {
+            throw new ConflictException(
+                    "Two or more active evaluation cycles found",
+                    "At least two or more active evaluation cycles found"
+            );
         }
+        return converterFactory.forEvaluationCycle().toDTO(cycles.getFirst());
     }
 
     @Override
@@ -112,4 +110,7 @@ public class EvaluationCycleServiceImpl extends BaseService implements Evaluatio
             return false;
         }
     }
+
+
+
 }

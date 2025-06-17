@@ -5,13 +5,14 @@ import java.util.List;
 
 import aor.proj3t.dto.EvaluationCycleDTO;
 import aor.proj3t.enums.EvaluationCycleStatus;
+import aor.proj3t.filters.DateRange;
 
 public interface EvaluationCycleService {
 
 
-    Boolean startCycle(Long adminId, Instant startTime, Instant endTime);
+    void startCycle(Long adminId, DateRange dateRange);
 
-    EvaluationCycleDTO getActiveCycle();
+    EvaluationCycleDTO getActiveCycle(Long requesterId);
 
     List<EvaluationCycleDTO> getAllCycles();
 
