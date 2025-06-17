@@ -60,26 +60,33 @@ public class EvaluationResource {
     @Path("/cycle")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response startCycle(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader, DateRange dateRange){
-    validator.newCycleDateRangeValidation(dateRange);
-    Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
-    serviceFactory.forEvaluationCycle().startCycle(requesterId,dateRange);
-    return Response.ok().build();
+    public Response startCycle(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader, DateRange dateRange) {
+        validator.newCycleDateRangeValidation(dateRange);
+        Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
+        serviceFactory.forEvaluationCycle().startCycle(requesterId, dateRange);
+        return Response.ok().build();
     }
 
 
     @GET
-    @Path("/current")
+    @Path("/cycle/current")
     @Secured(Role.ADMIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getCurrentCycle(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader){
+    public Response getCurrentCycle(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader) {
         Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
         EvaluationCycleDTO cycle = serviceFactory.forEvaluationCycle().getActiveCycle(requesterId);
         return Response.ok(cycle).build();
     }
 
-
-
+    @GET
+    @Path("/cycle/all")
+    @Secured(Role.ADMIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllCycles(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader, @QueryParam("complete") boolean complete) {
+        Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
+        List<EvaluationCycleDTO> cycles = serviceFactory.forEvaluationCycle().getAllCycles(requesterId, complete);
+        return Response.ok(cycles).build();
+    }
 
 
 }

@@ -14,7 +14,7 @@ public interface EvaluationCycleService {
 
     EvaluationCycleDTO getActiveCycle(Long requesterId);
 
-    List<EvaluationCycleDTO> getAllCycles();
+    List<EvaluationCycleDTO> getAllCycles(Long requesterId, boolean active);
 
     Boolean updateCycleStatus(Long cycleId, EvaluationCycleStatus status);
 }

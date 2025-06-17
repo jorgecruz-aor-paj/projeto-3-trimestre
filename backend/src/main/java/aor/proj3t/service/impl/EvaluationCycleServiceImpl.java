@@ -22,6 +22,7 @@ import aor.proj3t.service.interfaces.EvaluationCycleService;
 import aor.proj3t.util.converterutils.ConverterFactory;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import org.hibernate.Hibernate;
 
 @ApplicationScoped
 public class EvaluationCycleServiceImpl extends BaseService implements EvaluationCycleService {
@@ -68,14 +69,18 @@ public class EvaluationCycleServiceImpl extends BaseService implements Evaluatio
     }
 
     @Override
-    public List<EvaluationCycleDTO> getAllCycles() {
-        try {
-            return converterFactory.forEvaluationCycle().toDTOList(daoFactory.forEvaluationCycle().findAll());
-        } catch (Exception e) {
-            logger.error("Error while getting all evaluation cycles", e);
-            return null;
+    public List<EvaluationCycleDTO> getAllCycles(Long requesterId, boolean withEvaluations) {
+        User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
+        checkIfRequesterIsAdmin(requester);
+        List<EvaluationCycle> cycles = daoFactory.forEvaluationCycle().findAll();
+        if (withEvaluations) {
+            for (EvaluationCycle cycle : cycles) {
+                Hibernate.initialize(cycle.getEvaluations());
+            }
         }
+        return converterFactory.forEvaluationCycle().toDTOList(cycles);
     }
+
 
     @Override
     public Boolean updateCycleStatus(Long cycleId, EvaluationCycleStatus status) {
