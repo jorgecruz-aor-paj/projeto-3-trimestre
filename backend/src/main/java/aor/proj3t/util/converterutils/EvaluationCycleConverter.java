@@ -6,6 +6,7 @@ import aor.proj3t.entities.EvaluationCycle;
 import aor.proj3t.entities.User;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import org.hibernate.Hibernate;
 
 import java.util.List;
 
@@ -63,11 +64,12 @@ public class EvaluationCycleConverter extends AbstractConverter<EvaluationCycle,
             dto.setCreatedById(evaluationCycle.getCreatedBy().getId());
         }
 
-        if (evaluationCycle.getEvaluations() != null) {
+        if (Hibernate.isInitialized(evaluationCycle.getEvaluations()) && evaluationCycle.getEvaluations() != null) {
             List<EvaluationDTO> evaluationDTOs = evaluationConverter
                     .toDTOList(evaluationCycle.getEvaluations());
             dto.setEvaluations(evaluationDTOs);
         }
+
     }
 
 

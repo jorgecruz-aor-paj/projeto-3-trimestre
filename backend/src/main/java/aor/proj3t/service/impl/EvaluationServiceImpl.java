@@ -262,7 +262,9 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
 
     private void checkAndCloseEvaluationCycle(Long evaluationCycleId) {
         if (daoFactory.forEvaluation().countUnclosedEvaluationsByCycleId(evaluationCycleId) == 0) {
-            daoFactory.forEvaluationCycle().updateStatus(evaluationCycleId, EvaluationCycleStatus.CLOSED);
+            EvaluationCycle cycle = getEntity(daoFactory.forEvaluationCycle().findById(evaluationCycleId), evaluationCycleId, "EvaluationCycle");
+            cycle.setStatus(EvaluationCycleStatus.CLOSED);
+            cycle.setClosureDate(Instant.now());
             logger.info("Evaluation cycle with id {} has been closed", evaluationCycleId);
         }
     }

@@ -53,4 +53,8 @@ public interface EvaluationCycleDAO extends BasicDAO<EvaluationCycle, Long> {
 
     Long countActiveEvaluationCycles();
 
+    List<EvaluationCycle> findAll(boolean loadEvaluations);
+
+
+
 }

@@ -25,7 +25,6 @@ public class EvaluationCycleDAOimpl extends AbstractDAO<EvaluationCycle, Long> i
 
     @Override
     public List<EvaluationCycle> findActive(boolean getEvaluations) {
-
         List<EvaluationCycle> cycles = executeNamedQuery("EvaluationCycle.findActive", EvaluationCycle.class);
         if (getEvaluations) {
             // Initialize evaluations list for each cycle (if needed)
@@ -41,6 +40,17 @@ public class EvaluationCycleDAOimpl extends AbstractDAO<EvaluationCycle, Long> i
         return em
                 .createNamedQuery("EvaluationCycle.countActive", Long.class)
                 .getSingleResult();
+    }
+
+    @Override
+    public List<EvaluationCycle> findAll(boolean loadEvaluations) {
+        List<EvaluationCycle> cycles = super.findAll();
+        if (loadEvaluations) {
+            for (EvaluationCycle cycle : cycles) {
+                Hibernate.initialize(cycle.getEvaluations());
+            }
+        }
+        return cycles;
     }
 
 

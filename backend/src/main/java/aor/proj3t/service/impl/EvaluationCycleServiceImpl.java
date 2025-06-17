@@ -1,13 +1,16 @@
 package aor.proj3t.service.impl;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 import aor.proj3t.exceptions.ConflictException;
 import aor.proj3t.exceptions.ForbiddenException;
 import aor.proj3t.exceptions.InvalidDataException;
+import aor.proj3t.exceptions.NotFoundException;
 import aor.proj3t.filters.DateRange;
+import jakarta.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -56,29 +59,28 @@ public class EvaluationCycleServiceImpl extends BaseService implements Evaluatio
     }
 
     @Override
+    @Transactional
     public EvaluationCycleDTO getActiveCycle(Long requesterId) {
         User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
         checkIfRequesterIsAdmin(requester);
         List<EvaluationCycle> cycles = daoFactory.forEvaluationCycle().findActive(true);
+        if (cycles.isEmpty()) {
+            return new EvaluationCycleDTO();
+        }
         if (cycles.size() > 1) {
             throw new ConflictException(
                     "Two or more active evaluation cycles found",
-                    "At least two or more active evaluation cycles found"
-            );
+                    "Multiple active evaluation cycles exist — cannot determine the correct one");
         }
         return converterFactory.forEvaluationCycle().toDTO(cycles.getFirst());
     }
+
 
     @Override
     public List<EvaluationCycleDTO> getAllCycles(Long requesterId, boolean withEvaluations) {
         User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
         checkIfRequesterIsAdmin(requester);
-        List<EvaluationCycle> cycles = daoFactory.forEvaluationCycle().findAll();
-        if (withEvaluations) {
-            for (EvaluationCycle cycle : cycles) {
-                Hibernate.initialize(cycle.getEvaluations());
-            }
-        }
+        List<EvaluationCycle> cycles = daoFactory.forEvaluationCycle().findAll(withEvaluations);
         return converterFactory.forEvaluationCycle().toDTOList(cycles);
     }
 

@@ -94,7 +94,6 @@ public class TrainingResource {
     @Secured(Role.ADMIN)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTrainingAreas() {
-        System.out.println("here"); //TODO delete when utility expires
         List<TrainingAreaDTO> trainingAreas = serviceFactory.forTraining().getAllTrainingAreas();
         return Response.ok(trainingAreas).build();
     }
