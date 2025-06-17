@@ -35,7 +35,6 @@ import java.util.List;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class EvaluationResource {
-    private static final Logger logger = LogManager.getLogger(EvaluationResource.class);
 
     @Inject
     ServiceFactory serviceFactory;

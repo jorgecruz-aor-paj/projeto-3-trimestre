@@ -1,6 +1,7 @@
 package aor.proj3t.service.interfaces;
 
 import java.util.List;
+import java.util.Map;
 
 import aor.proj3t.dto.FileUploadDTO;
 import aor.proj3t.dto.LoginDTO;
@@ -37,5 +38,7 @@ public interface UserService {
     List<UserDTO> getAllManagers(Long requesterId);
 
     UserPaginationDTO getPaginatedUsers(UserFilter userFilter, int page, int size, String sortString);
+
+    Map<Long, Long> getTotalVSUnmanagedUsers(Long requesterId);
 
 }

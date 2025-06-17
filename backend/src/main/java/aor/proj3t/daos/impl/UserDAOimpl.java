@@ -192,5 +192,12 @@ public class UserDAOimpl extends AbstractDAO<User, Long> implements UserDAO {
         return executeNamedQuery("User.findManagersWithoutUsers", User.class, "role", Role.MANAGER);
     }
 
+    public Long countNonAdmins() {
+        return em.createNamedQuery("User.countNonAdmins", Long.class)
+                .setParameter("adminRole", Role.ADMIN)
+                .getSingleResult();
+    }
+
+
 
 }

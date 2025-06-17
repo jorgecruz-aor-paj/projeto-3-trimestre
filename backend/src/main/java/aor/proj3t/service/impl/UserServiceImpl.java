@@ -2,11 +2,7 @@ package aor.proj3t.service.impl;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 import aor.proj3t.config.SettingsProvider;
 import aor.proj3t.exceptions.InvalidDataException;
@@ -284,6 +280,17 @@ public class UserServiceImpl extends BaseService implements UserService {
         String token = jwtUtil.generateConfirmationToken(email, ipAddress, confirmationExpirationTime);
         String baseUrl = "https://localhost:8443/jorgeosorio-proj3t/api/auth";
         emailUtil.sendConfirmationEmail(email, token, baseUrl);
+    }
+
+    @Override
+    public Map<Long, Long> getTotalVSUnmanagedUsers(Long requesterId) {
+        User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
+        checkIfRequesterIsAdmin(requester);
+        Map <Long, Long> totalUnmanagedUsers = new HashMap<>();
+        Long totalUsers = daoFactory.forUser().countAllUsers();
+        Long unmanagedUsers = daoFactory.forUser().countUsersWithoutManager();
+        totalUnmanagedUsers.put(totalUsers, unmanagedUsers);
+        return totalUnmanagedUsers;
     }
 
     @Override
