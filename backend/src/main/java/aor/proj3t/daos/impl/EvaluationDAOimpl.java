@@ -129,4 +129,13 @@ public class EvaluationDAOimpl extends AbstractDAO<Evaluation, Long> implements 
                 .getSingleResult();
         return count.intValue();
     }
+
+    public Long countOngoingEvaluationsByCycle(Long cycleId) {
+        return em.createQuery("SELECT COUNT(e) FROM Evaluation e WHERE e.evaluationCycle.id = :cycleId AND e.status = :status", Long.class)
+                .setParameter("cycleId", cycleId)
+                .setParameter("status", EvaluationStatus.ONGOING)
+                .getSingleResult();
+    }
+
+
 }

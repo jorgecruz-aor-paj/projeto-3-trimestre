@@ -20,7 +20,7 @@ public class EvaluationDTO {
     @XmlElement(name = "scale")
     private EvaluationScale scale;
     @XmlElement(name = "state")
-    private EvaluationStatus state;
+    private EvaluationStatus status;
     @XmlElement(name = "feedback")
     private String feedback;
     @XmlElement(name = "createdAt")
@@ -42,7 +42,7 @@ public class EvaluationDTO {
             Long evaluateeId, Long evaluatorId) {
         this.id = id;
         this.scale = scale;
-        this.state = state;
+        this.status = state;
         this.feedback = feedback;
         this.createdAt = createdAt;
         this.editedAt = editedAt;
@@ -67,12 +67,12 @@ public class EvaluationDTO {
         this.scale = scale;
     }
 
-    public EvaluationStatus getState() {
-        return state;
+    public EvaluationStatus getStatus() {
+        return status;
     }
 
-    public void setState(EvaluationStatus state) {
-        this.state = state;
+    public void setStatus(EvaluationStatus status) {
+        this.status = status;
     }
 
     public String getFeedback() {

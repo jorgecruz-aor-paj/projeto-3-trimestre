@@ -5,6 +5,7 @@ import java.util.List;
 
 import aor.proj3t.daos.interfaces.EvaluationCycleDAO;
 import aor.proj3t.entities.EvaluationCycle;
+import aor.proj3t.enums.EvaluationCycleStatus;
 import aor.proj3t.enums.EvaluationStatus;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.NoResultException;
@@ -65,18 +66,13 @@ public class EvaluationCycleDAOimpl extends AbstractDAO<EvaluationCycle, Long> i
     }
 
     @Override
-    public boolean updateStatus(Long cycleId, EvaluationStatus status) {
-        try {
-            int updatedRows = em.createQuery(
-                            "UPDATE EvaluationCycle ec SET ec.status = :status WHERE ec.id = :id")
-                    .setParameter("id", cycleId)
-                    .setParameter("status", status)
-                    .executeUpdate();
+    public void updateStatus(Long cycleId, EvaluationCycleStatus status) {
+        em.createQuery(
+                        "UPDATE EvaluationCycle ec SET ec.status = :status WHERE ec.id = :id")
+                .setParameter("id", cycleId)
+                .setParameter("status", status)
+                .executeUpdate();
 
-            return updatedRows > 0;
-        } catch (NoResultException e) {
-            return false;
-        }
     }
 
 }

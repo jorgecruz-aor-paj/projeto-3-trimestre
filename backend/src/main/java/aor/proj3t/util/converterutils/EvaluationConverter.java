@@ -47,7 +47,7 @@ public class EvaluationConverter extends AbstractConverter<Evaluation, Evaluatio
     protected void mapEntityToDTO(Evaluation evaluation, EvaluationDTO dto) {
         dto.setId(evaluation.getId());
         dto.setScale(evaluation.getScale());
-        dto.setState(evaluation.getStatus());
+        dto.setStatus(evaluation.getStatus());
         dto.setFeedback(evaluation.getFeedback());
         dto.setCreatedAt(evaluation.getCreatedAt());
         dto.setEditedAt(evaluation.getEditedAt());
@@ -68,7 +68,7 @@ public class EvaluationConverter extends AbstractConverter<Evaluation, Evaluatio
     @Override
     protected void mapDTOToEntity(EvaluationDTO dto, Evaluation evaluation) {
         evaluation.setScale(dto.getScale());
-        evaluation.setStatus(dto.getState());
+        evaluation.setStatus(dto.getStatus());
         evaluation.setFeedback(dto.getFeedback());
         evaluation.setCreatedAt(dto.getCreatedAt());
         evaluation.setEditedAt(dto.getEditedAt());

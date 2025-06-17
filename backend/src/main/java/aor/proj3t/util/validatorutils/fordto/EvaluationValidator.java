@@ -3,14 +3,12 @@ package aor.proj3t.util.validatorutils.fordto;
 import aor.proj3t.dto.*;
 import aor.proj3t.enums.EvaluationScale;
 import aor.proj3t.enums.EvaluationStatus;
-import aor.proj3t.enums.Role;
 import aor.proj3t.exceptions.InvalidDataException;
 import aor.proj3t.filters.DateRange;
 import jakarta.enterprise.context.ApplicationScoped;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.regex.Pattern;
 
 @ApplicationScoped
 public class EvaluationValidator {
@@ -69,7 +67,7 @@ public class EvaluationValidator {
         validateId(dto.getEvaluateeId(), "Evaluatee");
         validateId(dto.getEvaluatorId(), "Evaluator");
         validateScale(dto.getScale());
-        validateState(dto.getState());
+        validateState(dto.getStatus());
         validateFeedback(dto.getFeedback());
     }
 

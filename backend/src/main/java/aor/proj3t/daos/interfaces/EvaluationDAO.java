@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.List;
 
 import aor.proj3t.entities.Evaluation;
+import aor.proj3t.enums.EvaluationStatus;
 import aor.proj3t.filters.EvaluationFilter;
 
 /**
@@ -61,5 +62,8 @@ public interface EvaluationDAO extends BasicDAO<Evaluation, Long> {
     List<Evaluation> getEvaluationsByFilters(EvaluationFilter filters);
 
     Integer countUnclosedEvaluationsByCycleId(Long cycleId);
+
+    Long countOngoingEvaluationsByCycle(Long cycleId);
+
 
 }

@@ -3,6 +3,7 @@ package aor.proj3t.daos.interfaces;
 import java.util.List;
 
 import aor.proj3t.entities.EvaluationCycle;
+import aor.proj3t.enums.EvaluationCycleStatus;
 import aor.proj3t.enums.EvaluationStatus;
 
 /**
@@ -47,9 +48,8 @@ public interface EvaluationCycleDAO extends BasicDAO<EvaluationCycle, Long> {
      *
      * @param cycleId The ID of the evaluation cycle
      * @param status  The new status
-     * @return true if the update was successful, false otherwise
      */
-    boolean updateStatus(Long cycleId, EvaluationStatus status);
+    void updateStatus(Long cycleId, EvaluationCycleStatus status);
 
     Long countActiveEvaluationCycles();
 
