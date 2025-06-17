@@ -69,23 +69,12 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
     }
 
     @Override
-    public Boolean updateEvaluation(Long evaluationId, Integer score, String feedback) {
-        try {
-            Evaluation evaluation = getEntity(daoFactory.forEvaluation().findById(evaluationId), evaluationId, "Evaluation");
-            evaluation.setScale(EvaluationScale.getByScore(score));
-            evaluation.setFeedback(feedback);
+    public void updateEvaluation(Long requesterId, EvaluationDTO evaluationDTO) {
+            Evaluation evaluation = getEntity(daoFactory.forEvaluation().findById(evaluationDTO.getId()), evaluationDTO.getId(), "Evaluation");
+            evaluation.setScale(evaluationDTO.getScale());
+            evaluation.setFeedback(evaluationDTO.getFeedback());
+            evaluation.setStatus(evaluationDTO.getState());
             daoFactory.forEvaluation().update(evaluation);
-            return true;
-        } catch (NoSuchElementException e) {
-            logger.error("Evaluation with id {} not found", evaluationId);
-            return false;
-        } catch (IllegalArgumentException e) {
-            logger.error("Invalid evaluation score value of {}", score, e);
-            return false;
-        } catch (Exception e) {
-            logger.error("Error while updating evaluation with id {}", evaluationId, e);
-            return false;
-        }
     }
 
     @Override

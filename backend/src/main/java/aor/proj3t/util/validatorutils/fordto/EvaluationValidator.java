@@ -1,8 +1,12 @@
 package aor.proj3t.util.validatorutils.fordto;
 
+import aor.proj3t.dto.EvaluationDTO;
 import aor.proj3t.dto.NewTrainingDTO;
 import aor.proj3t.dto.TrainingAreaDTO;
 import aor.proj3t.dto.TrainingDTO;
+import aor.proj3t.enums.EvaluationScale;
+import aor.proj3t.enums.EvaluationStatus;
+import aor.proj3t.enums.Role;
 import aor.proj3t.exceptions.InvalidDataException;
 import aor.proj3t.filters.DateRange;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -18,62 +22,58 @@ public class EvaluationValidator {
         // Default constructor
     }
 
-    public void validateDateRange(DateRange dateRange) throws InvalidDataException {
-
-        Instant start = dateRange.getStartDate();
-        Instant end = dateRange.getEndDate();
-        if(start != null && end == null && start.isAfter(Instant.now())) {
-            throw new InvalidDataException("startDate must be before or equal to the current time");
-        }
-
-        if ( start != null && end != null && start.isAfter(end)) {
-            throw new InvalidDataException("startDate must be before or equal to endDate");
-        }
-        if(end != null && end.isAfter(Instant.now())) {
-            throw new InvalidDataException("Date range cannot be in the future");
+    public void validateId(Long id, String fieldName) {
+        if (id == null || id <= 0) {
+            throw new InvalidDataException(fieldName + " ID must be a positive number");
         }
     }
 
-
-    public void validateTrainingTitle(String title) {
-        if (title == null || title.trim().isEmpty()) {
-            throw new InvalidDataException("Title is required");
-        }
-        if (title.length() > 100) {
-            throw new InvalidDataException("Title must not exceed 100 characters");
+    public void validateFeedback(String feedback) {
+        if (feedback != null && (feedback.length() < 3 || feedback.length() > 1000)) {
+            throw new InvalidDataException("Feedback must be between 3 and 1000 characters if provided");
         }
     }
 
-    public void validateTrainingDuration(Integer duration) {
-        if (duration == null || duration <= 0) {
-            throw new InvalidDataException("Duration must be a positive number of minutes");
+    public void validateScale(EvaluationScale scale) {
+        if (scale == null) {
+            throw new InvalidDataException("Evaluation scale must be provided");
         }
-    }
-
-    public void validateTrainingDescription(String description) {
-        if (description == null || description.length() < 10 || description.length() > 1000) {
-            throw new InvalidDataException("Description must be between 10 and 1000 characters");
-        }
-    }
-
-    public void validateTrainingLink(String link) {
-        if (link != null && !link.isEmpty()) {
-            if (link.length() > 500) {
-                throw new InvalidDataException("Link must not exceed 500 characters");
-            }
-            String urlRegex = "^(https?|ftp)://[\\w.-]+(?:\\.[\\w.-]+)+(?:[/?#]\\S*)?$";
-            if (!Pattern.matches(urlRegex, link)) {
-                throw new InvalidDataException("Link is not a valid URL format");
+        boolean matched = false;
+        for (EvaluationScale scaleValue : EvaluationScale.values()) {
+            if (scaleValue.name().equalsIgnoreCase(scale.name())) {
+                matched = true;
+                break;
             }
         }
-    }
-
-    public void validateTrainingLanguage(String language) {
-        if (language == null || language.trim().isEmpty()) {
-            throw new InvalidDataException("Language is required");
+        if (!matched) {
+            throw new InvalidDataException("Invalid evaluation scale: " + scale);
         }
     }
 
+    public void validateState(EvaluationStatus status) {
+        if (status == null) {
+            throw new InvalidDataException("Evaluation state must be provided");
+        }
+        boolean matched = false;
+        for (EvaluationStatus evalStatus : EvaluationStatus.values()) {
+            if (evalStatus.name().equalsIgnoreCase(status.name())) {
+                matched = true;
+                break;
+            }
+        }
+        if (!matched) {
+            throw new InvalidDataException("Invalid evaluation status: " + status);
+        }
+    }
+
+    public void validateEvaluationDTO(EvaluationDTO dto) {
+        validateId(dto.getEvaluationCycleId(), "Evaluation Cycle");
+        validateId(dto.getEvaluateeId(), "Evaluatee");
+        validateId(dto.getEvaluatorId(), "Evaluator");
+        validateScale(dto.getScale());
+        validateState(dto.getState());
+        validateFeedback(dto.getFeedback());
+    }
 
     public void newCycleDateRangeValidation(DateRange dateRange) throws InvalidDataException {
         if (dateRange == null) {

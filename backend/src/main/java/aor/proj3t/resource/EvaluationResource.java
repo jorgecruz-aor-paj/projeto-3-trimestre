@@ -55,6 +55,17 @@ public class EvaluationResource {
         return Response.ok(evaluations).build();
     }
 
+    @PUT
+    @Secured({Role.MANAGER,Role.ADMIN})
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateEvaluation(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader, EvaluationDTO evaluationDTO) {
+        validator.validateEvaluationDTO(evaluationDTO);
+        Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
+        serviceFactory.forEvaluation().updateEvaluation(requesterId, evaluationDTO);
+        return Response.ok().build();
+    }
+
     @POST
     @Secured(Role.ADMIN)
     @Path("/cycle")

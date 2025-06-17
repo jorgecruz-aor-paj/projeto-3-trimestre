@@ -31,12 +31,10 @@ public interface EvaluationService {
     /**
      * Update an evaluation.
      * 
-     * @param evaluationId The ID of the evaluation
-     * @param score        The score
-     * @param feedback     The feedback
-     * @return The updated evaluation
+     * @param requesterId The ID of requester
+     * @param evaluationDTO The evaluationDto to update the DataBase
      */
-    Boolean updateEvaluation(Long evaluationId, Integer score, String feedback);
+    void updateEvaluation(Long requesterId, EvaluationDTO evaluationDTO);
 
     /**
      * Find evaluations for a specific evaluator.
