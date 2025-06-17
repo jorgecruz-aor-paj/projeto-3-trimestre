@@ -1,7 +1,9 @@
 package aor.proj3t.dto;
 
 import java.time.Instant;
+import java.util.List;
 
+import aor.proj3t.entities.Evaluation;
 import aor.proj3t.enums.EvaluationCycleStatus;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
@@ -35,6 +37,9 @@ public class EvaluationCycleDTO {
 
     @XmlElement(name = "createdById")
     private Long createdById;
+
+    @XmlElement(name = "evaluations")
+    private List<EvaluationDTO> evaluations;
 
     public EvaluationCycleDTO() {
     }
@@ -104,5 +109,13 @@ public class EvaluationCycleDTO {
 
     public void setCreatedById(Long createdById) {
         this.createdById = createdById;
+    }
+
+    public List<EvaluationDTO> getEvaluations() {
+        return evaluations;
+    }
+
+    public void setEvaluations(List<EvaluationDTO> evaluations) {
+        this.evaluations = evaluations;
     }
 }

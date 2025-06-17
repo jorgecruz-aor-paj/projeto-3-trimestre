@@ -14,6 +14,11 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(name = "EvaluationCycle.findActive", query = "SELECT ec FROM EvaluationCycle ec WHERE ec.status = 'ACTIVE'"),
         @NamedQuery(name = "EvaluationCycle.findAll", query = "SELECT ec FROM EvaluationCycle ec"),
+        @NamedQuery(
+                name = "EvaluationCycle.countActive",
+                query = "SELECT COUNT(ec) FROM EvaluationCycle ec WHERE ec.status = 'ACTIVE'"
+        )
+
 })
 
 public class EvaluationCycle {

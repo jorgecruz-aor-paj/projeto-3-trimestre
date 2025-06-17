@@ -1,9 +1,13 @@
 package aor.proj3t.util.converterutils;
 
 import aor.proj3t.dto.EvaluationCycleDTO;
+import aor.proj3t.dto.EvaluationDTO;
 import aor.proj3t.entities.EvaluationCycle;
 import aor.proj3t.entities.User;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+
+import java.util.List;
 
 /**
  * Converter for EvaluationCycle entities and DTOs.
@@ -22,6 +26,9 @@ import jakarta.enterprise.context.ApplicationScoped;
  */
 @ApplicationScoped
 public class EvaluationCycleConverter extends AbstractConverter<EvaluationCycle, EvaluationCycleDTO, Long> {
+
+    @Inject
+    EvaluationConverter evaluationConverter;
 
     @Override
     protected Class<EvaluationCycle> getEntityClass() {
@@ -55,7 +62,14 @@ public class EvaluationCycleConverter extends AbstractConverter<EvaluationCycle,
         if (evaluationCycle.getCreatedBy() != null) {
             dto.setCreatedById(evaluationCycle.getCreatedBy().getId());
         }
+
+        if (evaluationCycle.getEvaluations() != null) {
+            List<EvaluationDTO> evaluationDTOs = evaluationConverter
+                    .toDTOList(evaluationCycle.getEvaluations());
+            dto.setEvaluations(evaluationDTOs);
+        }
     }
+
 
     @Override
     protected void mapDTOToEntity(EvaluationCycleDTO dto, EvaluationCycle evaluationCycle) {

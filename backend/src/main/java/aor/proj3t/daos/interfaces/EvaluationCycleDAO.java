@@ -12,10 +12,10 @@ public interface EvaluationCycleDAO extends BasicDAO<EvaluationCycle, Long> {
 
     /**
      * Find active evaluation cycles.
-     *
+     * @Param boolean to fetch evaluation array or not
      * @return A list of active evaluation cycles
      */
-    List<EvaluationCycle> findActive();
+    List<EvaluationCycle> findActive(boolean getEvaluations);
 
     /**
      * Find evaluation cycles by their status.
@@ -50,4 +50,7 @@ public interface EvaluationCycleDAO extends BasicDAO<EvaluationCycle, Long> {
      * @return true if the update was successful, false otherwise
      */
     boolean updateStatus(Long cycleId, EvaluationStatus status);
+
+    Long countActiveEvaluationCycles();
+
 }

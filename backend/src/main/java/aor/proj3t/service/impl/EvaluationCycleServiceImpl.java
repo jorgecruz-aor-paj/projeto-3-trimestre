@@ -43,7 +43,7 @@ public class EvaluationCycleServiceImpl extends BaseService implements Evaluatio
                     "Admin with id " + requesterId + " started evaluation cycle with unmanaged users"
             );
         }
-        if (daoFactory.forEvaluationCycle().findActive().size() > 1) {
+        if (daoFactory.forEvaluationCycle().countActiveEvaluationCycles() > 0) {
             throw new InvalidDataException(
                     "There is an active evaluation cycle running",
                     "Admin with id " + requesterId + " started evaluation cycle while another is active"
@@ -57,7 +57,7 @@ public class EvaluationCycleServiceImpl extends BaseService implements Evaluatio
     public EvaluationCycleDTO getActiveCycle(Long requesterId) {
         User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
         checkIfRequesterIsAdmin(requester);
-        List<EvaluationCycle> cycles = daoFactory.forEvaluationCycle().findActive();
+        List<EvaluationCycle> cycles = daoFactory.forEvaluationCycle().findActive(true);
         if (cycles.size() > 1) {
             throw new ConflictException(
                     "Two or more active evaluation cycles found",

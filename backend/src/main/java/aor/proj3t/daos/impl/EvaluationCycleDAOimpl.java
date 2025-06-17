@@ -9,6 +9,7 @@ import aor.proj3t.enums.EvaluationStatus;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
+import org.hibernate.Hibernate;
 
 /**
  * Implementation of the EvaluationCycleRepository interface.
@@ -22,13 +23,25 @@ public class EvaluationCycleDAOimpl extends AbstractDAO<EvaluationCycle, Long> i
     }
 
     @Override
-    public List<EvaluationCycle> findActive() {
-        try {
-            return executeNamedQuery("EvaluationCycle.findActive", EvaluationCycle.class);
-        } catch (NoResultException e) {
-            return null;
+    public List<EvaluationCycle> findActive(boolean getEvaluations) {
+
+        List<EvaluationCycle> cycles = executeNamedQuery("EvaluationCycle.findActive", EvaluationCycle.class);
+        if (getEvaluations) {
+            // Initialize evaluations list for each cycle (if needed)
+            for (EvaluationCycle cycle : cycles) {
+                Hibernate.initialize(cycle.getEvaluations());
+            }
         }
+        return cycles;
     }
+
+    @Override
+    public Long countActiveEvaluationCycles() {
+        return em
+                .createNamedQuery("EvaluationCycle.countActive", Long.class)
+                .getSingleResult();
+    }
+
 
     @Override
     public List<EvaluationCycle> findByStatus(EvaluationStatus status) {
@@ -55,7 +68,7 @@ public class EvaluationCycleDAOimpl extends AbstractDAO<EvaluationCycle, Long> i
     public boolean updateStatus(Long cycleId, EvaluationStatus status) {
         try {
             int updatedRows = em.createQuery(
-                    "UPDATE EvaluationCycle ec SET ec.status = :status WHERE ec.id = :id")
+                            "UPDATE EvaluationCycle ec SET ec.status = :status WHERE ec.id = :id")
                     .setParameter("id", cycleId)
                     .setParameter("status", status)
                     .executeUpdate();

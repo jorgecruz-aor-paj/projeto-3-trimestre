@@ -48,7 +48,7 @@ public class EvaluationResource {
     @GET
     @Secured
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getEvaluations(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader, @BeanParam EvaluationFilter filters) {
+    public Response getEvaluationsByFilters(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader, @BeanParam EvaluationFilter filters) {
         validatorFactory.validate(filters);
         Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
         List<EvaluationDTO> evaluations = serviceFactory.forEvaluation().getEvaluationsByFilter(requesterId, filters);
@@ -67,6 +67,7 @@ public class EvaluationResource {
     return Response.ok().build();
     }
 
+
     @GET
     @Path("/current")
     @Secured(Role.ADMIN)
@@ -76,6 +77,8 @@ public class EvaluationResource {
         EvaluationCycleDTO cycle = serviceFactory.forEvaluationCycle().getActiveCycle(requesterId);
         return Response.ok(cycle).build();
     }
+
+
 
 
 
