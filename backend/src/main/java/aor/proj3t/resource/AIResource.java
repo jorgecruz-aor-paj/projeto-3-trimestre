@@ -1,4 +1,4 @@
-package aor.proj3t.resource.ai;
+package aor.proj3t.resource;
 
 import aor.proj3t.dto.ai.ChatRequestDTO;
 import aor.proj3t.dto.ai.ChatResponseDTO;
