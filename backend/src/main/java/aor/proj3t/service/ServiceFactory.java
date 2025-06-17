@@ -1,6 +1,7 @@
 package aor.proj3t.service;
 
 import aor.proj3t.service.impl.TokenService;
+import aor.proj3t.service.interfaces.AIService;
 import aor.proj3t.service.interfaces.AuthService;
 import aor.proj3t.service.interfaces.EvaluationCycleService;
 import aor.proj3t.service.interfaces.EvaluationService;
@@ -62,6 +63,9 @@ public class ServiceFactory {
 
     @Inject
     private NotificationService notificationService;
+
+    @Inject
+    private AIService aiService;
 
     /**
      * Get the service for User operations
@@ -147,5 +151,18 @@ public class ServiceFactory {
      */
     public NotificationService forNotification() {
         return notificationService;
+    }
+
+    /**
+     * Get the service for AI operations
+     * This method provides access to the service responsible for AI-related
+     * business logic and operations, such as sentiment analysis, training
+     * recommendations,
+     * and performance predictions.
+     *
+     * @return The AIService instance
+     */
+    public AIService forAI() {
+        return aiService;
     }
 }
