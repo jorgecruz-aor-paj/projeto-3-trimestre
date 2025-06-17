@@ -20,7 +20,7 @@ public class Evaluation {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "scale", nullable = false)
+    @Column(name = "scale")
     private EvaluationScale scale;
 
     @Enumerated(EnumType.STRING)

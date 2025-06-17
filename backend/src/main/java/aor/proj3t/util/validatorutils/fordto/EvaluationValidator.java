@@ -79,11 +79,20 @@ public class EvaluationValidator {
         if (dateRange == null) {
             throw new InvalidDataException("Date range must not be null");
         }
-        if(dateRange.getStartDate() == null && dateRange.getEndDate() == null) {
+        if(dateRange.getStartDate() == null || dateRange.getEndDate() == null) {
             throw new InvalidDataException(
                     "start date and end date are required",
                     "Evaluation cycle started without start and end dates");
         }
-        validateDateRange(dateRange);
+        if(dateRange.getStartDate().isAfter(dateRange.getEndDate())) {
+            throw new InvalidDataException(
+                    "start date must be before end date",
+                    "Evaluation cycle started without start end after end date");
+        }
+        if(dateRange.getStartDate().isBefore(Instant.now())) {
+            throw new InvalidDataException(
+                    "start date should be after current time",
+                    "Evaluation cycle started without start date previous to current time");
+        }
     }
 }

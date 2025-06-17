@@ -11,6 +11,8 @@ public class DateRange {
         this.endDate = endDate;
     }
 
+    public DateRange() {}
+
     public Instant getStartDate() {
         return startDate;
     }

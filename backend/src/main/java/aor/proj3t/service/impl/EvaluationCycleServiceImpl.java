@@ -52,6 +52,7 @@ public class EvaluationCycleServiceImpl extends BaseService implements Evaluatio
         }
         EvaluationCycle evaluationCycle = new EvaluationCycle(dateRange.getStartDate(), dateRange.getEndDate(), requester);
         daoFactory.forEvaluationCycle().create(evaluationCycle);
+        createNewEvaluations(evaluationCycle);
     }
 
     @Override
@@ -98,24 +99,18 @@ public class EvaluationCycleServiceImpl extends BaseService implements Evaluatio
         }
     }
 
-    private Boolean createNewEvaluations(EvaluationCycle evaluationCycle) {
-        try {
-            List<User> users = daoFactory.forUser().findAll();
-            for (User user : users) {
-                if (!user.getRole().equals(Role.ADMIN)) {
-                    Evaluation evaluation = new Evaluation(evaluationCycle, user, user.getManager());
-                    daoFactory.forEvaluation().create(evaluation);
-                }
+    private void createNewEvaluations(EvaluationCycle evaluationCycle) {
+        List<User> users = daoFactory.forUser().findAll();
+        for (User user : users) {
+            if (!user.getRole().equals(Role.ADMIN)) {
+                Evaluation evaluation = new Evaluation(evaluationCycle, user, user.getManager());
+                daoFactory.forEvaluation().create(evaluation);
             }
-            logger.info(" {} evaluations created in evaluation cycle with id {}", users.size(),
-                    evaluationCycle.getId());
-            return true;
-        } catch (Exception e) {
-            logger.error("Error while creating evaluations for cycle with id {}", evaluationCycle.getId(), e);
-            return false;
         }
-    }
+        logger.info(" {} evaluations created in evaluation cycle with id {}", users.size(),
+                evaluationCycle.getId());
 
+    }
 
 
 }
