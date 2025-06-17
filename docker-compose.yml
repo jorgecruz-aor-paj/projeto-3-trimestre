@@ -1,0 +1,37 @@
+services:
+  app:
+    image: proj3twildfly:latest
+    build:
+      context: ./wildfly
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+      - "9990:9990"
+    volumes:
+      - ./backend/target/jorge-osorio-proj3t/:/opt/wildfly/standalone/deployments/jorge-osorio-proj3t.war
+      - ./backend/.env:/opt/wildfly/standalone/deployments/.env
+    networks:
+      - proj3t-network
+    depends_on:
+      - ai_service
+    hostname: app
+
+  ai_service:
+    build:
+      context: ./ai_microservice
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./ai_microservice:/app
+    restart: unless-stopped
+    environment:
+      - LOG_LEVEL=info
+    networks:
+      - proj3t-network
+    hostname: ai-service
+
+networks:
+  proj3t-network:
+    driver: bridge

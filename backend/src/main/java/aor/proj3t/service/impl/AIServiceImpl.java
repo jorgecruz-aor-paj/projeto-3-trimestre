@@ -27,7 +27,7 @@ import jakarta.json.JsonReader;
 public class AIServiceImpl implements AIService {
 
     private static final Logger LOGGER = LogManager.getLogger(AIServiceImpl.class);
-    private static final String AI_SERVICE_BASE_URL = "http://localhost:8000";
+    private static final String AI_SERVICE_BASE_URL = "http://ai-service:8000";
 
     /**
      * {@inheritDoc}
