@@ -86,4 +86,12 @@ public class UserResource {
         return Response.ok("Managers assigned successfully").build();
     }
 
+    @GET
+    @Secured(Role.ADMIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getManagers(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader) {
+        Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
+        List<UserDTO> managers = serviceFactory.forUser().getAllManagers(requesterId);
+        return Response.ok(managers).build();
+    }
 }

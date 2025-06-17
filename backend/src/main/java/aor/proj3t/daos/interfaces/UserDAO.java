@@ -46,6 +46,8 @@ public interface UserDAO extends BasicDAO<User, Long> {
 
     Long countUsersWithManager();
 
+    List<User> getManagers();
+
     List<User> getUsersByFilters(UserFilter filters);
 
     List<User> findManagersWithoutUsers();

@@ -34,6 +34,8 @@ public interface UserService {
 
     Boolean resetProfilePicture(Long userId);
 
+    List<UserDTO> getAllManagers(Long requesterId);
+
     UserPaginationDTO getPaginatedUsers(UserFilter userFilter, int page, int size, String sortString);
 
 }

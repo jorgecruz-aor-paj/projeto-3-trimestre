@@ -193,6 +193,12 @@ public class UserServiceImpl extends BaseService implements UserService {
         sendResetPasswordEmail(user.getEmail(), user.getId(), ipAddress, resetPasswordExpirationTime);
     }
 
+    @Override
+    public List<UserDTO> getAllManagers(Long requesterId) {
+        User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
+        checkIfRequesterIsAdmin(requester);
+        return converterFactory.forUser().toDTOList(daoFactory.forUser().getManagers());
+    }
 
     private List<User> getUserListFromIds(List<Long> userIds) {
         List<User> users = new ArrayList<>(userIds.size());

@@ -17,7 +17,12 @@ import aor.proj3t.enums.Role;
         @NamedQuery(
                 name = "User.findManagersWithoutUsers",
                 query = "SELECT u FROM User u WHERE u.role = :role AND SIZE(u.managedUsers) = 0"
+        ),
+        @NamedQuery(
+                name = "User.findAllManagers",
+                query = "SELECT u FROM User u WHERE u.role = :role"
         )
+
 
 })
 

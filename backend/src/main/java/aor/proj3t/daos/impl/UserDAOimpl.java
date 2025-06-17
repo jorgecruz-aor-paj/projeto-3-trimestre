@@ -183,6 +183,11 @@ public class UserDAOimpl extends AbstractDAO<User, Long> implements UserDAO {
         return em.createQuery(query).getResultList();
     }
 
+    @Override
+    public List<User> getManagers(){
+    return executeNamedQuery("User.findAllManagers", User.class);
+    }
+
     public List<User> findManagersWithoutUsers() {
         return executeNamedQuery("User.findManagersWithoutUsers", User.class, "role", Role.MANAGER);
     }
