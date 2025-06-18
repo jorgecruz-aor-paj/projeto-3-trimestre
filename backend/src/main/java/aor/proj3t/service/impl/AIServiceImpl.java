@@ -1,5 +1,6 @@
 package aor.proj3t.service.impl;
 
+import java.io.IOException;
 import java.io.StringReader;
 import java.util.List;
 
@@ -54,7 +55,7 @@ public class AIServiceImpl implements AIService {
 
                 return dto;
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             LOGGER.error("Error analyzing sentiment", e);
             return createDefaultSentimentResponse();
         }
@@ -108,7 +109,7 @@ public class AIServiceImpl implements AIService {
 
                 return dto;
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             LOGGER.error("Error recommending training", e);
             return createDefaultTrainingRecommendation();
         }
@@ -143,7 +144,7 @@ public class AIServiceImpl implements AIService {
 
                 return dto;
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             LOGGER.error("Error predicting performance", e);
             return createDefaultPerformancePrediction();
         }
@@ -172,7 +173,7 @@ public class AIServiceImpl implements AIService {
 
                 return dto;
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             LOGGER.error("Error getting chatbot response", e);
             return createDefaultChatResponse();
         }
@@ -216,7 +217,7 @@ public class AIServiceImpl implements AIService {
 
                 return dto;
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             LOGGER.error("Error generating report", e);
             return createDefaultReportResponse();
         }
@@ -259,7 +260,7 @@ public class AIServiceImpl implements AIService {
     private ChatResponseDTO createDefaultChatResponse() {
         ChatResponseDTO response = new ChatResponseDTO();
         response.setReply(
-                "I'm sorry, but I'm having trouble processing your request at the moment. Please try again later.");
+                "Desculpe, estou a ter problemas a processar o seu pedido neste momento. Por favor volte a tentar mais tarde.");
         return response;
     }
 

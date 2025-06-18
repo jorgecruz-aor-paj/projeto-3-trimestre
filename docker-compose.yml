@@ -15,7 +15,7 @@ services:
       - proj3t-network
     depends_on:
       - ai_service
-    hostname: app
+    hostname: backend
 
   ai_service:
     build:

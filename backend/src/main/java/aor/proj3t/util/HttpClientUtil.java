@@ -54,7 +54,7 @@ public class HttpClientUtil {
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new IOException("Request interrupted", e);
-        } catch (Exception e) {
+        } catch (IOException e) {
             LOGGER.error("Error sending HTTP request", e);
             throw new IOException("Error sending HTTP request: " + e.getMessage(), e);
         }
