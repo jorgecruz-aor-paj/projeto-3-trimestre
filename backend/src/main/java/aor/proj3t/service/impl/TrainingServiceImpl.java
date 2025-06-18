@@ -7,6 +7,7 @@ import java.util.NoSuchElementException;
 import aor.proj3t.dto.NewTrainingDTO;
 import aor.proj3t.entities.User;
 import aor.proj3t.enums.Role;
+import aor.proj3t.exceptions.ConflictException;
 import aor.proj3t.exceptions.ForbiddenException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -104,12 +105,20 @@ public class TrainingServiceImpl extends BaseService implements TrainingService 
 
     @Override
     public TrainingAreaDTO addTrainingArea(TrainingAreaDTO trainingAreaDTO) {
+        daoFactory.forTrainingArea()
+                .findByName(trainingAreaDTO.getName().toLowerCase())
+                .ifPresent(existing -> {
+                    throw new ConflictException(
+                            "Training area already exists",
+                            "Adding new training area with duplicate name: " + trainingAreaDTO.getName()
+                    );
+                });
         TrainingArea trainingArea = new TrainingArea(trainingAreaDTO.getName());
-        //TODO add logic to prevent repeated names
-        //TODO add logic if the ID already exists and throw conflict exception
         daoFactory.forTrainingArea().create(trainingArea);
         return converterFactory.forTrainingArea().toDTO(trainingArea);
     }
+
+
 
     @Override
     public List<TrainingDTO> getTrainingsByFilters(Long requesterId, TrainingFilter filters) {

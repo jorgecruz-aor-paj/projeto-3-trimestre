@@ -2,7 +2,10 @@ package aor.proj3t.daos.impl;
 
 import aor.proj3t.daos.interfaces.TrainingAreaDAO;
 import aor.proj3t.entities.TrainingArea;
+import aor.proj3t.entities.User;
 import jakarta.ejb.Stateless;
+
+import java.util.Optional;
 
 @Stateless
 public class TrainingAreaDAOimpl extends AbstractDAO<TrainingArea, Long> implements TrainingAreaDAO {
@@ -11,4 +14,11 @@ public class TrainingAreaDAOimpl extends AbstractDAO<TrainingArea, Long> impleme
     protected Class<TrainingArea> getEntityClass() {
         return TrainingArea.class;
     }
+
+
+    public Optional<TrainingArea> findByName(String name) {
+        return findSingleByProperty("name", name);
+    }
+
+
 }
