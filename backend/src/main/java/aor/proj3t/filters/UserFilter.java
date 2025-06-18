@@ -3,17 +3,26 @@ package aor.proj3t.filters;
 import aor.proj3t.entities.User;
 import aor.proj3t.entities.Workplace;
 import aor.proj3t.enums.UserSortField;
+import jakarta.ws.rs.QueryParam;
 
 public class UserFilter {
+    @QueryParam("workplace")
     private Workplace workplace;
+    @QueryParam("manager")
     private User manager;
+    @QueryParam("id")
     private Long id;
+    @QueryParam("searchText")
     private String searchText;
+    @QueryParam("noManager")
     private boolean noManager;
+    @QueryParam("sortField")
     private UserSortField sortField = UserSortField.NAME;
+    @QueryParam("ascending")
     private boolean ascending = true;
 
-    public UserFilter(){};
+    public UserFilter() {
+    };
 
     public Workplace getWorkplace() {
         return workplace;
