@@ -6,6 +6,7 @@ import java.util.*;
 
 import aor.proj3t.config.SettingsProvider;
 import aor.proj3t.exceptions.InvalidDataException;
+import jakarta.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -122,6 +123,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     @Override
+    @Transactional
     public void assignManagerBulk(Long userId, ManagerAssignDTO managerAssignDto) {
         User requester = getEntity(daoFactory.forUser().findById(userId), userId, "User");
         User manager = getEntity(daoFactory.forUser().findById(managerAssignDto.getManagerId()), managerAssignDto.getManagerId(), "User");
