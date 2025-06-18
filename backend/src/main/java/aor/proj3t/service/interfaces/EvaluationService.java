@@ -2,6 +2,7 @@ package aor.proj3t.service.interfaces;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import aor.proj3t.dto.EvaluationCloseDTO;
@@ -91,5 +92,6 @@ public interface EvaluationService {
 
     List<EvaluationDTO> getEvaluationsByFilter(Long requesterId, EvaluationFilter filter);
 
+    Map<String, Long> getEvaluationsCompletedStats(Long requesterId);
 
    }

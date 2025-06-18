@@ -1,14 +1,13 @@
 package aor.proj3t.service.impl;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 import aor.proj3t.dto.EvaluationCloseDTO;
 import aor.proj3t.enums.EvaluationCycleStatus;
 import aor.proj3t.enums.Role;
 import aor.proj3t.exceptions.BadRequestException;
+import aor.proj3t.exceptions.ConflictException;
 import aor.proj3t.exceptions.ForbiddenException;
 import aor.proj3t.exceptions.NotFoundException;
 import aor.proj3t.filters.EvaluationFilter;
@@ -184,7 +183,7 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
                         "Evaluation already closed",
                         "Evaluation ID " + eval.getId() + " is already part of a closed cycle");
             }
-            if(eval.getStatus().equals(EvaluationStatus.ONGOING)) {
+            if (eval.getStatus().equals(EvaluationStatus.ONGOING)) {
                 throw new ForbiddenException(
                         "Evaluation is still ongoing",
                         "User with id " + requesterId + "closing ongoing evaluation with id " + eval.getId());
@@ -276,5 +275,26 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
             //TODO maybe sent a notification to admin responsible for cycle
         }
     }
+
+    public Map<String, Long> getEvaluationsCompletedStats(Long requesterId) {
+        User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
+        checkIfRequesterIsAdmin(requester);
+        List<EvaluationCycle> cycles = daoFactory.forEvaluationCycle().findActive(false);
+
+        if (cycles.isEmpty()) {
+            return Collections.emptyMap();
+        } else if (cycles.size() > 1) {
+            throw new ConflictException("Two or more active evaluation cycles found",
+                    "Multiple active evaluation cycles exist — cannot determine the correct one");
+        }
+        Long cycleId = cycles.getFirst().getId();
+        Long total = daoFactory.forEvaluation().countByCycleId(cycleId);
+        Long ongoing = daoFactory.forEvaluation().countOngoingEvaluationsByCycle(cycleId);
+        Map<String, Long> stats = new HashMap<>();
+        stats.put("total", total);
+        stats.put("ongoing", ongoing);
+        return stats;
+    }
+
 
 }

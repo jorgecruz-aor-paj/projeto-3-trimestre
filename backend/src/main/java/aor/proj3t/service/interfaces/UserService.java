@@ -39,6 +39,6 @@ public interface UserService {
 
     UserPaginationDTO getPaginatedUsers(UserFilter userFilter, int page, int size, String sortString);
 
-    Map<Long, Long> getTotalVSUnmanagedUsers(Long requesterId);
+    Map<String, Long> getTotalVSUnmanagedUsers(Long requesterId);
 
 }

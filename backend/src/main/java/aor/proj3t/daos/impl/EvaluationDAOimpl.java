@@ -6,6 +6,7 @@ import java.util.List;
 
 import aor.proj3t.daos.interfaces.EvaluationDAO;
 import aor.proj3t.entities.Evaluation;
+import aor.proj3t.entities.EvaluationCycle;
 import aor.proj3t.enums.EvaluationStatus;
 import aor.proj3t.filters.EvaluationFilter;
 import jakarta.ejb.Stateless;
@@ -130,12 +131,27 @@ public class EvaluationDAOimpl extends AbstractDAO<Evaluation, Long> implements 
         return count.intValue();
     }
 
+    @Override
     public Long countOngoingEvaluationsByCycle(Long cycleId) {
         return em.createQuery("SELECT COUNT(e) FROM Evaluation e WHERE e.evaluationCycle.id = :cycleId AND e.status = :status", Long.class)
                 .setParameter("cycleId", cycleId)
                 .setParameter("status", EvaluationStatus.ONGOING)
                 .getSingleResult();
     }
+
+    @Override
+    public Long countByCycleId(Long cycleId) {
+        return em.createQuery(
+                        "SELECT COUNT(e) FROM Evaluation e WHERE e.evaluationCycle.id = :cycleId",
+                        Long.class
+                )
+                .setParameter("cycleId", cycleId)
+                .getSingleResult();
+    }
+
+
+
+
 
 
 }

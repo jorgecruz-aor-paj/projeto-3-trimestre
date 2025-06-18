@@ -38,7 +38,17 @@ public class StatsResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getManagerAssignment(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader) {
         Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
-        Map<Long,Long> map = serviceFactory.forUser().getTotalVSUnmanagedUsers(requesterId);
+        Map<String,Long> map = serviceFactory.forUser().getTotalVSUnmanagedUsers(requesterId);
+        return Response.ok(map).build();
+    }
+
+    @GET
+    @Path("/evaluations")
+    @Secured(Role.ADMIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getCompleteEvaluationStats(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader) {
+        Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
+        Map<String,Long> map = serviceFactory.forEvaluation().getEvaluationsCompletedStats(requesterId);
         return Response.ok(map).build();
     }
 

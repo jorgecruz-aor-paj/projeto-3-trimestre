@@ -283,15 +283,17 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     @Override
-    public Map<Long, Long> getTotalVSUnmanagedUsers(Long requesterId) {
+    public Map<String, Long> getTotalVSUnmanagedUsers(Long requesterId) {
         User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
         checkIfRequesterIsAdmin(requester);
-        Map <Long, Long> totalUnmanagedUsers = new HashMap<>();
         Long totalUsers = daoFactory.forUser().countAllUsers();
         Long unmanagedUsers = daoFactory.forUser().countUsersWithoutManager();
-        totalUnmanagedUsers.put(totalUsers, unmanagedUsers);
-        return totalUnmanagedUsers;
+        Map<String, Long> stats = new HashMap<>();
+        stats.put("total", totalUsers);
+        stats.put("unmanaged", unmanagedUsers);
+        return stats;
     }
+
 
     @Override
     public Boolean uploadProfilePicture(Long userId, FileUploadDTO fileUploadDTO) {
