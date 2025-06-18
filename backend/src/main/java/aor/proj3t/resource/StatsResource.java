@@ -33,7 +33,7 @@ public class StatsResource {
 
 
     @GET
-    @Path("/managerAssignment")
+    @Path("/managers")
     @Secured(Role.ADMIN)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getManagerAssignment(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader) {
