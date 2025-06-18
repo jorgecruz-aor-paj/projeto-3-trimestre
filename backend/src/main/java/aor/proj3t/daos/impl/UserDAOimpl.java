@@ -185,7 +185,7 @@ public class UserDAOimpl extends AbstractDAO<User, Long> implements UserDAO {
 
     @Override
     public List<User> getManagers(){
-    return executeNamedQuery("User.findAllManagers", User.class);
+    return executeNamedQuery("User.findAllManagers", User.class,"role", Role.MANAGER);
     }
 
     public List<User> findManagersWithoutUsers() {
