@@ -63,7 +63,7 @@ public class EvaluationResource {
         validator.validateEvaluationDTO(evaluationDTO);
         Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
         serviceFactory.forEvaluation().updateEvaluation(requesterId, evaluationDTO);
-        return Response.ok().build();
+        return Response.ok(new MessageResponse("Evaluation updated successfully")).build();
     }
 
     @PATCH
@@ -73,7 +73,7 @@ public class EvaluationResource {
         validator.validateEvaluationCloseDTO(evaluationCloseDto);
         Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
         serviceFactory.forEvaluation().closeEvaluationsBulk(requesterId, evaluationCloseDto);
-        return Response.ok().build();
+        return Response.ok(new MessageResponse("Evaluations closed successfully")).build();
     }
 
 
@@ -86,7 +86,7 @@ public class EvaluationResource {
         validator.newCycleDateRangeValidation(dateRange);
         Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
         serviceFactory.forEvaluationCycle().startCycle(requesterId, dateRange);
-        return Response.ok().build();
+        return Response.ok(new MessageResponse("Evaluation cycle initiated successfully")).build();
     }
 
 

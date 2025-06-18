@@ -1,7 +1,7 @@
 package aor.proj3t.exceptions.mapper;
 
 import aor.proj3t.exceptions.ForbiddenException;
-import aor.proj3t.resource.ErrorResponse;
+import aor.proj3t.resource.MessageResponse;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
@@ -17,7 +17,7 @@ public class ForbiddenExceptionMapper implements ExceptionMapper<ForbiddenExcept
     public Response toResponse(ForbiddenException e) {
         logger.warn("Forbidden access: {}", e.getMessage()); // logs internal/dev message
         return Response.status(Response.Status.FORBIDDEN)
-                .entity(new ErrorResponse(e.getUserMessage())) // safe for client response
+                .entity(new MessageResponse(e.getUserMessage())) // safe for client response
                 .type(MediaType.APPLICATION_JSON)
                 .build();
     }

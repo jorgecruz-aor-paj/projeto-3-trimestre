@@ -83,16 +83,16 @@ public class ImageUploadResource {
 
             Boolean success = serviceFactory.forUser().uploadProfilePicture(userId, fileUploadDTO);
             if (success) {
-                return Response.status(Response.Status.OK).entity("Profile picture updated successfully").build();
+                return Response.status(Response.Status.OK).entity(new MessageResponse("Profile picture updated successfully")).build();
             } else {
-                return Response.status(Response.Status.BAD_REQUEST).entity("Failed to update profile picture").build();
+                return Response.status(Response.Status.BAD_REQUEST).entity(new MessageResponse("Failed to update profile picture")).build();
             }
         } catch (IOException e) {
             logger.error("Error processing uploaded file for user ID: {}", userId, e);
-            return Response.status(Response.Status.BAD_REQUEST).entity("Error processing uploaded file").build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(new MessageResponse("Error processing uploaded file")).build();
         } catch (Exception e) {
             logger.error("Error uploading profile picture for user ID: {}", userId, e);
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Internal server error").build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new MessageResponse("Internal server error")).build();
         }
     }
 
@@ -147,18 +147,18 @@ public class ImageUploadResource {
             String userIdStr = securityContext.getUserPrincipal().getName();
             if (!userIdStr.equals(userId.toString()) && !securityContext.isUserInRole("ADMIN")) {
                 return Response.status(Response.Status.FORBIDDEN)
-                        .entity("Not authorized to reset this user's profile picture").build();
+                        .entity(new MessageResponse("Not authorized to reset this user's profile picture")).build();
             }
 
             Boolean success = serviceFactory.forUser().resetProfilePicture(userId);
             if (success) {
-                return Response.status(Response.Status.OK).entity("Profile picture reset to default").build();
+                return Response.status(Response.Status.OK).entity(new MessageResponse("Profile picture reset to default")).build();
             } else {
-                return Response.status(Response.Status.BAD_REQUEST).entity("Failed to reset profile picture").build();
+                return Response.status(Response.Status.BAD_REQUEST).entity(new MessageResponse("Failed to reset profile picture")).build();
             }
         } catch (Exception e) {
             logger.error("Error resetting profile picture for user ID: {}", userId, e);
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Internal server error").build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new MessageResponse("Internal server error")).build();
         }
     }
 
@@ -181,7 +181,7 @@ public class ImageUploadResource {
                     .build();
         } catch (Exception e) {
             logger.error("Error retrieving profile picture for user ID: {}", userId, e);
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error retrieving profile picture")
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new MessageResponse("Error retrieving profile picture"))
                     .build();
         }
     }

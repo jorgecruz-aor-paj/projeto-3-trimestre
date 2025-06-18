@@ -83,7 +83,7 @@ public class UserResource {
         Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
         validator.validateManagerAssignDTO(managerAssignDto);
         serviceFactory.forUser().assignManagerBulk(requesterId, managerAssignDto);
-        return Response.ok("Managers assigned successfully").build();
+        return Response.ok(new MessageResponse("Managers assigned successfully")).build();
     }
 
     @GET

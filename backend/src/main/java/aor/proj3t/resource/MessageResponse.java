@@ -1,9 +1,9 @@
 package aor.proj3t.resource;
 
-public class ErrorResponse {
+public class MessageResponse {
     private String message;
 
-    public ErrorResponse(String message) {
+    public MessageResponse(String message) {
         this.message = message;
     }
 

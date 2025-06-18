@@ -104,7 +104,7 @@ public class TrainingResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response deactivateTraining(@PathParam("trainingId") Long id) {
         serviceFactory.forTraining().deactivateTraining(id);
-        return Response.ok("Training deactivated successfully").build();
+        return Response.ok(new MessageResponse("Training deactivated successfully")).build();
     }
 
     @POST
@@ -115,7 +115,7 @@ public class TrainingResource {
     public Response registerTrainingParticipation(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader, NewTrainingParticipationDTO newTrainingParticipationDto) {
         Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
         serviceFactory.forTrainingParticipation().registerTrainingParticipation(requesterId, newTrainingParticipationDto);
-        return Response.ok("Training participation successfully registered").build();
+        return Response.ok(new MessageResponse("Training participation successfully registered")).build();
     }
 
     @GET

@@ -1,7 +1,7 @@
 package aor.proj3t.exceptions.mapper;
 
 import aor.proj3t.exceptions.InvalidDataException;
-import aor.proj3t.resource.ErrorResponse;
+import aor.proj3t.resource.MessageResponse;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
@@ -17,7 +17,7 @@ public class InvalidDataExceptionMapper implements ExceptionMapper<InvalidDataEx
     public Response toResponse(InvalidDataException e) {
         logger.warn("Invalid data: {}", e.getMessage()); // Internal log
         return Response.status(Response.Status.BAD_REQUEST)
-                .entity(new ErrorResponse(e.getUserMessage())) // Safe message for client
+                .entity(new MessageResponse(e.getUserMessage())) // Safe message for client
                 .type(MediaType.APPLICATION_JSON)
                 .build();
     }

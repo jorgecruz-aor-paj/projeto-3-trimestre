@@ -1,7 +1,7 @@
 package aor.proj3t.exceptions.mapper;
 
 import aor.proj3t.exceptions.UnauthorizedException;
-import aor.proj3t.resource.ErrorResponse;
+import aor.proj3t.resource.MessageResponse;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
@@ -17,7 +17,7 @@ public class UnauthorizedExceptionMapper implements ExceptionMapper<Unauthorized
     public Response toResponse(UnauthorizedException e) {
         logger.warn("Unauthorized access attempt: {}", e.getMessage()); // Internal log
         return Response.status(Response.Status.UNAUTHORIZED)
-                .entity(new ErrorResponse(e.getUserMessage())) // Safe message for the user
+                .entity(new MessageResponse(e.getUserMessage())) // Safe message for the user
                 .type(MediaType.APPLICATION_JSON)
                 .build();
     }
