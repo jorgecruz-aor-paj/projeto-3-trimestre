@@ -2,6 +2,7 @@ package aor.proj3t.service;
 
 import aor.proj3t.service.impl.TokenService;
 import aor.proj3t.service.interfaces.AuthService;
+import aor.proj3t.service.interfaces.AuthorizationService;
 import aor.proj3t.service.interfaces.EvaluationCycleService;
 import aor.proj3t.service.interfaces.EvaluationService;
 import aor.proj3t.service.interfaces.MessageService;
@@ -42,6 +43,9 @@ public class ServiceFactory {
 
     @Inject
     private AuthService authService;
+
+    @Inject
+    private AuthorizationService authorizationService;
 
     @Inject
     private TrainingService trainingService;
@@ -147,5 +151,14 @@ public class ServiceFactory {
      */
     public NotificationService forNotification() {
         return notificationService;
+    }
+
+    /**
+     * Get the service for Authorization operations
+     * 
+     * @return The AuthorizationService instance
+     */
+    public AuthorizationService forAuthorization() {
+        return authorizationService;
     }
 }
