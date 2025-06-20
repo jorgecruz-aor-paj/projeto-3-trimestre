@@ -2,26 +2,24 @@ package aor.proj3t.service;
 
 import aor.proj3t.service.impl.TokenService;
 import aor.proj3t.service.interfaces.AuthService;
+import aor.proj3t.service.interfaces.AuthorizationService;
 import aor.proj3t.service.interfaces.EvaluationCycleService;
 import aor.proj3t.service.interfaces.EvaluationService;
+import aor.proj3t.service.interfaces.ExportService;
 import aor.proj3t.service.interfaces.MessageService;
 import aor.proj3t.service.interfaces.NotificationService;
 import aor.proj3t.service.interfaces.TrainingParticipationService;
 import aor.proj3t.service.interfaces.TrainingService;
 import aor.proj3t.service.interfaces.UserService;
-import aor.proj3t.service.interfaces.ExportService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 /**
- * Factory class to access all service implementations.
- * This class provides a centralized access point for all the services in the
- * application.
- * It follows the Factory design pattern to encapsulate the instantiation logic
- * of services
- * and provides a clean, consistent API for accessing them. The factory is
- * injected with all
- * available services and offers type-safe methods to retrieve them.
+ * Factory class to access all service implementations. This class provides a centralized access
+ * point for all the services in the application. It follows the Factory design pattern to
+ * encapsulate the instantiation logic of services and provides a clean, consistent API for
+ * accessing them. The factory is injected with all available services and offers type-safe methods
+ * to retrieve them.
  *
  * <p>
  * Example usage:
@@ -43,6 +41,9 @@ public class ServiceFactory {
 
     @Inject
     private AuthService authService;
+
+    @Inject
+    private AuthorizationService authorizationService;
 
     @Inject
     private TrainingService trainingService;
@@ -69,12 +70,9 @@ public class ServiceFactory {
     private ExportService exportService;
 
     /**
-     * Get the service for User operations
-     * This method provides access to the service responsible for user-related
-     * business logic and operations. The returned service handles all user
-     * management
-     * functionality such as creating, updating, retrieving, and authenticating
-     * users.
+     * Get the service for User operations This method provides access to the service responsible
+     * for user-related business logic and operations. The returned service handles all user
+     * management functionality such as creating, updating, retrieving, and authenticating users.
      *
      * @return The UserService instance
      */
@@ -152,6 +150,15 @@ public class ServiceFactory {
      */
     public NotificationService forNotification() {
         return notificationService;
+    }
+
+    /**
+     * Get the service for Authorization operations
+     * 
+     * @return The AuthorizationService instance
+     */
+    public AuthorizationService forAuthorization() {
+        return authorizationService;
     }
 
     /**
