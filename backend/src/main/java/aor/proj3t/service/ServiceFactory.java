@@ -9,6 +9,7 @@ import aor.proj3t.service.interfaces.NotificationService;
 import aor.proj3t.service.interfaces.TrainingParticipationService;
 import aor.proj3t.service.interfaces.TrainingService;
 import aor.proj3t.service.interfaces.UserService;
+import aor.proj3t.service.interfaces.ExportService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
@@ -54,6 +55,7 @@ public class ServiceFactory {
 
     @Inject
     private EvaluationCycleService evaluationCycleService;
+
     @Inject
     private TokenService tokenService;
 
@@ -62,6 +64,9 @@ public class ServiceFactory {
 
     @Inject
     private NotificationService notificationService;
+
+    @Inject
+    private ExportService exportService;
 
     /**
      * Get the service for User operations
@@ -148,4 +153,14 @@ public class ServiceFactory {
     public NotificationService forNotification() {
         return notificationService;
     }
+
+    /**
+     * Get the service for Export operations
+     *
+     * @return The ExportService instance
+     */
+    public ExportService forExport() {
+        return exportService;
+    }
+
 }
