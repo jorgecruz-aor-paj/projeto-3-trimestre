@@ -37,6 +37,9 @@
         <jakarta.activation.version>2.1.1</jakarta.activation.version>
         <dotenv-java.version>3.2.0</dotenv-java.version>
         <resteasy.version>6.2.12.Final</resteasy.version>
+        <opencsv.version>5.5</opencsv.version>
+        <apachePOI.version>5.4.1</apachePOI.version>
+        <itext.version>9.2.0</itext.version>
     </properties>
 
     <!-- Seção de dependências do projeto -->
@@ -150,6 +153,28 @@
             <artifactId>resteasy-multipart-provider</artifactId>
             <version>${resteasy.version}</version>
             <scope>provided</scope>
+        </dependency>
+
+        <!-- Dependência do OpenCSV para manipulação de arquivos CSV -->
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>${opencsv.version}</version>
+        </dependency>
+
+        <!-- Dependência do Apache POI para manipulação de arquivos Excel -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>${apachePOI.version}</version>
+        </dependency>
+
+        <!-- Dependência do iText para manipulação de arquivos PDF -->
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itext-core</artifactId>
+            <version>${itext.version}</version>
+            <type>pom</type>
         </dependency>
 
     </dependencies>

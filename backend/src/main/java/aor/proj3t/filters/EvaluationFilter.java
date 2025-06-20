@@ -5,18 +5,29 @@ import java.time.LocalDate;
 import aor.proj3t.enums.EvaluationScale;
 import aor.proj3t.enums.EvaluationSortField;
 import aor.proj3t.enums.EvaluationStatus;
+import jakarta.ws.rs.QueryParam;
 
 public class EvaluationFilter {
+    @QueryParam("evaluationId")
     private Long evaluationId;
+    @QueryParam("evaluatedId")
     private Long evaluatedId;
+    @QueryParam("evaluatorId")
     private Long evaluatorId;
+    @QueryParam("evaluationStatus")
     private EvaluationStatus evaluationStatus;
+    @QueryParam("date")
     private LocalDate date;
+    @QueryParam("evaluationScale")
     private EvaluationScale evaluationScale;
+    @QueryParam("evaluationSortField")
     private EvaluationSortField evaluationSortField = EvaluationSortField.DATE;
+    @QueryParam("ascending")
     private Boolean ascending = false;
-    private DateRange dateRange;
+    @QueryParam("searchText")
     private String searchText;
+    @QueryParam("dateRange")
+    private DateRange dateRange;
 
     public EvaluationFilter() {
     }

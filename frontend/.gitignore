@@ -12,7 +12,7 @@
 /build
 
 # files
-# .env
+.env
 output.log
 
 # misc
