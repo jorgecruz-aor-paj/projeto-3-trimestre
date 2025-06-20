@@ -1,30 +1,37 @@
 package aor.proj3t.service.impl;
 
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import aor.proj3t.daos.DAOFactory;
 import aor.proj3t.dto.EvaluationCloseDTO;
+import aor.proj3t.dto.EvaluationDTO;
+import aor.proj3t.entities.Evaluation;
+import aor.proj3t.entities.EvaluationCycle;
+import aor.proj3t.entities.User;
 import aor.proj3t.enums.EvaluationCycleStatus;
+import aor.proj3t.enums.EvaluationStatus;
 import aor.proj3t.enums.Role;
 import aor.proj3t.exceptions.BadRequestException;
 import aor.proj3t.exceptions.ConflictException;
 import aor.proj3t.exceptions.ForbiddenException;
 import aor.proj3t.exceptions.NotFoundException;
 import aor.proj3t.filters.EvaluationFilter;
-import jakarta.transaction.Transactional;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import aor.proj3t.daos.DAOFactory;
-import aor.proj3t.dto.EvaluationDTO;
-import aor.proj3t.entities.Evaluation;
-import aor.proj3t.entities.EvaluationCycle;
-import aor.proj3t.entities.User;
-import aor.proj3t.enums.EvaluationStatus;
+import aor.proj3t.service.ServiceFactory;
+import aor.proj3t.service.interfaces.AuthorizationService;
 import aor.proj3t.service.interfaces.EvaluationService;
 import aor.proj3t.util.converterutils.ConverterFactory;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 
 @ApplicationScoped
 public class EvaluationServiceImpl extends BaseService implements EvaluationService {
@@ -36,6 +43,8 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
     @Inject
     ConverterFactory converterFactory;
 
+    @Inject
+    ServiceFactory serviceFactory;
 
     @Override
     public Boolean createEvaluation(Long evaluatedUserId, Long evaluatorUserId, Long evaluationCycleId) {
@@ -72,7 +81,8 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
 
     @Override
     public void updateEvaluation(Long requesterId, EvaluationDTO evaluationDTO) {
-        Evaluation evaluation = getEntity(daoFactory.forEvaluation().findById(evaluationDTO.getId()), evaluationDTO.getId(), "Evaluation");
+        Evaluation evaluation = getEntity(daoFactory.forEvaluation().findById(evaluationDTO.getId()),
+                evaluationDTO.getId(), "Evaluation");
         evaluation.setScale(evaluationDTO.getScale());
         evaluation.setFeedback(evaluationDTO.getFeedback());
         evaluation.setStatus(evaluationDTO.getStatus());
@@ -124,7 +134,8 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
     @Override
     public Boolean completeEvaluation(Long evaluationId) {
         try {
-            Evaluation evaluation = getEntity(daoFactory.forEvaluation().findById(evaluationId), evaluationId, "Evaluation");
+            Evaluation evaluation = getEntity(daoFactory.forEvaluation().findById(evaluationId), evaluationId,
+                    "Evaluation");
             evaluation.setStatus(EvaluationStatus.COMPLETED);
             return true;
         } catch (NoSuchElementException e) {
@@ -139,7 +150,8 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
     @Override
     public Boolean closeEvaluation(Long evaluationId) {
         try {
-            Evaluation evaluation = getEntity(daoFactory.forEvaluation().findById(evaluationId), evaluationId, "Evaluation");
+            Evaluation evaluation = getEntity(daoFactory.forEvaluation().findById(evaluationId), evaluationId,
+                    "Evaluation");
             evaluation.setStatus(EvaluationStatus.CLOSED);
             checkAndCloseEvaluationCycle(evaluation.getEvaluationCycle().getId());
             return true;
@@ -164,7 +176,8 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
         if (cycle.getStatus().equals(EvaluationCycleStatus.CLOSED)) {
             throw new BadRequestException(
                     "Evaluation cycle has already been closed",
-                    "User with id " + requesterId + " tried closing evaluations from closed cycle with id " + dto.getCycleId());
+                    "User with id " + requesterId + " tried closing evaluations from closed cycle with id "
+                            + dto.getCycleId());
         }
         List<Evaluation> evaluations = getEvaluationListFromIds(dto.getEvaluationIds());
         if (evaluations.isEmpty()) {
@@ -198,7 +211,7 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
     public Integer closeAllCompletedEvaluations() {
         try {
             Integer closedEvaluations = daoFactory.forEvaluation().closeAllCompletedEvaluations();
-            return closedEvaluations == null ? 0 : closedEvaluations;
+            return closedEvaluations;
         } catch (Exception e) {
             logger.error("Error while closing all complete evaluations", e);
             return -1;
@@ -208,48 +221,33 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
     @Override
     public List<EvaluationDTO> getEvaluationsByFilter(Long requesterId, EvaluationFilter filter) {
         User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
-        if (filter.getEvaluatedId() != null) {
-            User evaluated = getEntity(daoFactory.forUser().findById(filter.getEvaluatedId()), filter.getEvaluatedId(), "User");
-            canViewEvaluationsByEvaluated(requester, evaluated);
-        } else if (requester.getRole().equals(Role.USER)) {
+
+        // Authorize access based on filter parameters
+        AuthorizationService authService = serviceFactory.forAuthorization();
+        authService.authorizeEvaluationAccess(requester, filter.getEvaluatedId(), filter.getEvaluatorId());
+
+        // Apply default filters based on role
+        if (requester.getRole().equals(Role.USER)) {
+            // Users can only see their own evaluations
             filter.setEvaluatedId(requesterId);
-        }
-        if (filter.getEvaluatorId() != null) {
-            User evaluator = getEntity(daoFactory.forUser().findById(filter.getEvaluatorId()), filter.getEvaluatorId(), "User");
-            canViewEvaluationsByEvaluator(requester, evaluator);
-        } else if (requester.getRole().equals(Role.MANAGER)) {
+        } else if (requester.getRole().equals(Role.MANAGER) && filter.getEvaluatedId() == null
+                && filter.getEvaluatorId() == null) {
+            // If no specific filter is provided, limit managers to evaluations they
+            // performed
             filter.setEvaluatorId(requesterId);
         }
+        // Admin has no restrictions
+
         List<Evaluation> evaluation = daoFactory.forEvaluation().getEvaluationsByFilters(filter);
         return converterFactory.forEvaluation().toDTOList(evaluation);
     }
-
-    private void canViewEvaluationsByEvaluated(User requester, User evaluated) {
-        boolean isRequesterAdmin = requester.getRole() == Role.ADMIN;
-        boolean isRequesterSelf = requester.getId().equals(evaluated.getId());
-        boolean isRequesterManagerOfEvaluated = evaluated.getManager() != null &&
-                evaluated.getManager().getId().equals(requester.getId());
-        if (!(isRequesterAdmin || isRequesterSelf || isRequesterManagerOfEvaluated)) {
-            throw new ForbiddenException("Permission denied",
-                    "User with id " + requester.getId() + " cannot view evaluations of user " + evaluated.getId());
-        }
-    }
-
-    private void canViewEvaluationsByEvaluator(User requester, User evaluator) {
-        boolean isRequesterAdmin = requester.getRole() == Role.ADMIN;
-        boolean isRequesterSelf = requester.getId().equals(evaluator.getId());
-        if (!(isRequesterAdmin || isRequesterSelf)) {
-            throw new ForbiddenException("Permission denied",
-                    "User with id " + requester.getId() + " cannot view evaluations made by user " + evaluator.getId());
-        }
-    }
-
 
     private List<Evaluation> getEvaluationListFromIds(List<Long> evaluationIds) {
 
         List<Evaluation> evaluations = new ArrayList<>(evaluationIds.size());
         for (Long evaluationId : evaluationIds) {
-            Evaluation evaluation = getEntity(daoFactory.forEvaluation().findById(evaluationId), evaluationId, "Evaluation");
+            Evaluation evaluation = getEntity(daoFactory.forEvaluation().findById(evaluationId), evaluationId,
+                    "Evaluation");
             if (evaluation != null) {
                 evaluations.add(evaluation);
             } else {
@@ -261,7 +259,8 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
 
     private void checkAndCloseEvaluationCycle(Long evaluationCycleId) {
         if (daoFactory.forEvaluation().countUnclosedEvaluationsByCycleId(evaluationCycleId) == 0) {
-            EvaluationCycle cycle = getEntity(daoFactory.forEvaluationCycle().findById(evaluationCycleId), evaluationCycleId, "EvaluationCycle");
+            EvaluationCycle cycle = getEntity(daoFactory.forEvaluationCycle().findById(evaluationCycleId),
+                    evaluationCycleId, "EvaluationCycle");
             cycle.setStatus(EvaluationCycleStatus.CLOSED);
             cycle.setClosureDate(Instant.now());
             logger.info("Evaluation cycle with id {} has been closed", evaluationCycleId);
@@ -272,10 +271,11 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
         if (daoFactory.forEvaluation().countOngoingEvaluationsByCycle(evaluationCycleId) == 0) {
             daoFactory.forEvaluationCycle().updateStatus(evaluationCycleId, EvaluationCycleStatus.COMPLETED);
             logger.info("Evaluation cycle with id {} has been completed", evaluationCycleId);
-            //TODO maybe sent a notification to admin responsible for cycle
+            // TODO maybe sent a notification to admin responsible for cycle
         }
     }
 
+    @Override
     public Map<String, Long> getEvaluationsCompletedStats(Long requesterId) {
         User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
         checkIfRequesterIsAdmin(requester);
@@ -295,6 +295,5 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
         stats.put("ongoing", ongoing);
         return stats;
     }
-
 
 }
