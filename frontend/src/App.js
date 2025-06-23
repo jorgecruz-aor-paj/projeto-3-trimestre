@@ -8,7 +8,7 @@ export function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          Edit <code>src/App.js</code> and save to reload. Or simply run
         </p>
         <a
           className="App-link"
@@ -22,8 +22,6 @@ export function App() {
     </div>
   );
 }
-
-export default App;
 
 // TODO Ler e definir se é boa escolha para o design pattern da aplicação
 /* Application design pattern!
