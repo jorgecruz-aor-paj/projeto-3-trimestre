@@ -128,6 +128,7 @@ public class TrainingServiceImpl extends BaseService implements TrainingService 
                     "Permission denied",
                     "User with ID " + requesterId + " requested deactivated trainings");
         }
+        filters.hydrate();
         return converterFactory.forTraining().toDTOList(daoFactory.forTraining().getTrainingsByFilters(filters));
 
     }

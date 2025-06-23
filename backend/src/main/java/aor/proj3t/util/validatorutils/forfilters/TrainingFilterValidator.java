@@ -1,5 +1,6 @@
 package aor.proj3t.util.validatorutils.forfilters;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.List;
@@ -77,14 +78,10 @@ public class TrainingFilterValidator extends BaseFilterValidator<TrainingFilter>
     private void validateStartDate(TrainingFilter filter, List<String> validationErrors) {
         String startDate = filter.getStartDate();
         if (startDate != null && !startDate.isEmpty()) {
-            if (!DATE_PATTERN.matcher(startDate).matches()) {
-                validationErrors.add("Date must be in format YYYY-MM-DD");
-            } else {
-                try {
-                    LocalDate.parse(startDate);
-                } catch (DateTimeParseException e) {
-                    validationErrors.add("The date must be in the format YYYY-MM-DD");
-                }
+            try {
+                Instant.parse(startDate); // expects format like 2025-07-01T09:00:00Z
+            } catch (DateTimeParseException e) {
+                validationErrors.add("Start date must be in ISO-8601 format, e.g., 2025-07-01T09:00:00Z");
             }
         }
     }

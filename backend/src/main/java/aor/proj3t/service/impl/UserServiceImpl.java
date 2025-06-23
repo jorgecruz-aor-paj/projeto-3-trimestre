@@ -171,11 +171,12 @@ public class UserServiceImpl extends BaseService implements UserService {
     public List<UserDTO> getUsersByFilters(Long requesterId, UserFilter filters) {
             User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
             //TODO remove if no filter limits are needed for users
-            if (requester.getRole() == Role.USER && filters.getManager() != null) {
-                throw new ForbiddenException(
-                        "Permission denied",
-                        "User with ID " + requesterId + " accessed forbidden user filters");
-            }
+//            if (requester.getRole() == Role.USER && filters.getManager() != null) {
+//                throw new ForbiddenException(
+//                        "Permission denied",
+//                        "User with ID " + requesterId + " accessed forbidden user filters");
+//            }
+            filters.hydrate(daoFactory);
             return converterFactory.forUser().toDTOList(daoFactory.forUser().getUsersByFilters(filters));
     }
 

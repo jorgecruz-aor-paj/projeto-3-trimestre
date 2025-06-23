@@ -9,10 +9,7 @@ import aor.proj3t.entities.User;
 import aor.proj3t.enums.Role;
 import aor.proj3t.filters.UserFilter;
 import jakarta.ejb.Stateless;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.*;
 
 /**
  * Implementation of the UserDAO interface that provides data access
@@ -148,40 +145,46 @@ public class UserDAOimpl extends AbstractDAO<User, Long> implements UserDAO {
         Root<User> root = query.from(User.class);
         List<Predicate> predicates = new ArrayList<>();
 
+        // Filter by ID
         if (filters.getId() != null) {
             predicates.add(cb.equal(root.get("id"), filters.getId()));
         }
 
+        // PRIORITY: specific manager overrides 'noManager'
         if (filters.getManager() != null) {
             predicates.add(cb.equal(root.get("manager"), filters.getManager()));
-        }
-
-        if (filters.isNoManager()) {
+        } else if (filters.isNoManager()) {
             predicates.add(cb.isNull(root.get("manager")));
         }
 
+        // Filter by workplace
         if (filters.getWorkplace() != null) {
             predicates.add(cb.equal(root.get("workplace"), filters.getWorkplace()));
         }
 
+        // Search across name and email
         if (filters.getSearchText() != null && !filters.getSearchText().isEmpty()) {
+            String text = "%" + filters.getSearchText().toLowerCase() + "%";
             Predicate namePredicate = cb.or(
-                    cb.like(root.get("firstName"), "%" + filters.getSearchText() + "%"),
-                    cb.like(root.get("lastName"), "%" + filters.getSearchText() + "%"),
-                    cb.like(root.get("email"), "%" + filters.getSearchText() + "%"));
+                    cb.like(cb.lower(root.get("firstName")), text),
+                    cb.like(cb.lower(root.get("lastName")), text),
+                    cb.like(cb.lower(root.get("email")), text)
+            );
             predicates.add(namePredicate);
         }
 
-        query.where(predicates.toArray(Predicate[]::new));
+        // Apply predicates to query
+        query.where(predicates.toArray(new Predicate[0]));
 
+        // Sorting
         if (filters.getSortField() != null) {
-            query.orderBy(filters.isAscending()
-                    ? cb.asc(root.get(filters.getSortField().getFieldName()))
-                    : cb.desc(root.get(filters.getSortField().getFieldName())));
+            Path<?> sortPath = root.get(filters.getSortField().getFieldName());
+            query.orderBy(filters.isAscending() ? cb.asc(sortPath) : cb.desc(sortPath));
         }
 
         return em.createQuery(query).getResultList();
     }
+
 
     @Override
     public List<User> getManagers(){

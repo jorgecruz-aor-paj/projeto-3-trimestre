@@ -223,8 +223,7 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
         User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
 
         // Authorize access based on filter parameters
-        AuthorizationService authService = serviceFactory.forAuthorization();
-        authService.authorizeEvaluationAccess(requester, filter.getEvaluatedId(), filter.getEvaluatorId());
+        serviceFactory.forAuthorization().authorizeEvaluationAccess(requester, filter.getEvaluatedId(), filter.getEvaluatorId());
 
         // Apply default filters based on role
         if (requester.getRole().equals(Role.USER)) {
@@ -238,6 +237,7 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
         }
         // Admin has no restrictions
 
+        filter.hydrate();
         List<Evaluation> evaluation = daoFactory.forEvaluation().getEvaluationsByFilters(filter);
         return converterFactory.forEvaluation().toDTOList(evaluation);
     }

@@ -5,9 +5,9 @@ public enum UserSortField {
     ID("id"),
     WORKPLACE("workplace"),
     MANAGER("manager"),
-    NAME("name"),
-    DATE_OF_BIRTH("birth_date"),
-    DATE("created_at");
+    NAME("firstName"),
+    DATE_OF_BIRTH("birthDate"),
+    DATE("createdAt");
 
 
 
