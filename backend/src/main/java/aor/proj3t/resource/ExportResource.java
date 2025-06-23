@@ -17,8 +17,10 @@ import jakarta.ws.rs.BeanParam;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.HeaderParam;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 /**
@@ -181,6 +183,46 @@ public class ExportResource {
         logger.debug("Returning CSV response with {} bytes of data", csvData.length());
 
         return response;
+    }
+
+    /**
+     * Exports a single evaluation to a PDF file with detailed information.
+     * <p>
+     * This endpoint generates a PDF document containing comprehensive details about
+     * a specific evaluation, including information about the evaluator, evaluated
+     * user,
+     * and the evaluation itself.
+     * The endpoint requires authentication.
+     * </p>
+     *
+     * @param authHeader   the authorization header containing the JWT token
+     * @param evaluationId the ID of the evaluation to export
+     * @return a Response with the PDF data and appropriate headers for file
+     *         download
+     */
+    @GET
+    @Path("/evaluations/{id}/pdf")
+    @Secured
+    @Produces("application/pdf")
+    public Response exportEvaluationToPDF(
+            @HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader,
+            @PathParam("id") Long evaluationId) {
+        logger.info("Received request to export evaluation ID: {} to PDF", evaluationId);
+
+        Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
+        logger.debug("Request initiated by user with ID: {}", requesterId);
+
+        byte[] pdfData = serviceFactory.forExport().exportEvaluationToPDF(requesterId, evaluationId);
+        logger.info("Successfully generated PDF export for evaluation ID: {}", evaluationId);
+
+        // Generate filename with timestamp
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+        String filename = "evaluation_" + evaluationId + "_" + timestamp + ".pdf";
+        logger.debug("Generated filename for export: {}", filename);
+
+        return Response.ok(pdfData, MediaType.APPLICATION_OCTET_STREAM)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"")
+                .build();
     }
 
     /**

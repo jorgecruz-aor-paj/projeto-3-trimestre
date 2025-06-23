@@ -56,4 +56,18 @@ public interface ExportService {
      * @return a String containing the CSV data.
      */
     String exportFilteredTrainingsToCSV(Long requesterId, TrainingFilter filters);
+
+    /**
+     * Exports a single evaluation to a PDF format file.
+     * <p>
+     * This method exports a specific evaluation with its detailed information to
+     * PDF.
+     * It includes all relevant data about the evaluation, evaluator, and evaluatee.
+     * </p>
+     *
+     * @param requesterId  the ID of the user requesting the export.
+     * @param evaluationId the ID of the evaluation to export.
+     * @return a byte array containing the PDF data.
+     */
+    byte[] exportEvaluationToPDF(Long requesterId, Long evaluationId);
 }
