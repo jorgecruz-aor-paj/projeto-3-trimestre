@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLanguage } from '../contexts/LanguageContext';
+import { useLanguage } from 'contexts/LanguageContext';
 import { Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGlobe } from '@fortawesome/free-solid-svg-icons';
@@ -17,7 +17,7 @@ const AVAILABLE_LANGUAGES = [
  * Language selector component that allows users to switch languages
  * @returns {React.Component} - Language selector component
  */
-const LanguageSelector = () => {
+export const LanguageSelector = () => {
   const { changeLanguage, getCurrentLanguage } = useLanguage();
   const currentLanguage = getCurrentLanguage();
 
@@ -43,5 +43,3 @@ const LanguageSelector = () => {
     </Dropdown>
   );
 };
-
-export default LanguageSelector;

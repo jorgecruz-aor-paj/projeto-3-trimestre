@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { I18nextProvider } from 'react-i18next';
-import { setupI18n } from 'config/i18n';
+import { setupI18n, i18n } from 'config/i18n';
 
 // Create context for language utility functions
 const LanguageContext = createContext();
@@ -27,89 +27,75 @@ export const SUPPORTED_LANGUAGES = ['pt', 'en'];
  *   <App />
  * </LanguageProvider>
  */
-export function LanguageProvider({ children }) {
-  const [i18nInstance, setI18nInstance] = useState(null);
+export const LanguageProvider = ({ children }) => {
+  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
     // Initialize i18next with default configuration
-    const i18n = setupI18n({
-      // Use default detection from i18n.js
-      // Will detect browser language and use localStorage for persistence
-      fallbackLng: 'pt',
-      supportedLngs: SUPPORTED_LANGUAGES,
+    const initI18n = async () => {
+      await setupI18n({
+        // Use default detection from i18n.js
+        // Will detect browser language and use localStorage for persistence
+        fallbackLng: 'pt',
+        supportedLngs: SUPPORTED_LANGUAGES,
 
-      // Enable missing translation detection
-      saveMissing: true,
-      saveMissingTo: 'all',
+        // Add react configuration
+        react: {
+          useSuspense: false,
+          bindI18n: 'languageChanged loaded',
+          bindI18nStore: 'added removed',
+        },
 
-      // Configure missing key handling
-      missingKeyHandler: (lng, ns, key) => {
-        console.warn(`Missing translation: "${key}" for language: ${lng}`);
-      },
+        // Enable missing translation detection
+        saveMissing: true,
+        saveMissingTo: 'all',
 
-      // Optional: Add placeholder text for missing translations
-      parseMissingKeyHandler: key => {
-        return `➤ ${key} ➤`;
-      },
-    });
+        // Configure missing key handling
+        missingKeyHandler: (lng, ns, key) => {
+          console.warn(`Missing translation: "${key}" for language: ${lng}`);
+        },
 
-    setI18nInstance(i18n);
+        // Optional: Add placeholder text for missing translations
+        parseMissingKeyHandler: key => {
+          return `➤ ${key} ➤`;
+        },
+      });
+      setIsInitialized(true);
+    };
+
+    initI18n();
   }, []);
 
   // Wait for i18n to be initialized
-  if (!i18nInstance) {
-    return null; // Or a loading spinner
+  if (!isInitialized) {
+    return <div>Loading translations...</div>; // Or a loading spinner
   }
 
   // Helper functions for the context - using i18n's current language
   const languageUtils = {
-    /**
-     * Changes the current language
-     * @param {string} lang - Language code to switch to
-     */
-    changeLanguage: lang => {
-      if (SUPPORTED_LANGUAGES.includes(lang)) {
-        i18nInstance.changeLanguage(lang);
+    // Get current language code
+    getCurrentLanguage: () => i18n.language,
+
+    // Change language
+    changeLanguage: langCode => {
+      if (SUPPORTED_LANGUAGES.includes(langCode)) {
+        return i18n.changeLanguage(langCode);
       }
+      return Promise.reject(new Error(`Language ${langCode} not supported`));
     },
 
-    /**
-     * Get the current language code
-     * @returns {string} Current language code
-     */
-    getCurrentLanguage: () => i18nInstance.language,
-
-    /**
-     * Formats a date according to the current language
-     * @param {Date|string|number} date - Date to format
-     * @param {Object} options - Intl.DateTimeFormat options
-     * @returns {string} Formatted date string
-     */
-    formatDate: (date, options = {}) => {
-      return new Intl.DateTimeFormat(i18nInstance.language, options).format(
-        date instanceof Date ? date : new Date(date)
-      );
-    },
-
-    /**
-     * Formats a number according to the current language
-     * @param {number} number - Number to format
-     * @param {Object} options - Intl.NumberFormat options
-     * @returns {string} Formatted number string
-     */
+    // Format numbers according to the current language
     formatNumber: (number, options = {}) => {
-      return new Intl.NumberFormat(i18nInstance.language, options).format(
-        number
-      );
+      return new Intl.NumberFormat(i18n.language, options).format(number);
     },
   };
 
   return (
     <LanguageContext.Provider value={languageUtils}>
-      <I18nextProvider i18n={i18nInstance}>{children}</I18nextProvider>
+      <I18nextProvider i18n={i18n}>{children}</I18nextProvider>
     </LanguageContext.Provider>
   );
-}
+};
 
 LanguageProvider.propTypes = {
   /**
