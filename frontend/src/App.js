@@ -1,27 +1,18 @@
 import React from 'react';
-import logo from 'logo.svg';
 import 'styles/App.css';
+import { LanguageProvider } from 'contexts/LanguageContext';
+import { BrowserRouter } from 'react-router-dom';
+import { AppRouter } from 'routes/AppRouter';
 
-export function App() {
+export const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload. Or simply run
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <LanguageProvider>
+      <BrowserRouter>
+        <AppRouter />
+      </BrowserRouter>
+    </LanguageProvider>
   );
-}
+};
 
 // TODO Ler e definir se é boa escolha para o design pattern da aplicação
 /* Application design pattern!
