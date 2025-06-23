@@ -6,6 +6,8 @@ import java.time.format.DateTimeFormatter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import aor.proj3t.filters.EvaluationFilter;
+import aor.proj3t.filters.TrainingFilter;
 import aor.proj3t.filters.UserFilter;
 import aor.proj3t.service.ServiceFactory;
 import aor.proj3t.util.authutils.Secured;
@@ -15,8 +17,10 @@ import jakarta.ws.rs.BeanParam;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.HeaderParam;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 /**
@@ -100,6 +104,199 @@ public class ExportResource {
         logger.info("Successfully generated CSV export for filtered users");
 
         Response response = createCsvResponse(csvData, "filtered_users_export");
+        logger.debug("Returning CSV response with {} bytes of data", csvData.length());
+
+        return response;
+    }
+
+    /**
+     * Exports all evaluations in the system to a CSV file.
+     * <p>
+     * This endpoint generates a CSV file containing all evaluations in the system.
+     * The CSV includes evaluation details such as ID, scale, status, feedback, etc.
+     * The endpoint requires authentication.
+     * </p>
+     *
+     * @param authHeader the authorization header containing the JWT token
+     * @return a Response with the CSV data and appropriate headers for file
+     *         download
+     */
+    @GET
+    @Path("/evaluations/csv")
+    @Secured
+    @Produces("text/csv")
+    public Response exportEvaluationsToCSV(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader) {
+        logger.info("Received request to export all evaluations to CSV");
+
+        Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
+        logger.debug("Request initiated by user with ID: {}", requesterId);
+
+        String csvData = serviceFactory.forExport().exportEvaluationsToCSV(requesterId);
+        logger.info("Successfully generated CSV export for all evaluations");
+
+        Response response = createCsvResponse(csvData, "evaluations_export");
+        logger.debug("Returning CSV response with {} bytes of data", csvData.length());
+
+        return response;
+    }
+
+    /**
+     * Exports filtered evaluations to a CSV file.
+     * <p>
+     * This endpoint generates a CSV file containing evaluations that match the
+     * specified
+     * filters.
+     * Filters can be applied to various evaluation properties such as status,
+     * scale,
+     * date range, etc.
+     * The endpoint requires authentication.
+     * </p>
+     *
+     * @param authHeader the authorization header containing the JWT token
+     * @param filters    a bean containing filter criteria to apply to the
+     *                   evaluation list
+     * @return a Response with the CSV data and appropriate headers for file
+     *         download
+     */
+    @GET
+    @Path("/evaluations/csv/filtered")
+    @Secured
+    @Produces("text/csv")
+    public Response exportFilteredEvaluationsToCSV(
+            @HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader,
+            @BeanParam EvaluationFilter filters) {
+        logger.info("Received request to export filtered evaluations to CSV");
+        logger.debug("Applied filters: {}", filters);
+
+        Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
+        logger.debug("Request initiated by user with ID: {}", requesterId);
+
+        // Ensure filter date range is hydrated if provided
+        if (filters.getStartDate() != null || filters.getEndDate() != null) {
+            filters.hydrate();
+        }
+
+        String csvData = serviceFactory.forExport().exportFilteredEvaluationsToCSV(requesterId, filters);
+        logger.info("Successfully generated CSV export for filtered evaluations");
+
+        Response response = createCsvResponse(csvData, "filtered_evaluations_export");
+        logger.debug("Returning CSV response with {} bytes of data", csvData.length());
+
+        return response;
+    }
+
+    /**
+     * Exports a single evaluation to a PDF file with detailed information.
+     * <p>
+     * This endpoint generates a PDF document containing comprehensive details about
+     * a specific evaluation, including information about the evaluator, evaluated
+     * user,
+     * and the evaluation itself.
+     * The endpoint requires authentication.
+     * </p>
+     *
+     * @param authHeader   the authorization header containing the JWT token
+     * @param evaluationId the ID of the evaluation to export
+     * @return a Response with the PDF data and appropriate headers for file
+     *         download
+     */
+    @GET
+    @Path("/evaluations/{id}/pdf")
+    @Secured
+    @Produces("application/pdf")
+    public Response exportEvaluationToPDF(
+            @HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader,
+            @PathParam("id") Long evaluationId) {
+        logger.info("Received request to export evaluation ID: {} to PDF", evaluationId);
+
+        Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
+        logger.debug("Request initiated by user with ID: {}", requesterId);
+
+        byte[] pdfData = serviceFactory.forExport().exportEvaluationToPDF(requesterId, evaluationId);
+        logger.info("Successfully generated PDF export for evaluation ID: {}", evaluationId);
+
+        // Generate filename with timestamp
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+        String filename = "evaluation_" + evaluationId + "_" + timestamp + ".pdf";
+        logger.debug("Generated filename for export: {}", filename);
+
+        return Response.ok(pdfData, MediaType.APPLICATION_OCTET_STREAM)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"")
+                .build();
+    }
+
+    /**
+     * Exports all trainings in the system to a CSV file.
+     * <p>
+     * This endpoint generates a CSV file containing all trainings in the system.
+     * The CSV includes training details such as ID, title, duration, description,
+     * etc.
+     * The endpoint requires authentication.
+     * </p>
+     *
+     * @param authHeader the authorization header containing the JWT token
+     * @return a Response with the CSV data and appropriate headers for file
+     *         download
+     */
+    @GET
+    @Path("/trainings/csv")
+    @Secured
+    @Produces("text/csv")
+    public Response exportTrainingsToCSV(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader) {
+        logger.info("Received request to export all trainings to CSV");
+
+        Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
+        logger.debug("Request initiated by user with ID: {}", requesterId);
+
+        String csvData = serviceFactory.forExport().exportTrainingsToCSV(requesterId);
+        logger.info("Successfully generated CSV export for all trainings");
+
+        Response response = createCsvResponse(csvData, "trainings_export");
+        logger.debug("Returning CSV response with {} bytes of data", csvData.length());
+
+        return response;
+    }
+
+    /**
+     * Exports filtered trainings to a CSV file.
+     * <p>
+     * This endpoint generates a CSV file containing trainings that match the
+     * specified
+     * filters.
+     * Filters can be applied to various training properties such as training area,
+     * language,
+     * duration, etc.
+     * The endpoint requires authentication.
+     * </p>
+     *
+     * @param authHeader the authorization header containing the JWT token
+     * @param filters    a bean containing filter criteria to apply to the training
+     *                   list
+     * @return a Response with the CSV data and appropriate headers for file
+     *         download
+     */
+    @GET
+    @Path("/trainings/csv/filtered")
+    @Secured
+    @Produces("text/csv")
+    public Response exportFilteredTrainingsToCSV(
+            @HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader,
+            @BeanParam TrainingFilter filters) {
+        logger.info("Received request to export filtered trainings to CSV");
+        logger.debug("Applied filters: {}", filters);
+
+        Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
+        logger.debug("Request initiated by user with ID: {}", requesterId);
+
+        // Ensure filter date is hydrated if provided
+        if (filters.getStartDate() != null) {
+            filters.hydrate();
+        }
+
+        String csvData = serviceFactory.forExport().exportFilteredTrainingsToCSV(requesterId, filters);
+        logger.info("Successfully generated CSV export for filtered trainings");
+
+        Response response = createCsvResponse(csvData, "filtered_trainings_export");
         logger.debug("Returning CSV response with {} bytes of data", csvData.length());
 
         return response;
