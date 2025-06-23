@@ -28,7 +28,6 @@ import aor.proj3t.exceptions.NotFoundException;
 import aor.proj3t.filters.EvaluationFilter;
 import aor.proj3t.service.ServiceFactory;
 import aor.proj3t.service.interfaces.AuthorizationService;
-import aor.proj3t.service.ServiceFactory;
 import aor.proj3t.service.interfaces.EvaluationService;
 import aor.proj3t.util.converterutils.ConverterFactory;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -240,6 +239,30 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
             logger.error("Error while closing all complete evaluations", e);
             return -1;
         }
+    }
+
+    @Override
+    public List<EvaluationDTO> getEvaluationsByFilter(Long requesterId, EvaluationFilter filter) {
+        User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
+
+        // Authorize access based on filter parameters
+        AuthorizationService authService = serviceFactory.forAuthorization();
+        authService.authorizeEvaluationAccess(requester, filter.getEvaluatedId(), filter.getEvaluatorId());
+
+        // Apply default filters based on role
+        if (requester.getRole().equals(Role.USER)) {
+            // Users can only see their own evaluations
+            filter.setEvaluatedId(requesterId);
+        } else if (requester.getRole().equals(Role.MANAGER) && filter.getEvaluatedId() == null
+                && filter.getEvaluatorId() == null) {
+            // If no specific filter is provided, limit managers to evaluations they
+            // performed
+            filter.setEvaluatorId(requesterId);
+        }
+        // Admin has no restrictions
+
+        List<Evaluation> evaluation = daoFactory.forEvaluation().getEvaluationsByFilters(filter);
+        return converterFactory.forEvaluation().toDTOList(evaluation);
     }
 
     private List<Evaluation> getEvaluationListFromIds(Long[] evaluationIds) {
