@@ -5,9 +5,9 @@ import { Routes, Route } from 'react-router-dom';
  * AppRouter component that defines all application routes
  *
  * This component sets up all the routes for the application, including:
- * - Public routes (home, registration, product browsing)
- * - User routes (profile, messages, adding products)
- * - Admin routes (categories, product management, user management)
+ * - Public routes (home, registration, reset password)
+ * - User routes (profile, messages)
+ * - Admin routes (user management)
  * - Authentication routes (password reset, account confirmation)
  * - Error routes (not found, forbidden)
  *
@@ -22,7 +22,8 @@ import { Routes, Route } from 'react-router-dom';
 export const AppRouter = () => {
   return (
     <Routes>
-      <Route path="/" element={<"[HOME PLACEHOLDER]" />} />
+      <Route path="/" element={<Home />} />
+      {/* Definir o resto das Routes */}
     </Routes>
   );
 };
