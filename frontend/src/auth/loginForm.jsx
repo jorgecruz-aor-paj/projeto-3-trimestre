@@ -1,30 +1,33 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { performLogin } from "../stores/authActions";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { performLogin } from '../stores/authActions';
 
 export default function LoginForm() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     setLoading(true);
     setError(null);
     try {
       await performLogin(email, password);
-      navigate("/dashboard");
-    } catch {
-      setError("Login failed. Please check credentials.");
+      navigate('/dashboard');
+    } catch (err) {
+      setError(err.message || 'Login failed.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-4 border rounded shadow-sm bg-light">
+    <form
+      onSubmit={handleSubmit}
+      className="p-4 border rounded shadow-sm bg-light"
+    >
       <div className="mb-3">
         <label className="form-label">Email</label>
         <input
@@ -32,7 +35,7 @@ export default function LoginForm() {
           type="email"
           value={email}
           disabled={loading}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={e => setEmail(e.target.value)}
           required
         />
       </div>
@@ -44,19 +47,27 @@ export default function LoginForm() {
           type="password"
           value={password}
           disabled={loading}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={e => setPassword(e.target.value)}
           required
         />
       </div>
 
-      <button className="btn btn-primary w-100" type="submit" disabled={loading}>
+      <button
+        className="btn btn-primary w-100"
+        type="submit"
+        disabled={loading}
+      >
         {loading ? (
           <>
-            <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            <span
+              className="spinner-border spinner-border-sm me-2"
+              role="status"
+              aria-hidden="true"
+            ></span>
             Logging in...
           </>
         ) : (
-          "Login"
+          'Login'
         )}
       </button>
 
@@ -64,4 +75,3 @@ export default function LoginForm() {
     </form>
   );
 }
-
