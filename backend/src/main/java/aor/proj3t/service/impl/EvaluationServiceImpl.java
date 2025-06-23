@@ -91,6 +91,7 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
         evaluation.setStatus(evaluationDTO.getStatus());
 
         // Perform sentiment analysis on feedback if provided
+        String feedback = evaluationDTO.getFeedback();
         if (feedback != null && !feedback.trim().isEmpty()) {
             try {
                 SentimentResponseDTO sentimentResult = serviceFactory.forAI().analyzeSentiment(feedback);
@@ -101,7 +102,7 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
                             sentimentResult.getSubjectivity());
                     // TODO
                     // Store sentiment information in the evaluation (optional)
-                    // You could add a field to Evaluation entity to store this info
+                    // Maybe add a field to Evaluation entity to store this info
                 }
             } catch (Exception e) {
                 // Don't fail the evaluation update if sentiment analysis fails
@@ -202,7 +203,7 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
                     "User with id " + requesterId + " tried closing evaluations from closed cycle with id "
                             + dto.getCycleId());
         }
-        List<Evaluation> evaluations = getEvaluationListFromIds(dto.getEvaluationIds());
+        List<Evaluation> evaluations = getEvaluationListFromIds(dto.getEvaluationIds().toArray(Long[]::new));
         if (evaluations.isEmpty()) {
             throw new NotFoundException(
                     "No valid evaluations",
