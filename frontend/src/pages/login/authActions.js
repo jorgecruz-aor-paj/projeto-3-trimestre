@@ -1,6 +1,6 @@
-import useAuthStore from "../../stores/authStore";
-import { login, logout } from "../../services/authService";
-import { getSelfInfo } from "../../services/userService";
+import useAuthStore from "stores/authStore";
+import { login, logout } from "services/authService";
+import { getSelfInfo } from "services/userService";
 
 export const performLogin = async (username, password) => {
   const { setToken } = useAuthStore.getState();

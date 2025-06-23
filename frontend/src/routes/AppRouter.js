@@ -1,6 +1,7 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Home } from 'pages/Home';
+import { LoginPage } from 'pages/login/loginPage';
 
 /**
  * AppRouter component that defines all application routes
@@ -24,6 +25,7 @@ export const AppRouter = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/login" element={<LoginPage />} />
       {/* Definir o resto das Routes */}
     </Routes>
   );

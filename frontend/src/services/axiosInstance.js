@@ -1,5 +1,6 @@
 // src/api/axiosInstance.js
 import axios from 'axios';
+import { useAuthStore } from 'stores/authStore';
 
 const axiosInstance = axios.create({
   baseURL: 'https://localhost:8443/jorgeosorio-proj3t/api',
