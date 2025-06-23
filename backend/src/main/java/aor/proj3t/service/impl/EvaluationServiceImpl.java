@@ -202,7 +202,7 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
                     "User with id " + requesterId + " tried closing evaluations from closed cycle with id "
                             + dto.getCycleId());
         }
-        List<Evaluation> evaluations = getEvaluationListFromIds(dto.getEvaluationIds().toArray(Long[]::new));
+        List<Evaluation> evaluations = getEvaluationListFromIds(dto.getEvaluationIds());
         if (evaluations.isEmpty()) {
             throw new NotFoundException(
                     "No valid evaluations",
@@ -265,26 +265,19 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
         return converterFactory.forEvaluation().toDTOList(evaluation);
     }
 
-    private List<Evaluation> getEvaluationListFromIds(Long[] evaluationIds) {
-        try {
-            List<Evaluation> evaluations = new ArrayList<>(evaluationIds.length);
-            for (Long evaluationId : evaluationIds) {
-                Evaluation evaluation = getEntity(daoFactory.forEvaluation().findById(evaluationId), evaluationId,
-                        "Evaluation");
-                if (evaluation != null) {
-                    evaluations.add(evaluation);
-                } else {
-                    logger.error("Evaluation not found with ID: " + evaluationId);
-                }
+    private List<Evaluation> getEvaluationListFromIds(List<Long> evaluationIds) {
+
+        List<Evaluation> evaluations = new ArrayList<>(evaluationIds.size());
+        for (Long evaluationId : evaluationIds) {
+            Evaluation evaluation = getEntity(daoFactory.forEvaluation().findById(evaluationId), evaluationId,
+                    "Evaluation");
+            if (evaluation != null) {
+                evaluations.add(evaluation);
+            } else {
+                logger.error("Evaluation not found with ID: " + evaluationId);
             }
-            return evaluations;
-        } catch (NoSuchElementException e) {
-            logger.error("Evaluation not found with ID: " + evaluationIds[0]);
-            return null;
-        } catch (Exception e) {
-            logger.error("Error getting user list. ", e);
-            return null;
         }
+        return evaluations;
     }
 
     private void checkAndCloseEvaluationCycle(Long evaluationCycleId) {
