@@ -13,11 +13,19 @@ import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
 import aor.proj3t.daos.DAOFactory;
+import aor.proj3t.dto.EvaluationCsvDTO;
+import aor.proj3t.dto.EvaluationDTO;
+import aor.proj3t.dto.TrainingCsvDTO;
+import aor.proj3t.dto.TrainingDTO;
 import aor.proj3t.dto.UserCsvDTO;
 import aor.proj3t.dto.UserDTO;
+import aor.proj3t.entities.Evaluation;
+import aor.proj3t.entities.Training;
 import aor.proj3t.entities.User;
 import aor.proj3t.exceptions.BadRequestException;
 import aor.proj3t.exceptions.NotFoundException;
+import aor.proj3t.filters.EvaluationFilter;
+import aor.proj3t.filters.TrainingFilter;
 import aor.proj3t.filters.UserFilter;
 import aor.proj3t.service.interfaces.ExportService;
 import aor.proj3t.util.converterutils.ConverterFactory;
@@ -99,6 +107,114 @@ public class ExportServiceImpl extends BaseService implements ExportService {
     }
 
     /**
+     * {@inheritDoc}
+     * <p>
+     * Retrieves all evaluations from the database and exports them to CSV format.
+     * Verifies that the requesting user exists before proceeding.
+     * </p>
+     */
+    @Override
+    public String exportEvaluationsToCSV(Long requesterId) {
+        logger.info("Processing request to export all evaluations to CSV from user ID: {}", requesterId);
+
+        // Verify user exists
+        verifyRequester(requesterId);
+        logger.debug("Requester validation successful for user ID: {}", requesterId);
+
+        // Get all evaluations
+        List<Evaluation> evaluations = daoFactory.forEvaluation().findAll();
+        logger.debug("Retrieved {} evaluations for export", evaluations.size());
+
+        // Process and return CSV
+        String result = processEvaluationsToCsv(evaluations);
+        logger.info("Successfully completed CSV export of all evaluations");
+
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Retrieves filtered evaluations from the database and exports them to CSV
+     * format.
+     * Verifies that the requesting user exists before proceeding.
+     * </p>
+     */
+    @Override
+    public String exportFilteredEvaluationsToCSV(Long requesterId, EvaluationFilter filters) {
+        logger.info("Processing request to export filtered evaluations to CSV from user ID: {}", requesterId);
+        logger.debug("Applied filters: {}", filters);
+
+        // Verify user exists
+        verifyRequester(requesterId);
+        logger.debug("Requester validation successful for user ID: {}", requesterId);
+
+        // Get filtered evaluations from the DAO
+        List<Evaluation> evaluations = daoFactory.forEvaluation().getEvaluationsByFilters(filters);
+        logger.debug("Retrieved {} evaluations matching filter criteria", evaluations.size());
+
+        // Process and return CSV
+        String result = processEvaluationsToCsv(evaluations);
+        logger.info("Successfully completed CSV export of filtered evaluations");
+
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Retrieves all trainings from the database and exports them to CSV format.
+     * Verifies that the requesting user exists before proceeding.
+     * </p>
+     */
+    @Override
+    public String exportTrainingsToCSV(Long requesterId) {
+        logger.info("Processing request to export all trainings to CSV from user ID: {}", requesterId);
+
+        // Verify user exists
+        verifyRequester(requesterId);
+        logger.debug("Requester validation successful for user ID: {}", requesterId);
+
+        // Get all trainings
+        List<Training> trainings = daoFactory.forTraining().findAll();
+        logger.debug("Retrieved {} trainings for export", trainings.size());
+
+        // Process and return CSV
+        String result = processTrainingsToCsv(trainings);
+        logger.info("Successfully completed CSV export of all trainings");
+
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Retrieves filtered trainings from the database and exports them to CSV
+     * format.
+     * Verifies that the requesting user exists before proceeding.
+     * </p>
+     */
+    @Override
+    public String exportFilteredTrainingsToCSV(Long requesterId, TrainingFilter filters) {
+        logger.info("Processing request to export filtered trainings to CSV from user ID: {}", requesterId);
+        logger.debug("Applied filters: {}", filters);
+
+        // Verify user exists
+        verifyRequester(requesterId);
+        logger.debug("Requester validation successful for user ID: {}", requesterId);
+
+        // Get filtered trainings from the DAO
+        List<Training> trainings = daoFactory.forTraining().getTrainingsByFilters(filters);
+        logger.debug("Retrieved {} trainings matching filter criteria", trainings.size());
+
+        // Process and return CSV
+        String result = processTrainingsToCsv(trainings);
+        logger.info("Successfully completed CSV export of filtered trainings");
+
+        return result;
+    }
+
+    /**
      * Verifies that the requesting user exists in the system.
      * <p>
      * This method checks if a user with the given ID exists in the database.
@@ -138,7 +254,67 @@ public class ExportServiceImpl extends BaseService implements ExportService {
         logger.debug("Converted user DTOs to CSV-specific DTOs");
 
         // Generate CSV
-        String result = generateUsersCsvFromBeans(userCsvDTOs);
+        String result = generateCsvFromBeans(userCsvDTOs);
+        logger.debug("Generated CSV string with {} characters", result.length());
+
+        return result;
+    }
+
+    /**
+     * Processes a list of evaluations into a CSV string.
+     * <p>
+     * This method converts Evaluation entities to DTOs, then to CSV-specific DTOs,
+     * and finally generates a CSV string representation.
+     * </p>
+     * 
+     * @param evaluations List of evaluation entities to convert to CSV
+     * @return CSV string representation of evaluations
+     */
+    private String processEvaluationsToCsv(List<Evaluation> evaluations) {
+        logger.debug("Processing {} evaluations for CSV export", evaluations.size());
+
+        // Convert to DTOs
+        List<EvaluationDTO> evaluationDTOs = converterFactory.forEvaluation().toDTOList(evaluations);
+        logger.debug("Converted evaluations to DTOs");
+
+        // Convert to CSV DTOs
+        List<EvaluationCsvDTO> evaluationCsvDTOs = evaluationDTOs.stream()
+                .map(EvaluationCsvDTO::new)
+                .collect(Collectors.toList());
+        logger.debug("Converted evaluation DTOs to CSV-specific DTOs");
+
+        // Generate CSV
+        String result = generateCsvFromBeans(evaluationCsvDTOs);
+        logger.debug("Generated CSV string with {} characters", result.length());
+
+        return result;
+    }
+
+    /**
+     * Processes a list of trainings into a CSV string.
+     * <p>
+     * This method converts Training entities to DTOs, then to CSV-specific DTOs,
+     * and finally generates a CSV string representation.
+     * </p>
+     * 
+     * @param trainings List of training entities to convert to CSV
+     * @return CSV string representation of trainings
+     */
+    private String processTrainingsToCsv(List<Training> trainings) {
+        logger.debug("Processing {} trainings for CSV export", trainings.size());
+
+        // Convert to DTOs
+        List<TrainingDTO> trainingDTOs = converterFactory.forTraining().toDTOList(trainings);
+        logger.debug("Converted trainings to DTOs");
+
+        // Convert to CSV DTOs
+        List<TrainingCsvDTO> trainingCsvDTOs = trainingDTOs.stream()
+                .map(TrainingCsvDTO::new)
+                .collect(Collectors.toList());
+        logger.debug("Converted training DTOs to CSV-specific DTOs");
+
+        // Generate CSV
+        String result = generateCsvFromBeans(trainingCsvDTOs);
         logger.debug("Generated CSV string with {} characters", result.length());
 
         return result;
@@ -159,7 +335,7 @@ public class ExportServiceImpl extends BaseService implements ExportService {
      * @return CSV string representation of the beans
      * @throws BadRequestException if an error occurs during CSV generation
      */
-    private <T> String generateUsersCsvFromBeans(List<T> beans) {
+    private <T> String generateCsvFromBeans(List<T> beans) {
         logger.debug("Starting CSV generation from {} beans", beans.size());
 
         StringWriter writer = new StringWriter();
