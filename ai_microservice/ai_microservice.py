@@ -117,7 +117,7 @@ async def chatbot(req: ChatRequest):
     """
     lower_msg = req.message.lower()
     if "avaliação" in lower_msg:
-        reply = "Para preencher a avaliação, acesse a seção 'Avaliações' no menu principal do sistema."
+        reply = "Para preencher a avaliação, aceda a seção 'Avaliações' no menu principal do sistema."
     elif "erro" in lower_msg:
         reply = ("Sinto muito pelo inconveniente. Por favor, tente reiniciar a aplicação ou contate o suporte técnico.")
     else:

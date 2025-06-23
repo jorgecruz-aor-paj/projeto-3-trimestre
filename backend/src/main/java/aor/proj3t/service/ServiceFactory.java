@@ -1,6 +1,7 @@
 package aor.proj3t.service;
 
 import aor.proj3t.service.impl.TokenService;
+import aor.proj3t.service.interfaces.AIService;
 import aor.proj3t.service.interfaces.AuthService;
 import aor.proj3t.service.interfaces.AuthorizationService;
 import aor.proj3t.service.interfaces.EvaluationCycleService;
@@ -15,10 +16,14 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 /**
- * Factory class to access all service implementations. This class provides a centralized access
- * point for all the services in the application. It follows the Factory design pattern to
- * encapsulate the instantiation logic of services and provides a clean, consistent API for
- * accessing them. The factory is injected with all available services and offers type-safe methods
+ * Factory class to access all service implementations. This class provides a
+ * centralized access
+ * point for all the services in the application. It follows the Factory design
+ * pattern to
+ * encapsulate the instantiation logic of services and provides a clean,
+ * consistent API for
+ * accessing them. The factory is injected with all available services and
+ * offers type-safe methods
  * to retrieve them.
  *
  * <p>
@@ -67,12 +72,18 @@ public class ServiceFactory {
     private NotificationService notificationService;
 
     @Inject
+    private AIService aiService;
+
+    @Inject
     private ExportService exportService;
 
     /**
-     * Get the service for User operations This method provides access to the service responsible
-     * for user-related business logic and operations. The returned service handles all user
-     * management functionality such as creating, updating, retrieving, and authenticating users.
+     * Get the service for User operations This method provides access to the
+     * service responsible
+     * for user-related business logic and operations. The returned service handles
+     * all user
+     * management functionality such as creating, updating, retrieving, and
+     * authenticating users.
      *
      * @return The UserService instance
      */
@@ -170,4 +181,16 @@ public class ServiceFactory {
         return exportService;
     }
 
+    /**
+     * Get the service for AI operations
+     * This method provides access to the service responsible for AI-related
+     * business logic and operations, such as sentiment analysis, training
+     * recommendations,
+     * and performance predictions.
+     *
+     * @return The AIService instance
+     */
+    public AIService forAI() {
+        return aiService;
+    }
 }

@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 import aor.proj3t.daos.DAOFactory;
 import aor.proj3t.dto.EvaluationCloseDTO;
 import aor.proj3t.dto.EvaluationDTO;
+import aor.proj3t.dto.ai.SentimentResponseDTO;
 import aor.proj3t.entities.Evaluation;
 import aor.proj3t.entities.EvaluationCycle;
 import aor.proj3t.entities.User;
@@ -27,6 +28,7 @@ import aor.proj3t.exceptions.NotFoundException;
 import aor.proj3t.filters.EvaluationFilter;
 import aor.proj3t.service.ServiceFactory;
 import aor.proj3t.service.interfaces.AuthorizationService;
+import aor.proj3t.service.ServiceFactory;
 import aor.proj3t.service.interfaces.EvaluationService;
 import aor.proj3t.util.converterutils.ConverterFactory;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -82,10 +84,31 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
     @Override
     public void updateEvaluation(Long requesterId, EvaluationDTO evaluationDTO) {
         Evaluation evaluation = getEntity(daoFactory.forEvaluation().findById(evaluationDTO.getId()),
-                evaluationDTO.getId(), "Evaluation");
+                evaluationDTO.getId(),
+                "Evaluation");
         evaluation.setScale(evaluationDTO.getScale());
         evaluation.setFeedback(evaluationDTO.getFeedback());
         evaluation.setStatus(evaluationDTO.getStatus());
+
+        // Perform sentiment analysis on feedback if provided
+        if (feedback != null && !feedback.trim().isEmpty()) {
+            try {
+                SentimentResponseDTO sentimentResult = serviceFactory.forAI().analyzeSentiment(feedback);
+                if (sentimentResult != null) {
+                    logger.info("Feedback sentiment analysis: sentiment={}, polarity={}, subjectivity={}",
+                            sentimentResult.getSentiment(),
+                            sentimentResult.getPolarity(),
+                            sentimentResult.getSubjectivity());
+                    // TODO
+                    // Store sentiment information in the evaluation (optional)
+                    // You could add a field to Evaluation entity to store this info
+                }
+            } catch (Exception e) {
+                // Don't fail the evaluation update if sentiment analysis fails
+                logger.warn("Error during sentiment analysis, continuing with evaluation update", e);
+            }
+        }
+
         daoFactory.forEvaluation().update(evaluation);
         checkAndCompleteEvaluationCycle(evaluation.getEvaluationCycle().getId());
     }
@@ -218,43 +241,26 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
         }
     }
 
-    @Override
-    public List<EvaluationDTO> getEvaluationsByFilter(Long requesterId, EvaluationFilter filter) {
-        User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
-
-        // Authorize access based on filter parameters
-        serviceFactory.forAuthorization().authorizeEvaluationAccess(requester, filter.getEvaluatedId(), filter.getEvaluatorId());
-
-        // Apply default filters based on role
-        if (requester.getRole().equals(Role.USER)) {
-            // Users can only see their own evaluations
-            filter.setEvaluatedId(requesterId);
-        } else if (requester.getRole().equals(Role.MANAGER) && filter.getEvaluatedId() == null
-                && filter.getEvaluatorId() == null) {
-            // If no specific filter is provided, limit managers to evaluations they
-            // performed
-            filter.setEvaluatorId(requesterId);
-        }
-        // Admin has no restrictions
-
-        filter.hydrate();
-        List<Evaluation> evaluation = daoFactory.forEvaluation().getEvaluationsByFilters(filter);
-        return converterFactory.forEvaluation().toDTOList(evaluation);
-    }
-
-    private List<Evaluation> getEvaluationListFromIds(List<Long> evaluationIds) {
-
-        List<Evaluation> evaluations = new ArrayList<>(evaluationIds.size());
-        for (Long evaluationId : evaluationIds) {
-            Evaluation evaluation = getEntity(daoFactory.forEvaluation().findById(evaluationId), evaluationId,
-                    "Evaluation");
-            if (evaluation != null) {
-                evaluations.add(evaluation);
-            } else {
-                logger.error("Evaluation not found with ID: " + evaluationId);
+    private List<Evaluation> getEvaluationListFromIds(Long[] evaluationIds) {
+        try {
+            List<Evaluation> evaluations = new ArrayList<>(evaluationIds.length);
+            for (Long evaluationId : evaluationIds) {
+                Evaluation evaluation = getEntity(daoFactory.forEvaluation().findById(evaluationId), evaluationId,
+                        "Evaluation");
+                if (evaluation != null) {
+                    evaluations.add(evaluation);
+                } else {
+                    logger.error("Evaluation not found with ID: " + evaluationId);
+                }
             }
+            return evaluations;
+        } catch (NoSuchElementException e) {
+            logger.error("Evaluation not found with ID: " + evaluationIds[0]);
+            return null;
+        } catch (Exception e) {
+            logger.error("Error getting user list. ", e);
+            return null;
         }
-        return evaluations;
     }
 
     private void checkAndCloseEvaluationCycle(Long evaluationCycleId) {
