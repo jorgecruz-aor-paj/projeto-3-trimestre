@@ -1,8 +1,8 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import logo from 'logo.svg';
+import 'styles/App.css';
 
-function App() {
+export function App() {
   return (
     <div className="App">
       <header className="App-header">
@@ -24,3 +24,14 @@ function App() {
 }
 
 export default App;
+
+// TODO Ler e definir se é boa escolha para o design pattern da aplicação
+/* Application design pattern!
+┌────────────────┐     ┌────────────────┐     ┌────────────────┐
+│  API Utilities │     │     Service    │     │  Data Store    │
+│                │     │                │     │                │
+│ • Fetch        │     │ • Orchestrate  │     │ • Manage state │
+│ • Parse        │ ──► │ • Format data  │ ──► │ • Update UI    │
+│ • Handle errors│     │ • Add context  │     │ • Handle logic │
+└────────────────┘     └────────────────┘     └────────────────┘
+*/
