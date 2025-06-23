@@ -1,7 +1,11 @@
 package aor.proj3t.filters;
 
 import aor.proj3t.enums.TrainingSortField;
+import aor.proj3t.exceptions.BadRequestException;
 import jakarta.ws.rs.QueryParam;
+
+import java.time.Instant;
+import java.time.format.DateTimeParseException;
 
 public class TrainingFilter {
     @QueryParam("id")
@@ -30,6 +34,9 @@ public class TrainingFilter {
 
     @QueryParam("searchText")
     private String searchText;
+
+
+    private Instant startDateInstant;
 
     public TrainingFilter() {
     }
@@ -105,6 +112,30 @@ public class TrainingFilter {
     public void setActiveOnly(Boolean activeOnly) {
         this.activeOnly = activeOnly;
     }
+
+    public Instant getStartDateInstant() {
+        return startDateInstant;
+    }
+
+    public void setStartDateInstant(Instant startDateInstant) {
+        this.startDateInstant = startDateInstant;
+    }
+
+    public void hydrate() {
+        if (startDate != null && !startDate.isEmpty()) {
+            try {
+                this.startDateInstant = Instant.parse(startDate); // expecting ISO-8601 format like "2025-06-23T08:30:00Z"
+            } catch (DateTimeParseException e) {
+                throw new BadRequestException("Invalid startDate or endDate format. Use ISO-8601 format like 2025-06-23T08:30:00Z.");
+            }
+        }
+        if (this.sortAscending == null) {
+            this.sortAscending = false;
+        }
+
+    }
+
+
 
     @Override
     public String toString() {

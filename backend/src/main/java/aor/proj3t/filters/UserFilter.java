@@ -1,15 +1,17 @@
 package aor.proj3t.filters;
 
+import aor.proj3t.daos.DAOFactory;
 import aor.proj3t.entities.User;
 import aor.proj3t.entities.Workplace;
 import aor.proj3t.enums.UserSortField;
+import aor.proj3t.exceptions.NotFoundException;
 import jakarta.ws.rs.QueryParam;
 
 public class UserFilter {
     @QueryParam("workplace")
-    private Workplace workplace;
+    private Long workplaceId;
     @QueryParam("manager")
-    private User manager;
+    private Long managerId;
     @QueryParam("id")
     private Long id;
     @QueryParam("searchText")
@@ -20,6 +22,10 @@ public class UserFilter {
     private UserSortField sortField = UserSortField.NAME;
     @QueryParam("ascending")
     private boolean ascending = true;
+
+    private Workplace workplace;
+    private User manager;
+
 
     public UserFilter() {
     };
@@ -79,4 +85,35 @@ public class UserFilter {
     public void setAscending(boolean ascending) {
         this.ascending = ascending;
     }
+
+    public Long getWorkplaceId() {
+        return workplaceId;
+    }
+
+    public void setWorkplaceId(Long workplaceId) {
+        this.workplaceId = workplaceId;
+    }
+
+    public Long getManagerId() {
+        return managerId;
+    }
+
+    public void setManagerId(Long managerId) {
+        this.managerId = managerId;
+    }
+
+    public void hydrate(DAOFactory daoFactory) {
+        if (workplaceId != null) {
+            this.workplace = daoFactory.forWorkplace()
+                    .findById(workplaceId)
+                    .orElseThrow(() -> new NotFoundException("Workplace not found with ID " + workplaceId));
+        }
+
+        if (managerId != null) {
+            this.manager = daoFactory.forUser()
+                    .findById(managerId)
+                    .orElseThrow(() -> new NotFoundException("Manager not found with ID " + managerId));
+        }
+    }
+
 }

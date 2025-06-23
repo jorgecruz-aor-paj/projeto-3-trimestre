@@ -1,10 +1,13 @@
 package aor.proj3t.filters;
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 import aor.proj3t.enums.EvaluationScale;
 import aor.proj3t.enums.EvaluationSortField;
 import aor.proj3t.enums.EvaluationStatus;
+import aor.proj3t.exceptions.BadRequestException;
 import jakarta.ws.rs.QueryParam;
 
 public class EvaluationFilter {
@@ -17,7 +20,7 @@ public class EvaluationFilter {
     @QueryParam("evaluationStatus")
     private EvaluationStatus evaluationStatus;
     @QueryParam("date")
-    private LocalDate date;
+    private String dateString;
     @QueryParam("evaluationScale")
     private EvaluationScale evaluationScale;
     @QueryParam("evaluationSortField")
@@ -26,7 +29,12 @@ public class EvaluationFilter {
     private Boolean ascending = false;
     @QueryParam("searchText")
     private String searchText;
-    @QueryParam("dateRange")
+    @QueryParam("startDate")
+    private String startDate;
+    @QueryParam("endDate")
+    private String endDate;
+
+    private LocalDate date;
     private DateRange dateRange;
 
     public EvaluationFilter() {
@@ -96,6 +104,20 @@ public class EvaluationFilter {
         this.ascending = ascending;
     }
 
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+    public String getStartDate() {
+        return startDate;
+    }
+
     public DateRange getDateRange() {
         return dateRange;
     }
@@ -111,4 +133,43 @@ public class EvaluationFilter {
     public void setSearchText(String searchText) {
         this.searchText = searchText;
     }
+
+    public String getDateString() {
+        return dateString;
+    }
+
+    public void setDateString(String dateString) {
+        this.dateString = dateString;
+    }
+
+    public void hydrate() {
+        // Hydrate the single date (from dateString to LocalDate)
+        if (dateString != null && !dateString.isEmpty()) {
+            try {
+                this.date = LocalDate.parse(dateString); // default format: yyyy-MM-dd
+            } catch (DateTimeParseException e) {
+                throw new BadRequestException("Invalid date format. Expected yyyy-MM-dd.");
+            }
+        }
+
+        // Hydrate the DateRange (from Strings to Instant range)
+        if (startDate != null || endDate != null) {
+            Instant start = null;
+            Instant end = null;
+
+            try {
+                if (startDate != null && !startDate.isEmpty()) {
+                    start = Instant.parse(startDate); // ISO-8601 format expected (e.g., 2025-06-23T08:30:00Z)
+                }
+                if (endDate != null && !endDate.isEmpty()) {
+                    end = Instant.parse(endDate);
+                }
+            } catch (DateTimeParseException e) {
+                throw new BadRequestException("Invalid startDate or endDate format. Use ISO-8601 format like 2025-06-23T08:30:00Z.");
+            }
+
+            this.dateRange = new DateRange(start, end);
+        }
+    }
+
 }
