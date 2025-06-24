@@ -41,6 +41,51 @@ export const authService = {
   },
 
   /**
-   * Note: The refresh token endpoint is not currently implemented in the backend
+   * Confirm user registration with token and user data
+   * @param {String} confirmationToken - Token received via email
+   * @param {Object} userData - User registration data including personal info
+   * @returns {Promise}
    */
+  confirmUser: (confirmationToken, userData) => {
+    return apiRequest(
+      `${API_ENDPOINTS.auth.confirm.url}?confirmationToken=${confirmationToken}`,
+      {
+        method: 'POST',
+        data: userData,
+      }
+    );
+  },
+
+  /**
+   * Request password reset link for a specific email
+   * @param {String} email - User's email address
+   * @returns {Promise}
+   */
+  requestPasswordReset: email => {
+    return apiRequest(
+      `${API_ENDPOINTS.auth.resetPasswordRequest.url.replace(
+        '{email}',
+        email
+      )}`,
+      {
+        method: 'GET',
+      }
+    );
+  },
+
+  /**
+   * Reset user password with token and new password
+   * @param {String} resetToken - Token received via email
+   * @param {Object} credentials - Object containing new password
+   * @returns {Promise}
+   */
+  resetPassword: (resetToken, credentials) => {
+    return apiRequest(
+      `${API_ENDPOINTS.auth.resetPassword.url}?resetPasswordToken=${resetToken}`,
+      {
+        method: 'PATCH',
+        data: credentials,
+      }
+    );
+  },
 };

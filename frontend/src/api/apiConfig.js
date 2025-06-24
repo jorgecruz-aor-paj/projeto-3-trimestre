@@ -50,6 +50,18 @@ const API_ENDPOINTS = {
       url: `${AUTH_ENDPOINT}/logout`,
       requiresAuth: true,
     },
+    confirm: {
+      url: `${AUTH_ENDPOINT}/confirm`,
+      requiresAuth: false,
+    },
+    resetPasswordRequest: {
+      url: `${AUTH_ENDPOINT}/resetPassword/{email}`,
+      requiresAuth: false,
+    },
+    resetPassword: {
+      url: `${AUTH_ENDPOINT}/resetPassword`,
+      requiresAuth: false,
+    },
   },
   user: {
     getAll: {
