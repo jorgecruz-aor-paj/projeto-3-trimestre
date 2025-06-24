@@ -2,6 +2,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Home } from 'pages/Home';
 import { LoginPage } from 'pages/login/loginPage';
+import MainLayout from 'components/layout/MainLayout';
 
 /**
  * AppRouter component that defines all application routes
@@ -24,9 +25,14 @@ import { LoginPage } from 'pages/login/loginPage';
 export const AppRouter = () => {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/login" element={<LoginPage />} />
-      {/* Definir o resto das Routes */}
+      {/* Main Layout with Header and Footer */}
+      <Route element={<MainLayout />}>
+        {/* Routes */}
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<LoginPage />} />
+
+        {/* Definir o resto das Routes */}
+      </Route>
     </Routes>
   );
 };
