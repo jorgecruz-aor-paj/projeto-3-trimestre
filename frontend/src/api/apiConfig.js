@@ -24,3 +24,7 @@ const AUTH_ENDPOINT = `${API_BASE_URL}/auth`;
 const USER_ENDPOINT = `${API_BASE_URL}/users`;
 const TRAININGS_ENDPOINT = `${API_BASE_URL}/trainings`;
 const EVALUATIONS_ENDPOINT = `${API_BASE_URL}/evaluations`;
+
+const API_ENDPOINTS = {};
+
+export { API_BASE_URL, WEBSOCKET_BASE_URL };
