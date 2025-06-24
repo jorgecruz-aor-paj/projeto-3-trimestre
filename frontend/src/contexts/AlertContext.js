@@ -1,11 +1,12 @@
 import React, { createContext, useContext, useState } from 'react';
+import PropTypes from 'prop-types';
 import { Modal, Button } from 'react-bootstrap';
-import { useTranslate } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 const AlertContext = createContext();
 
 export function AlertProvider({ children }) {
-  const { t } = useTranslate();
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [alertConfig, setAlertConfig] = useState({
     title: '',
@@ -110,5 +111,8 @@ export function AlertProvider({ children }) {
     </AlertContext.Provider>
   );
 }
-
 export const useAlert = () => useContext(AlertContext);
+
+AlertProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
