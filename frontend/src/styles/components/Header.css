@@ -29,11 +29,11 @@
 }
 
 .main-header .nav-link:hover {
-    color: #00BFA5;
+    color: #C01722;
 }
 
 .main-header .nav-link.active {
-    color: #00BFA5;
+    color: #C01722;
 }
 
 .main-header .nav-link.active::after {
@@ -43,7 +43,7 @@
     left: 1rem;
     right: 1rem;
     height: 3px;
-    background-color: #00BFA5;
+    background-color: #C01722;
     border-radius: 1px;
 }
 
@@ -53,26 +53,26 @@
 }
 
 .main-header .btn-primary {
-    background-color: #00BFA5;
-    border-color: #00BFA5;
+    background-color: #C01722;
+    border-color: #C01722;
 }
 
 .main-header .btn-primary:hover,
 .main-header .btn-primary:focus {
-    background-color: #00A896;
-    border-color: #00A896;
+    background-color: #A01219;
+    border-color: #A01219;
 }
 
 .main-header .btn-outline-primary {
-    color: #00BFA5;
-    border-color: #00BFA5;
+    color: #C01722;
+    border-color: #C01722;
 }
 
 .main-header .btn-outline-primary:hover,
 .main-header .btn-outline-primary:focus {
-    background-color: rgba(0, 191, 165, 0.05);
-    color: #00A896;
-    border-color: #00A896;
+    background-color: rgba(192, 23, 34, 0.05);
+    color: #A01219;
+    border-color: #A01219;
 }
 
 .main-header .user-avatar {

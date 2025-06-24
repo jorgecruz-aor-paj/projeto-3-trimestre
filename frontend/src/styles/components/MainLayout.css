@@ -1,0 +1,28 @@
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+    padding: 2rem 0;
+}
+
+/* For pages that need full-width content */
+main.full-width {
+    padding: 0;
+}
+
+/* For pages with sidebar */
+main.with-sidebar {
+    display: flex;
+}
+
+/* Add a minimum height for main content to push footer down */
+@media (min-height: 700px) {
+    main {
+        min-height: calc(100vh - 300px);
+        /* Adjust based on header/footer height */
+    }
+}

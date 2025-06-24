@@ -12,7 +12,7 @@
 }
 
 .footer-brand:hover {
-    color: #00BFA5;
+    color: #C01722;
 }
 
 .footer-description {
@@ -36,7 +36,7 @@
     left: 0;
     width: 30px;
     height: 3px;
-    background-color: #00BFA5;
+    background-color: #C01722;
     border-radius: 2px;
 }
 
@@ -51,7 +51,7 @@
 }
 
 .footer-links a:hover {
-    color: #00BFA5;
+    color: #C01722;
     text-decoration: none;
 }
 
@@ -75,10 +75,10 @@
 }
 
 .social-links a:hover {
-    background-color: #00BFA5;
+    background-color: #C01722;
     color: #fff;
     transform: translateY(-3px);
-    box-shadow: 0 4px 12px rgba(0, 191, 165, 0.2);
+    box-shadow: 0 4px 12px rgba(192, 23, 34, 0.2);
 }
 
 .footer-bottom {
@@ -87,7 +87,7 @@
 }
 
 .text-primary {
-    color: #00BFA5 !important;
+    color: #C01722 !important;
 }
 
 /* Responsive adjustments */
