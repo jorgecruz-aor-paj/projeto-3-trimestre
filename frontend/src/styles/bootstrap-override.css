@@ -1,0 +1,88 @@
+/* Bootstrap override styles */
+:root {
+    --bs-primary: #C01722;
+    --bs-primary-rgb: 192, 23, 34;
+    --bs-primary-text-emphasis: #701015;
+    --bs-primary-bg-subtle: #fbe7e9;
+    --bs-primary-border-subtle: #f0bdc1;
+}
+
+/* Primary button */
+.btn-primary {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #C01722;
+    --bs-btn-border-color: #C01722;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #A01219;
+    --bs-btn-hover-border-color: #971118;
+    --bs-btn-focus-shadow-rgb: 220, 75, 84;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #971118;
+    --bs-btn-active-border-color: #8D1017;
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: #C01722;
+    --bs-btn-disabled-border-color: #C01722;
+}
+
+/* Outline primary button */
+.btn-outline-primary {
+    --bs-btn-color: #C01722;
+    --bs-btn-border-color: #C01722;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #C01722;
+    --bs-btn-hover-border-color: #C01722;
+    --bs-btn-focus-shadow-rgb: 192, 23, 34;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #C01722;
+    --bs-btn-active-border-color: #C01722;
+    --bs-btn-disabled-color: #C01722;
+    --bs-btn-disabled-bg: transparent;
+    --bs-btn-disabled-border-color: #C01722;
+}
+
+/* Links and text */
+.text-primary {
+    color: #C01722 !important;
+}
+
+a.text-primary:hover,
+a.text-primary:focus {
+    color: #A01219 !important;
+}
+
+/* Form controls */
+.form-control:focus {
+    border-color: #E06a73;
+    box-shadow: 0 0 0 0.25rem rgba(192, 23, 34, 0.25);
+}
+
+/* Active nav links */
+.nav-pills .nav-link.active,
+.nav-pills .show>.nav-link {
+    background-color: #C01722;
+}
+
+/* Pagination */
+.page-item.active .page-link {
+    background-color: #C01722;
+    border-color: #C01722;
+}
+
+.page-link {
+    color: #C01722;
+}
+
+.page-link:hover {
+    color: #A01219;
+}
+
+/* Progress bars */
+.progress-bar {
+    background-color: #C01722;
+}
+
+/* Checkboxes and radios */
+.form-check-input:checked {
+    background-color: #C01722;
+    border-color: #C01722;
+}

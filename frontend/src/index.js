@@ -1,6 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
+// Import Bootstrap and Bootstrap Icons CSS
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+// Import our custom Bootstrap override styles (must be after Bootstrap import)
+import 'styles/bootstrap-override.css';
+
 import 'styles/index.css';
 import reportWebVitals from 'reportWebVitals';
 import { App } from 'App';
