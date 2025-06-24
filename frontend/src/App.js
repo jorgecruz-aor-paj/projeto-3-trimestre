@@ -1,9 +1,11 @@
 import React from 'react';
-import 'styles/App.css';
-import { LanguageProvider } from 'contexts/LanguageContext';
 import { BrowserRouter } from 'react-router-dom';
+
+import { LanguageProvider } from 'contexts/LanguageContext';
 import { AppRouter } from 'routes/AppRouter';
 import { AlertProvider } from 'contexts/AlertContext';
+
+import 'styles/App.css';
 
 export const App = () => {
   return (
