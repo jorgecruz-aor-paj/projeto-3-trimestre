@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Container, Navbar, Nav, Button, Dropdown } from 'react-bootstrap';
 
 import { LanguageSelector } from 'components/LanguageSelector';
-import logo from '../../logo.svg';
+import logo from 'logo.svg';
 import 'styles/components/Header.css';
 
 /**
