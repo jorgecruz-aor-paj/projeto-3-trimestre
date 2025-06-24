@@ -2,5 +2,12 @@
     "app": {
         "title": "Performance Management System",
         "subtitle": "Monitor your team's performance"
+    },
+    "common": {
+        "alert": "Alert",
+        "ok": "OK",
+        "cancel": "Cancel",
+        "yes": "Yes",
+        "no": "No"
     }
 }
