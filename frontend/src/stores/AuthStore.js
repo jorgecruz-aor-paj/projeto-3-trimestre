@@ -3,7 +3,7 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 import useUserStore from './UserStore';
 
 // State-only store
-const useAuthStore = create(
+export const useAuthStore = create(
   persist(
     set => ({
       token: null,
@@ -43,5 +43,3 @@ const useAuthStore = create(
     }
   )
 );
-
-export default useAuthStore;

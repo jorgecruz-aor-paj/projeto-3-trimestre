@@ -2,7 +2,7 @@
  * User Service
  * Handles user-related API calls
  */
-import apiService, { apiRequest } from './apiService';
+import { apiService, apiRequest } from './apiService';
 import { API_ENDPOINTS } from '../api/apiConfig';
 
 export const userService = {

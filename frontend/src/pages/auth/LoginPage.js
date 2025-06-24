@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { authService } from 'services/authService';
 import { userService } from 'services/userService';
-import useAuthStore from 'stores/AuthStore';
+import { useAuthStore } from 'stores/AuthStore';
 import {
   Container,
   Row,
@@ -128,7 +128,7 @@ export const LoginPage = () => {
   };
 
   return (
-    <Container className="login-page py-5">
+    <Container fluid="md" className="login-page py-5">
       <Row className="justify-content-center">
         <Col xs={12} sm={10} md={8} lg={6} xl={5}>
           <Card className="login-card shadow-sm border-0">
