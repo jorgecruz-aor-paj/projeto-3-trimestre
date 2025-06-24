@@ -32,7 +32,7 @@
             }
         },
         "cta": {
-            "title": "Pronto para transformar a gestão de desempenho?",
+            "title": "Preparado para transformar a gestão de desempenho?",
             "description": "Junte-se a milhares de empresas que já utilizam a nossa plataforma para melhorar o desempenho das suas equipas.",
             "button": "Iniciar Teste Gratuito"
         }
@@ -48,17 +48,17 @@
         "login": "Entrar",
         "register": "Registar",
         "logout": "Sair",
-        "forgotPassword": "Esqueceu a senha?",
+        "forgotPassword": "Esqueceu a palavra-passe?",
         "loginTitle": "Bem-vindo de Volta",
-        "loginSubtitle": "Entre para acessar seu painel",
+        "loginSubtitle": "Entre para aceder ao seu painel",
         "email": "Endereço de Email",
-        "emailPlaceholder": "Digite seu email",
-        "password": "Senha",
-        "passwordPlaceholder": "Digite sua senha",
-        "loggingIn": "Entrando...",
-        "loginFailed": "Falha no login. Verifique suas credenciais.",
+        "emailPlaceholder": "Introduza o seu email",
+        "password": "Palavra-passe",
+        "passwordPlaceholder": "Introduza a sua palavra-passe",
+        "loggingIn": "A entrar. Aguarde...",
+        "loginFailed": "Falha no início de sessão. Verifique as suas credenciais.",
         "noAccount": "Não tem uma conta?",
-        "signUp": "Registre-se aqui",
+        "signUp": "Registe-se aqui",
         "rememberMe": "Lembrar-me"
     },
     "user": {
@@ -69,8 +69,8 @@
     },
     "validation": {
         "emailRequired": "O email é obrigatório",
-        "emailInvalid": "Por favor, insira um endereço de email válido",
-        "passwordRequired": "A senha é obrigatória",
+        "emailInvalid": "Por favor, introduza um endereço de email válido",
+        "passwordRequired": "A palavra-passe é obrigatória",
         "fieldRequired": "Este campo é obrigatório"
     },
     "footer": {
@@ -82,7 +82,7 @@
         "copyright": "Todos os direitos reservados.",
         "faq": "FAQ",
         "help": "Ajuda",
-        "blog": "Blog",
+        "blog": "Blogue",
         "tutorials": "Tutoriais",
         "terms": "Termos de Utilização",
         "privacy": "Política de Privacidade",
