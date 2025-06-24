@@ -8,6 +8,72 @@
         "ok": "OK",
         "cancel": "Cancel",
         "yes": "Yes",
-        "no": "No"
+        "no": "No",
+        "appName": "PMS Pro",
+        "companyName": "AoR Tech",
+        "userAvatar": "User avatar"
+    },
+    "home": {
+        "getStarted": "Get Started",
+        "learnMore": "Learn More",
+        "features": {
+            "title": "Key Features",
+            "tracking": {
+                "title": "Performance Tracking",
+                "description": "Track performance metrics in real-time with intuitive dashboards and reports."
+            },
+            "feedback": {
+                "title": "360° Feedback",
+                "description": "Collect and analyse feedback from peers, managers, and direct reports."
+            },
+            "goals": {
+                "title": "Goal Management",
+                "description": "Set, track, and achieve individual and team goals aligned with organisational objectives."
+            }
+        },
+        "cta": {
+            "title": "Ready to transform your performance management?",
+            "description": "Join thousands of companies already using our platform to improve team performance.",
+            "button": "Start Free Trial"
+        }
+    },
+    "nav": {
+        "home": "Home",
+        "trainings": "Trainings",
+        "evaluations": "Evaluations",
+        "dashboard": "Dashboard",
+        "about": "About"
+    },
+    "auth": {
+        "login": "Log In",
+        "register": "Sign Up",
+        "logout": "Log Out",
+        "forgotPassword": "Forgot Password?"
+    },
+    "user": {
+        "profile": "Profile",
+        "settings": "Settings",
+        "logout": "Log Out",
+        "account": "My Account"
+    },
+    "footer": {
+        "quickLinks": "Quick Links",
+        "resources": "Resources",
+        "legal": "Legal",
+        "contact": "Contact",
+        "description": "The Performance Management System (PMS Pro) allows you to monitor and optimize your team's performance through advanced analytical tools.",
+        "copyright": "All rights reserved.",
+        "faq": "FAQ",
+        "help": "Help",
+        "blog": "Blog",
+        "tutorials": "Tutorials",
+        "terms": "Terms of Use",
+        "privacy": "Privacy Policy",
+        "cookies": "Cookie Policy",
+        "contactUs": "Contact Us",
+        "email": "support@aortech.com",
+        "support": "Support",
+        "madeWith": "Made with",
+        "by": "by"
     }
 }

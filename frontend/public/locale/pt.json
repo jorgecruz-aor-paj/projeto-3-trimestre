@@ -8,6 +8,72 @@
         "ok": "OK",
         "cancel": "Cancelar",
         "yes": "Sim",
-        "no": "Não"
+        "no": "Não",
+        "appName": "SGD Pro",
+        "companyName": "AoR Tech",
+        "userAvatar": "Avatar do utilizador"
+    },
+    "home": {
+        "getStarted": "Começar agora",
+        "learnMore": "Saber mais",
+        "features": {
+            "title": "Principais Funcionalidades",
+            "tracking": {
+                "title": "Acompanhamento de Desempenho",
+                "description": "Acompanhe métricas de desempenho em tempo real com painéis e relatórios intuitivos."
+            },
+            "feedback": {
+                "title": "Feedback 360°",
+                "description": "Recolha e analise feedback de colegas, gestores e subordinados."
+            },
+            "goals": {
+                "title": "Gestão de Objetivos",
+                "description": "Defina, acompanhe e alcance objetivos individuais e de equipa alinhados com os objetivos organizacionais."
+            }
+        },
+        "cta": {
+            "title": "Pronto para transformar a gestão de desempenho?",
+            "description": "Junte-se a milhares de empresas que já utilizam a nossa plataforma para melhorar o desempenho das suas equipas.",
+            "button": "Iniciar Teste Gratuito"
+        }
+    },
+    "nav": {
+        "home": "Início",
+        "trainings": "Formações",
+        "evaluations": "Avaliações",
+        "dashboard": "Painel",
+        "about": "Sobre"
+    },
+    "auth": {
+        "login": "Entrar",
+        "register": "Registar",
+        "logout": "Sair",
+        "forgotPassword": "Esqueceu a senha?"
+    },
+    "user": {
+        "profile": "Perfil",
+        "settings": "Definições",
+        "logout": "Terminar sessão",
+        "account": "Minha conta"
+    },
+    "footer": {
+        "quickLinks": "Links Rápidos",
+        "resources": "Recursos",
+        "legal": "Legal",
+        "contact": "Contacto",
+        "description": "O Sistema de Gestão de Desempenho (SGD Pro) permite-lhe monitorizar e otimizar o desempenho da sua equipa através de ferramentas analíticas avançadas.",
+        "copyright": "Todos os direitos reservados.",
+        "faq": "FAQ",
+        "help": "Ajuda",
+        "blog": "Blog",
+        "tutorials": "Tutoriais",
+        "terms": "Termos de Utilização",
+        "privacy": "Política de Privacidade",
+        "cookies": "Política de Cookies",
+        "contactUs": "Contacte-nos",
+        "email": "suporte@aortech.pt",
+        "support": "Suporte",
+        "madeWith": "Desenvolvido com",
+        "by": "por"
     }
 }
