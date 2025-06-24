@@ -17,7 +17,7 @@ import 'styles/components/Footer.css';
  * Footer component with links, social media and copyright information
  * @returns {React.Component} Footer component
  */
-const Footer = () => {
+export const Footer = () => {
   const { t } = useTranslation();
   const currentYear = new Date().getFullYear();
 
@@ -167,5 +167,3 @@ const Footer = () => {
     </footer>
   );
 };
-
-export default Footer;

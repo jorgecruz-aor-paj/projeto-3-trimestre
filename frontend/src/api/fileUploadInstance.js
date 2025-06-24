@@ -75,4 +75,4 @@ fileUploadInstance.interceptors.response.use(
   }
 );
 
-export default fileUploadInstance;
+export { fileUploadInstance };

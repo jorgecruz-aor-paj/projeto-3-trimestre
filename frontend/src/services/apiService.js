@@ -2,7 +2,7 @@
  * API Service
  * Base service for making API requests using axios
  */
-import axiosInstance from 'api/axiosInstance';
+import { axiosInstance } from 'api/axiosInstance';
 
 /**
  * Makes an API request using the axios instance

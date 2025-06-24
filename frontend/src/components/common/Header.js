@@ -11,7 +11,7 @@ import 'styles/components/Header.css';
  * Header component with responsive navigation
  * @returns {React.Component} Header component
  */
-const Header = () => {
+export const Header = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const { t } = useTranslation();
@@ -74,7 +74,7 @@ const Header = () => {
                       {t('user.settings')}
                     </Dropdown.Item>
                     <Dropdown.Divider />
-                    <Dropdown.Item onClick={() => console.log('Logout')}>
+                    <Dropdown.Item onClick={() => {/* TODO: Implement logout */}}>
                       {t('user.logout')}
                     </Dropdown.Item>
                   </Dropdown.Menu>
@@ -158,4 +158,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+

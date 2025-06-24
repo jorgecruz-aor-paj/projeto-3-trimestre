@@ -8,7 +8,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'styles/bootstrap-override.css';
 
 import 'styles/index.css';
-import reportWebVitals from 'reportWebVitals';
+import { reportWebVitals } from 'reportWebVitals';
 import { App } from 'App';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

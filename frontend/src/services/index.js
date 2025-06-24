@@ -2,11 +2,7 @@
  * Services Module Index
  * Central export point for all application services
  */
-import {
-  API_BASE_URL,
-  WEBSOCKET_BASE_URL,
-  API_ENDPOINTS,
-} from '../api/apiConfig';
+import { API_BASE_URL, WEBSOCKET_BASE_URL, API_ENDPOINTS } from 'api/apiConfig';
 import { apiService, apiRequest } from './apiService';
 import { authService } from './authService';
 import { userService } from './userService';
