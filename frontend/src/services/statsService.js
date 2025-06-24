@@ -22,5 +22,3 @@ export const statsService = {
     return apiService.getAll(API_ENDPOINTS.stats.evaluations);
   },
 };
-
-export default statsService;

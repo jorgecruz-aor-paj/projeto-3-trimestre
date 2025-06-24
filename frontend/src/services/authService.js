@@ -44,5 +44,3 @@ export const authService = {
    * Note: The refresh token endpoint is not currently implemented in the backend
    */
 };
-
-export default authService;

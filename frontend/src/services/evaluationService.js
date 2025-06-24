@@ -39,5 +39,3 @@ export const evaluationService = {
     });
   },
 };
-
-export default evaluationService;

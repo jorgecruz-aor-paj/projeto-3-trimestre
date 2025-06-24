@@ -25,5 +25,3 @@ export const trainingParticipationService = {
     );
   },
 };
-
-export default trainingParticipationService;

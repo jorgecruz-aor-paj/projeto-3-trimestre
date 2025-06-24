@@ -33,5 +33,3 @@ export const aiService = {
     return apiService.create(API_ENDPOINTS.ai.predictPerformance, data);
   },
 };
-
-export default aiService;

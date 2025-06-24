@@ -7,16 +7,16 @@ import {
   WEBSOCKET_BASE_URL,
   API_ENDPOINTS,
 } from '../api/apiConfig';
-import apiService from './apiService';
-import authService from './authService';
-import userService from './userService';
-import trainingService from './trainingService';
-import trainingParticipationService from './trainingParticipationService';
-import evaluationService from './evaluationService';
-import aiService from './aiService';
-import exportService from './exportService';
-import statsService from './statsService';
-import websocketService from './websocketService';
+import { apiService, apiRequest } from './apiService';
+import { authService } from './authService';
+import { userService } from './userService';
+import { trainingService } from './trainingService';
+import { trainingParticipationService } from './trainingParticipationService';
+import { evaluationService } from './evaluationService';
+import { aiService } from './aiService';
+import { exportService } from './exportService';
+import { statsService } from './statsService';
+import { websocketService } from './websocketService';
 
 // Export all services and configurations
 export {
@@ -24,6 +24,7 @@ export {
   WEBSOCKET_BASE_URL,
   API_ENDPOINTS,
   apiService,
+  apiRequest,
   authService,
   userService,
   trainingService,
@@ -36,7 +37,7 @@ export {
 };
 
 // Default export for convenient importing
-export default {
+const services = {
   api: apiService,
   auth: authService,
   users: userService,
@@ -48,3 +49,5 @@ export default {
   stats: statsService,
   websocket: websocketService,
 };
+
+export default services;

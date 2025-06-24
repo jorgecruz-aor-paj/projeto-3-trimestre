@@ -18,5 +18,3 @@ export const exportService = {
     );
   },
 };
-
-export default exportService;
