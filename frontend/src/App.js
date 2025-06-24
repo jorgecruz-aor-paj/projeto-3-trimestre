@@ -3,13 +3,16 @@ import 'styles/App.css';
 import { LanguageProvider } from 'contexts/LanguageContext';
 import { BrowserRouter } from 'react-router-dom';
 import { AppRouter } from 'routes/AppRouter';
+import { AlertProvider } from 'contexts/AlertContext';
 
 export const App = () => {
   return (
     <LanguageProvider>
-      <BrowserRouter>
-        <AppRouter />
-      </BrowserRouter>
+      <AlertProvider>
+        <BrowserRouter>
+          <AppRouter />
+        </BrowserRouter>
+      </AlertProvider>
     </LanguageProvider>
   );
 };
