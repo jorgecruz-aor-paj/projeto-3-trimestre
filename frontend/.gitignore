@@ -16,6 +16,9 @@
 output.log
 package-lock.json
 
+# Folders
+temp/
+
 # misc
 .DS_Store
 .env.local
