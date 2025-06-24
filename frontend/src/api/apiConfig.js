@@ -24,7 +24,156 @@ const AUTH_ENDPOINT = `${API_BASE_URL}/auth`;
 const USER_ENDPOINT = `${API_BASE_URL}/users`;
 const TRAININGS_ENDPOINT = `${API_BASE_URL}/trainings`;
 const EVALUATIONS_ENDPOINT = `${API_BASE_URL}/evaluations`;
+const AI_ENDPOINT = `${API_BASE_URL}/ai`;
+const EXPORT_ENDPOINT = `${API_BASE_URL}/export`;
+const STATS_ENDPOINT = `${API_BASE_URL}/stats`;
+const TEST_ENDPOINT = `${API_BASE_URL}/test`;
 
-const API_ENDPOINTS = {};
+/**
+ * API Endpoints configuration
+ * Each endpoint defines:
+ * - url: The full endpoint URL
+ * - requiresAuth: Whether the endpoint requires authentication
+ * - methods: Available HTTP methods for this endpoint
+ */
+const API_ENDPOINTS = {
+  auth: {
+    login: {
+      url: `${AUTH_ENDPOINT}/login`,
+      requiresAuth: false,
+    },
+    register: {
+      url: `${AUTH_ENDPOINT}/register`,
+      requiresAuth: false,
+    },
+    logout: {
+      url: `${AUTH_ENDPOINT}/logout`,
+      requiresAuth: true,
+    },
+  },
+  user: {
+    getAll: {
+      url: USER_ENDPOINT,
+      requiresAuth: true,
+    },
+    getMe: {
+      url: `${USER_ENDPOINT}/me`,
+      requiresAuth: true,
+    },
+    getById: id => ({
+      url: `${USER_ENDPOINT}/${id}`,
+      requiresAuth: true,
+    }),
+    update: {
+      url: USER_ENDPOINT,
+      requiresAuth: true,
+    },
+    assignManager: {
+      url: USER_ENDPOINT,
+      requiresAuth: true,
+      adminOnly: true,
+    },
+    profilePicture: userId => ({
+      url: `${USER_ENDPOINT}/${userId}/profile/picture`,
+      requiresAuth: true,
+    }),
+  },
+  trainings: {
+    getAll: {
+      url: TRAININGS_ENDPOINT,
+      requiresAuth: true,
+    },
+    create: {
+      url: TRAININGS_ENDPOINT,
+      requiresAuth: true,
+      adminOnly: true,
+    },
+    update: {
+      url: TRAININGS_ENDPOINT,
+      requiresAuth: true,
+      adminOnly: true,
+    },
+    area: {
+      url: `${TRAININGS_ENDPOINT}/area`,
+      requiresAuth: true,
+      adminOnly: true,
+    },
+    unparticipated: userId => ({
+      url: `${TRAININGS_ENDPOINT}/unparticipated/${userId}`,
+      requiresAuth: true,
+      managerOrAdmin: true,
+    }),
+  },
+  evaluations: {
+    getAll: {
+      url: EVALUATIONS_ENDPOINT,
+      requiresAuth: true,
+    },
+    update: {
+      url: EVALUATIONS_ENDPOINT,
+      requiresAuth: true,
+      managerOrAdmin: true,
+    },
+    close: {
+      url: EVALUATIONS_ENDPOINT,
+      requiresAuth: true,
+      adminOnly: true,
+    },
+  },
+  ai: {
+    analyzeSentiment: {
+      url: `${AI_ENDPOINT}/analyze-sentiment`,
+      requiresAuth: true,
+    },
+    recommendTraining: {
+      url: `${AI_ENDPOINT}/recommend-training`,
+      requiresAuth: true,
+    },
+    predictPerformance: {
+      url: `${AI_ENDPOINT}/predict-performance`,
+      requiresAuth: true,
+    },
+  },
+  export: {
+    usersCSV: {
+      url: `${EXPORT_ENDPOINT}/users/csv`,
+      requiresAuth: true,
+    },
+  },
+  stats: {
+    managers: {
+      url: `${STATS_ENDPOINT}/managers`,
+      requiresAuth: true,
+      adminOnly: true,
+    },
+    evaluations: {
+      url: `${STATS_ENDPOINT}/evaluations`,
+      requiresAuth: true,
+      adminOnly: true,
+    },
+  },
+  test: {
+    ping: {
+      url: `${TEST_ENDPOINT}/ping`,
+      requiresAuth: false,
+    },
+    email: {
+      url: `${TEST_ENDPOINT}/email`,
+      requiresAuth: false,
+    },
+  },
+};
 
-export { API_BASE_URL, WEBSOCKET_BASE_URL, API_ENDPOINTS };
+export {
+  API_BASE_URL,
+  WEBSOCKET_BASE_URL,
+  API_ENDPOINTS,
+  AUTH_ENDPOINT,
+  USER_ENDPOINT,
+  TRAININGS_ENDPOINT,
+  EVALUATIONS_ENDPOINT,
+  AI_ENDPOINT,
+  EXPORT_ENDPOINT,
+  STATS_ENDPOINT,
+  TEST_ENDPOINT,
+};
