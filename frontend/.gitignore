@@ -14,7 +14,6 @@
 # files
 .env
 output.log
-*.png
 
 # misc
 .DS_Store
