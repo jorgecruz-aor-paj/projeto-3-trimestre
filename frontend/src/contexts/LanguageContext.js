@@ -88,6 +88,19 @@ export const LanguageProvider = ({ children }) => {
     formatNumber: (number, options = {}) => {
       return new Intl.NumberFormat(i18n.language, options).format(number);
     },
+
+    // Format dates according to the current language
+    // Handles Java Instant format strings (ISO 8601)
+    formatDate: (date, options = {}) => {
+      try {
+        // Convert Java Instant/ISO string or keep as Date object
+        const dateObj = date instanceof Date ? date : new Date(date);
+        return new Intl.DateTimeFormat(i18n.language, options).format(dateObj);
+      } catch (error) {
+        console.warn('Error formatting date:', error);
+        return 'Invalid date';
+      }
+    },
   };
 
   return (
