@@ -48,13 +48,30 @@
         "login": "Log In",
         "register": "Sign Up",
         "logout": "Log Out",
-        "forgotPassword": "Forgot Password?"
+        "forgotPassword": "Forgot Password?",
+        "loginTitle": "Welcome Back",
+        "loginSubtitle": "Log in to access your dashboard",
+        "email": "Email Address",
+        "emailPlaceholder": "Enter your email",
+        "password": "Password",
+        "passwordPlaceholder": "Enter your password",
+        "loggingIn": "Logging in...",
+        "loginFailed": "Login failed. Please check your credentials.",
+        "noAccount": "Don't have an account?",
+        "signUp": "Sign up here",
+        "rememberMe": "Remember me"
     },
     "user": {
         "profile": "Profile",
         "settings": "Settings",
         "logout": "Log Out",
         "account": "My Account"
+    },
+    "validation": {
+        "emailRequired": "Email is required",
+        "emailInvalid": "Please enter a valid email address",
+        "passwordRequired": "Password is required",
+        "fieldRequired": "This field is required"
     },
     "footer": {
         "quickLinks": "Quick Links",

@@ -48,13 +48,30 @@
         "login": "Entrar",
         "register": "Registar",
         "logout": "Sair",
-        "forgotPassword": "Esqueceu a senha?"
+        "forgotPassword": "Esqueceu a senha?",
+        "loginTitle": "Bem-vindo de Volta",
+        "loginSubtitle": "Entre para acessar seu painel",
+        "email": "Endereço de Email",
+        "emailPlaceholder": "Digite seu email",
+        "password": "Senha",
+        "passwordPlaceholder": "Digite sua senha",
+        "loggingIn": "Entrando...",
+        "loginFailed": "Falha no login. Verifique suas credenciais.",
+        "noAccount": "Não tem uma conta?",
+        "signUp": "Registre-se aqui",
+        "rememberMe": "Lembrar-me"
     },
     "user": {
         "profile": "Perfil",
         "settings": "Definições",
         "logout": "Terminar sessão",
         "account": "Minha conta"
+    },
+    "validation": {
+        "emailRequired": "O email é obrigatório",
+        "emailInvalid": "Por favor, insira um endereço de email válido",
+        "passwordRequired": "A senha é obrigatória",
+        "fieldRequired": "Este campo é obrigatório"
     },
     "footer": {
         "quickLinks": "Links Rápidos",
