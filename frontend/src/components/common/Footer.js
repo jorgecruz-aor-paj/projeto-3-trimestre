@@ -10,8 +10,8 @@ import {
 } from '@fortawesome/free-brands-svg-icons';
 import { useTranslation } from 'react-i18next';
 
-import logo from '../../logo.svg';
-import '../../styles/components/Footer.css';
+import logo from 'logo.svg';
+import 'styles/components/Footer.css';
 
 /**
  * Footer component with links, social media and copyright information
