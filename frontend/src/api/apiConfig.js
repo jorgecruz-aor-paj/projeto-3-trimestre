@@ -139,6 +139,18 @@ const API_ENDPOINTS = {
       url: `${EXPORT_ENDPOINT}/users/csv`,
       requiresAuth: true,
     },
+    trainingsCSV: {
+      url: `${EXPORT_ENDPOINT}/trainings/csv`,
+      requiresAuth: true,
+    },
+    evaluationsCSV: {
+      url: `${EXPORT_ENDPOINT}/evaluations/csv`,
+      requiresAuth: true,
+    },
+    evaluationPDF: evaluationId => ({
+      url: `${EXPORT_ENDPOINT}/evaluations/${evaluationId}/pdf`,
+      requiresAuth: true,
+    }),
   },
   stats: {
     managers: {
