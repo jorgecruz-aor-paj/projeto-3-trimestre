@@ -1,10 +1,10 @@
-
 // src/components/forms/LoginForm.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Form } from 'react-bootstrap';
 import { FormInput } from './FormInput';
 import { SubmitButton } from './SubmitButton';
+import { useTranslation } from 'react-i18next';
 
 /**
  * Login form component (presentational)
@@ -17,42 +17,42 @@ export const LoginForm = ({
   errors,
   loading,
 }) => {
+  const { t } = useTranslation();
   return (
     <Form onSubmit={onSubmit}>
       <FormInput
         name="email"
         type="email"
-        label="Email"
+        label={t('auth.email')}
         value={formData.email}
         onChange={onChange}
         error={errors.email}
-        placeholder="your@email.com"
+        placeholder={t('auth.emailPlaceholder')}
         disabled={loading}
       />
 
       <FormInput
         name="password"
         type="password"
-        label="Password"
+        label={t('auth.password')}
         value={formData.password}
         onChange={onChange}
         error={errors.password}
-        placeholder="Enter your password"
+        placeholder={t('auth.passwordPlaceholder')}
         disabled={loading}
       />
 
       <div className="d-flex justify-content-end mb-3">
         <Link to="/auth/reset-password" className="small text-decoration-none">
-          Forgot Password?
+          {t('auth.forgotPassword')}
         </Link>
       </div>
 
       <SubmitButton
         isLoading={loading}
-        label="Login"
+        label={t('auth.login')}
         variant="primary"
       />
     </Form>
   );
 };
-

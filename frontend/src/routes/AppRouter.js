@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import { Home } from 'pages/Home';
 import { LoginPage } from 'pages/auth/LoginPage';
 import { MainLayout } from 'components/layout/MainLayout';
+import { RegisterPage } from 'pages/auth/RegisterPage';
 
 /**
  * AppRouter component that defines all application routes
@@ -30,6 +31,7 @@ export const AppRouter = () => {
         {/* Routes */}
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
 
         {/* Definir o resto das Routes */}
       </Route>
