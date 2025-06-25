@@ -65,7 +65,8 @@
     "registering": "Registering...",
     "confirmPassword": "Confirm Password",
     "confirmPasswordPlaceholder": "Re-enter your password",
-    "alreadyHaveAccount": "Already have an account?"
+    "alreadyHaveAccount": "Already have an account?",
+    "registerFailed": "Registration failed. Please try again."
   },
   "user": {
     "profile": "Profile",

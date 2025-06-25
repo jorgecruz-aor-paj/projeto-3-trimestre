@@ -83,9 +83,10 @@ export const RegisterPage = () => {
         email: formData.email,
         password: formData.password,
       });
+      console.log('Registration successful:', response);
       navigate('/auth/login', { state: { registered: true } });
     } catch (err) {
-      setError(err.response?.data?.message || t('auth.registerFailed'));
+      setError(err.message || t('auth.registerFailed'));
     } finally {
       setLoading(false);
     }

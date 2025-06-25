@@ -119,7 +119,7 @@ export const LoginPage = () => {
       navigate('/dashboard');
     } catch (err) {
       console.error('Login error:', err);
-      setError(err.response?.data?.message || t('auth.loginFailed'));
+      setError(err.message || t('auth.loginFailed'));
     } finally {
       setLoading(false);
     }

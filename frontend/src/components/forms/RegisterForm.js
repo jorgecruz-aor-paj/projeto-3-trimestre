@@ -57,7 +57,7 @@ export const RegisterForm = ({
       />
       <SubmitButton
         loading={loading}
-        text={t('auth.register')}
+        label={t('auth.register')}
         loadingText={t('auth.registering')}
         className="w-100 py-2 mt-3 mb-4"
       />

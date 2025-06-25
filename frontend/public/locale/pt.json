@@ -65,7 +65,8 @@
     "registering": "A registar...",
     "confirmPassword": "Confirmar Palavra-passe",
     "confirmPasswordPlaceholder": "Repita a sua palavra-passe",
-    "alreadyHaveAccount": "Já tem uma conta?"
+    "alreadyHaveAccount": "Já tem uma conta?",
+    "registerFailed": "Falha no registo. Por favor, tente novamente."
   },
   "user": {
     "profile": "Perfil",
