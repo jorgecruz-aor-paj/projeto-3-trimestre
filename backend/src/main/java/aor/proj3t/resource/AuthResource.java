@@ -131,7 +131,7 @@ public class AuthResource {
             logger.warn("Invalid or expired reset Password token");
             throw new UnauthorizedException("Invalid or expired token");
         }
-        validator.validateLoginDTO(loginDTO);
+        validator.validatePassword(loginDTO.getPassword());
         Claims claims = jwtUtil.extractAllClaims(resetPasswordToken);
         Long userId = Long.parseLong(claims.get("userId").toString());
         serviceFactory.forUser().changePassword(userId, loginDTO.getPassword());

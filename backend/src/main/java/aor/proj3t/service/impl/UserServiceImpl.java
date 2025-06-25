@@ -237,7 +237,7 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     private void sendResetPasswordEmail(String email, Long userId, String ipAddress, Integer resetPasswordExpirationTime) {
         String resetPasswordToken = jwtUtil.generatePasswordResetToken(email, userId, ipAddress, resetPasswordExpirationTime);
-        String baseUrl = "https://localhost:8443/jorgeosorio-proj3t/api/auth";
+        String baseUrl = "http://localhost:3000";
         emailUtil.sendPasswordResetEmail(email, resetPasswordToken, baseUrl);
     }
 

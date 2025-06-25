@@ -72,7 +72,11 @@
     "resetPasswordSubtitle": "Enter your email address to receive a password reset link.",
     "sendResetLink": "Send Reset Link",
     "resetPasswordEmailSent": "If your email is registered, you will receive a link to reset your password. Please check your inbox.",
-    "resetPasswordFailed": "Failed to send reset email. Please try again."
+    "resetPasswordFailed": "Failed to send reset email. Please try again.",
+    "setNewPasswordTitle": "Set New Password",
+    "setNewPasswordSubtitle": "Enter your new password below.",
+    "setNewPassword": "Set New Password",
+    "resetPasswordSuccess": "Your password has been reset successfully. You can now log in."
   },
   "user": {
     "profile": "Profile",
