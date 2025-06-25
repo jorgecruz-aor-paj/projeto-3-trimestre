@@ -52,6 +52,7 @@ export const LoginForm = ({
         isLoading={loading}
         label={t('auth.login')}
         variant="primary"
+        className="w-100 py-2 mt-3 mb-4"
       />
     </Form>
   );

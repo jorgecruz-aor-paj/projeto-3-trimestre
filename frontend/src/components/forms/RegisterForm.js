@@ -56,10 +56,11 @@ export const RegisterForm = ({
         disabled={loading}
       />
       <SubmitButton
-        loading={loading}
+        isLoading={loading}
         label={t('auth.register')}
         loadingText={t('auth.registering')}
         className="w-100 py-2 mt-3 mb-4"
+
       />
       <div className="text-center">
         <p className="mb-0">

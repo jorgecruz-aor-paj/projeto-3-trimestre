@@ -16,6 +16,7 @@ export const RegisterAuthForm = () => {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
   const [validationErrors, setValidationErrors] = useState({});
 
   const handleInputChange = e => {
@@ -50,6 +51,7 @@ export const RegisterAuthForm = () => {
   const handleSubmit = async e => {
     e.preventDefault();
     setError(null);
+    setSuccess(null);
     if (!validateForm()) return;
     setLoading(true);
     try {
@@ -57,7 +59,7 @@ export const RegisterAuthForm = () => {
         email: formData.email,
         password: formData.password,
       });
-      navigate('/auth/login', { state: { registered: true } });
+      setSuccess(t('auth.registerSuccess'));
     } catch (err) {
       setError(err.message || t('auth.registerFailed'));
     } finally {
@@ -72,6 +74,7 @@ export const RegisterAuthForm = () => {
         {t('auth.registerSubtitle')}
       </p>
       {error && <Alert variant="danger">{error}</Alert>}
+      {success && <Alert variant="success">{success}</Alert>}
       <RegisterForm
         formData={formData}
         onChange={handleInputChange}
