@@ -1,12 +1,8 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Home } from 'pages/Home';
-import { LoginPage } from 'pages/auth/LoginPage';
 import { MainLayout } from 'components/layout/MainLayout';
-import { RegisterPage } from 'pages/auth/RegisterPage';
 import { AuthTogglePage } from 'pages/auth/AuthTogglePage';
-import { LoginAuthForm } from 'pages/auth/LoginAuthForm';
-import { RegisterAuthForm } from 'pages/auth/RegisterAuthForm';
 
 /**
  * AppRouter component that defines all application routes
