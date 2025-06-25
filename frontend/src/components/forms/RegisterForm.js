@@ -65,7 +65,7 @@ export const RegisterForm = ({
       <div className="text-center">
         <p className="mb-0">
           {t('auth.alreadyHaveAccount')}{' '}
-          <Link to="/auth/login" className="text-decoration-none fw-semibold">
+          <Link to="/login" className="text-decoration-none fw-semibold">
             {t('auth.login')}
           </Link>
         </p>

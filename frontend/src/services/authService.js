@@ -63,10 +63,13 @@ export const authService = {
    */
   requestPasswordReset: email => {
     return apiRequest(
-      `${API_ENDPOINTS.auth.resetPasswordRequest.url.replace(
-        '{email}',
-        email
-      )}`,
+      {
+        url: API_ENDPOINTS.auth.resetPasswordRequest.url.replace(
+          '{email}',
+          encodeURIComponent(email)
+        ),
+        requiresAuth: false,
+      },
       {
         method: 'GET',
       }

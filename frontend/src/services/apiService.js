@@ -15,7 +15,6 @@ export const apiRequest = (endpoint, options = {}, pathParams = {}) => {
   // If endpoint is a function (with params), call it to get the actual endpoint config
   const endpointConfig =
     typeof endpoint === 'function' ? endpoint(pathParams) : endpoint;
-
   // Error handling is done in the axiosInstance interceptor
   return axiosInstance({
     url: endpointConfig.url,

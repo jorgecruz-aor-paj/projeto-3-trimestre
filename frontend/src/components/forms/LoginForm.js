@@ -43,7 +43,7 @@ export const LoginForm = ({
       />
 
       <div className="d-flex justify-content-end mb-3">
-        <Link to="/auth/reset-password" className="small text-decoration-none">
+        <Link to="/reset-password" className="small text-decoration-none">
           {t('auth.forgotPassword')}
         </Link>
       </div>

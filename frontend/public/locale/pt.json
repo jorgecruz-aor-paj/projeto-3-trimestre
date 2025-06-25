@@ -67,7 +67,12 @@
     "confirmPasswordPlaceholder": "Repita a sua palavra-passe",
     "alreadyHaveAccount": "Já tem uma conta?",
     "registerFailed": "Falha no registo. Por favor, tente novamente.",
-    "registerSuccess": "Registo efetuado com sucesso! Por favor, verifique a sua caixa de entrada para confirmar a sua conta."
+    "registerSuccess": "Registo efetuado com sucesso! Por favor, verifique a sua caixa de entrada para confirmar a sua conta.",
+    "resetPasswordTitle": "Redefinir Palavra-passe",
+    "resetPasswordSubtitle": "Introduza o seu email para receber um link de redefinição de palavra-passe.",
+    "sendResetLink": "Enviar link de redefinição",
+    "resetPasswordEmailSent": "Se o seu email estiver registado, irá receber um link para redefinir a sua palavra-passe. Por favor, verifique a sua caixa de entrada.",
+    "resetPasswordFailed": "Falha ao enviar o email de redefinição. Por favor, tente novamente."
   },
   "user": {
     "profile": "Perfil",
