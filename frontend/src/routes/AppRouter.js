@@ -4,6 +4,9 @@ import { Home } from 'pages/Home';
 import { LoginPage } from 'pages/auth/LoginPage';
 import { MainLayout } from 'components/layout/MainLayout';
 import { RegisterPage } from 'pages/auth/RegisterPage';
+import { AuthTogglePage } from 'pages/auth/AuthTogglePage';
+import { LoginAuthForm } from 'pages/auth/LoginAuthForm';
+import { RegisterAuthForm } from 'pages/auth/RegisterAuthForm';
 
 /**
  * AppRouter component that defines all application routes
@@ -30,9 +33,8 @@ export const AppRouter = () => {
       <Route element={<MainLayout />}>
         {/* Routes */}
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-
+        <Route path="/login" element={<AuthTogglePage />} />
+        <Route path="/register" element={<AuthTogglePage />} />
         {/* Definir o resto das Routes */}
       </Route>
     </Routes>
