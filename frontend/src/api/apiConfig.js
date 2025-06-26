@@ -28,6 +28,7 @@ const AI_ENDPOINT = `${API_BASE_URL}/ai`;
 const EXPORT_ENDPOINT = `${API_BASE_URL}/export`;
 const STATS_ENDPOINT = `${API_BASE_URL}/stats`;
 const TEST_ENDPOINT = `${API_BASE_URL}/test`;
+const WORKPLACES_ENDPOINT = `${API_BASE_URL}/workplaces`;
 
 /**
  * API Endpoints configuration
@@ -186,6 +187,12 @@ const API_ENDPOINTS = {
       requiresAuth: false,
     },
   },
+  workplaces: {
+    getAll: {
+      url: WORKPLACES_ENDPOINT,
+      requiresAuth: false,
+    },
+  },
 };
 
 export {
@@ -200,4 +207,5 @@ export {
   EXPORT_ENDPOINT,
   STATS_ENDPOINT,
   TEST_ENDPOINT,
+  WORKPLACES_ENDPOINT,
 };

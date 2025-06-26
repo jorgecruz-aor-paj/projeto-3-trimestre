@@ -62,36 +62,33 @@
     "rememberMe": "Lembrar-me",
     "registerTitle": "Crie a sua conta",
     "registerSubtitle": "Junte-se à nossa comunidade",
-    "registering": "A registar...",
-    "confirmPassword": "Confirmar Palavra-passe",
-    "confirmPasswordPlaceholder": "Repita a sua palavra-passe",
-    "alreadyHaveAccount": "Já tem uma conta?",
-    "registerFailed": "Falha no registo. Por favor, tente novamente.",
-    "registerSuccess": "Registo efetuado com sucesso! Por favor, verifique a sua caixa de entrada para confirmar a sua conta.",
-    "resetPasswordTitle": "Redefinir Palavra-passe",
-    "resetPasswordSubtitle": "Introduza o seu email para receber um link de redefinição de palavra-passe.",
-    "sendResetLink": "Enviar link de redefinição",
-    "resetPasswordEmailSent": "Se o seu email estiver registado, irá receber um link para redefinir a sua palavra-passe. Por favor, verifique a sua caixa de entrada.",
-    "resetPasswordFailed": "Falha ao enviar o email de redefinição. Por favor, tente novamente.",
-    "setNewPasswordTitle": "Definir Nova Palavra-passe",
-    "setNewPasswordSubtitle": "Introduza a sua nova palavra-passe abaixo.",
-    "setNewPassword": "Definir Nova Palavra-passe",
-    "resetPasswordSuccess": "A sua palavra-passe foi redefinida com sucesso. Já pode iniciar sessão."
+    "confirmTitle": "Completar Registo",
+    "confirmSubtitle": "Por favor, preencha os seus dados para completar o registo.",
+    "confirmSuccess": "A sua conta foi confirmada! Já pode iniciar sessão.",
+    "confirmFailed": "A confirmação falhou. Por favor, tente novamente ou contacte o suporte.",
+    "confirmRegistration": "Confirmar Registo",
+    "goToLogin": "Ir para o Login"
   },
   "user": {
     "profile": "Perfil",
     "settings": "Definições",
     "logout": "Terminar sessão",
-    "account": "Minha conta"
+    "account": "Minha conta",
+    "firstName": "Nome próprio",
+    "lastName": "Apelido",
+    "address": "Morada",
+    "phoneNumber": "Telemóvel",
+    "birthdate": "Data de nascimento",
+    "workplace": "Local de trabalho",
+    "selectWorkplace": "Selecione um local de trabalho",
+    "biography": "Biografia",
+    "photograph": "Fotografia"
   },
   "validation": {
     "emailRequired": "O email é obrigatório",
     "emailInvalid": "Por favor, introduza um endereço de email válido",
     "passwordRequired": "A palavra-passe é obrigatória",
-    "fieldRequired": "Este campo é obrigatório",
-    "confirmPasswordRequired": "Por favor, confirme a sua palavra-passe",
-    "passwordsDontMatch": "As palavras-passe não coincidem",
-    "passwordMinLength": "A palavra-passe deve ter pelo menos 6 caracteres"
+    "fieldRequired": "Este campo é obrigatório"
   },
   "footer": {
     "quickLinks": "Links Rápidos",
@@ -112,5 +109,10 @@
     "support": "Suporte",
     "madeWith": "Desenvolvido com",
     "by": "por"
+  },
+  "workplaces": {
+    "title": "Locais de Trabalho",
+    "confirmSuccess": "Locais de trabalho obtidos com sucesso.",
+    "confirmFailed": "Falha ao obter locais de trabalho. Por favor, tente novamente."
   }
 }

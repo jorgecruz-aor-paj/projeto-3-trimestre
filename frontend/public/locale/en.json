@@ -60,38 +60,33 @@
     "noAccount": "Don't have an account?",
     "signUp": "Sign up here",
     "rememberMe": "Remember me",
-    "registerTitle": "Create your account",
-    "registerSubtitle": "Join our community",
-    "registering": "Registering...",
-    "confirmPassword": "Confirm Password",
-    "confirmPasswordPlaceholder": "Re-enter your password",
-    "alreadyHaveAccount": "Already have an account?",
-    "registerFailed": "Registration failed. Please try again.",
-    "registerSuccess": "Registration successful! Please check your inbox to confirm your account.",
-    "resetPasswordTitle": "Reset Password",
-    "resetPasswordSubtitle": "Enter your email address to receive a password reset link.",
-    "sendResetLink": "Send Reset Link",
-    "resetPasswordEmailSent": "If your email is registered, you will receive a link to reset your password. Please check your inbox.",
-    "resetPasswordFailed": "Failed to send reset email. Please try again.",
-    "setNewPasswordTitle": "Set New Password",
-    "setNewPasswordSubtitle": "Enter your new password below.",
-    "setNewPassword": "Set New Password",
-    "resetPasswordSuccess": "Your password has been reset successfully. You can now log in."
+    "confirmTitle": "Complete Registration",
+    "confirmSubtitle": "Please fill in your details to complete registration.",
+    "confirmSuccess": "Your account has been confirmed! You can now log in.",
+    "confirmFailed": "Confirmation failed. Please try again or contact support.",
+    "confirmRegistration": "Confirm Registration",
+    "goToLogin": "Go to Login"
   },
   "user": {
     "profile": "Profile",
     "settings": "Settings",
     "logout": "Log Out",
-    "account": "My Account"
+    "account": "My Account",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "address": "Address",
+    "phoneNumber": "Phone Number",
+    "birthdate": "Birthdate",
+    "workplace": "Workplace",
+    "selectWorkplace": "Select a workplace",
+    "biography": "Biography",
+    "photograph": "Photograph"
   },
   "validation": {
     "emailRequired": "Email is required",
     "emailInvalid": "Please enter a valid email address",
     "passwordRequired": "Password is required",
-    "fieldRequired": "This field is required",
-    "confirmPasswordRequired": "Please confirm your password",
-    "passwordsDontMatch": "Passwords do not match",
-    "passwordMinLength": "Password must be at least 6 characters"
+    "fieldRequired": "This field is required"
   },
   "footer": {
     "quickLinks": "Quick Links",
@@ -112,5 +107,10 @@
     "support": "Support",
     "madeWith": "Made with",
     "by": "by"
+  },
+  "workplaces": {
+    "title": "Workplaces",
+    "confirmSuccess": "Workplaces fetched successfully.",
+    "confirmFailed": "Failed to fetch workplaces. Please try again."
   }
 }
