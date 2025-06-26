@@ -14,7 +14,6 @@ export const useWorkplaces = () => {
     } else {
       try {
         const data = await workplaceService.getWorkplaces();
-        console.log(data);
         setWorkplaces(data);
         sessionStorage.setItem('workplaces', JSON.stringify(data));
       } catch (err) {
@@ -28,7 +27,6 @@ export const useWorkplaces = () => {
 
   fetchWorkplaces();
 }, []);
-
 
   return { workplaces, workplacesLoading };
 };

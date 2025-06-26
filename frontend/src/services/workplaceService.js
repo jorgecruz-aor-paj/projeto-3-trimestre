@@ -1,10 +1,12 @@
 // src/services/workplaceService.js
-import { apiService } from './apiService';
+import { apiRequest, apiService } from './apiService';
 import { API_ENDPOINTS } from 'api/apiConfig';
 
 export const workplaceService = {
-  async getWorkplaces() {
-    const response = await apiService.getAll(API_ENDPOINTS.workplaces.getAll);
-    return response;
+
+     getWorkplaces: () => {
+    return apiRequest (API_ENDPOINTS.workplaces.getAll, {
+      method: 'GET',
+    });
   },
 };
