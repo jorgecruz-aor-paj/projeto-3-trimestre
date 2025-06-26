@@ -1,17 +1,8 @@
 package aor.proj3t.service;
 
 import aor.proj3t.service.impl.TokenService;
-import aor.proj3t.service.interfaces.AIService;
-import aor.proj3t.service.interfaces.AuthService;
-import aor.proj3t.service.interfaces.AuthorizationService;
-import aor.proj3t.service.interfaces.EvaluationCycleService;
-import aor.proj3t.service.interfaces.EvaluationService;
-import aor.proj3t.service.interfaces.ExportService;
-import aor.proj3t.service.interfaces.MessageService;
-import aor.proj3t.service.interfaces.NotificationService;
-import aor.proj3t.service.interfaces.TrainingParticipationService;
-import aor.proj3t.service.interfaces.TrainingService;
-import aor.proj3t.service.interfaces.UserService;
+import aor.proj3t.service.impl.WorkplaceServiceImpl;
+import aor.proj3t.service.interfaces.*;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
@@ -76,6 +67,9 @@ public class ServiceFactory {
 
     @Inject
     private ExportService exportService;
+
+    @Inject
+    private WorkplaceService workplaceService;
 
     /**
      * Get the service for User operations This method provides access to the
@@ -193,4 +187,15 @@ public class ServiceFactory {
     public AIService forAI() {
         return aiService;
     }
+
+
+    /**
+     * Get the service for Workplace operations
+     *
+     * @return The WorkplaceService instance
+     */
+    public WorkplaceService forWorkplace() {
+        return workplaceService;
+    }
+
 }
