@@ -34,7 +34,6 @@ public class WorkplaceResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Secured
     public Response getWorkplaces(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader) {
         List<WorkplaceDTO> list = serviceFactory.forWorkplace().getAllWorkplaces();
         return Response.ok(list).build();
