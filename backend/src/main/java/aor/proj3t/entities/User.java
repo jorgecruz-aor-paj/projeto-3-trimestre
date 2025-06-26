@@ -57,7 +57,7 @@ public class User {
     private String address;
 
     @Column(name = "birth_date", nullable = false)
-    private LocalDate birthDate;
+    private LocalDate birthdate;
 
     @Column(name = "biography")
     private String biography;
@@ -91,14 +91,14 @@ public class User {
     public User() {
     }
 
-    public User(String email, String password, String firstName, String lastName, String phoneNumber, String Address, LocalDate birthDate, Role role, Workplace workplace) {
+    public User(String email, String password, String firstName, String lastName, String phoneNumber, String Address, LocalDate birthdate, Role role, Workplace workplace) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.address = Address;
-        this.birthDate = birthDate;
+        this.birthdate = birthdate;
         this.role = role;
         this.workplace = workplace;
     }
@@ -159,12 +159,12 @@ public class User {
         this.address = address;
     }
 
-    public LocalDate getBirthDate() {
-        return birthDate;
+    public LocalDate getBirthdate() {
+        return birthdate;
     }
 
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
+    public void setBirthdate(LocalDate birthdate) {
+        this.birthdate = birthdate;
     }
 
     public String getBiography() {

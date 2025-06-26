@@ -31,7 +31,7 @@ public class UserCsvDTO {
 
     @CsvBindByName(column = "Birth Date")
     @CsvDate(value = "yyyy-MM-dd")
-    private LocalDate birthDate;
+    private LocalDate birthdate;
 
     @CsvBindByName(column = "Role")
     private String role;
@@ -54,7 +54,7 @@ public class UserCsvDTO {
         this.lastName = userDTO.getLastName();
         this.phoneNumber = userDTO.getPhoneNumber();
         this.address = userDTO.getAddress();
-        this.birthDate = userDTO.getBirthDate();
+        this.birthdate = userDTO.getBirthdate();
         this.role = userDTO.getRole() != null ? userDTO.getRole().toString() : null;
         this.managerId = userDTO.getManagerId();
         this.workplaceId = userDTO.getWorkplaceId();
@@ -109,12 +109,12 @@ public class UserCsvDTO {
         this.address = address;
     }
 
-    public LocalDate getBirthDate() {
-        return birthDate;
+    public LocalDate getbirthdate() {
+        return birthdate;
     }
 
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
+    public void setbirthdate(LocalDate birthdate) {
+        this.birthdate = birthdate;
     }
 
     public String getRole() {

@@ -49,7 +49,7 @@ public class UserConverter extends AbstractConverter<User, UserDTO, Long> {
         dto.setAddress(user.getAddress());
         dto.setPhoneNumber(user.getPhoneNumber());
         dto.setRole(user.getRole());
-        dto.setBirthDate(user.getBirthDate());
+        dto.setBirthdate(user.getBirthdate());
         dto.setCreatedAt(user.getCreatedAt());
         dto.setBiography(user.getBiography());
         dto.setPhotograph(user.getPhotograph());
@@ -72,7 +72,7 @@ public class UserConverter extends AbstractConverter<User, UserDTO, Long> {
         user.setAddress(dto.getAddress());
         user.setPhoneNumber(dto.getPhoneNumber());
         user.setRole(dto.getRole());
-        user.setBirthDate(dto.getBirthDate());
+        user.setBirthdate(dto.getBirthdate());
         user.setBiography(dto.getBiography());
         user.setPhotograph(dto.getPhotograph());
 

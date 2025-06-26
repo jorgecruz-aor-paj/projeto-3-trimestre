@@ -55,6 +55,8 @@
     "emailPlaceholder": "Introduza o seu email",
     "password": "Palavra-passe",
     "passwordPlaceholder": "Introduza a sua palavra-passe",
+    "confirmPassword": "Confirmar Palavra-passe",
+    "confirmPasswordPlaceholder": "Introduza novamente a sua palavra-passe",
     "loggingIn": "A entrar. Aguarde...",
     "loginFailed": "Falha no início de sessão. Verifique as suas credenciais.",
     "noAccount": "Não tem uma conta?",

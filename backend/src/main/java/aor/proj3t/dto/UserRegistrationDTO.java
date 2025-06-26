@@ -25,8 +25,8 @@ public class UserRegistrationDTO {
     @XmlElement(name = "address")
     private String address;
 
-    @XmlElement(name = "birthDate")
-    private LocalDate birthDate;
+    @XmlElement(name = "birthdate")
+    private LocalDate birthdate;
 
     @XmlElement(name = "biography")
     private String biography;
@@ -73,12 +73,12 @@ public class UserRegistrationDTO {
         this.address = address;
     }
 
-    public LocalDate getBirthDate() {
-        return birthDate;
+    public LocalDate getBirthdate() {
+        return birthdate;
     }
 
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
+    public void setBirthdate(LocalDate birthdate) {
+        this.birthdate = birthdate;
     }
 
     public String getBiography() {
@@ -104,4 +104,6 @@ public class UserRegistrationDTO {
     public void setWorkplaceId(Long workplaceId) {
         this.workplaceId = workplaceId;
     }
+
+
 }

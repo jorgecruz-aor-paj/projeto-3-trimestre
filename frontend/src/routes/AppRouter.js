@@ -32,6 +32,8 @@ export const AppRouter = () => {
         {/* Routes */}
         <Route path="/" element={<Home />} />
         <Route path="/auth" element={<AuthTogglePage />} />
+        <Route path="/login" element={<AuthTogglePage />} />
+        <Route path="/register" element={<AuthTogglePage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/register/confirm" element={<ConfirmRegistrationPage />} />
         {/* Definir o resto das Routes */}

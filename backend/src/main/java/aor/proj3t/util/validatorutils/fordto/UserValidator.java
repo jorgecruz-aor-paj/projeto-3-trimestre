@@ -57,8 +57,8 @@ public class UserValidator {
         }
     }
 
-    public void validateBirthDate(LocalDate birthDate) {
-        if (birthDate == null || !birthDate.isBefore(LocalDate.now())) {
+    public void validatebirthdate(LocalDate birthdate) {
+        if (birthdate == null || !birthdate.isBefore(LocalDate.now())) {
             throw new InvalidDataException("Birth date must be in the past");
         }
     }
@@ -117,7 +117,7 @@ public class UserValidator {
         validateName(dto.getFirstName());
         validateName(dto.getLastName());
         validatePhone(dto.getPhoneNumber());
-        validateBirthDate(dto.getBirthDate());
+        validatebirthdate(dto.getBirthdate());
         validateBiography(dto.getBiography());
         validateAddress(dto.getAddress());
         validateId(dto.getWorkplaceId(), "Workplace");
@@ -129,7 +129,7 @@ public class UserValidator {
         validateName(dto.getLastName());
         validatePhone(dto.getPhoneNumber());
         validateAddress(dto.getAddress());
-        validateBirthDate(dto.getBirthDate());
+        validatebirthdate(dto.getBirthdate());
         validateBiography(dto.getBiography());
         validateId(dto.getWorkplaceId(), "Workplace");
         validatePhotograph(dto.getPhotograph());

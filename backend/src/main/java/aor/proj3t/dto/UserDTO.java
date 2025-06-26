@@ -33,8 +33,8 @@ public class UserDTO {
     @XmlElement(name = "address")
     private String address;
 
-    @XmlElement(name = "birthDate")
-    private LocalDate birthDate;
+    @XmlElement(name = "birthdate")
+    private LocalDate birthdate;
 
     @XmlElement(name = "biography")
     private String biography;
@@ -57,7 +57,7 @@ public class UserDTO {
     }
 
     public UserDTO(long id, String email, String firstName, String lastName, String phoneNumber, String address,
-            LocalDate birthDate, String biography, Instant createdAt, String photograph, Role role,
+            LocalDate birthdate, String biography, Instant createdAt, String photograph, Role role,
             Long managerId, Long workplaceId) {
         this.id = id;
         this.email = email;
@@ -65,7 +65,7 @@ public class UserDTO {
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.address = address;
-        this.birthDate = birthDate;
+        this.birthdate = birthdate;
         this.biography = biography;
         this.createdAt = createdAt;
         this.photograph = photograph;
@@ -122,12 +122,12 @@ public class UserDTO {
         this.address = address;
     }
 
-    public LocalDate getBirthDate() {
-        return birthDate;
+    public LocalDate getBirthdate() {
+        return birthdate;
     }
 
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
+    public void setBirthdate(LocalDate birthdate) {
+        this.birthdate = birthdate;
     }
 
     public String getBiography() {
@@ -177,4 +177,6 @@ public class UserDTO {
     public void setWorkplaceId(Long workplaceId) {
         this.workplaceId = workplaceId;
     }
+
+
 }

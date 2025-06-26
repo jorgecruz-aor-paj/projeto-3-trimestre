@@ -224,7 +224,7 @@ public class UserServiceImpl extends BaseService implements UserService {
                 userRegistrationDto.getLastName(),
                 userRegistrationDto.getPhoneNumber(),
                 userRegistrationDto.getAddress(),
-                userRegistrationDto.getBirthDate(),
+                userRegistrationDto.getBirthdate(),
                 Role.USER,
                 workplace);
 
@@ -248,7 +248,7 @@ public class UserServiceImpl extends BaseService implements UserService {
         user.setAddress(userDto.getAddress());
         user.setRole(userDto.getRole());
         user.setBiography(userDto.getBiography());
-        user.setBirthDate(userDto.getBirthDate());
+        user.setBirthdate(userDto.getBirthdate());
         user.setPhotograph(userDto.getPhotograph());
 
         Workplace workplace = getEntity(daoFactory.forWorkplace().findById(userDto.getWorkplaceId()), userDto.getWorkplaceId(), "Workplace");
@@ -281,7 +281,7 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     private void sendConfirmationEmail(String email, String ipAddress, Integer confirmationExpirationTime) {
         String token = jwtUtil.generateConfirmationToken(email, ipAddress, confirmationExpirationTime);
-        String baseUrl = "https://localhost:8443/jorgeosorio-proj3t/api/auth";
+        String baseUrl = "http://localhost:3000/register/confirm";
         emailUtil.sendConfirmationEmail(email, token, baseUrl);
     }
 
