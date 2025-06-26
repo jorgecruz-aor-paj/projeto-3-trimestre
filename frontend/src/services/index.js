@@ -10,7 +10,7 @@ import { trainingService } from './trainingService';
 import { trainingParticipationService } from './trainingParticipationService';
 import { evaluationService } from './evaluationService';
 import { aiService } from './aiService';
-import { exportService } from './exportService';
+import { exportService, downloadBlob } from './exportService';
 import { statsService } from './statsService';
 import { websocketService } from './websocketService';
 
@@ -28,6 +28,7 @@ export {
   evaluationService,
   aiService,
   exportService,
+  downloadBlob,
   statsService,
   websocketService,
 };
