@@ -48,7 +48,11 @@ export const authService = {
    */
   confirmUser: (confirmationToken, userData) => {
     return apiRequest(
-      `${API_ENDPOINTS.auth.confirm.url}?confirmationToken=${confirmationToken}`,
+      {
+        url: `${
+          API_ENDPOINTS.auth.confirm.url
+        }?confirmationToken=${encodeURIComponent(confirmationToken)}`,
+      },
       {
         method: 'POST',
         data: userData,
@@ -84,7 +88,11 @@ export const authService = {
    */
   resetPassword: (resetToken, credentials) => {
     return apiRequest(
-      `${API_ENDPOINTS.auth.resetPassword.url}?resetPasswordToken=${resetToken}`,
+      {
+        url: `${
+          API_ENDPOINTS.auth.resetPassword.url
+        }?resetPasswordToken=${encodeURIComponent(resetToken)}`,
+      },
       {
         method: 'PATCH',
         data: credentials,
