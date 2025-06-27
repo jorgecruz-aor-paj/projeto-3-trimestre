@@ -13,6 +13,12 @@
     "companyName": "AoR Tech",
     "userAvatar": "User avatar"
   },
+  "roles": {
+    "admin": "Administrator",
+    "manager": "Manager",
+    "user": "User",
+    "unknown": "Unknown Role"
+  },
   "home": {
     "getStarted": "Get Started",
     "learnMore": "Learn More",
@@ -110,6 +116,103 @@
     "support": "Support",
     "madeWith": "Made with",
     "by": "by"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Your personalized workspace overview",
+    "goodMorning": "Good morning",
+    "goodAfternoon": "Good afternoon",
+    "goodEvening": "Good evening",
+    "welcome": {
+      "admin": "Welcome to your admin dashboard",
+      "manager": "Welcome to your management dashboard",
+      "user": "Welcome to your personal dashboard",
+      "default": "Welcome to your dashboard"
+    },
+    "loading": "Loading dashboard...",
+    "errorTitle": "Error Loading Dashboard",
+    "failedToLoadUser": "Failed to load user information",
+    "noRoleAssigned": "No role assigned to your account. Please contact administrator.",
+    "unknownRole": "Unknown user role. Please contact administrator.",
+    "roleLabel": "Role",
+    "admin": {
+      "welcome": "Welcome to the Admin Dashboard",
+      "description": "Manage users, oversee evaluations, and monitor system performance.",
+      "systemOverview": "System Overview",
+      "loadingStats": "Loading admin statistics...",
+      "errorTitle": "Error Loading Admin Dashboard",
+      "failedToLoadStats": "Failed to load admin statistics",
+      "stats": {
+        "totalUsers": "Total Users",
+        "activeManagers": "Active Managers",
+        "unmanagedUsers": "Unmanaged Users",
+        "completedEvaluations": "Completed Evaluations",
+        "pendingEvaluations": "Pending Evaluations"
+      },
+      "quickActions": "Quick Actions",
+      "actions": {
+        "userManagement": "User Management",
+        "userManagementDesc": "Manage users, roles, and permissions",
+        "evaluationCycle": "Evaluation Cycle",
+        "evaluationCycleDesc": "Start and monitor evaluation cycles",
+        "systemReports": "System Reports",
+        "systemReportsDesc": "View comprehensive system reports",
+        "systemSettings": "System Settings",
+        "systemSettingsDesc": "Configure system-wide settings",
+        "reports": "Reports",
+        "reportsDesc": "Generate and view system reports",
+        "exportData": "Export Data",
+        "exportDataDesc": "Export system data for analysis"
+      }
+    },
+    "manager": {
+      "welcome": "Welcome to the Manager Dashboard",
+      "description": "Manage your team, conduct evaluations, and track performance.",
+      "loadingStats": "Loading team statistics...",
+      "errorTitle": "Error Loading Manager Dashboard",
+      "failedToLoadStats": "Failed to load team statistics",
+      "stats": {
+        "teamMembers": "Team Members",
+        "activeTrainings": "Active Trainings",
+        "pendingEvaluations": "Pending Evaluations",
+        "teamPerformance": "Team Performance"
+      },
+      "quickActions": "Team Actions",
+      "actions": {
+        "teamManagement": "Team Management",
+        "teamManagementDesc": "View and manage your team members",
+        "evaluateTeam": "Evaluate Team",
+        "evaluateTeamDesc": "Conduct team member evaluations",
+        "assignTraining": "Assign Training",
+        "assignTrainingDesc": "Assign training programs to team",
+        "teamReports": "Team Reports",
+        "teamReportsDesc": "View team performance reports"
+      }
+    },
+    "user": {
+      "welcome": "Welcome to Your Dashboard",
+      "description": "Track your progress, view evaluations, and manage your professional development.",
+      "loadingStats": "Loading your statistics...",
+      "errorTitle": "Error Loading Dashboard",
+      "failedToLoadStats": "Failed to load your statistics",
+      "stats": {
+        "completedTrainings": "Completed Trainings",
+        "pendingEvaluations": "Pending Evaluations",
+        "performanceScore": "Performance Score",
+        "goalsAchieved": "Goals Achieved"
+      },
+      "quickActions": "Quick Actions",
+      "actions": {
+        "viewProfile": "View Profile",
+        "viewProfileDesc": "Update your personal information",
+        "myEvaluations": "My Evaluations",
+        "myEvaluationsDesc": "View your evaluation history",
+        "myTrainings": "My Trainings",
+        "myTrainingsDesc": "Track your training progress",
+        "goals": "Goals",
+        "goalsDesc": "Set and track your professional goals"
+      }
+    }
   },
   "workplaces": {
     "title": "Workplaces",

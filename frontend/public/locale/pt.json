@@ -13,6 +13,12 @@
     "companyName": "AoR Tech",
     "userAvatar": "Avatar do utilizador"
   },
+  "roles": {
+    "admin": "Administrador",
+    "manager": "Gestor",
+    "user": "Utilizador",
+    "unknown": "Função Desconhecida"
+  },
   "home": {
     "getStarted": "Começar agora",
     "learnMore": "Saber mais",
@@ -112,6 +118,103 @@
     "support": "Suporte",
     "madeWith": "Desenvolvido com",
     "by": "por"
+  },
+  "dashboard": {
+    "title": "Painel",
+    "subtitle": "Visão geral do seu espaço de trabalho personalizado",
+    "goodMorning": "Bom dia",
+    "goodAfternoon": "Boa tarde",
+    "goodEvening": "Boa noite",
+    "welcome": {
+      "admin": "Bem-vindo ao seu painel de administração",
+      "manager": "Bem-vindo ao seu painel de gestão",
+      "user": "Bem-vindo ao seu painel pessoal",
+      "default": "Bem-vindo ao seu painel"
+    },
+    "loading": "A carregar painel...",
+    "errorTitle": "Erro ao Carregar Painel",
+    "failedToLoadUser": "Falha ao carregar informações do utilizador",
+    "noRoleAssigned": "Nenhuma função atribuída à sua conta. Contacte o administrador.",
+    "unknownRole": "Função de utilizador desconhecida. Contacte o administrador.",
+    "roleLabel": "Função",
+    "admin": {
+      "welcome": "Bem-vindo ao Painel de Administração",
+      "description": "Gerir utilizadores, supervisionar avaliações e monitorizar o desempenho do sistema.",
+      "systemOverview": "Visão Geral do Sistema",
+      "loadingStats": "A carregar estatísticas de administração...",
+      "errorTitle": "Erro ao Carregar Painel de Administração",
+      "failedToLoadStats": "Falha ao carregar estatísticas de administração",
+      "stats": {
+        "totalUsers": "Total de Utilizadores",
+        "activeManagers": "Gestores Ativos",
+        "unmanagedUsers": "Utilizadores Não Geridos",
+        "completedEvaluations": "Avaliações Concluídas",
+        "pendingEvaluations": "Avaliações Pendentes"
+      },
+      "quickActions": "Ações Rápidas",
+      "actions": {
+        "userManagement": "Gestão de Utilizadores",
+        "userManagementDesc": "Gerir utilizadores, funções e permissões",
+        "evaluationCycle": "Ciclo de Avaliação",
+        "evaluationCycleDesc": "Iniciar e monitorizar ciclos de avaliação",
+        "systemReports": "Relatórios do Sistema",
+        "systemReportsDesc": "Ver relatórios abrangentes do sistema",
+        "systemSettings": "Configurações do Sistema",
+        "systemSettingsDesc": "Configurar definições do sistema",
+        "reports": "Relatórios",
+        "reportsDesc": "Gerar e ver relatórios do sistema",
+        "exportData": "Exportar Dados",
+        "exportDataDesc": "Exportar dados do sistema para análise"
+      }
+    },
+    "manager": {
+      "welcome": "Bem-vindo ao Painel de Gestão",
+      "description": "Gerir a sua equipa, realizar avaliações e acompanhar o desempenho.",
+      "loadingStats": "A carregar estatísticas da equipa...",
+      "errorTitle": "Erro ao Carregar Painel de Gestão",
+      "failedToLoadStats": "Falha ao carregar estatísticas da equipa",
+      "stats": {
+        "teamMembers": "Membros da Equipa",
+        "activeTrainings": "Formações Ativas",
+        "pendingEvaluations": "Avaliações Pendentes",
+        "teamPerformance": "Desempenho da Equipa"
+      },
+      "quickActions": "Ações da Equipa",
+      "actions": {
+        "teamManagement": "Gestão da Equipa",
+        "teamManagementDesc": "Ver e gerir os membros da sua equipa",
+        "evaluateTeam": "Avaliar Equipa",
+        "evaluateTeamDesc": "Realizar avaliações dos membros da equipa",
+        "assignTraining": "Atribuir Formação",
+        "assignTrainingDesc": "Atribuir programas de formação à equipa",
+        "teamReports": "Relatórios da Equipa",
+        "teamReportsDesc": "Ver relatórios de desempenho da equipa"
+      }
+    },
+    "user": {
+      "welcome": "Bem-vindo ao Seu Painel",
+      "description": "Acompanhe o seu progresso, veja avaliações e gira o seu desenvolvimento profissional.",
+      "loadingStats": "A carregar as suas estatísticas...",
+      "errorTitle": "Erro ao Carregar Painel",
+      "failedToLoadStats": "Falha ao carregar as suas estatísticas",
+      "stats": {
+        "completedTrainings": "Formações Concluídas",
+        "pendingEvaluations": "Avaliações Pendentes",
+        "performanceScore": "Pontuação de Desempenho",
+        "goalsAchieved": "Objetivos Alcançados"
+      },
+      "quickActions": "Ações Rápidas",
+      "actions": {
+        "viewProfile": "Ver Perfil",
+        "viewProfileDesc": "Atualizar as suas informações pessoais",
+        "myEvaluations": "As Minhas Avaliações",
+        "myEvaluationsDesc": "Ver o seu histórico de avaliações",
+        "myTrainings": "As Minhas Formações",
+        "myTrainingsDesc": "Acompanhar o seu progresso de formação",
+        "goals": "Objetivos",
+        "goalsDesc": "Definir e acompanhar os seus objetivos profissionais"
+      }
+    }
   },
   "workplaces": {
     "title": "Locais de Trabalho",
