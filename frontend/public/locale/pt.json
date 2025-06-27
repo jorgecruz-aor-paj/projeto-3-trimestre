@@ -69,7 +69,8 @@
     "confirmSuccess": "A sua conta foi confirmada! Já pode iniciar sessão.",
     "confirmFailed": "A confirmação falhou. Por favor, tente novamente ou contacte o suporte.",
     "confirmRegistration": "Confirmar Registo",
-    "goToLogin": "Ir para o Login"
+    "goToLogin": "Ir para o Login",
+    "alreadyHaveAccount": "Já tem uma conta?"
   },
   "user": {
     "profile": "Perfil",

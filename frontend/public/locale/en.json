@@ -67,7 +67,8 @@
     "confirmSuccess": "Your account has been confirmed! You can now log in.",
     "confirmFailed": "Confirmation failed. Please try again or contact support.",
     "confirmRegistration": "Confirm Registration",
-    "goToLogin": "Go to Login"
+    "goToLogin": "Go to Login",
+    "alreadyHaveAccount": "Already have an account?"
   },
   "user": {
     "profile": "Profile",
