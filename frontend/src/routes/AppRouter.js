@@ -5,6 +5,7 @@ import { MainLayout } from 'components/layout/MainLayout';
 import { AuthTogglePage } from 'pages/auth/AuthTogglePage';
 import { ResetPasswordPage } from 'pages/auth/ResetPasswordPage';
 import { ConfirmRegistrationPage } from 'pages/auth/ConfirmRegistrationPage';
+import { Dashboard } from 'pages/Dashboard';
 
 /**
  * AppRouter component that defines all application routes
@@ -31,6 +32,7 @@ export const AppRouter = () => {
       <Route element={<MainLayout />}>
         {/* Routes */}
         <Route path="/" element={<Home />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/auth" element={<AuthTogglePage />} />
         <Route path="/login" element={<AuthTogglePage />} />
         <Route path="/register" element={<AuthTogglePage />} />
