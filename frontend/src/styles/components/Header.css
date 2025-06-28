@@ -1,5 +1,5 @@
 .main-header {
-    background-color: #fff;
+    background-color: #C01722;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     position: -webkit-sticky;
     position: sticky;
@@ -16,11 +16,11 @@
     font-weight: 600;
     font-size: 1.25rem;
     margin-left: 0.5rem;
-    color: #333;
+    color: #fff;
 }
 
 .main-header .nav-link {
-    color: #555;
+    color: #fff;
     font-weight: 500;
     padding: 0.5rem 1rem;
     margin: 0 0.25rem;
@@ -29,11 +29,11 @@
 }
 
 .main-header .nav-link:hover {
-    color: #C01722;
+    color: rgba(255, 255, 255, 0.8);
 }
 
 .main-header .nav-link.active {
-    color: #C01722;
+    color: #fff;
 }
 
 .main-header .nav-link.active::after {
@@ -43,7 +43,7 @@
     left: 1rem;
     right: 1rem;
     height: 3px;
-    background-color: #C01722;
+    background-color: #fff;
     border-radius: 1px;
 }
 
@@ -53,26 +53,28 @@
 }
 
 .main-header .btn-primary {
-    background-color: #C01722;
-    border-color: #C01722;
+    background-color: #fff;
+    border-color: #fff;
+    color: #C01722;
 }
 
 .main-header .btn-primary:hover,
 .main-header .btn-primary:focus {
-    background-color: #A01219;
-    border-color: #A01219;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-color: rgba(255, 255, 255, 0.9);
+    color: #C01722;
 }
 
 .main-header .btn-outline-primary {
-    color: #C01722;
-    border-color: #C01722;
+    color: #fff;
+    border-color: #fff;
 }
 
 .main-header .btn-outline-primary:hover,
 .main-header .btn-outline-primary:focus {
-    background-color: rgba(192, 23, 34, 0.05);
-    color: #A01219;
-    border-color: #A01219;
+    background-color: #fff;
+    color: #C01722;
+    border-color: #fff;
 }
 
 .main-header .user-avatar {
@@ -88,6 +90,7 @@
     box-shadow: none;
     background: none;
     border: none;
+    color: #fff;
 }
 
 .main-header .user-menu-toggle::after {
@@ -96,6 +99,8 @@
 
 .main-header .mobile-toggle {
     box-shadow: none;
+    color: #fff;
+    border-color: #fff;
 }
 
 .main-header .mobile-toggle:focus {
@@ -112,11 +117,20 @@
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
-    .main-header .nav-link {
+    .main-header .navbar-collapse .nav-link {
+        color: #555;
         padding: 0.75rem 1rem;
     }
 
-    .main-header .nav-link.active::after {
+    .main-header .navbar-collapse .nav-link:hover {
+        color: #C01722;
+    }
+
+    .main-header .navbar-collapse .nav-link.active {
+        color: #C01722;
+    }
+
+    .main-header .navbar-collapse .nav-link.active::after {
         bottom: auto;
         left: 0;
         right: auto;
@@ -124,5 +138,6 @@
         top: 0.75rem;
         bottom: 0.75rem;
         height: auto;
+        background-color: #C01722;
     }
 }

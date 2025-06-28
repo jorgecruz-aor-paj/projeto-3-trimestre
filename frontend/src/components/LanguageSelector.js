@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useLanguage } from 'contexts/LanguageContext';
 import { Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -15,14 +16,16 @@ const AVAILABLE_LANGUAGES = [
 
 /**
  * Language selector component that allows users to switch languages
+ * @param {Object} props - Component props
+ * @param {string} props.className - Additional CSS classes
  * @returns {React.Component} - Language selector component
  */
-export const LanguageSelector = () => {
+export const LanguageSelector = ({ className = '' }) => {
   const { changeLanguage, getCurrentLanguage } = useLanguage();
   const currentLanguage = getCurrentLanguage();
 
   return (
-    <Dropdown>
+    <Dropdown className={className}>
       <Dropdown.Toggle variant="outline-light" id="language-dropdown">
         <FontAwesomeIcon icon={faGlobe} />{' '}
         {AVAILABLE_LANGUAGES.find(lang => lang.code === currentLanguage)
@@ -42,4 +45,8 @@ export const LanguageSelector = () => {
       </Dropdown.Menu>
     </Dropdown>
   );
+};
+
+LanguageSelector.propTypes = {
+  className: PropTypes.string,
 };
