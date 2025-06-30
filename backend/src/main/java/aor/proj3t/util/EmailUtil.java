@@ -167,7 +167,7 @@ public class EmailUtil {
      */
     public boolean sendConfirmationEmail(String toEmail, String token, String baseUrl) {
         String subject = AppConstants.Email.DEFAULT_CONFIRMATION_SUBJECT;
-        String confirmationLink = baseUrl + "/confirm?confirmationToken=" + token;
+        String confirmationLink = baseUrl + "/register/confirm?confirmationToken=" + token;
         logger.info("Generated confirmation link: {}", confirmationLink);
 
         String body = createEmailTemplate(
