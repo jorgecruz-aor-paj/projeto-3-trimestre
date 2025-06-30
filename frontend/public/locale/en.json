@@ -79,7 +79,12 @@
     "registerSubtitle": "Join our community today",
     "registerSuccess": "Registration successful! An email has been sent to your inbox with an activation link. Please check your email and follow the instructions to complete your account setup.",
     "registerFailed": "Registration failed. Please try again or contact support.",
-    "goToHome": "Go to Home"
+    "goToHome": "Go to Home",
+    "resetPasswordTitle": "Reset Password",
+    "resetPasswordSubtitle": "Enter your email address and we'll send you a link to reset your password.",
+    "resetPasswordEmailSent": "Password reset email sent! Please check your inbox and follow the instructions to reset your password.",
+    "resetPasswordFailed": "Failed to send password reset email. Please try again or contact support.",
+    "sendResetLink": "Send Reset Link"
   },
   "user": {
     "profile": "Profile",
