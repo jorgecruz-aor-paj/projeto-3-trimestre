@@ -218,5 +218,21 @@
     "title": "Workplaces",
     "confirmSuccess": "Workplaces fetched successfully.",
     "confirmFailed": "Failed to fetch workplaces. Please try again."
+  },
+  "usersPage": {
+    "title": "Users",
+    "filters": {
+      "search": "Search...",
+      "workplace": "All Workplaces",
+      "manager": "All Managers",
+      "sortBy": "Sort By",
+      "noManager": "No Manager",
+      "ascending": "Ascending",
+      "descending": "Descending",
+      "createdAt": "Created At"
+    },
+    "noResults": "No users found.",
+    "loading": "Loading users...",
+    "error": "Failed to load users."
   }
 }

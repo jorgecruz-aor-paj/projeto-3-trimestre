@@ -2,17 +2,17 @@ import React, { useEffect } from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
 import { useWorkplaces } from 'hooks/useWorkplaces';
 import { useManagersStore } from 'stores/ManagersStore';
+import { useTranslation } from 'react-i18next';
 
 const sortFields = [
-
-  { value: 'WORKPLACE', label: 'Workplace' },
-  { value: 'MANAGER', label: 'Manager' },
-  { value: 'DATE_OF_BIRTH', label: 'Date of Birth' },
-  { value: 'DATE', label: 'Created At' },
-
+  { value: 'WORKPLACE', labelKey: 'user.workplace' },
+  { value: 'MANAGER', labelKey: 'usersPage.filters.manager' },
+  { value: 'DATE_OF_BIRTH', labelKey: 'user.birthdate' },
+  { value: 'DATE', labelKey: 'usersPage.filters.createdAt' },
 ];
 
 export const UserFilters = ({ filters, onChange }) => {
+  const { t } = useTranslation();
   const { workplaces } = useWorkplaces();
   const { managers, fetchManagers } = useManagersStore();
 
@@ -27,7 +27,7 @@ export const UserFilters = ({ filters, onChange }) => {
           <Form.Control
             type="text"
             name="searchText"
-            placeholder="Search..."
+            placeholder={t('usersPage.filters.search')}
             value={filters.searchText || ''}
             onChange={onChange}
           />
@@ -38,7 +38,7 @@ export const UserFilters = ({ filters, onChange }) => {
             value={filters.workplaceId || ''}
             onChange={onChange}
           >
-            <option value="">All Workplaces</option>
+            <option value="">{t('usersPage.filters.workplace')}</option>
             {workplaces.map(w => (
               <option key={w.id} value={w.id}>
                 {w.name}
@@ -52,7 +52,7 @@ export const UserFilters = ({ filters, onChange }) => {
             value={filters.managerId || ''}
             onChange={onChange}
           >
-            <option value="">All Managers</option>
+            <option value="">{t('usersPage.filters.manager')}</option>
             {managers.map(m => (
               <option key={m.id} value={m.id}>
                 {m.firstName} {m.lastName}
@@ -66,37 +66,20 @@ export const UserFilters = ({ filters, onChange }) => {
             value={filters.sortField || ''}
             onChange={onChange}
           >
-            <option value="">Sort By</option>
+            <option value="">{t('usersPage.filters.sortBy')}</option>
             {sortFields.map(f => (
               <option key={f.value} value={f.value}>
-                {f.label}
+                {t(f.labelKey)}
               </option>
             ))}
           </Form.Select>
-        </Col>
-         <Col md={2} className="mb-2">
-          <Form.Check
-            type="switch"
-            id="ascendingSwitch"
-            name="ascending"
-            label={filters.ascending ? 'Ascending' : 'Descending'}
-            checked={filters.ascending !== false}
-            onChange={e =>
-              onChange({
-                target: {
-                  name: 'ascending',
-                  value: e.target.checked,
-                },
-              })
-            }
-          />
         </Col>
         <Col md={1} className="mb-2">
           <Form.Check
             type="switch"
             id="noManagerSwitch"
             name="noManager"
-            label="NoManager"
+            label={t('usersPage.filters.noManager')}
             checked={!!filters.noManager}
             onChange={e =>
               onChange({
@@ -108,7 +91,27 @@ export const UserFilters = ({ filters, onChange }) => {
             }
           />
         </Col>
-       
+        <Col md={2} className="mb-2">
+          <Form.Check
+            type="switch"
+            id="ascendingSwitch"
+            name="ascending"
+            label={
+              filters.ascending !== false
+                ? t('usersPage.filters.ascending')
+                : t('usersPage.filters.descending')
+            }
+            checked={filters.ascending !== false}
+            onChange={e =>
+              onChange({
+                target: {
+                  name: 'ascending',
+                  value: e.target.checked,
+                },
+              })
+            }
+          />
+        </Col>
       </Row>
     </Form>
   );

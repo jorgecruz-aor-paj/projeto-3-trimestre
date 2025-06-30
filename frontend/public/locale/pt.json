@@ -220,5 +220,21 @@
     "title": "Locais de Trabalho",
     "confirmSuccess": "Locais de trabalho obtidos com sucesso.",
     "confirmFailed": "Falha ao obter locais de trabalho. Por favor, tente novamente."
+  },
+  "usersPage": {
+    "title": "Utilizadores",
+    "filters": {
+      "search": "Pesquisar...",
+      "workplace": "Todos os Locais de Trabalho",
+      "manager": "Todos os Gestores",
+      "sortBy": "Ordenar Por",
+      "noManager": "Sem Gestor",
+      "ascending": "Ascendente",
+      "descending": "Descendente",
+      "createdAt": "Criado em"
+    },
+    "noResults": "Nenhum utilizador encontrado.",
+    "loading": "A carregar utilizadores...",
+    "error": "Falha ao carregar utilizadores."
   }
 }

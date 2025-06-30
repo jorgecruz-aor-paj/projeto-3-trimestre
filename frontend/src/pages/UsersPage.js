@@ -3,8 +3,10 @@ import { Container, Row, Col, Spinner, Alert } from 'react-bootstrap';
 import { useUserStore } from 'stores/UserStore';
 import { UserCard } from 'components/users/UserCard';
 import { UserFilters } from 'components/users/UserFilters';
+import { useTranslation } from 'react-i18next';
 
 export const UsersPage = () => {
+  const { t } = useTranslation();
   const [filters, setFilters] = useState({});
   const users = useUserStore(state => state.users) || [];
   const loading = useUserStore(state => state.loading);
@@ -25,14 +27,16 @@ export const UsersPage = () => {
 
   return (
     <Container className="py-4">
-      <h2 className="mb-4">Users</h2>
+      <h2 className="mb-4">{t('usersPage.title')}</h2>
       <UserFilters filters={filters} onChange={handleFilterChange} />
       {loading && <Spinner animation="border" />}
-      {error && <Alert variant="danger">{error}</Alert>}
-      {!loading && users.length === 0 && (
-        <Alert variant="info">No users found with the selected filters.</Alert>
-      )}
+      {error && <Alert variant="danger">{t('usersPage.error')}</Alert>}
       <Row>
+        {users.length === 0 && !loading && !error && (
+          <Col xs={12} className="text-center text-muted py-4">
+            {t('usersPage.noResults')}
+          </Col>
+        )}
         {users.map(user => (
           <Col key={user.id} md={6} lg={4}>
             <UserCard user={user} />
@@ -42,4 +46,3 @@ export const UsersPage = () => {
     </Container>
   );
 };
-
