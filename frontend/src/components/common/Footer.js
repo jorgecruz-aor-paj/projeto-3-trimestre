@@ -10,7 +10,6 @@ import {
 } from '@fortawesome/free-brands-svg-icons';
 import { useTranslation } from 'react-i18next';
 
-import logo from 'logo.svg';
 import 'styles/components/Footer.css';
 
 /**
@@ -33,7 +32,7 @@ export const Footer = () => {
               className="footer-brand d-flex align-items-center mb-3"
             >
               <img
-                src={logo}
+                src="/images/logo.png"
                 alt={t('common.appName')}
                 height="36"
                 className="d-inline-block align-top"

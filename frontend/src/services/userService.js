@@ -53,16 +53,49 @@ export const userService = {
    * @param {File} file - Image file to upload
    * @returns {Promise} - Upload result
    */
-  uploadProfilePicture: (userId, file) => {
+  uploadProfilePicture: async (userId, file) => {
     const formData = new FormData();
     formData.append('file', file);
 
-    return apiRequest(API_ENDPOINTS.user.profilePicture(userId), {
+    const result = await apiRequest(API_ENDPOINTS.user.profilePicture(userId), {
       method: 'POST',
       data: formData,
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     });
+
+    // Trigger profile picture update event for cache refresh
+    if (result.success) {
+      window.dispatchEvent(
+        new CustomEvent('profilePictureUpdated', {
+          detail: { userId: parseInt(userId) },
+        })
+      );
+    }
+
+    return result;
+  },
+
+  /**
+   * Reset profile picture to default
+   * @param {Number|String} userId - User ID
+   * @returns {Promise} - Reset result
+   */
+  resetProfilePicture: async userId => {
+    const result = await apiRequest(API_ENDPOINTS.user.profilePicture(userId), {
+      method: 'DELETE',
+    });
+
+    // Trigger profile picture update event for cache refresh
+    if (result.success) {
+      window.dispatchEvent(
+        new CustomEvent('profilePictureUpdated', {
+          detail: { userId: parseInt(userId) },
+        })
+      );
+    }
+
+    return result;
   },
 };

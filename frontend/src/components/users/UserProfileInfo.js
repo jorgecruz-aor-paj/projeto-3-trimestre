@@ -1,5 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Card, Row, Col, ListGroup } from 'react-bootstrap';
+import { ProfilePicture } from 'components/common/ProfilePicture';
 
 export const UserProfileInfo = ({ user }) => (
   <Card className="mb-4">
@@ -7,14 +9,12 @@ export const UserProfileInfo = ({ user }) => (
     <Card.Body>
       <Row>
         <Col md={4} className="text-center">
-          {user.photograph && (
-            <img
-              src={`/api/users/${user.id}/profile/picture`}
-              alt={user.firstName + ' ' + user.lastName}
-              className="rounded-circle mb-3"
-              style={{ width: 120, height: 120, objectFit: 'cover' }}
-            />
-          )}
+          <ProfilePicture
+            userId={user.id}
+            alt={`${user.firstName} ${user.lastName}`}
+            className="rounded-circle mb-3"
+            style={{ width: 120, height: 120, objectFit: 'cover' }}
+          />
         </Col>
         <Col md={8}>
           <ListGroup variant="flush">
@@ -49,3 +49,19 @@ export const UserProfileInfo = ({ user }) => (
     </Card.Body>
   </Card>
 );
+
+UserProfileInfo.propTypes = {
+  user: PropTypes.shape({
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    firstName: PropTypes.string.isRequired,
+    lastName: PropTypes.string.isRequired,
+    email: PropTypes.string,
+    phoneNumber: PropTypes.string,
+    address: PropTypes.string,
+    birthdate: PropTypes.string,
+    workplaceName: PropTypes.string,
+    workplaceId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    biography: PropTypes.string,
+    role: PropTypes.string,
+  }).isRequired,
+};

@@ -12,6 +12,11 @@
     align-items: center;
 }
 
+.main-header .navbar-brand img {
+    filter: brightness(0) invert(1);
+}
+
+
 .main-header .brand-text {
     font-weight: 600;
     font-size: 1.25rem;
