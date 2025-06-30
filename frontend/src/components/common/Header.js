@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Container, Navbar, Nav, Button, Dropdown } from 'react-bootstrap';
 
 import { LanguageSelector } from 'components/LanguageSelector';
-import logo from 'logo.svg';
+import { ProfilePicture } from 'components/common/ProfilePicture';
+import { useAuthStore } from 'stores/AuthStore';
+import { authService } from 'services/authService';
 import 'styles/components/Header.css';
 
 /**
@@ -12,10 +14,13 @@ import 'styles/components/Header.css';
  * @returns {React.Component} Header component
  */
 export const Header = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const { t } = useTranslation();
   const location = useLocation();
+  const { token, user, clearState } = useAuthStore();
+  const navigate = useNavigate();
+
+  const isAuthenticated = !!token;
 
   // Check if the current route is active
   const isActive = path => location.pathname === path;
@@ -28,12 +33,18 @@ export const Header = () => {
     setShowMobileMenu(false);
   }, [location.pathname]);
 
-  // Check authentication status (placeholder - replace with your auth logic)
-  useEffect(() => {
-    // Replace with your auth check logic
-    const token = localStorage.getItem('token');
-    setIsAuthenticated(!!token);
-  }, []);
+  // Handle logout
+  const handleLogout = async () => {
+    try {
+      await authService.logout();
+      navigate('/');
+      clearState();
+    } catch (error) {
+      console.error('Logout failed:', error);
+      // Clear state anyway in case of network error
+      clearState();
+    }
+  };
 
   return (
     <header className="main-header">
@@ -41,7 +52,7 @@ export const Header = () => {
         <Navbar expand="lg" className="py-2">
           <Navbar.Brand as={Link} to="/">
             <img
-              src={logo}
+              src="/images/logo.png"
               alt={t('common.appName')}
               height="40"
               className="d-inline-block align-top"
@@ -60,11 +71,14 @@ export const Header = () => {
                     id="user-dropdown"
                     className="user-menu-toggle"
                   >
-                    <img
-                      src="/default-avatar.png"
+                    <ProfilePicture
+                      userId={user?.id}
                       alt={t('common.userAvatar')}
                       className="user-avatar"
                     />
+                    <span className="user-name ms-2">
+                      {user.firstName} {user.lastName}
+                    </span>
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
                     <Dropdown.Item as={Link} to="/profile">
@@ -74,7 +88,7 @@ export const Header = () => {
                       {t('user.settings')}
                     </Dropdown.Item>
                     <Dropdown.Divider />
-                    <Dropdown.Item onClick={() => {/* TODO: Implement logout */}}>
+                    <Dropdown.Item onClick={handleLogout}>
                       {t('user.logout')}
                     </Dropdown.Item>
                   </Dropdown.Menu>
@@ -157,5 +171,3 @@ export const Header = () => {
     </header>
   );
 };
-
-

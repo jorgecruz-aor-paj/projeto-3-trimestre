@@ -75,6 +75,11 @@ public final class AppConstants {
          * Default expiration time for password reset links in minutes
          */
         public static final int DEFAULT_PASSWORD_RESET_EXPIRATION_MINUTES = 60;
+
+        /**
+         * Default url for registering a new account
+         */
+        public static final String EMAIL_BASE_URL = "https://localhost:3000";
     }
 
     /**

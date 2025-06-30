@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Row, Col, Alert, Spinner } from 'react-bootstrap';
-import PropTypes from 'prop-types';
-import { statsService } from 'services/statsService';
+import { Row, Col } from 'react-bootstrap';
 import { StatsCard } from './StatsCard';
 import { QuickActions } from './QuickActions';
 
@@ -13,54 +11,21 @@ import { QuickActions } from './QuickActions';
  * @param {Object} props.user - Current user object
  * @returns {React.Component} Manager dashboard
  */
-export const ManagerDashboard = ({ user }) => {
+export const ManagerDashboard = () => {
   const { t } = useTranslation();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [stats, setStats] = useState({
-    team: null,
-  });
 
-  useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        // Fetch manager-specific statistics for user's team
-        const teamStats = await statsService.getTeamStats(user.id);
-
-        setStats({
-          team: teamStats,
-        });
-      } catch (err) {
-        console.error('Failed to fetch manager stats:', err);
-        setError(t('dashboard.manager.failedToLoadStats'));
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchStats();
-  }, [t]);
-
-  if (loading) {
-    return (
-      <div className="text-center py-5">
-        <Spinner animation="border" variant="primary" className="mb-3" />
-        <p>{t('dashboard.manager.loadingStats')}</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <Alert variant="danger">
-        <Alert.Heading>{t('dashboard.manager.errorTitle')}</Alert.Heading>
-        <p>{error}</p>
-      </Alert>
-    );
-  }
+  // TODO: Backend endpoints needed for manager dashboard statistics:
+  // - Team member count for this manager
+  // - Active trainings count for team members
+  // - Pending evaluations count for team members
+  // - Average team performance metrics
+  //
+  // Current available endpoints:
+  // - GET /users (with filters) - could potentially filter by manager
+  // - GET /trainings (with filters)
+  // - GET /evaluations (with filters)
+  // - GET /trainings/unparticipated/{userId}
+  // - GET /trainings/participation/{userId}
 
   const managerQuickActions = [
     {
@@ -95,45 +60,45 @@ export const ManagerDashboard = ({ user }) => {
 
   return (
     <div className="manager-dashboard">
-      {/* Team Statistics */}
+      {/* Team Statistics - TODO: Implement when backend endpoints are available */}
       <Row className="mb-4">
         <Col md={3}>
           <StatsCard
             title={t('dashboard.manager.stats.teamMembers')}
-            value={stats.team?.totalMembers || 0}
+            value="--"
             icon="bi-people"
             variant="primary"
-            trend="+5.2%"
+            trend=""
             trendPositive={true}
           />
         </Col>
         <Col md={3}>
           <StatsCard
             title={t('dashboard.manager.stats.activeTrainings')}
-            value={stats.team?.activeTrainings || 0}
+            value="--"
             icon="bi-mortarboard"
             variant="success"
-            trend="+15.3%"
+            trend=""
             trendPositive={true}
           />
         </Col>
         <Col md={3}>
           <StatsCard
             title={t('dashboard.manager.stats.pendingEvaluations')}
-            value={stats.team?.pendingEvaluations || 0}
+            value="--"
             icon="bi-clock"
             variant="warning"
-            trend="-8.1%"
+            trend=""
             trendPositive={true}
           />
         </Col>
         <Col md={3}>
           <StatsCard
             title={t('dashboard.manager.stats.teamPerformance')}
-            value={`${stats.team?.averagePerformance || 0}%`}
+            value="--"
             icon="bi-trophy"
             variant="info"
-            trend="+3.7%"
+            trend=""
             trendPositive={true}
           />
         </Col>
@@ -152,11 +117,4 @@ export const ManagerDashboard = ({ user }) => {
   );
 };
 
-ManagerDashboard.propTypes = {
-  user: PropTypes.shape({
-    id: PropTypes.number,
-    firstName: PropTypes.string,
-    lastName: PropTypes.string,
-    role: PropTypes.string,
-  }).isRequired,
-};
+// TODO: Add PropTypes back when user prop is needed for backend integration

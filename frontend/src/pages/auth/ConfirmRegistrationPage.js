@@ -101,6 +101,7 @@ export const ConfirmRegistrationPage = () => {
               <ConfirmRegistrationForm
                 formData={formData}
                 validationErrors={validationErrors}
+                workplacesLoading={workplacesLoading}
                 workplaces={workplaces}
                 loading={loading}
                 submitting={submitting}

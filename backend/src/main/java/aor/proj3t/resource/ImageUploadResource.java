@@ -83,16 +83,20 @@ public class ImageUploadResource {
 
             Boolean success = serviceFactory.forUser().uploadProfilePicture(userId, fileUploadDTO);
             if (success) {
-                return Response.status(Response.Status.OK).entity(new MessageResponse("Profile picture updated successfully")).build();
+                return Response.status(Response.Status.OK)
+                        .entity(new MessageResponse("Profile picture updated successfully")).build();
             } else {
-                return Response.status(Response.Status.BAD_REQUEST).entity(new MessageResponse("Failed to update profile picture")).build();
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .entity(new MessageResponse("Failed to update profile picture")).build();
             }
         } catch (IOException e) {
             logger.error("Error processing uploaded file for user ID: {}", userId, e);
-            return Response.status(Response.Status.BAD_REQUEST).entity(new MessageResponse("Error processing uploaded file")).build();
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(new MessageResponse("Error processing uploaded file")).build();
         } catch (Exception e) {
             logger.error("Error uploading profile picture for user ID: {}", userId, e);
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new MessageResponse("Internal server error")).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(new MessageResponse("Internal server error")).build();
         }
     }
 
@@ -152,13 +156,16 @@ public class ImageUploadResource {
 
             Boolean success = serviceFactory.forUser().resetProfilePicture(userId);
             if (success) {
-                return Response.status(Response.Status.OK).entity(new MessageResponse("Profile picture reset to default")).build();
+                return Response.status(Response.Status.OK)
+                        .entity(new MessageResponse("Profile picture reset to default")).build();
             } else {
-                return Response.status(Response.Status.BAD_REQUEST).entity(new MessageResponse("Failed to reset profile picture")).build();
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .entity(new MessageResponse("Failed to reset profile picture")).build();
             }
         } catch (Exception e) {
             logger.error("Error resetting profile picture for user ID: {}", userId, e);
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new MessageResponse("Internal server error")).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(new MessageResponse("Internal server error")).build();
         }
     }
 
@@ -170,18 +177,26 @@ public class ImageUploadResource {
             // Get the user's profile picture filename
             String pictureName = serviceFactory.forUser().getUser(userId).getPhotograph();
 
+            // If user doesn't have a profile picture, serve the default one
+            if (pictureName == null || pictureName.isEmpty()) {
+                pictureName = "default-profile-picture.png";
+            }
+
             // Read the file
             byte[] imageData = fileStorageUtil.getFile(pictureName);
 
             // Determine content type based on file extension
             String contentType = determineContentType(pictureName);
+
             return Response.ok(imageData)
                     .header("Content-Type", contentType)
+                    .header("Cache-Control", "public, max-age=31536000, immutable") // 1 year cache for profile pictures
                     .header("Content-Disposition", "inline; filename=\"" + pictureName + "\"")
                     .build();
         } catch (Exception e) {
             logger.error("Error retrieving profile picture for user ID: {}", userId, e);
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new MessageResponse("Error retrieving profile picture"))
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(new MessageResponse("Error retrieving profile picture"))
                     .build();
         }
     }

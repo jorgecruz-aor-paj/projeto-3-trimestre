@@ -76,7 +76,15 @@
     "confirmFailed": "A confirmação falhou. Por favor, tente novamente ou contacte o suporte.",
     "confirmRegistration": "Confirmar Registo",
     "goToLogin": "Ir para o Login",
-    "alreadyHaveAccount": "Já tem uma conta?"
+    "alreadyHaveAccount": "Já tem uma conta?",
+    "registerSuccess": "Registo realizado com sucesso! Foi enviado um email para a sua caixa de correio com um link de ativação. Por favor, verifique o seu email e siga as instruções para completar a configuração da sua conta.",
+    "registerFailed": "Falha no registo. Por favor, tente novamente ou contacte o suporte.",
+    "goToHome": "Ir para o Início",
+    "resetPasswordTitle": "Redefinir Palavra-passe",
+    "resetPasswordSubtitle": "Introduza o seu endereço de email e enviaremos um link para redefinir a sua palavra-passe.",
+    "resetPasswordEmailSent": "Email de redefinição de palavra-passe enviado! Por favor, verifique a sua caixa de correio e siga as instruções para redefinir a sua palavra-passe.",
+    "resetPasswordFailed": "Falha ao enviar email de redefinição de palavra-passe. Por favor, tente novamente ou contacte o suporte.",
+    "sendResetLink": "Enviar Link de Redefinição"
   },
   "user": {
     "profile": "Perfil",
@@ -97,6 +105,9 @@
     "emailRequired": "O email é obrigatório",
     "emailInvalid": "Por favor, introduza um endereço de email válido",
     "passwordRequired": "A palavra-passe é obrigatória",
+    "passwordMinLength": "A palavra-passe deve ter pelo menos 6 caracteres",
+    "confirmPasswordRequired": "Por favor, confirme a sua palavra-passe",
+    "passwordsDontMatch": "As palavras-passe não coincidem",
     "fieldRequired": "Este campo é obrigatório"
   },
   "footer": {

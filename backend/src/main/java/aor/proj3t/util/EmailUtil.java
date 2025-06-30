@@ -167,14 +167,17 @@ public class EmailUtil {
      */
     public boolean sendConfirmationEmail(String toEmail, String token, String baseUrl) {
         String subject = AppConstants.Email.DEFAULT_CONFIRMATION_SUBJECT;
-        String confirmationLink = baseUrl + "/confirm?confirmationToken=" + token;
-        System.out.println(confirmationLink); // TODO delete when utility is over
-        String body = "<h1>Account Confirmation</h1>" +
-                "<p>Thank you for registering. Please click the link below to confirm your account:</p>" +
-                "<p><a href=\"" + confirmationLink + "\">Confirm Account</a></p>" +
-                "<p>If you didn't request this, you can safely ignore this email.</p>" +
-                "<p>This link will expire in " + AppConstants.Jwt.DEFAULT_CONFIRMATION_TOKEN_EXPIRATION_TIME
-                + " minutes.</p>";
+        String confirmationLink = baseUrl + "/register/confirm?confirmationToken=" + token;
+        logger.info("Generated confirmation link: {}", confirmationLink);
+
+        String body = createEmailTemplate(
+                "Account Confirmation",
+                "Thank you for registering with us! To complete your registration and activate your account, please click the button below to confirm your email address.",
+                "Confirm Account",
+                confirmationLink,
+                "If you didn't create an account with us, you can safely ignore this email. This confirmation link will expire in "
+                        + AppConstants.Jwt.DEFAULT_CONFIRMATION_TOKEN_EXPIRATION_TIME
+                        + " minutes for security reasons.");
 
         return sendEmail(toEmail, subject, body);
     }
@@ -190,13 +193,16 @@ public class EmailUtil {
     public boolean sendPasswordResetEmail(String toEmail, String token, String baseUrl) {
         String subject = AppConstants.Email.DEFAULT_PASSWORD_RESET_SUBJECT;
         String resetLink = baseUrl + "/reset-password/confirm?resetPasswordToken=" + token;
-        System.out.println(resetLink); // TODO delete when utility expires
-        String body = "<h1>Password Reset</h1>" +
-                "<p>You requested a password reset. Please click the link below to reset your password:</p>" +
-                "<p><a href=\"" + resetLink + "\">Reset Password</a></p>" +
-                "<p>If you didn't request this, please ignore this email or contact support if you're concerned.</p>" +
-                "<p>This link will expire in " + AppConstants.Email.DEFAULT_PASSWORD_RESET_EXPIRATION_MINUTES
-                + " minutes.</p>";
+        logger.info("Generated reset password link: {}", resetLink);
+
+        String body = createEmailTemplate(
+                "Password Reset Request",
+                "We received a request to reset your password. If you made this request, please click the button below to create a new password for your account.",
+                "Reset Password",
+                resetLink,
+                "If you didn't request a password reset, please ignore this email or contact our support team if you're concerned about your account security. This reset link will expire in "
+                        + AppConstants.Email.DEFAULT_PASSWORD_RESET_EXPIRATION_MINUTES
+                        + " minutes for security reasons.");
 
         return sendEmail(toEmail, subject, body);
     }
@@ -216,13 +222,23 @@ public class EmailUtil {
         return "<html>" +
                 "<head>" +
                 "<style>" +
-                "body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }" +
+                "body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; background-color: #f8f9fa; }"
+                +
                 ".container { max-width: 600px; margin: 0 auto; padding: 20px; }" +
-                ".header { background-color: #2583CC; color: white; padding: 20px; text-align: center; }" +
-                ".content { padding: 20px; background-color: #f8f9fa; }" +
-                ".button { display: inline-block; padding: 10px 20px; background-color: #2583CC; " +
-                "color: white; text-decoration: none; border-radius: 5px; margin: 20px 0; }" +
-                ".footer { font-size: 12px; color: #6c757d; padding-top: 20px; text-align: center; }" +
+                ".header { background-color: #C01722; color: white; padding: 30px 20px; text-align: center; border-radius: 8px 8px 0 0; }"
+                +
+                ".header h1 { margin: 0; font-size: 28px; font-weight: bold; }" +
+                ".content { padding: 30px 20px; background-color: #ffffff; border-radius: 0 0 8px 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }"
+                +
+                ".content p { margin: 0 0 20px 0; font-size: 16px; }" +
+                ".button { display: inline-block; padding: 15px 30px; background-color: #C01722; " +
+                "color: white !important; text-decoration: none; border-radius: 5px; margin: 20px 0; font-weight: bold; "
+                +
+                "transition: background-color 0.3s ease; }" +
+                ".button:hover { background-color: #A01219; color: white !important; text-decoration: none; }" +
+                ".footer { font-size: 14px; color: #6c757d; padding-top: 20px; text-align: center; line-height: 1.5; }"
+                +
+                ".divider { height: 1px; background-color: #e9ecef; margin: 20px 0; }" +
                 "</style>" +
                 "</head>" +
                 "<body>" +
@@ -230,7 +246,9 @@ public class EmailUtil {
                 "<div class='header'><h1>" + title + "</h1></div>" +
                 "<div class='content'>" +
                 "<p>" + message + "</p>" +
+                "<div class='divider'></div>" +
                 "<center><a href='" + buttonUrl + "' class='button'>" + buttonText + "</a></center>" +
+                "<div class='divider'></div>" +
                 "<div class='footer'>" + footerText + "</div>" +
                 "</div></div>" +
                 "</body></html>";
