@@ -87,6 +87,7 @@ public class UserResource {
     }
 
     @GET
+    @Path("/managers")
     @Secured(Role.ADMIN)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getManagers(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader) {

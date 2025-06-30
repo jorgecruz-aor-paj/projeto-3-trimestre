@@ -90,6 +90,10 @@ const API_ENDPOINTS = {
       url: `${USER_ENDPOINT}/${userId}/profile/picture`,
       requiresAuth: true,
     }),
+    getAllManagers: {
+      url: `${USER_ENDPOINT}/managers`,
+      requiresAuth: true,
+    },
   },
   trainings: {
     getAll: {
