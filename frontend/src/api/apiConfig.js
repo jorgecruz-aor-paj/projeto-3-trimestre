@@ -121,6 +121,16 @@ const API_ENDPOINTS = {
       managerOrAdmin: true,
     }),
   },
+  trainingParticipation: {
+    getByUser: userId => ({
+      url: `${TRAININGS_ENDPOINT}/participation/${userId}`,
+      requiresAuth: true,
+    }),
+    create: {
+      url: `${TRAININGS_ENDPOINT}/participations`,
+      requiresAuth: true,
+    },
+  },
   evaluations: {
     getAll: {
       url: EVALUATIONS_ENDPOINT,
