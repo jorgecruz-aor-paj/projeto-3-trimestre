@@ -4,10 +4,12 @@ import { useTranslation } from 'react-i18next';
 import { authService } from 'services/authService';
 import { RegisterForm } from 'components/forms/RegisterForm';
 import { Alert } from 'react-bootstrap';
+import { useAlert } from 'contexts/AlertContext';
 
 export const RegisterAuthForm = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { showAlert } = useAlert();
 
   const [formData, setFormData] = useState({
     email: '',
@@ -16,7 +18,6 @@ export const RegisterAuthForm = () => {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
   const [validationErrors, setValidationErrors] = useState({});
 
   const handleInputChange = e => {
@@ -51,7 +52,6 @@ export const RegisterAuthForm = () => {
   const handleSubmit = async e => {
     e.preventDefault();
     setError(null);
-    setSuccess(null);
     if (!validateForm()) return;
     setLoading(true);
     try {
@@ -59,7 +59,12 @@ export const RegisterAuthForm = () => {
         email: formData.email,
         password: formData.password,
       });
-      setSuccess(t('auth.registerSuccess'));
+      showAlert({
+        title: t('auth.registerTitle'),
+        message: t('auth.registerSuccess'),
+        confirmLabel: t('auth.goToHome'),
+        onConfirm: () => navigate('/'),
+      });
     } catch (err) {
       setError(err.message || t('auth.registerFailed'));
     } finally {
@@ -74,7 +79,6 @@ export const RegisterAuthForm = () => {
         {t('auth.registerSubtitle')}
       </p>
       {error && <Alert variant="danger">{error}</Alert>}
-      {success && <Alert variant="success">{success}</Alert>}
       <RegisterForm
         formData={formData}
         onChange={handleInputChange}
