@@ -4,8 +4,10 @@ import { Home } from 'pages/Home';
 import { MainLayout } from 'components/layout/MainLayout';
 import { AuthTogglePage } from 'pages/auth/AuthTogglePage';
 import { ResetPasswordPage } from 'pages/auth/ResetPasswordPage';
+import { ResetPasswordRequestPage } from 'pages/auth/ResetPasswordRequestPage';
 import { ConfirmRegistrationPage } from 'pages/auth/ConfirmRegistrationPage';
 import { Dashboard } from 'pages/Dashboard';
+import { UsersPage } from 'pages/UsersPage';
 
 /**
  * AppRouter component that defines all application routes
@@ -36,8 +38,10 @@ export const AppRouter = () => {
         <Route path="/auth" element={<AuthTogglePage />} />
         <Route path="/login" element={<AuthTogglePage />} />
         <Route path="/register" element={<AuthTogglePage />} />
-        <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route path="/reset-password" element={<ResetPasswordRequestPage />} />
+        <Route path="/reset-password/confirm" element={<ResetPasswordPage />} />
         <Route path="/register/confirm" element={<ConfirmRegistrationPage />} />
+        <Route path="/users" element={<UsersPage />} />
         {/* Definir o resto das Routes */}
       </Route>
     </Routes>

@@ -34,7 +34,7 @@ export const useAuthStore = create(
             email: null,
           },
         });
-        useUserStore.getState().clearState();
+        //useUserStore.getState().clearState();
       },
     }),
     {
