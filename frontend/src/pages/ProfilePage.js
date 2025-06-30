@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { UserProfileInfo } from '../components/users/UserProfileInfo';
-import { UserTrainings } from '../components/users/UserTrainings';
-import { UserEvaluations } from '../components/users/UserEvaluations';
+import ProfileEvaluationsSection from '../components/profile/ProfileEvaluationsSection';
+import ProfileParticipationsSection from '../components/profile/ProfileParticipationsSection';
 import { useAuthStore } from '../stores/AuthStore';
+import '../styles/pages/ProfilePage.css';
 
 const ProfilePage = () => {
   const [showEvaluations, setShowEvaluations] = useState(true);
   const user = useAuthStore(state => state.user);
-
-  useEffect(() => {
-    // Fetch user data or perform any necessary side effects here
-  }, []);
-
+  // No need to fetch here, handled in section components
   return (
     <div className="profile-page-container">
       <section className="profile-info-section">
@@ -33,7 +30,11 @@ const ProfilePage = () => {
           </button>
         </div>
         <div className="profile-toggle-content">
-          {showEvaluations ? <UserEvaluations /> : <UserTrainings />}
+          {showEvaluations ? (
+            <ProfileEvaluationsSection userId={user.id} />
+          ) : (
+            <ProfileParticipationsSection userId={user.id} />
+          )}
         </div>
       </section>
     </div>

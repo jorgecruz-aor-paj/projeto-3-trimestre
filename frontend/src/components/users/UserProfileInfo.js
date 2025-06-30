@@ -35,7 +35,7 @@ export const UserProfileInfo = ({ user }) => (
             </ListGroup.Item>
             <ListGroup.Item>
               <strong>Workplace:</strong>{' '}
-              {user.workplaceName || user.workplaceId}
+              {user.workplaceName || user.workplace.name}
             </ListGroup.Item>
             <ListGroup.Item>
               <strong>Biography:</strong> {user.biography}

@@ -1,0 +1,81 @@
+.profile-page-container {
+  max-width: 900px;
+  margin: 2rem auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+  padding: 2rem 2.5rem;
+}
+
+.profile-info-section {
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 1.5rem;
+}
+
+.profile-toggle-section {
+  margin-top: 1.5rem;
+}
+
+.profile-toggle-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.profile-toggle-buttons button {
+  background: #f5f5f5;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  color: #333;
+  transition: background 0.2s, color 0.2s;
+}
+
+.profile-toggle-buttons button.active,
+.profile-toggle-buttons button:hover {
+  background: #1976d2;
+  color: #fff;
+}
+
+.profile-evaluations-section,
+.profile-participations-section {
+  margin-bottom: 2rem;
+}
+
+.profile-evaluations-list,
+.profile-participations-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.profile-evaluation-card,
+.profile-participation-card {
+  background: #fafbfc;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1rem 1.5rem;
+  min-width: 260px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  flex: 1 1 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.profile-evaluation-card strong,
+.profile-participation-card strong {
+  color: #1976d2;
+  font-size: 1.1rem;
+}
+
+.profile-evaluations-filter,
+.profile-participations-filter {
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
