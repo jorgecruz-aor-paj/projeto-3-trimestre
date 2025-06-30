@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import useUserStore from './UserStore';
+import { useUserStore } from './UserStore';
 
 // State-only store
 export const useAuthStore = create(

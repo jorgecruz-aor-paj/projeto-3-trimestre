@@ -6,29 +6,22 @@ import { UserFilters } from 'components/users/UserFilters';
 
 export const UsersPage = () => {
   const [filters, setFilters] = useState({});
-  const { users, loading, error, fetchUsers } = useUserStore();
+  const users = useUserStore(state => state.users) || [];
+  const loading = useUserStore(state => state.loading);
+  const error = useUserStore(state => state.error);
+  const fetchUsers = useUserStore(state => state.fetchUsers);
 
   useEffect(() => {
-    fetchUsers();
-  }, [fetchUsers]);
+    fetchUsers(filters);
+  }, [fetchUsers, JSON.stringify(filters)]);
 
   const handleFilterChange = e => {
-    const { name, value } = e.target;
-    setFilters(prev => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    setFilters(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' || type === 'switch' ? checked : value,
+    }));
   };
-
-  const filteredUsers = users.filter(user => {
-    const nameMatch =
-      !filters.name ||
-      `${user.firstName} ${user.lastName}`
-        .toLowerCase()
-        .includes(filters.name.toLowerCase());
-    const emailMatch =
-      !filters.email ||
-      user.email.toLowerCase().includes(filters.email.toLowerCase());
-    const roleMatch = !filters.role || user.role === filters.role;
-    return nameMatch && emailMatch && roleMatch;
-  });
 
   return (
     <Container className="py-4">
@@ -36,8 +29,11 @@ export const UsersPage = () => {
       <UserFilters filters={filters} onChange={handleFilterChange} />
       {loading && <Spinner animation="border" />}
       {error && <Alert variant="danger">{error}</Alert>}
+      {!loading && users.length === 0 && (
+        <Alert variant="info">No users found with the selected filters.</Alert>
+      )}
       <Row>
-        {filteredUsers.map(user => (
+        {users.map(user => (
           <Col key={user.id} md={6} lg={4}>
             <UserCard user={user} />
           </Col>
@@ -46,3 +42,4 @@ export const UsersPage = () => {
     </Container>
   );
 };
+

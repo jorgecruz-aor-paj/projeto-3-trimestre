@@ -4,12 +4,12 @@ import { useWorkplaces } from 'hooks/useWorkplaces';
 import { useManagersStore } from 'stores/ManagersStore';
 
 const sortFields = [
-  { value: 'id', label: 'ID' },
-  { value: 'workplace', label: 'Workplace' },
-  { value: 'manager', label: 'Manager' },
-  { value: 'firstName', label: 'Name' },
-  { value: 'birthdate', label: 'Date of Birth' },
-  { value: 'createdAt', label: 'Created At' },
+
+  { value: 'WORKPLACE', label: 'Workplace' },
+  { value: 'MANAGER', label: 'Manager' },
+  { value: 'DATE_OF_BIRTH', label: 'Date of Birth' },
+  { value: 'DATE', label: 'Created At' },
+
 ];
 
 export const UserFilters = ({ filters, onChange }) => {
@@ -74,12 +74,29 @@ export const UserFilters = ({ filters, onChange }) => {
             ))}
           </Form.Select>
         </Col>
+         <Col md={2} className="mb-2">
+          <Form.Check
+            type="switch"
+            id="ascendingSwitch"
+            name="ascending"
+            label={filters.ascending ? 'Ascending' : 'Descending'}
+            checked={filters.ascending !== false}
+            onChange={e =>
+              onChange({
+                target: {
+                  name: 'ascending',
+                  value: e.target.checked,
+                },
+              })
+            }
+          />
+        </Col>
         <Col md={1} className="mb-2">
           <Form.Check
             type="switch"
             id="noManagerSwitch"
             name="noManager"
-            label="No Manager"
+            label="NoManager"
             checked={!!filters.noManager}
             onChange={e =>
               onChange({
@@ -91,6 +108,7 @@ export const UserFilters = ({ filters, onChange }) => {
             }
           />
         </Col>
+       
       </Row>
     </Form>
   );

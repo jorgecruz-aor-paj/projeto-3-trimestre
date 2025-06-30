@@ -8,9 +8,9 @@ import aor.proj3t.exceptions.NotFoundException;
 import jakarta.ws.rs.QueryParam;
 
 public class UserFilter {
-    @QueryParam("workplace")
+    @QueryParam("workplaceId")
     private Long workplaceId;
-    @QueryParam("manager")
+    @QueryParam("managerId")
     private Long managerId;
     @QueryParam("id")
     private Long id;
@@ -116,4 +116,18 @@ public class UserFilter {
         }
     }
 
+    @Override
+    public String toString() {
+        return "UserFilter{" +
+                "workplaceId=" + workplaceId +
+                ", managerId=" + managerId +
+                ", id=" + id +
+                ", searchText='" + searchText + '\'' +
+                ", noManager=" + noManager +
+                ", sortField=" + sortField +
+                ", ascending=" + ascending +
+                ", workplace=" + workplace +
+                ", manager=" + manager +
+                '}';
+    }
 }
