@@ -84,7 +84,11 @@
     "resetPasswordSubtitle": "Introduza o seu endereço de email e enviaremos um link para redefinir a sua palavra-passe.",
     "resetPasswordEmailSent": "Email de redefinição de palavra-passe enviado! Por favor, verifique a sua caixa de correio e siga as instruções para redefinir a sua palavra-passe.",
     "resetPasswordFailed": "Falha ao enviar email de redefinição de palavra-passe. Por favor, tente novamente ou contacte o suporte.",
-    "sendResetLink": "Enviar Link de Redefinição"
+    "sendResetLink": "Enviar Link de Redefinição",
+    "setNewPasswordTitle": "Definir Nova Palavra-passe",
+    "setNewPasswordSubtitle": "Por favor, introduza a sua nova palavra-passe abaixo.",
+    "setNewPassword": "Definir Nova Palavra-passe",
+    "resetPasswordSuccess": "Palavra-passe redefinida com sucesso! Será redirecionado para a página de login."
   },
   "user": {
     "profile": "Perfil",
