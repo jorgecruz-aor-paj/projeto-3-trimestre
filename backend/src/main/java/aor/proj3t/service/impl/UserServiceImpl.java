@@ -2,15 +2,19 @@ package aor.proj3t.service.impl;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Objects;
+import java.util.Optional;
 
-import aor.proj3t.config.SettingsProvider;
-import aor.proj3t.exceptions.InvalidDataException;
-import jakarta.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import aor.proj3t.config.AppConstants;
+import aor.proj3t.config.SettingsProvider;
 import aor.proj3t.daos.DAOFactory;
 import aor.proj3t.dto.FileUploadDTO;
 import aor.proj3t.dto.LoginDTO;
@@ -19,7 +23,6 @@ import aor.proj3t.dto.UserDTO;
 import aor.proj3t.dto.UserRegistrationDTO;
 import aor.proj3t.dto.paginated.UserPaginationDTO;
 import aor.proj3t.entities.PendingRegistration;
-import aor.proj3t.entities.Settings;
 import aor.proj3t.entities.User;
 import aor.proj3t.entities.Workplace;
 import aor.proj3t.enums.Role;
@@ -35,7 +38,7 @@ import aor.proj3t.util.authutils.PasswordUtil;
 import aor.proj3t.util.converterutils.ConverterFactory;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import org.eclipse.angus.mail.imap.protocol.ID;
+import jakarta.transaction.Transactional;
 
 @ApplicationScoped
 public class UserServiceImpl extends BaseService implements UserService {
@@ -76,7 +79,8 @@ public class UserServiceImpl extends BaseService implements UserService {
         Integer confirmationExpirationTime = settingsProvider.getSettings().getConfirmationExpirationTime();
         validateEmail(email);
         PendingRegistration registration = new PendingRegistration(email, password);
-        registration.setConfirmationToken(jwtUtil.generateConfirmationToken(email, ipAddress, confirmationExpirationTime));
+        registration
+                .setConfirmationToken(jwtUtil.generateConfirmationToken(email, ipAddress, confirmationExpirationTime));
         registration.setExpirationDate(now.plus(confirmationExpirationTime, ChronoUnit.MINUTES));
         daoFactory.forPendingRegistration().create(registration);
         sendConfirmationEmail(email, ipAddress, confirmationExpirationTime);
@@ -85,7 +89,8 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Override
     public void confirmUser(String email, UserRegistrationDTO userRegistrationDto) {
         PendingRegistration registration = getPendingRegistration(email);
-        Workplace workplace = getEntity(daoFactory.forWorkplace().findById(userRegistrationDto.getWorkplaceId()), userRegistrationDto.getWorkplaceId(), "Workplace");
+        Workplace workplace = getEntity(daoFactory.forWorkplace().findById(userRegistrationDto.getWorkplaceId()),
+                userRegistrationDto.getWorkplaceId(), "Workplace");
 
         User newUser = createNewUser(userRegistrationDto, registration, workplace, fileStorageUtil);
         daoFactory.forUser().create(newUser);
@@ -126,7 +131,8 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Transactional
     public void assignManagerBulk(Long userId, ManagerAssignDTO managerAssignDto) {
         User requester = getEntity(daoFactory.forUser().findById(userId), userId, "User");
-        User manager = getEntity(daoFactory.forUser().findById(managerAssignDto.getManagerId()), managerAssignDto.getManagerId(), "User");
+        User manager = getEntity(daoFactory.forUser().findById(managerAssignDto.getManagerId()),
+                managerAssignDto.getManagerId(), "User");
         List<User> users = getUserListFromIds(managerAssignDto.getUserIds());
         if (!requester.getRole().equals(Role.ADMIN)) {
             throw new ForbiddenException(
@@ -136,7 +142,8 @@ public class UserServiceImpl extends BaseService implements UserService {
         if (manager.getRole().equals(Role.ADMIN)) {
             throw new ForbiddenException(
                     "Permission denied",
-                    "User management assigned to admin with id " + manager.getId() + " by Admin with id " + requester.getId());
+                    "User management assigned to admin with id " + manager.getId() + " by Admin with id "
+                            + requester.getId());
         }
         if (users.contains(manager)) {
             throw new ForbiddenException(
@@ -170,12 +177,12 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Override
     public List<UserDTO> getUsersByFilters(Long requesterId, UserFilter filters) {
         User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
-        //TODO remove if no filter limits are needed for users
-//            if (requester.getRole() == Role.USER && filters.getManager() != null) {
-//                throw new ForbiddenException(
-//                        "Permission denied",
-//                        "User with ID " + requesterId + " accessed forbidden user filters");
-//            }
+        // TODO remove if no filter limits are needed for users
+        // if (requester.getRole() == Role.USER && filters.getManager() != null) {
+        // throw new ForbiddenException(
+        // "Permission denied",
+        // "User with ID " + requesterId + " accessed forbidden user filters");
+        // }
         filters.hydrate(daoFactory);
         System.out.println(filters);
         return converterFactory.forUser().toDTOList(daoFactory.forUser().getUsersByFilters(filters));
@@ -217,7 +224,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     private static User createNewUser(UserRegistrationDTO userRegistrationDto, PendingRegistration registration,
-                                      Workplace workplace, FileStorageUtil fileStorageUtil) {
+            Workplace workplace, FileStorageUtil fileStorageUtil) {
         User newUser = new User(
                 registration.getEmail(),
                 registration.getPassword(),
@@ -236,9 +243,11 @@ public class UserServiceImpl extends BaseService implements UserService {
         return newUser;
     }
 
-    private void sendResetPasswordEmail(String email, Long userId, String ipAddress, Integer resetPasswordExpirationTime) {
-        String resetPasswordToken = jwtUtil.generatePasswordResetToken(email, userId, ipAddress, resetPasswordExpirationTime);
-        String baseUrl = "http://localhost:3000";
+    private void sendResetPasswordEmail(String email, Long userId, String ipAddress,
+            Integer resetPasswordExpirationTime) {
+        String resetPasswordToken = jwtUtil.generatePasswordResetToken(email, userId, ipAddress,
+                resetPasswordExpirationTime);
+        String baseUrl = AppConstants.Email.EMAIL_BASE_URL;
         emailUtil.sendPasswordResetEmail(email, resetPasswordToken, baseUrl);
     }
 
@@ -252,7 +261,8 @@ public class UserServiceImpl extends BaseService implements UserService {
         user.setBirthdate(userDto.getBirthdate());
         user.setPhotograph(userDto.getPhotograph());
 
-        Workplace workplace = getEntity(daoFactory.forWorkplace().findById(userDto.getWorkplaceId()), userDto.getWorkplaceId(), "Workplace");
+        Workplace workplace = getEntity(daoFactory.forWorkplace().findById(userDto.getWorkplaceId()),
+                userDto.getWorkplaceId(), "Workplace");
         user.setWorkplace(workplace);
     }
 
@@ -282,7 +292,7 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     private void sendConfirmationEmail(String email, String ipAddress, Integer confirmationExpirationTime) {
         String token = jwtUtil.generateConfirmationToken(email, ipAddress, confirmationExpirationTime);
-        String baseUrl = "http://localhost:3000/register/confirm";
+        String baseUrl = AppConstants.Email.EMAIL_BASE_URL;
         emailUtil.sendConfirmationEmail(email, token, baseUrl);
     }
 
@@ -298,7 +308,6 @@ public class UserServiceImpl extends BaseService implements UserService {
         return stats;
     }
 
-
     @Override
     public Boolean uploadProfilePicture(Long userId, FileUploadDTO fileUploadDTO) {
         try {
@@ -313,7 +322,8 @@ public class UserServiceImpl extends BaseService implements UserService {
             if (oldPicture != null && !oldPicture.equals(fileStorageUtil.getDefaultProfilePicture())) {
                 fileStorageUtil.deleteFile(oldPicture);
             } // Store the new picture with resizing
-            String fileName = fileStorageUtil.storeProfilePicture(fileUploadDTO.getFileContent(), fileUploadDTO.getFileName(), fileUploadDTO.getFileExtension(), fileUploadDTO.getFileMimeType());
+            String fileName = fileStorageUtil.storeProfilePicture(fileUploadDTO.getFileContent(),
+                    fileUploadDTO.getFileName(), fileUploadDTO.getFileExtension(), fileUploadDTO.getFileMimeType());
 
             // Update user entity
             user.setPhotograph(fileName);
