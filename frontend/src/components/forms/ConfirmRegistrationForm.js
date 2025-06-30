@@ -1,10 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Form } from 'react-bootstrap';
 import { FormInput } from './FormInput';
 import { SubmitButton } from './SubmitButton';
 import { FormDropdownInput } from './FormDropdownInput';
 import { useTranslation } from 'react-i18next';
-import { useWorkplaces } from 'hooks/useWorkplaces';
 
 /**
  * Confirm Registration form component (presentational)
@@ -13,13 +13,15 @@ import { useWorkplaces } from 'hooks/useWorkplaces';
 export const ConfirmRegistrationForm = ({
   formData,
   validationErrors,
-  loading: submittingLoading,
+  workplaces,
+  workplacesLoading,
+  loading,
   submitting,
   handleInputChange,
   handleSubmit,
 }) => {
   const { t } = useTranslation();
-  const { workplaces, loading } = useWorkplaces();
+
   return (
     <Form onSubmit={handleSubmit} encType="multipart/form-data">
       <FormInput
@@ -69,10 +71,12 @@ export const ConfirmRegistrationForm = ({
         label={t('user.workplace')}
         value={formData.workplaceId}
         onChange={handleInputChange}
-        options={workplaces.map(w => ({ value: w.id, label: w.name }))}
+        options={workplaces?.map(w => ({ value: w.id, label: w.name })) || []}
         error={validationErrors.workplaceId}
-        disabled={submitting || loading}
-        placeholder={t('user.selectWorkplace')}
+        disabled={submitting || workplacesLoading}
+        placeholder={
+          workplacesLoading ? t('common.loading') : t('user.selectWorkplace')
+        }
       />
       <FormInput
         name="biography"
@@ -98,7 +102,49 @@ export const ConfirmRegistrationForm = ({
         isLoading={submitting}
         label={t('auth.confirmRegistration')}
         className="w-100 py-2 mt-3 mb-4"
+        disabled={workplacesLoading}
       />
     </Form>
   );
+};
+
+ConfirmRegistrationForm.propTypes = {
+  formData: PropTypes.shape({
+    firstName: PropTypes.string,
+    lastName: PropTypes.string,
+    address: PropTypes.string,
+    phoneNumber: PropTypes.string,
+    birthdate: PropTypes.string,
+    workplaceId: PropTypes.string,
+    biography: PropTypes.string,
+    photograph: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+  }).isRequired,
+  validationErrors: PropTypes.shape({
+    firstName: PropTypes.string,
+    lastName: PropTypes.string,
+    address: PropTypes.string,
+    phoneNumber: PropTypes.string,
+    birthdate: PropTypes.string,
+    workplaceId: PropTypes.string,
+    biography: PropTypes.string,
+  }),
+  workplaces: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+      name: PropTypes.string.isRequired,
+    })
+  ),
+  workplacesLoading: PropTypes.bool,
+  loading: PropTypes.bool,
+  submitting: PropTypes.bool,
+  handleInputChange: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+};
+
+ConfirmRegistrationForm.defaultProps = {
+  validationErrors: {},
+  workplaces: [],
+  workplacesLoading: false,
+  loading: false,
+  submitting: false,
 };
