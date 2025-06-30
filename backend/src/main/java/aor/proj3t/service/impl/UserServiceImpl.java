@@ -5,12 +5,10 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 import aor.proj3t.config.SettingsProvider;
-import aor.proj3t.exceptions.InvalidDataException;
 import jakarta.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import aor.proj3t.config.AppConstants;
 import aor.proj3t.daos.DAOFactory;
 import aor.proj3t.dto.FileUploadDTO;
 import aor.proj3t.dto.LoginDTO;
@@ -19,7 +17,6 @@ import aor.proj3t.dto.UserDTO;
 import aor.proj3t.dto.UserRegistrationDTO;
 import aor.proj3t.dto.paginated.UserPaginationDTO;
 import aor.proj3t.entities.PendingRegistration;
-import aor.proj3t.entities.Settings;
 import aor.proj3t.entities.User;
 import aor.proj3t.entities.Workplace;
 import aor.proj3t.enums.Role;
@@ -35,7 +32,6 @@ import aor.proj3t.util.authutils.PasswordUtil;
 import aor.proj3t.util.converterutils.ConverterFactory;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import org.eclipse.angus.mail.imap.protocol.ID;
 
 @ApplicationScoped
 public class UserServiceImpl extends BaseService implements UserService {
@@ -252,7 +248,7 @@ public class UserServiceImpl extends BaseService implements UserService {
         user.setBirthdate(userDto.getBirthdate());
         user.setPhotograph(userDto.getPhotograph());
 
-        Workplace workplace = getEntity(daoFactory.forWorkplace().findById(userDto.getWorkplaceId()), userDto.getWorkplaceId(), "Workplace");
+        Workplace workplace = getEntity(daoFactory.forWorkplace().findById(userDto.getWorkplace().getId()), userDto.getWorkplace().getId(), "Workplace");
         user.setWorkplace(workplace);
     }
 

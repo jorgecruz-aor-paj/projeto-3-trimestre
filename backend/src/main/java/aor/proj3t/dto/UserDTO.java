@@ -41,6 +41,7 @@ public class UserDTO {
 
     @XmlElement(name = "createdAt")
     private Instant createdAt;
+    
     @XmlElement(name = "photograph")
     private String photograph;
 
@@ -50,15 +51,15 @@ public class UserDTO {
     @XmlElement(name = "managerId")
     private Long managerId; // Only the ID is passed to avoid recursive references
 
-    @XmlElement(name = "workplaceId")
-    private Long workplaceId;
+    @XmlElement(name = "workplace")
+    private WorkplaceDTO workplace;
 
     public UserDTO() {
     }
 
     public UserDTO(long id, String email, String firstName, String lastName, String phoneNumber, String address,
             LocalDate birthdate, String biography, Instant createdAt, String photograph, Role role,
-            Long managerId, Long workplaceId) {
+            Long managerId, WorkplaceDTO workplace) {
         this.id = id;
         this.email = email;
         this.firstName = firstName;
@@ -71,7 +72,7 @@ public class UserDTO {
         this.photograph = photograph;
         this.role = role;
         this.managerId = managerId;
-        this.workplaceId = workplaceId;
+        this.workplace = workplace;
     }
 
     public Long getId() {
@@ -170,12 +171,12 @@ public class UserDTO {
         this.managerId = managerId;
     }
 
-    public Long getWorkplaceId() {
-        return workplaceId;
+    public WorkplaceDTO getWorkplace() {
+        return workplace;
     }
 
-    public void setWorkplaceId(Long workplaceId) {
-        this.workplaceId = workplaceId;
+    public void setWorkplace(WorkplaceDTO workplace) {
+        this.workplace = workplace;
     }
 
 

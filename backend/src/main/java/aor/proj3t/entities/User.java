@@ -25,6 +25,10 @@ import aor.proj3t.enums.Role;
         @NamedQuery(
                 name = "User.countNonAdmins",
                 query = "SELECT COUNT(u) FROM User u WHERE u.role <> :adminRole"
+        ),
+        @NamedQuery(
+                name = "User.countWithoutManagerAndNotAdmin",
+                query = "SELECT COUNT(u) FROM User u WHERE u.manager IS NULL AND u.role <> :adminRole"
         )
 
 

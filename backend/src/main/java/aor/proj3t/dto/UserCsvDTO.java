@@ -2,6 +2,7 @@ package aor.proj3t.dto;
 
 import java.time.LocalDate;
 
+import aor.proj3t.entities.Workplace;
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvDate;
 
@@ -39,8 +40,8 @@ public class UserCsvDTO {
     @CsvBindByName(column = "Manager ID")
     private Long managerId;
 
-    @CsvBindByName(column = "Workplace ID")
-    private Long workplaceId;
+    @CsvBindByName(column = "Workplace")
+    private WorkplaceDTO workplace;
 
     // Default constructor required by OpenCSV
     public UserCsvDTO() {
@@ -57,7 +58,7 @@ public class UserCsvDTO {
         this.birthdate = userDTO.getBirthdate();
         this.role = userDTO.getRole() != null ? userDTO.getRole().toString() : null;
         this.managerId = userDTO.getManagerId();
-        this.workplaceId = userDTO.getWorkplaceId();
+        this.workplace = userDTO.getWorkplace();
     }
 
     // Getters and setters
@@ -133,11 +134,11 @@ public class UserCsvDTO {
         this.managerId = managerId;
     }
 
-    public Long getWorkplaceId() {
-        return workplaceId;
+    public WorkplaceDTO getWorkplace() {
+        return workplace;
     }
 
-    public void setWorkplaceId(Long workplaceId) {
-        this.workplaceId = workplaceId;
+    public void setWorkplace(WorkplaceDTO workplace) {
+        this.workplace = workplace;
     }
 }

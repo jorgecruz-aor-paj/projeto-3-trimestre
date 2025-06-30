@@ -4,6 +4,7 @@ import aor.proj3t.dto.UserDTO;
 import aor.proj3t.entities.User;
 import aor.proj3t.entities.Workplace;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 /**
  * Converter for User entities and DTOs.
@@ -20,6 +21,10 @@ import jakarta.enterprise.context.ApplicationScoped;
  */
 @ApplicationScoped
 public class UserConverter extends AbstractConverter<User, UserDTO, Long> {
+
+    @Inject
+    WorkplaceConverter workplaceConverter;
+
     @Override
     protected Class<User> getEntityClass() {
         return User.class;
@@ -60,7 +65,7 @@ public class UserConverter extends AbstractConverter<User, UserDTO, Long> {
         }
 
         if (user.getWorkplace() != null) {
-            dto.setWorkplaceId(user.getWorkplace().getId());
+            dto.setWorkplace(workplaceConverter.toDTO(user.getWorkplace()));
         }
     }
 
@@ -80,7 +85,7 @@ public class UserConverter extends AbstractConverter<User, UserDTO, Long> {
         User manager = findSafely(User.class, dto.getManagerId());
         user.setManager(manager);
 
-        Workplace workplace = findSafely(Workplace.class, dto.getWorkplaceId());
+        Workplace workplace = findSafely(Workplace.class, dto.getWorkplace());
         user.setWorkplace(workplace);
     }
 

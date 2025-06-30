@@ -111,7 +111,9 @@ public class UserDAOimpl extends AbstractDAO<User, Long> implements UserDAO {
      */
     @Override
     public Long countUsersWithoutManager() {
-        return executeCountQuery("manager", null, true);
+        return em.createNamedQuery("User.countWithoutManagerAndNotAdmin", Long.class)
+                .setParameter("adminRole", Role.ADMIN) // or "ADMIN" if using string roles
+                .getSingleResult();
     }
 
     /**
@@ -187,8 +189,8 @@ public class UserDAOimpl extends AbstractDAO<User, Long> implements UserDAO {
 
 
     @Override
-    public List<User> getManagers(){
-    return executeNamedQuery("User.findAllManagers", User.class,"role", Role.MANAGER);
+    public List<User> getManagers() {
+        return executeNamedQuery("User.findAllManagers", User.class, "role", Role.MANAGER);
     }
 
     public List<User> findManagersWithoutUsers() {
@@ -200,7 +202,6 @@ public class UserDAOimpl extends AbstractDAO<User, Long> implements UserDAO {
                 .setParameter("adminRole", Role.ADMIN)
                 .getSingleResult();
     }
-
 
 
 }

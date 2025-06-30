@@ -131,7 +131,7 @@ public class UserValidator {
         validateAddress(dto.getAddress());
         validatebirthdate(dto.getBirthdate());
         validateBiography(dto.getBiography());
-        validateId(dto.getWorkplaceId(), "Workplace");
+        validateId(dto.getWorkplace().getId(), "Workplace");
         validatePhotograph(dto.getPhotograph());
         validateId(dto.getManagerId(), "Manager");
         validateRole(dto.getRole().getName());
