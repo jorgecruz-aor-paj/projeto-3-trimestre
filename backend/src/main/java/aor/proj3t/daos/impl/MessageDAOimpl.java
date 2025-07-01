@@ -45,12 +45,17 @@ public class MessageDAOimpl extends AbstractDAO<Message, Long> implements Messag
 
         @Override
         public List<User> findMessagedUsers(Long userId) {
-
+                // More efficient approach using JOIN
                 return em.createQuery(
-                                "SELECT DISTINCT u FROM User u WHERE u.id IN (" +
-                                                "SELECT m.sender.id FROM Message m WHERE m.recipient.id = :userId UNION "
-                                                +
-                                                "SELECT m.recipient.id FROM Message m WHERE m.sender.id = :userId)",
+                                "SELECT DISTINCT u FROM User u " +
+                                                "WHERE u.id IN (" +
+                                                "SELECT DISTINCT CASE " +
+                                                "WHEN m.sender.id = :userId THEN m.recipient.id " +
+                                                "ELSE m.sender.id " +
+                                                "END " +
+                                                "FROM Message m " +
+                                                "WHERE m.sender.id = :userId OR m.recipient.id = :userId" +
+                                                ") AND u.id != :userId",
                                 User.class)
                                 .setParameter("userId", userId)
                                 .getResultList();
