@@ -9,7 +9,7 @@ import 'styles/pages/ProfilePage.css';
 import { userService } from 'services';
 
 const ProfilePage = () => {
-  const [showEvaluations, setShowEvaluations] = useState(true);
+  // const [showEvaluations, setShowEvaluations] = useState(true); // moved to ProfileSectionsToggle
   const [profileUser, setProfileUser] = useState(null);
   const user = useAuthStore(state => state.user);
   const { t } = useTranslation();
@@ -51,36 +51,24 @@ const ProfilePage = () => {
   }, []);
 
   if (!profileUser) return null; // Or a loading spinner
-  console.log('Profile User:', profileUser);
-  console.log(profileUser.workplace);
+  // console.log('Profile User:', profileUser);
+  // console.log(profileUser.workplace);
+  // Permission logic: admin, self, or manager of profileUser
+  const isAdmin = user?.role === 'ADMIN';
+  const isSelf = user?.id === profileUser.id;
+  // Assuming profileUser.managerId or profileUser.manager?.id is available
+  const isManager = profileUser.managerId
+    ? user?.id === profileUser.managerId
+    : profileUser.manager && user?.id === profileUser.manager.id;
+
+  const canViewSections = isAdmin || isSelf || isManager;
+
   return (
     <div className="profile-page-container">
       <section className="profile-info-section">
         <UserProfileInfo user={profileUser} />
       </section>
-      <section className="profile-toggle-section">
-        <div className="profile-toggle-buttons">
-          <button
-            className={showEvaluations ? 'active' : ''}
-            onClick={() => setShowEvaluations(true)}
-          >
-            {t('profile.evaluations')}
-          </button>
-          <button
-            className={!showEvaluations ? 'active' : ''}
-            onClick={() => setShowEvaluations(false)}
-          >
-            {t('profile.trainings')}
-          </button>
-        </div>
-        <div className="profile-toggle-content">
-          {showEvaluations ? (
-            <ProfileEvaluationsSection userId={profileUser.id} />
-          ) : (
-            <ProfileParticipationsSection userId={profileUser.id} />
-          )}
-        </div>
-      </section>
+      {canViewSections && <ProfileSectionsToggle userId={profileUser.id} />}
     </div>
   );
 };
