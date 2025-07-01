@@ -19,8 +19,8 @@ public class TrainingParticipationDTO {
     private Long participantId;
     @XmlElement(name = "managerId")
     private Long managerId;
-    @XmlElement(name = "trainingId")
-    private Long trainingId;
+    @XmlElement(name = "training")
+    private TrainingDTO training;
     @XmlElement(name = "createdAt")
     private Instant createdAt;
     @XmlElement(name = "participatedAt")
@@ -29,12 +29,12 @@ public class TrainingParticipationDTO {
     public TrainingParticipationDTO() {
     }
 
-    public TrainingParticipationDTO(Long id, Long participantId, Long managerId, Long trainingId,
+    public TrainingParticipationDTO(Long id, Long participantId, Long managerId, TrainingDTO training,
             Instant createdAt, Instant participatedAt) {
         this.id = id;
         this.participantId = participantId;
         this.managerId = managerId;
-        this.trainingId = trainingId;
+        this.training = training;
         this.createdAt = createdAt;
         this.participatedAt = participatedAt;
     }
@@ -63,12 +63,12 @@ public class TrainingParticipationDTO {
         this.managerId = managerId;
     }
 
-    public Long getTrainingId() {
-        return trainingId;
+    public TrainingDTO getTraining() {
+        return training;
     }
 
-    public void setTrainingId(Long trainingId) {
-        this.trainingId = trainingId;
+    public void setTraining(TrainingDTO training) {
+        this.training = training;
     }
 
     public Instant getCreatedAt() {

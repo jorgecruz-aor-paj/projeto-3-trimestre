@@ -91,7 +91,7 @@ public class TrainingResource {
 
     @GET
     @Path("/area")
-    @Secured(Role.ADMIN)
+    @Secured
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTrainingAreas() {
         List<TrainingAreaDTO> trainingAreas = serviceFactory.forTraining().getAllTrainingAreas();

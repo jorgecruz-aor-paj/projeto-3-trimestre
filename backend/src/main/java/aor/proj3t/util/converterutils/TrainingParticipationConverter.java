@@ -5,6 +5,7 @@ import aor.proj3t.entities.Training;
 import aor.proj3t.entities.TrainingParticipation;
 import aor.proj3t.entities.User;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 /**
  * Converter for TrainingParticipation entities and DTOs.
@@ -23,6 +24,10 @@ import jakarta.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class TrainingParticipationConverter
         extends AbstractConverter<TrainingParticipation, TrainingParticipationDTO, Long> {
+
+    @Inject
+    TrainingConverter trainingConverter;
+
     @Override
     protected Class<TrainingParticipation> getEntityClass() {
         return TrainingParticipation.class;
@@ -58,7 +63,7 @@ public class TrainingParticipationConverter
         }
 
         if (participation.getTraining() != null) {
-            dto.setTrainingId(participation.getTraining().getId());
+            dto.setTraining(trainingConverter.toDTO(participation.getTraining()));
         }
     }
 
@@ -74,7 +79,7 @@ public class TrainingParticipationConverter
         User manager = findSafely(User.class, dto.getManagerId());
         participation.setManager(manager);
 
-        Training training = findSafely(Training.class, dto.getTrainingId());
+        Training training = findSafely(Training.class, dto.getTraining());
         participation.setTraining(training);
 
     }
