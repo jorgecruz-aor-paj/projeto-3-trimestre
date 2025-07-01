@@ -56,8 +56,18 @@ public class MessageServiceImpl extends BaseService implements MessageService {
 
     @Override
     public List<MessageDTO> getMessagesBetweenUsers(Long senderId, Long recipientId) {
-        List<Message> messages = daoFactory.forMessage().findBySenderIdAndRecipientId(senderId, recipientId);
-        return converterFactory.forMessage().toDTOList(messages);
+        // Get messages in both directions
+        List<Message> sentMessages = daoFactory.forMessage().findBySenderIdAndRecipientId(senderId, recipientId);
+        List<Message> receivedMessages = daoFactory.forMessage().findBySenderIdAndRecipientId(recipientId, senderId);
+
+        List<Message> allMessages = new ArrayList<>();
+        allMessages.addAll(sentMessages);
+        allMessages.addAll(receivedMessages);
+
+        // Sort by timestamp
+        allMessages.sort((a, b) -> a.getTimestampSent().compareTo(b.getTimestampSent()));
+
+        return converterFactory.forMessage().toDTOList(allMessages);
     }
 
     @Override

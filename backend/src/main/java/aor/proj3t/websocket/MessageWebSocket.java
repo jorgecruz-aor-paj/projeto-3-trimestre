@@ -8,6 +8,7 @@ import java.util.Objects;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import aor.proj3t.daos.DAOFactory;
 import aor.proj3t.dto.MessageDTO;
 import aor.proj3t.dto.NotificationDTO;
 import aor.proj3t.dto.UserDTO;
@@ -16,7 +17,6 @@ import aor.proj3t.entities.Notification;
 import aor.proj3t.entities.User;
 import aor.proj3t.enums.NotificationType;
 import aor.proj3t.service.ServiceFactory;
-import aor.proj3t.daos.DAOFactory;
 import jakarta.annotation.PreDestroy;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -41,7 +41,7 @@ import jakarta.websocket.server.ServerEndpoint;
  * The endpoint path includes the user's ID for session management.
  */
 @ApplicationScoped
-@ServerEndpoint("/websocket/messages/{userId}")
+@ServerEndpoint("/websocket/{token}")
 public class MessageWebSocket {
 
     private static final Logger logger = LogManager.getLogger(MessageWebSocket.class);
@@ -74,28 +74,51 @@ public class MessageWebSocket {
      * Handles new WebSocket connections
      * 
      * @param session WebSocket session that was opened
-     * @param userId  User ID from the path parameter
+     * @param token   Authentication token from the path parameter
      */
     @OnOpen
-    public void onOpen(Session session, @PathParam("userId") Long userId) {
-        logger.info("WebSocket connection opened for user: {}", userId);
-        WebSocketSessionManager.addSession(userId, session);
-
-        // Store user ID as a session property for future reference
-        session.getUserProperties().put("userId", userId);
-
+    public void onOpen(Session session, @PathParam("token") String token) {
         try {
-            // Send connection confirmation
-            Map<String, Object> response = Map.of(
-                    "type", "connect",
-                    "status", "success",
-                    "userId", userId);
-            session.getBasicRemote().sendText(jsonb.toJson(response));
+            logger.info("WebSocket connection attempt with token: {}", token != null ? "***" : "null");
 
-            // Send any pending notifications or messages
-            sendPendingNotifications(userId);
-        } catch (IOException | JsonbException e) {
-            logger.error("Error sending connection confirmation to user {}", userId, e);
+            // Validate token and get user information
+            Long userId = serviceFactory.forToken().getUserIdFromToken(token);
+
+            if (userId == null) {
+                logger.error("Invalid token provided for WebSocket connection");
+                session.close(new CloseReason(CloseReason.CloseCodes.VIOLATED_POLICY, "Invalid token"));
+                return;
+            }
+
+            logger.info("WebSocket connection opened for user: {}", userId);
+
+            // Store the session
+            WebSocketSessionManager.addSession(userId, session);
+
+            // Store user ID as a session property for future reference
+            session.getUserProperties().put("userId", userId);
+
+            try {
+                // Send connection confirmation
+                Map<String, Object> response = Map.of(
+                        "type", "connect",
+                        "status", "success",
+                        "userId", userId);
+                session.getBasicRemote().sendText(jsonb.toJson(response));
+
+                // Send any pending notifications or messages
+                sendPendingNotifications(userId);
+            } catch (IOException | JsonbException e) {
+                logger.error("Error sending connection confirmation to user {}", userId, e);
+            }
+
+        } catch (Exception e) {
+            logger.error("Error during WebSocket connection: {}", e.getMessage(), e);
+            try {
+                session.close(new CloseReason(CloseReason.CloseCodes.VIOLATED_POLICY, "Authentication failed"));
+            } catch (IOException ex) {
+                logger.error("Error closing invalid session", ex);
+            }
         }
     }
 
@@ -103,37 +126,58 @@ public class MessageWebSocket {
      * Handles WebSocket connection closures
      * 
      * @param session WebSocket session that was closed
-     * @param userId  User ID from the path parameter
      * @param reason  Reason for closure
      */
     @OnClose
-    public void onClose(Session session, @PathParam("userId") Long userId, CloseReason reason) {
-        logger.info("WebSocket connection closed for user: {}. Reason: {}", userId, reason.getReasonPhrase());
-        WebSocketSessionManager.removeSession(userId);
+    public void onClose(Session session, CloseReason reason) {
+        // Get userId from session properties
+        Long userId = (Long) session.getUserProperties().get("userId");
+
+        if (userId != null) {
+            logger.info("WebSocket connection closed for user: {}. Reason: {}", userId, reason.getReasonPhrase());
+            WebSocketSessionManager.removeSession(userId);
+        } else {
+            logger.info("WebSocket connection closed for unknown user. Reason: {}", reason.getReasonPhrase());
+        }
     }
 
     /**
      * Handles WebSocket errors
      * 
      * @param session   WebSocket session where the error occurred
-     * @param userId    User ID from the path parameter
      * @param throwable The error that occurred
      */
     @OnError
-    public void onError(Session session, @PathParam("userId") Long userId, Throwable throwable) {
-        logger.error("WebSocket error for user: {}", userId, throwable);
+    public void onError(Session session, Throwable throwable) {
+        // Get userId from session properties
+        Long userId = (Long) session.getUserProperties().get("userId");
+
+        if (userId != null) {
+            logger.error("WebSocket error for user: {}", userId, throwable);
+            WebSocketSessionManager.removeSession(userId);
+        } else {
+            logger.error("WebSocket error for unknown user", throwable);
+        }
     }
 
     /**
      * Handles incoming WebSocket messages
      * 
      * @param session WebSocket session where the message was received
-     * @param userId  User ID from the path parameter
      * @param message The message content received
      */
     @OnMessage
-    public void onMessage(Session session, @PathParam("userId") Long userId, String message) {
+    public void onMessage(Session session, String message) {
         try {
+            // Get userId from session properties
+            Long userId = (Long) session.getUserProperties().get("userId");
+
+            if (userId == null) {
+                logger.error("No user ID found in session properties");
+                sendErrorMessage(session, "User not authenticated");
+                return;
+            }
+
             logger.info("Received message from user {}: {}", userId, message);
 
             // Parse the incoming WebSocket message using JSON-B
@@ -142,7 +186,7 @@ public class MessageWebSocket {
 
             String type = (String) messageData.get("type");
 
-            // Verify user ID matches sender ID for security
+            // Verify user ID matches sender ID for security (double check)
             Long senderId = Long.valueOf(messageData.get("senderId").toString());
             if (!userId.equals(senderId)) {
                 sendErrorMessage(session, "User ID mismatch");
@@ -154,18 +198,20 @@ public class MessageWebSocket {
 
             // Process based on message type
             switch (type) {
-                case "message":
-                    handleDirectMessage(senderId, recipientId, content, session);
-                    break;
-                case "notification":
-                    handleNotification(senderId, recipientId, content);
-                    break;
-                default:
+                case "message" -> handleDirectMessage(senderId, recipientId, content, session);
+                case "notification" -> handleNotification(senderId, recipientId, content);
+                case "mark_read" -> {
+                    // Handle marking messages as read
+                    Long messageId = Long.valueOf(messageData.get("messageId").toString());
+                    handleMarkAsRead(userId, messageId);
+                }
+                default -> {
                     logger.warn("Unknown message type: {}", type);
                     sendErrorMessage(session, "Unknown message type: " + type);
+                }
             }
 
-        } catch (Exception e) {
+        } catch (JsonbException | NumberFormatException e) {
             logger.error("Error processing WebSocket message", e);
             sendErrorMessage(session, "Error processing message: " + e.getMessage());
         }
@@ -250,7 +296,7 @@ public class MessageWebSocket {
             // Send confirmation to sender
             session.getBasicRemote().sendText(jsonb.toJson(senderConfirmation));
 
-        } catch (Exception e) {
+        } catch (JsonbException | IOException e) {
             logger.error("Error handling direct message", e);
             sendErrorMessage(session, "Error sending message: " + e.getMessage());
         }
@@ -304,7 +350,7 @@ public class MessageWebSocket {
             if (WebSocketSessionManager.isUserConnected(recipientId)) {
                 sendToUser(recipientId, jsonb.toJson(message));
             }
-        } catch (Exception e) {
+        } catch (JsonbException e) {
             logger.error("Error handling notification", e);
         }
     }
@@ -375,7 +421,7 @@ public class MessageWebSocket {
                             // Send to the user
                             sendToUser(userId, jsonb.toJson(message));
 
-                        } catch (Exception e) {
+                        } catch (JsonbException e) {
                             logger.error("Error sending notification", e);
                         }
                     });
@@ -418,5 +464,38 @@ public class MessageWebSocket {
                 logger.error("Error broadcasting message to user {}", userId, e);
             }
         });
+    }
+
+    /**
+     * Handles marking a message as read and notifies the sender
+     * 
+     * @param userId    The user who read the message
+     * @param messageId The ID of the message to mark as read
+     */
+    private void handleMarkAsRead(Long userId, Long messageId) {
+        try {
+            // Mark message as read
+            Boolean success = serviceFactory.forMessage().markAsRead(messageId);
+
+            if (success) {
+                // Get message details to notify sender
+                MessageDTO messageDTO = serviceFactory.forMessage().getMessage(messageId);
+
+                // Only notify if the user marking as read is the recipient
+                if (messageDTO.getRecipientId().equals(userId)) {
+                    Map<String, Object> readStatus = Map.of(
+                            "type", "message_read",
+                            "messageId", messageId,
+                            "readBy", userId);
+
+                    // Notify sender about read status
+                    if (WebSocketSessionManager.isUserConnected(messageDTO.getSenderId())) {
+                        sendToUser(messageDTO.getSenderId(), jsonb.toJson(readStatus));
+                    }
+                }
+            }
+        } catch (JsonbException e) {
+            logger.error("Error handling read status update for message {}", messageId, e);
+        }
     }
 }
