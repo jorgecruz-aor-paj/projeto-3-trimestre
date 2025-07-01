@@ -1,16 +1,27 @@
 import React from 'react';
+import { useTrainingAreas } from 'hooks/useTrainingAreas';
+import { formatDateToDDMMYYYY } from '../../utils/dateUtils';
 
 const ProfileParticipationCard = ({ participation }) => {
-  // Example fields, adjust as needed for your participation object
+  const { trainingAreas, trainingAreasLoading } = useTrainingAreas();
+
+  let areaName = '';
+  if (participation.training && trainingAreas && !trainingAreasLoading) {
+    const area = trainingAreas.find(
+      a => a.id === participation.training.trainingAreaId
+    );
+    areaName = area ? area.name : '';
+  }
+
   return (
     <div className="profile-participation-card">
       <div>
-        <strong>Participation #{participation.id}</strong>
+        <strong>{participation.training?.title || 'Training'}</strong>
       </div>
-      <div>Training ID: {participation.trainingId}</div>
-      <div>Participant ID: {participation.participantId}</div>
-      <div>Status: {participation.status}</div>
-      {/* Add more fields as needed */}
+      <div>Date: {formatDateToDDMMYYYY(participation.createdAt)}</div>
+      <div>Duration: {participation.training?.duration} min</div>
+      <div>Area: {areaName || '—'}</div>
+      {/* Optionally: <div>Description: {participation.training?.description}</div> */}
     </div>
   );
 };

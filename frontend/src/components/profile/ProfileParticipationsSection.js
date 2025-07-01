@@ -2,15 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { useParticipationStore } from '../../stores/ParticipationStore';
 import ProfileParticipationsFilter from './ProfileParticipationsFilter';
 import ProfileParticipationCard from './ProfileParticipationCard';
+import { useTrainingAreas } from 'hooks/useTrainingAreas';
+
 
 const ProfileParticipationsSection = ({ userId }) => {
   const { participations, fetchParticipations, loading, error } =
     useParticipationStore();
   const [filters, setFilters] = useState({ participantId: userId });
+ const { trainingAreas, trainingAreasLoading } = useTrainingAreas();
 
   useEffect(() => {
     fetchParticipations(filters);
-    // eslint-disable-next-line
   }, [JSON.stringify(filters)]);
 
   return (

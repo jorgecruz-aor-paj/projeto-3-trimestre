@@ -61,7 +61,7 @@ export const trainingService = {
    * @returns {Promise} - List of training areas
    */
   getAllAreas: () => {
-    return apiService.getAll(API_ENDPOINTS.trainings.areas);
+    return apiService.getAll(API_ENDPOINTS.trainings.area);
   },
 
   /**
