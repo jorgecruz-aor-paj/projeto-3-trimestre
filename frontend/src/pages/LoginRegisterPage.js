@@ -9,8 +9,8 @@ import {
   Button,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { LoginAuthForm } from './LoginAuthForm';
-import { RegisterAuthForm } from './RegisterAuthForm';
+import { LoginAuthForm } from '../components/auth/LoginAuthForm';
+import { RegisterAuthForm } from '../components/auth/RegisterAuthForm';
 import 'styles/pages/auth/LoginPage.css';
 
 export const AuthTogglePage = () => {
