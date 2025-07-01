@@ -3,7 +3,7 @@ import ProfileEvaluationsSection from '../profile/ProfileEvaluationsSection';
 import ProfileParticipationsSection from '../profile/ProfileParticipationsSection';
 import { useTranslation } from 'react-i18next';
 
-const ProfileSectionsToggle = ({ userId }) => {
+export const ProfileSectionsToggle = ({ userId }) => {
   const [showEvaluations, setShowEvaluations] = useState(true);
   const { t } = useTranslation();
 
@@ -33,5 +33,3 @@ const ProfileSectionsToggle = ({ userId }) => {
     </section>
   );
 };
-
-export default ProfileSectionsToggle;
