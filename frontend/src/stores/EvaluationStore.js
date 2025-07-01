@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { evaluationService } from '../services/evaluationService';
+import { evaluationService } from 'services/evaluationService';
 
 export const useEvaluationStore = create(set => ({
   evaluations: [],

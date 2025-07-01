@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
   Container,
   Row,
@@ -9,8 +9,8 @@ import {
   Button,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { LoginAuthForm } from '../components/auth/LoginAuthForm';
-import { RegisterAuthForm } from '../components/auth/RegisterAuthForm';
+import { LoginAuthForm } from 'components/auth/LoginAuthForm';
+import { RegisterAuthForm } from 'components/auth/RegisterAuthForm';
 import 'styles/pages/auth/LoginPage.css';
 
 export const AuthTogglePage = () => {

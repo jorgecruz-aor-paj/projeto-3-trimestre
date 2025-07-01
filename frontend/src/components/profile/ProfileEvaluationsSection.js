@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { useEvaluationStore } from 'stores/EvaluationStore';
 import ProfileEvaluationsFilter from './ProfileEvaluationsFilter';
 import ProfileEvaluationCard from './ProfileEvaluationCard';
@@ -11,8 +12,7 @@ const ProfileEvaluationsSection = ({ userId }) => {
 
   useEffect(() => {
     fetchEvaluations(filters);
-    // eslint-disable-next-line
-  }, [JSON.stringify(filters)]);
+  }, [JSON.stringify(filters), fetchEvaluations]);
 
   const { t } = useTranslation();
   return (
@@ -29,6 +29,10 @@ const ProfileEvaluationsSection = ({ userId }) => {
       </div>
     </div>
   );
+};
+
+ProfileEvaluationsSection.propTypes = {
+  userId: PropTypes.number.isRequired,
 };
 
 export default ProfileEvaluationsSection;

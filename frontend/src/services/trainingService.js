@@ -3,7 +3,7 @@
  * Handles training-related API calls
  */
 import { apiService, apiRequest } from './apiService';
-import { API_ENDPOINTS } from '../api/apiConfig';
+import { API_ENDPOINTS } from 'api/apiConfig';
 
 export const trainingService = {
   /**

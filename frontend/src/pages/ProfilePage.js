@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { UserProfileInfo } from '../components/users/UserProfileInfo';
-import ProfileEvaluationsSection from '../components/profile/ProfileEvaluationsSection';
-import ProfileParticipationsSection from '../components/profile/ProfileParticipationsSection';
-import { useAuthStore } from '../stores/AuthStore';
+import { UserProfileInfo } from 'components/users/UserProfileInfo';
+import ProfileEvaluationsSection from 'components/profile/ProfileEvaluationsSection';
+import ProfileParticipationsSection from 'components/profile/ProfileParticipationsSection';
+import { useAuthStore } from 'stores/AuthStore';
 import { useTranslation } from 'react-i18next';
-import '../styles/pages/ProfilePage.css';
+import 'styles/pages/ProfilePage.css';
 import { userService } from 'services';
 
 const ProfilePage = () => {
@@ -31,24 +31,28 @@ const ProfilePage = () => {
       } else {
         try {
           const params = { id: paramId };
-        const response = await userService.getAll(params);
-        if (!response || response.length === 0) {
-        //TODO invalid user, handle accordingly
-          console.error('User not found');
+          const response = await userService.getAll(params);
+          if (!response || response.length === 0) {
+            //TODO invalid user, handle accordingly
+            console.error('User not found');
+            setProfileUser(user);
+          }
+          setProfileUser(response[0]);
+        } catch (err) {
+          console.error(
+            'Failed to fetch user:',
+            err.message || t('auth.loginFailed')
+          );
           setProfileUser(user);
         }
-        setProfileUser(response[0]);
-      } catch (err) {
-        setError(err.message || t('auth.loginFailed'));
       }
     };
-  }
     fetchData();
   }, []);
 
   if (!profileUser) return null; // Or a loading spinner
-console.log('Profile User:', profileUser);
-console.log(profileUser.workplace);
+  console.log('Profile User:', profileUser);
+  console.log(profileUser.workplace);
   return (
     <div className="profile-page-container">
       <section className="profile-info-section">

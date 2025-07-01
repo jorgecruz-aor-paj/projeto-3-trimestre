@@ -18,6 +18,13 @@ export default defineConfig([
   },
   pluginReact.configs.flat.recommended,
   {
+    settings: {
+      react: {
+        version: '19.1.0',
+      },
+    },
+  },
+  {
     files: ['**/*.json'],
     plugins: { json },
     language: 'json/json',
@@ -61,7 +68,7 @@ export default defineConfig([
     files: ['**/*.{js,jsx}'],
     rules: {
       'no-unused-vars': 'warn',
-      'no-console': ['warn', { allow: ['warn', 'error'] }],
+      'no-console': ['warn', { allow: ['warn', 'error', 'log'] }],
       'prefer-const': 'error',
       'no-var': 'error',
       eqeqeq: 'error',

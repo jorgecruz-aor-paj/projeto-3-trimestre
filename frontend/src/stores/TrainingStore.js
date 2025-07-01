@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { trainingService } from '../services/trainingService';
+import { trainingService } from 'services/trainingService';
 
 export const useTrainingStore = create(set => ({
   trainings: [],

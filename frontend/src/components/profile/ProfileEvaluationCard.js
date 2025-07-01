@@ -1,6 +1,7 @@
 import React from 'react';
-import { formatDateToDDMMYYYY } from '../../utils/dateUtils';
-import { translateEvaluationScale } from '../../utils/evaluationScaleTranslations';
+import PropTypes from 'prop-types';
+import { formatDateToDDMMYYYY } from 'utils/dateUtils';
+import { translateEvaluationScale } from 'utils/evaluationScaleTranslations';
 import { useTranslation } from 'react-i18next';
 
 const ProfileEvaluationCard = ({ evaluation }) => {
@@ -35,6 +36,18 @@ const ProfileEvaluationCard = ({ evaluation }) => {
       </button>
     </div>
   );
+};
+
+ProfileEvaluationCard.propTypes = {
+  evaluation: PropTypes.shape({
+    id: PropTypes.number,
+    createdAt: PropTypes.string,
+    scale: PropTypes.string,
+    evaluator: PropTypes.shape({
+      firstName: PropTypes.string,
+      lastName: PropTypes.string,
+    }),
+  }).isRequired,
 };
 
 export default ProfileEvaluationCard;

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useParticipationStore } from '../../stores/ParticipationStore';
+import PropTypes from 'prop-types';
+import { useParticipationStore } from 'stores/ParticipationStore';
 import ProfileParticipationsFilter from './ProfileParticipationsFilter';
 import ProfileParticipationCard from './ProfileParticipationCard';
 import { useTranslation } from 'react-i18next';
@@ -30,6 +31,10 @@ const ProfileParticipationsSection = ({ userId }) => {
       </div>
     </div>
   );
+};
+
+ProfileParticipationsSection.propTypes = {
+  userId: PropTypes.number.isRequired,
 };
 
 export default ProfileParticipationsSection;

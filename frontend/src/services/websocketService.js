@@ -1,6 +1,6 @@
 // src/services/websocketService.js
 import { WEBSOCKET_BASE_URL } from 'api/apiConfig';
-import { useAuthStore } from '../stores/AuthStore';
+import { useAuthStore } from 'stores/AuthStore';
 
 class WebSocketService {
   constructor() {

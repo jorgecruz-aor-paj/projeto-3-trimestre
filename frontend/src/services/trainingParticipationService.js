@@ -1,5 +1,5 @@
 import { apiService } from './apiService';
-import { API_ENDPOINTS } from '../api/apiConfig';
+import { API_ENDPOINTS } from 'api/apiConfig';
 
 export const trainingParticipationService = {
   /**
