@@ -116,22 +116,46 @@
 .notification-bell {
     color: #fff !important;
     position: relative;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     border: none !important;
     background: none !important;
-    transition: color 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+    text-decoration: none !important;
+    padding: 0.5rem !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
 }
 
 .notification-bell:hover {
-    color: rgba(255, 255, 255, 0.8) !important;
+    color: #fff !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    transform: scale(1.05);
+}
+
+.notification-bell:focus {
+    color: #fff !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+}
+
+.notification-bell i {
+    font-size: 1.1rem;
+    display: block;
 }
 
 .notification-bell .badge {
-    font-size: 0.7rem;
-    padding: 0.25em 0.4em;
-    min-width: 1.2em;
+    font-size: 0.65rem;
+    padding: 0.2em 0.35em;
+    min-width: 1.1em;
     text-align: center;
     transform: translate(50%, -50%);
+    background-color: #fff !important;
+    color: #C01722 !important;
+    border: 2px solid #C01722;
+    font-weight: 600;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 /* Mobile adjustments for notification bell */
@@ -139,6 +163,22 @@
     .notification-bell {
         font-size: 1rem;
     }
+}
+
+/* Messages nav link badge styles */
+.nav-link .badge {
+    background-color: #fff !important;
+    color: #C01722 !important;
+    border: 1px solid #C01722;
+    font-weight: 600;
+    font-size: 0.7rem;
+}
+
+/* Mobile menu badge styles */
+.navbar-collapse .nav-link .badge {
+    background-color: #C01722 !important;
+    color: #fff !important;
+    border: 1px solid #C01722;
 }
 
 /* Mobile optimizations */

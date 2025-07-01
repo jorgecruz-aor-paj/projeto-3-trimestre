@@ -98,14 +98,15 @@ export const Header = () => {
                 <div className="position-relative me-3">
                   <Button
                     variant="link"
-                    className="p-2 text-dark notification-bell"
+                    className="p-0 text-white notification-bell"
                     as={Link}
                     to="/messages"
                     style={{ textDecoration: 'none' }}
+                    title={t('nav.messages', 'Messages')}
                   >
-                    <i className="fas fa-bell"></i>
+                    <i className="fas fa-bell" aria-hidden="true"></i>
                     {unreadCount > 0 && (
-                      <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                      <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill">
                         {unreadCount > 99 ? '99+' : unreadCount}
                         <span className="visually-hidden">unread messages</span>
                       </span>
@@ -208,7 +209,7 @@ export const Header = () => {
                   >
                     {t('nav.messages', 'Messages')}
                     {unreadCount > 0 && (
-                      <span className="badge bg-danger ms-1 fs-6">
+                      <span className="badge ms-1 fs-6">
                         {unreadCount > 9 ? '9+' : unreadCount}
                       </span>
                     )}
