@@ -3,11 +3,7 @@ package aor.proj3t.service.interfaces;
 import java.util.List;
 import java.util.Map;
 
-import aor.proj3t.dto.FileUploadDTO;
-import aor.proj3t.dto.LoginDTO;
-import aor.proj3t.dto.ManagerAssignDTO;
-import aor.proj3t.dto.UserDTO;
-import aor.proj3t.dto.UserRegistrationDTO;
+import aor.proj3t.dto.*;
 import aor.proj3t.dto.paginated.UserPaginationDTO;
 import aor.proj3t.filters.UserFilter;
 
@@ -41,4 +37,5 @@ public interface UserService {
 
     Map<String, Long> getTotalVSUnmanagedUsers(Long requesterId);
 
+    List<MiniUserDTO> getAllMiniUsers();
 }

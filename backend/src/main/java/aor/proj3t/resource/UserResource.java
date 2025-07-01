@@ -1,5 +1,6 @@
 package aor.proj3t.resource;
 
+import aor.proj3t.dto.MiniUserDTO;
 import jakarta.ws.rs.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -94,5 +95,14 @@ public class UserResource {
         Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
         List<UserDTO> managers = serviceFactory.forUser().getAllManagers(requesterId);
         return Response.ok(managers).build();
+    }
+
+    @GET
+    @Path("/compact")
+    @Secured
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getCompactUsers() {
+        List<MiniUserDTO> list = serviceFactory.forUser().getAllMiniUsers();
+        return Response.ok(list).build();
     }
 }

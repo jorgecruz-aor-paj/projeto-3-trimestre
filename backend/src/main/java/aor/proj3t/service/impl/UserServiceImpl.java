@@ -11,6 +11,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 import aor.proj3t.config.SettingsProvider;
+import aor.proj3t.dto.*;
+import aor.proj3t.util.converterutils.MiniUserConverter;
 import jakarta.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,11 +20,6 @@ import org.apache.logging.log4j.Logger;
 import aor.proj3t.config.AppConstants;
 import aor.proj3t.config.SettingsProvider;
 import aor.proj3t.daos.DAOFactory;
-import aor.proj3t.dto.FileUploadDTO;
-import aor.proj3t.dto.LoginDTO;
-import aor.proj3t.dto.ManagerAssignDTO;
-import aor.proj3t.dto.UserDTO;
-import aor.proj3t.dto.UserRegistrationDTO;
 import aor.proj3t.dto.paginated.UserPaginationDTO;
 import aor.proj3t.entities.PendingRegistration;
 import aor.proj3t.entities.User;
@@ -46,6 +43,7 @@ import jakarta.transaction.Transactional;
 public class UserServiceImpl extends BaseService implements UserService {
     private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
 
+
     @Inject
     JwtUtil jwtUtil;
 
@@ -66,6 +64,9 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     @Inject
     SettingsProvider settingsProvider;
+
+    @Inject
+    MiniUserConverter miniUserConverter;
 
     @Override
     public UserDTO getUser(Long userId) {
@@ -373,4 +374,12 @@ public class UserServiceImpl extends BaseService implements UserService {
         // TODO implement pagination and sorting logic
         return new UserPaginationDTO();
     }
+
+    @Override
+    public List<MiniUserDTO> getAllMiniUsers() {
+        List<User> users = daoFactory.forUser().findAll();
+        users.removeIf(user -> user.getRole() == Role.ADMIN);
+        return miniUserConverter.toMiniUserDTOList(users);
+    }
+
 }
