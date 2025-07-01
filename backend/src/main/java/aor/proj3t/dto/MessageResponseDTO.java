@@ -1,9 +1,9 @@
-package aor.proj3t.resource;
+package aor.proj3t.dto;
 
-public class MessageResponse {
+public class MessageResponseDTO {
     private String message;
 
-    public MessageResponse(String message) {
+    public MessageResponseDTO(String message) {
         this.message = message;
     }
 

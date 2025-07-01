@@ -1,13 +1,14 @@
 package aor.proj3t.exceptions.mapper;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import aor.proj3t.dto.MessageResponseDTO;
 import aor.proj3t.exceptions.ConflictException;
-import aor.proj3t.resource.MessageResponse;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 @Provider
 public class ConflictExceptionMapper implements ExceptionMapper<ConflictException> {
@@ -17,9 +18,8 @@ public class ConflictExceptionMapper implements ExceptionMapper<ConflictExceptio
     public Response toResponse(ConflictException e) {
         logger.warn("Conflict detected: {}", e.getMessage()); // internal/dev message
         return Response.status(Response.Status.CONFLICT)
-                .entity(new MessageResponse(e.getUserMessage())) // safe user-facing message
+                .entity(new MessageResponseDTO(e.getUserMessage())) // safe user-facing message
                 .type(MediaType.APPLICATION_JSON)
                 .build();
     }
 }
-

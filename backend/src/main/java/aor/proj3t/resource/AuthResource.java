@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.ThreadContext;
 
 import aor.proj3t.dto.LoginDTO;
+import aor.proj3t.dto.MessageResponseDTO;
 import aor.proj3t.dto.UserRegistrationDTO;
 import aor.proj3t.exceptions.UnauthorizedException;
 import aor.proj3t.service.ServiceFactory;
@@ -61,7 +62,7 @@ public class AuthResource {
         validator.validateLoginDTO(loginDto);
         serviceFactory.forUser().registerUser(loginDto, ipAddress);
         return Response.status(Response.Status.CREATED)
-                .entity(new MessageResponse("User registered successfully"))
+                .entity(new MessageResponseDTO("User registered successfully"))
                 .build();
     }
 
@@ -84,7 +85,7 @@ public class AuthResource {
         String token = TokenUtil.extractToken(authHeader);
         Long userId = serviceFactory.forToken().getUserIdFromToken(token);
         serviceFactory.forAuth().logout(userId, token);
-        return Response.ok(new MessageResponse("Logout successful")).build();
+        return Response.ok(new MessageResponseDTO("Logout successful")).build();
     }
 
     @POST
@@ -103,7 +104,7 @@ public class AuthResource {
 
         serviceFactory.forUser().confirmUser(email, userRegistrationDTO);
 
-        return Response.ok(new MessageResponse("User confirmed successfully")).build();
+        return Response.ok(new MessageResponseDTO("User confirmed successfully")).build();
     }
 
     @GET
@@ -116,7 +117,7 @@ public class AuthResource {
         serviceFactory.forUser().sendResetPasswordLink(email, ipAddress);
 
         // Always return the same message to prevent email enumeration
-        return Response.ok(new MessageResponse("Email sent. Check your inbox")).build();
+        return Response.ok(new MessageResponseDTO("Email sent. Check your inbox")).build();
     }
 
     @PATCH
@@ -135,7 +136,7 @@ public class AuthResource {
         Claims claims = jwtUtil.extractAllClaims(resetPasswordToken);
         Long userId = Long.parseLong(claims.get("userId").toString());
         serviceFactory.forUser().changePassword(userId, loginDTO.getPassword());
-        return Response.ok(new MessageResponse("User password changed successfully")).build();
+        return Response.ok(new MessageResponseDTO("User password changed successfully")).build();
     }
 
 }
