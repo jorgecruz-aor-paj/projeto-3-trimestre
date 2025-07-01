@@ -89,4 +89,14 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         }
         return success;
     }
+
+    @Override
+    public List<aor.proj3t.entities.User> getMessagedUsers(Long userId) {
+        return daoFactory.forMessage().findMessagedUsers(userId);
+    }
+
+    @Override
+    public Integer getUnreadMessageCount(Long userId) {
+        return daoFactory.forMessage().findCountUnreadMessagesByRecipientId(userId);
+    }
 }

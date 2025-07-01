@@ -59,4 +59,20 @@ public interface MessageService {
      */
     Boolean deleteMessage(Long messageId);
 
+    /**
+     * Gets all users that have exchanged messages with the specified user
+     * 
+     * @param userId The user ID
+     * @return List of users who have messaged with this user
+     */
+    List<aor.proj3t.entities.User> getMessagedUsers(Long userId);
+
+    /**
+     * Gets the count of unread messages for a user
+     * 
+     * @param userId The user ID
+     * @return Number of unread messages
+     */
+    Integer getUnreadMessageCount(Long userId);
+
 }

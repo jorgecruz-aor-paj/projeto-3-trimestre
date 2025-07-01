@@ -8,6 +8,7 @@ import { ResetPasswordRequestPage } from 'components/auth/ResetPasswordRequestPa
 import { ConfirmRegistrationPage } from 'components/auth/ConfirmRegistrationPage';
 import { Dashboard } from 'pages/Dashboard';
 import { UsersPage } from 'pages/UsersPage';
+import { Messages } from 'pages/Messages';
 import ProfilePage from 'pages/ProfilePage';
 
 /**
@@ -43,6 +44,7 @@ export const AppRouter = () => {
         <Route path="/reset-password/confirm" element={<ResetPasswordPage />} />
         <Route path="/register/confirm" element={<ConfirmRegistrationPage />} />
         <Route path="/users" element={<UsersPage />} />
+        <Route path="/messages" element={<Messages />} />
         <Route path="/profile" element={<ProfilePage />} />
         {/* Definir o resto das Routes */}
       </Route>

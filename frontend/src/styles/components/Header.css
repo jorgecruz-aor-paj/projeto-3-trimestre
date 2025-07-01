@@ -112,6 +112,35 @@
     box-shadow: none;
 }
 
+/* Notification Bell Styles */
+.notification-bell {
+    color: #fff !important;
+    position: relative;
+    font-size: 1.1rem;
+    border: none !important;
+    background: none !important;
+    transition: color 0.2s ease-in-out;
+}
+
+.notification-bell:hover {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.notification-bell .badge {
+    font-size: 0.7rem;
+    padding: 0.25em 0.4em;
+    min-width: 1.2em;
+    text-align: center;
+    transform: translate(50%, -50%);
+}
+
+/* Mobile adjustments for notification bell */
+@media (max-width: 768px) {
+    .notification-bell {
+        font-size: 1rem;
+    }
+}
+
 /* Mobile optimizations */
 @media (max-width: 991px) {
     .main-header .navbar-collapse {
