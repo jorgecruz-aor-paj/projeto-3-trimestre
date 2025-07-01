@@ -3,7 +3,7 @@ package aor.proj3t.resource;
 import java.util.List;
 import java.util.Map;
 
-import aor.proj3t.dto.MessageResponseDTO;
+import aor.proj3t.dto.APIResponseDTO;
 import aor.proj3t.dto.NewTrainingDTO;
 import aor.proj3t.dto.NewTrainingParticipationDTO;
 import aor.proj3t.dto.TrainingAreaDTO;
@@ -120,7 +120,7 @@ public class TrainingResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response deactivateTraining(@PathParam("trainingId") Long id) {
         serviceFactory.forTraining().deactivateTraining(id);
-        return Response.ok(new MessageResponseDTO("Training deactivated successfully")).build();
+        return Response.ok(new APIResponseDTO("Training deactivated successfully")).build();
     }
 
     @POST
@@ -133,7 +133,7 @@ public class TrainingResource {
         Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
         serviceFactory.forTrainingParticipation().registerTrainingParticipation(requesterId,
                 newTrainingParticipationDto);
-        return Response.ok(new MessageResponseDTO("Training participation successfully registered")).build();
+        return Response.ok(new APIResponseDTO("Training participation successfully registered")).build();
     }
 
     @GET

@@ -1,9 +1,9 @@
 package aor.proj3t.dto;
 
-public class MessageResponseDTO {
+public class APIResponseDTO {
     private String message;
 
-    public MessageResponseDTO(String message) {
+    public APIResponseDTO(String message) {
         this.message = message;
     }
 

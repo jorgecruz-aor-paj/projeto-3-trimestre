@@ -2,10 +2,10 @@ package aor.proj3t.resource;
 
 import java.util.List;
 
+import aor.proj3t.dto.APIResponseDTO;
 import aor.proj3t.dto.EvaluationCloseDTO;
 import aor.proj3t.dto.EvaluationCycleDTO;
 import aor.proj3t.dto.EvaluationDTO;
-import aor.proj3t.dto.MessageResponseDTO;
 import aor.proj3t.enums.Role;
 import aor.proj3t.filters.DateRange;
 import aor.proj3t.filters.EvaluationFilter;
@@ -70,7 +70,7 @@ public class EvaluationResource {
         validator.validateEvaluationDTO(evaluationDTO);
         Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
         serviceFactory.forEvaluation().updateEvaluation(requesterId, evaluationDTO);
-        return Response.ok(new MessageResponseDTO("Evaluation updated successfully")).build();
+        return Response.ok(new APIResponseDTO("Evaluation updated successfully")).build();
     }
 
     @PATCH
@@ -81,7 +81,7 @@ public class EvaluationResource {
         validator.validateEvaluationCloseDTO(evaluationCloseDto);
         Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
         serviceFactory.forEvaluation().closeEvaluationsBulk(requesterId, evaluationCloseDto);
-        return Response.ok(new MessageResponseDTO("Evaluations closed successfully")).build();
+        return Response.ok(new APIResponseDTO("Evaluations closed successfully")).build();
     }
 
     @POST
@@ -93,7 +93,7 @@ public class EvaluationResource {
         validator.newCycleDateRangeValidation(dateRange);
         Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
         serviceFactory.forEvaluationCycle().startCycle(requesterId, dateRange);
-        return Response.ok(new MessageResponseDTO("Evaluation cycle initiated successfully")).build();
+        return Response.ok(new APIResponseDTO("Evaluation cycle initiated successfully")).build();
     }
 
     @GET

@@ -2,13 +2,12 @@ package aor.proj3t.resource;
 
 import java.util.List;
 
-import aor.proj3t.dto.MiniUserDTO;
-import jakarta.ws.rs.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import aor.proj3t.dto.APIResponseDTO;
 import aor.proj3t.dto.ManagerAssignDTO;
-import aor.proj3t.dto.MessageResponseDTO;
+import aor.proj3t.dto.MiniUserDTO;
 import aor.proj3t.dto.UserDTO;
 import aor.proj3t.enums.Role;
 import aor.proj3t.filters.UserFilter;
@@ -92,7 +91,7 @@ public class UserResource {
         Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
         validator.validateManagerAssignDTO(managerAssignDto);
         serviceFactory.forUser().assignManagerBulk(requesterId, managerAssignDto);
-        return Response.ok(new MessageResponseDTO("Managers assigned successfully")).build();
+        return Response.ok(new APIResponseDTO("Managers assigned successfully")).build();
     }
 
     @GET

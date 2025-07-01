@@ -3,7 +3,7 @@ package aor.proj3t.exceptions.mapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import aor.proj3t.dto.MessageResponseDTO;
+import aor.proj3t.dto.APIResponseDTO;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -23,7 +23,7 @@ public class GenericExceptionMapper implements ExceptionMapper<Throwable> {
 
         logger.error("Unhandled exception", exception);
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                .entity(new MessageResponseDTO("Unexpected error occurred"))
+                .entity(new APIResponseDTO("Unexpected error occurred"))
                 .type(MediaType.APPLICATION_JSON)
                 .build();
     }

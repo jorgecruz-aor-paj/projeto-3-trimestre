@@ -3,7 +3,7 @@ package aor.proj3t.exceptions.mapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import aor.proj3t.dto.MessageResponseDTO;
+import aor.proj3t.dto.APIResponseDTO;
 import aor.proj3t.exceptions.NotFoundException;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -18,7 +18,7 @@ public class NotFoundExceptionMapper implements ExceptionMapper<NotFoundExceptio
     public Response toResponse(NotFoundException e) {
         logger.warn("Resource not found: {}", e.getMessage()); // Developer message
         return Response.status(Response.Status.NOT_FOUND)
-                .entity(new MessageResponseDTO(e.getUserMessage())) // Safe for client
+                .entity(new APIResponseDTO(e.getUserMessage())) // Safe for client
                 .type(MediaType.APPLICATION_JSON)
                 .build();
     }
