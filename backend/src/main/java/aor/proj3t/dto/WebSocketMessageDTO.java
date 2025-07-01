@@ -1,9 +1,9 @@
-package aor.proj3t.websocket;
+package aor.proj3t.dto;
 
 /**
  * Data transfer object for WebSocket messages
  */
-public class WebSocketMessage {
+public class WebSocketMessageDTO {
     private String type; // 'message', 'notification', etc
     private Long senderId;
     private Long recipientId;
@@ -11,11 +11,11 @@ public class WebSocketMessage {
     private String timestamp;
 
     // Default constructor
-    public WebSocketMessage() {
+    public WebSocketMessageDTO() {
     }
 
     // Constructor with all fields
-    public WebSocketMessage(String type, Long senderId, Long recipientId, String content, String timestamp) {
+    public WebSocketMessageDTO(String type, Long senderId, Long recipientId, String content, String timestamp) {
         this.type = type;
         this.senderId = senderId;
         this.recipientId = recipientId;
