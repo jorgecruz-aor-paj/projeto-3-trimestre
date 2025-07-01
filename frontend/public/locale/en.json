@@ -354,7 +354,8 @@
     "selectUser": "Select User",
     "typeMessage": "Type a message...",
     "noConversations": "No conversations yet",
-    "selectConversation": "Select a conversation to start messaging"
+    "selectConversation": "Select a conversation to start messaging",
+    "online": "Online"
   },
   "trainings": {
     "title": "Trainings",

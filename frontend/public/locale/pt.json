@@ -354,7 +354,8 @@
     "selectUser": "Selecionar Utilizador",
     "typeMessage": "Escreva uma mensagem...",
     "noConversations": "Ainda não há conversas",
-    "selectConversation": "Selecione uma conversa para começar a enviar mensagens"
+    "selectConversation": "Selecione uma conversa para começar a enviar mensagens",
+    "online": "Online"
   },
   "trainings": {
     "title": "Formações",
