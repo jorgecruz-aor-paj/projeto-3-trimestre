@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { UserProfileInfo } from 'components/users/UserProfileInfo';
-import ProfileEvaluationsSection from 'components/profile/ProfileEvaluationsSection';
-import ProfileParticipationsSection from 'components/profile/ProfileParticipationsSection';
+import { ProfileSectionsToggle } from 'components/profile/ProfileSectionsToggle';
 import { useAuthStore } from 'stores/AuthStore';
 import { useTranslation } from 'react-i18next';
 import 'styles/pages/ProfilePage.css';
