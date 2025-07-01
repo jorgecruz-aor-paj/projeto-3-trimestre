@@ -2,7 +2,6 @@ package aor.proj3t.dto;
 
 import java.time.LocalDate;
 
-import aor.proj3t.entities.Workplace;
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvDate;
 
@@ -57,7 +56,7 @@ public class UserCsvDTO {
         this.address = userDTO.getAddress();
         this.birthdate = userDTO.getBirthdate();
         this.role = userDTO.getRole() != null ? userDTO.getRole().toString() : null;
-        this.managerId = userDTO.getManagerId();
+        this.managerId = userDTO.getManager().getId();
         this.workplace = userDTO.getWorkplace();
     }
 

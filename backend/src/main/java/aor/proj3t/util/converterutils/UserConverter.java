@@ -1,5 +1,6 @@
 package aor.proj3t.util.converterutils;
 
+import aor.proj3t.dto.MiniUserDTO;
 import aor.proj3t.dto.UserDTO;
 import aor.proj3t.entities.User;
 import aor.proj3t.entities.Workplace;
@@ -24,6 +25,11 @@ public class UserConverter extends AbstractConverter<User, UserDTO, Long> {
 
     @Inject
     WorkplaceConverter workplaceConverter;
+
+    @Inject
+    MiniUserConverter miniUserConverter;
+    @Inject
+    private ConverterFactory converterFactory;
 
     @Override
     protected Class<User> getEntityClass() {
@@ -61,7 +67,8 @@ public class UserConverter extends AbstractConverter<User, UserDTO, Long> {
 
         // Handle nullable relationships safely
         if (user.getManager() != null) {
-            dto.setManagerId(user.getManager().getId());
+            MiniUserDTO mini = new MiniUserDTO(user.getManager().getId(), user.getManager().getFirstName(),user.getManager().getLastName(),user.getManager().getEmail());
+            dto.setManager(mini);
         }
 
         if (user.getWorkplace() != null) {
@@ -82,7 +89,7 @@ public class UserConverter extends AbstractConverter<User, UserDTO, Long> {
         user.setPhotograph(dto.getPhotograph());
 
         // Handle relationships using findSafely
-        User manager = findSafely(User.class, dto.getManagerId());
+        User manager = findSafely(User.class, dto.getManager());
         user.setManager(manager);
 
         Workplace workplace = findSafely(Workplace.class, dto.getWorkplace());

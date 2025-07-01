@@ -8,9 +8,7 @@ import { FormInput } from '../forms/FormInput';
 import { useAuthStore } from '../../stores/AuthStore';
 import { userService } from 'services';
 
-
 export const UserProfileInfo = ({ user }) => {
-
   const { t } = useTranslation();
   const { formatDate } = useLanguage();
   const loggedUser = useAuthStore(state => state.user);
@@ -18,32 +16,26 @@ export const UserProfileInfo = ({ user }) => {
   const isAdmin = loggedUser?.role === 'ADMIN';
   const [userList, setUserList] = useState(null);
 
-
-
-
-useEffect(() => {
+  useEffect(() => {
     const fetchData = async () => {
-        try {
-          const response = await userService.getMiniUsers();
-          if (!response || response.length === 0) {
-            // Fallback: invalid user param, show logged user
-           setUserList([]);
-            return;
-          }
-          console.log(response);
-          setUserList(response);
-        } catch (err) {
-          console.error(
-            'Failed to fetch user:',
-            err.message || t('auth.loginFailed')
-          );
-          setProfileUser(user);
+      try {
+        const response = await userService.getMiniUsers();
+        if (!response || response.length === 0) {
+          // Fallback: invalid user param, show logged user
+          setUserList([]);
+          return;
         }
-      };
+        console.log(response);
+        setUserList(response);
+      } catch (err) {
+        console.error(
+          'Failed to fetch user:',
+          err.message || t('auth.loginFailed')
+        );
+      }
+    };
     fetchData();
   }, []);
-
-
 
   const [editMode, setEditMode] = useState(false);
   const [formData, setFormData] = useState({
@@ -64,7 +56,7 @@ useEffect(() => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleManagerSelect = id => {
+  const handleManagerSelect = async id => {
     setFormData(prev => ({ ...prev, managerId: id }));
   };
 
@@ -84,8 +76,48 @@ useEffect(() => {
     setErrors({});
   };
 
-  const handleSave = () => {
-    // TODO: Add validation and save logic (API call)
+  const handleSave = async () => {
+    // Only call assignManager if manager changed (admin only)
+    if (
+      isAdmin &&
+      user.id &&
+      String(formData.managerId) !== String(user.manager?.id) &&
+      formData.managerId
+    ) {
+      try {
+        console.log(formData.managerId);
+        const response = await userService.assignManager({
+          managerId: formData.managerId,
+          userIds: [user.id],
+        });
+        console.log('Manager assigned successfully:', response);
+      } catch (err) {
+        // Optionally handle error, e.g., show notification
+        console.error('Failed to assign manager:', err);
+      }
+    }
+
+    // Always update user with new data
+    try {
+      const updatePayload = {
+        ...user,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        phoneNumber: formData.phoneNumber,
+        address: formData.address,
+        birthdate: formData.birthdate,
+        workplace: { ...user.workplace, name: formData.workplace },
+        biography: formData.biography,
+        role: formData.role,
+      };
+      const response = await userService.update(updatePayload);
+      console.log('User updated successfully:', response);
+      user = response;
+    } catch (err) {
+      // Optionally handle error, e.g., show notification
+      console.error('Failed to update user:', err);
+    }
+
     setEditMode(false);
   };
 
@@ -239,21 +271,28 @@ useEffect(() => {
                   user.biography
                 )}
               </ListGroup.Item>
-              {/* Manager (editable for admin, dropdown) */}
-              {(user.manager || isAdmin) && (
-                <ListGroup.Item>
-                  <strong>{t('profile.manager')}:</strong>{' '}
-                  {editMode && isAdmin ? (
-                    <Dropdown onSelect={handleManagerSelect}>
-                      <Dropdown.Toggle
-                        variant="outline-secondary"
-                        id="manager-dropdown"
-                      >
-                        {userList.find(u => u.id === formData.managerId)
-                          ?.firstName || t('profile.selectManager')}
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu>
-                        {userList.map(u => (
+              {/* Manager (always display, only admin can edit) */}
+              <ListGroup.Item>
+                <strong>{t('profile.manager')}:</strong>{' '}
+                {editMode && isAdmin ? (
+                  <Dropdown onSelect={handleManagerSelect}>
+                    <Dropdown.Toggle
+                      variant="outline-secondary"
+                      id="manager-dropdown"
+                    >
+                      {(() => {
+                        if (!userList) return t('profile.selectManager');
+                        const selected = userList.find(
+                          u => String(u.id) === String(formData.managerId)
+                        );
+                        return selected
+                          ? `${selected.firstName} ${selected.lastName}`
+                          : t('profile.selectManager');
+                      })()}
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      {userList && userList.length > 0 ? (
+                        userList.map(u => (
                           <Dropdown.Item
                             key={u.id}
                             eventKey={u.id}
@@ -261,16 +300,23 @@ useEffect(() => {
                           >
                             {u.firstName} {u.lastName}
                           </Dropdown.Item>
-                        ))}
-                      </Dropdown.Menu>
-                    </Dropdown>
-                  ) : user.manager ? (
-                    `${user.manager.firstName} ${user.manager.lastName}`
-                  ) : (
-                    t('profile.noManager')
-                  )}
-                </ListGroup.Item>
-              )}
+                        ))
+                      ) : (
+                        <Dropdown.Item disabled>
+                          {t('profile.noManager')}
+                        </Dropdown.Item>
+                      )}
+                    </Dropdown.Menu>
+                  </Dropdown>
+                ) : user.manager &&
+                  (user.manager.firstName || user.manager.lastName) ? (
+                  `${user.manager.firstName ? user.manager.firstName : ''}${
+                    user.manager.firstName && user.manager.lastName ? ' ' : ''
+                  }${user.manager.lastName ? user.manager.lastName : ''}`.trim()
+                ) : (
+                  t('profile.noManager')
+                )}
+              </ListGroup.Item>
             </ListGroup>
           </Col>
         </Row>
