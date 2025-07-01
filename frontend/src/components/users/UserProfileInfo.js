@@ -57,7 +57,7 @@ export const UserProfileInfo = ({ user }) => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleManagerSelect = id => {
+  const handleManagerSelect = async id => {
     setFormData(prev => ({ ...prev, managerId: id }));
   };
 
@@ -77,8 +77,48 @@ export const UserProfileInfo = ({ user }) => {
     setErrors({});
   };
 
-  const handleSave = () => {
-    // TODO: Add validation and save logic (API call)
+  const handleSave = async () => {
+    // Only call assignManager if manager changed (admin only)
+    if (
+      isAdmin &&
+      user.id &&
+      String(formData.managerId) !== String(user.manager?.id) &&
+      formData.managerId
+    ) {
+      try {
+        console.log(formData.managerId);
+       const response = await userService.assignManager({
+          managerId: formData.managerId,
+          userIds: [user.id],
+        });
+       console.log('Manager assigned successfully:', response);
+      } catch (err) {
+        // Optionally handle error, e.g., show notification
+        console.error('Failed to assign manager:', err);
+      }
+    }
+
+    // Always update user with new data
+    try {
+      const updatePayload = {
+        ...user,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        phoneNumber: formData.phoneNumber,
+        address: formData.address,
+        birthdate: formData.birthdate,
+        workplace: { ...user.workplace, name: formData.workplace },
+        biography: formData.biography,
+        role: formData.role,
+      };
+     const response = await userService.update(updatePayload);
+     console.log('User updated successfully:', response);
+     user = response;
+    } catch (err) {
+      // Optionally handle error, e.g., show notification
+      console.error('Failed to update user:', err);
+    }
+
     setEditMode(false);
   };
 
@@ -241,16 +281,15 @@ export const UserProfileInfo = ({ user }) => {
                       variant="outline-secondary"
                       id="manager-dropdown"
                     >
-                      {userList &&
-                      userList.find(u => u.id === formData.managerId)
-                        ? `${
-                            userList.find(u => u.id === formData.managerId)
-                              .firstName
-                          } ${
-                            userList.find(u => u.id === formData.managerId)
-                              .lastName
-                          }`
-                        : t('profile.selectManager')}
+                      {(() => {
+                        if (!userList) return t('profile.selectManager');
+                        const selected = userList.find(
+                          u => String(u.id) === String(formData.managerId)
+                        );
+                        return selected
+                          ? `${selected.firstName} ${selected.lastName}`
+                          : t('profile.selectManager');
+                      })()}
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
                       {userList && userList.length > 0 ? (
