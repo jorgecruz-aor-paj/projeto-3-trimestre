@@ -1,6 +1,8 @@
 package aor.proj3t.service.impl;
 
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -175,6 +177,9 @@ public class UserServiceImpl extends BaseService implements UserService {
         }
         updateUserFields(targetUser, userDto);
         daoFactory.forUser().update(targetUser);
+        if(targetUser.getManager() != null) {
+            sendProfileUpdateEmail(targetUser);
+        }
     }
 
     @Override
@@ -381,5 +386,23 @@ public class UserServiceImpl extends BaseService implements UserService {
         users.removeIf(user -> user.getRole() == Role.ADMIN);
         return miniUserConverter.toMiniUserDTOList(users);
     }
+
+    private void sendProfileUpdateEmail(User user) {
+
+        String managerEmail = user.getManager().getEmail();
+        String userFullName = user.getFirstName() + " " + user.getLastName();
+        String profileUrl = "http://localhost:3000/profile?id=" + user.getId();
+
+        String title = "Team Member Profile Updated";
+        String message = "Your team member <strong>" + userFullName + "</strong> has updated their profile.";
+        String buttonText = "View Profile";
+        String footerText = "You are receiving this email because you're listed as a manager for this user.";
+
+        String emailBody = emailUtil.createEmailTemplate(title, message, buttonText, profileUrl, footerText);
+        String subject = "Profile Update Notification: " + userFullName;
+
+        emailUtil.sendEmail(managerEmail, subject, emailBody);
+    }
+
 
 }
