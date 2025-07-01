@@ -11,6 +11,7 @@ import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
 import aor.proj3t.dto.FileUploadDTO;
+import aor.proj3t.dto.MessageResponseDTO;
 import aor.proj3t.service.ServiceFactory;
 import aor.proj3t.util.FileStorageUtil;
 import jakarta.annotation.security.RolesAllowed;
@@ -84,19 +85,19 @@ public class ImageUploadResource {
             Boolean success = serviceFactory.forUser().uploadProfilePicture(userId, fileUploadDTO);
             if (success) {
                 return Response.status(Response.Status.OK)
-                        .entity(new MessageResponse("Profile picture updated successfully")).build();
+                        .entity(new MessageResponseDTO("Profile picture updated successfully")).build();
             } else {
                 return Response.status(Response.Status.BAD_REQUEST)
-                        .entity(new MessageResponse("Failed to update profile picture")).build();
+                        .entity(new MessageResponseDTO("Failed to update profile picture")).build();
             }
         } catch (IOException e) {
             logger.error("Error processing uploaded file for user ID: {}", userId, e);
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity(new MessageResponse("Error processing uploaded file")).build();
+                    .entity(new MessageResponseDTO("Error processing uploaded file")).build();
         } catch (Exception e) {
             logger.error("Error uploading profile picture for user ID: {}", userId, e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity(new MessageResponse("Internal server error")).build();
+                    .entity(new MessageResponseDTO("Internal server error")).build();
         }
     }
 
@@ -151,21 +152,21 @@ public class ImageUploadResource {
             String userIdStr = securityContext.getUserPrincipal().getName();
             if (!userIdStr.equals(userId.toString()) && !securityContext.isUserInRole("ADMIN")) {
                 return Response.status(Response.Status.FORBIDDEN)
-                        .entity(new MessageResponse("Not authorized to reset this user's profile picture")).build();
+                        .entity(new MessageResponseDTO("Not authorized to reset this user's profile picture")).build();
             }
 
             Boolean success = serviceFactory.forUser().resetProfilePicture(userId);
             if (success) {
                 return Response.status(Response.Status.OK)
-                        .entity(new MessageResponse("Profile picture reset to default")).build();
+                        .entity(new MessageResponseDTO("Profile picture reset to default")).build();
             } else {
                 return Response.status(Response.Status.BAD_REQUEST)
-                        .entity(new MessageResponse("Failed to reset profile picture")).build();
+                        .entity(new MessageResponseDTO("Failed to reset profile picture")).build();
             }
         } catch (Exception e) {
             logger.error("Error resetting profile picture for user ID: {}", userId, e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity(new MessageResponse("Internal server error")).build();
+                    .entity(new MessageResponseDTO("Internal server error")).build();
         }
     }
 
@@ -196,7 +197,7 @@ public class ImageUploadResource {
         } catch (Exception e) {
             logger.error("Error retrieving profile picture for user ID: {}", userId, e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity(new MessageResponse("Error retrieving profile picture"))
+                    .entity(new MessageResponseDTO("Error retrieving profile picture"))
                     .build();
         }
     }

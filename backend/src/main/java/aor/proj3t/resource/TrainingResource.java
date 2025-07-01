@@ -3,8 +3,12 @@ package aor.proj3t.resource;
 import java.util.List;
 import java.util.Map;
 
-import aor.proj3t.dto.*;
-import aor.proj3t.entities.TrainingParticipation;
+import aor.proj3t.dto.MessageResponseDTO;
+import aor.proj3t.dto.NewTrainingDTO;
+import aor.proj3t.dto.NewTrainingParticipationDTO;
+import aor.proj3t.dto.TrainingAreaDTO;
+import aor.proj3t.dto.TrainingDTO;
+import aor.proj3t.dto.TrainingParticipationDTO;
 import aor.proj3t.enums.Role;
 import aor.proj3t.filters.TrainingFilter;
 import aor.proj3t.service.ServiceFactory;
@@ -13,7 +17,16 @@ import aor.proj3t.util.validatorutils.fordto.TrainingValidator;
 import aor.proj3t.util.validatorutils.forfilters.FilterValidatorFactory;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.*;
+import jakarta.ws.rs.BeanParam;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.HeaderParam;
+import jakarta.ws.rs.PATCH;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -41,7 +54,8 @@ public class TrainingResource {
     @GET
     @Secured()
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTrainings(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader, @BeanParam TrainingFilter filters) {
+    public Response getTrainings(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader,
+            @BeanParam TrainingFilter filters) {
         Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
         validatorFactory.validate(filters);
         List<TrainingDTO> trainings = serviceFactory.forTraining().getTrainingsByFilters(requesterId, filters);
@@ -81,11 +95,13 @@ public class TrainingResource {
 
     @GET
     @Path("/unparticipated/{userId}")
-    @Secured({Role.MANAGER, Role.ADMIN})
+    @Secured({ Role.MANAGER, Role.ADMIN })
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getUnparticipatedTrainings(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader, @PathParam("userId") Long userId) {
+    public Response getUnparticipatedTrainings(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader,
+            @PathParam("userId") Long userId) {
         Long managerId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
-        List<TrainingDTO> trainings = serviceFactory.forTraining().getUnparticipatedTrainingsByUserId(managerId, userId);
+        List<TrainingDTO> trainings = serviceFactory.forTraining().getUnparticipatedTrainingsByUserId(managerId,
+                userId);
         return Response.ok(trainings).build();
     }
 
@@ -104,18 +120,20 @@ public class TrainingResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response deactivateTraining(@PathParam("trainingId") Long id) {
         serviceFactory.forTraining().deactivateTraining(id);
-        return Response.ok(new MessageResponse("Training deactivated successfully")).build();
+        return Response.ok(new MessageResponseDTO("Training deactivated successfully")).build();
     }
 
     @POST
     @Path("/participation")
-    @Secured({Role.MANAGER, Role.ADMIN})
+    @Secured({ Role.MANAGER, Role.ADMIN })
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response registerTrainingParticipation(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader, NewTrainingParticipationDTO newTrainingParticipationDto) {
+    public Response registerTrainingParticipation(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader,
+            NewTrainingParticipationDTO newTrainingParticipationDto) {
         Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
-        serviceFactory.forTrainingParticipation().registerTrainingParticipation(requesterId, newTrainingParticipationDto);
-        return Response.ok(new MessageResponse("Training participation successfully registered")).build();
+        serviceFactory.forTrainingParticipation().registerTrainingParticipation(requesterId,
+                newTrainingParticipationDto);
+        return Response.ok(new MessageResponseDTO("Training participation successfully registered")).build();
     }
 
     @GET
@@ -123,9 +141,11 @@ public class TrainingResource {
     @Secured
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTrainingParticipation(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader, @PathParam("userId") Long userId) {
+    public Response getTrainingParticipation(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader,
+            @PathParam("userId") Long userId) {
         Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
-        List<TrainingParticipationDTO> participations = serviceFactory.forTrainingParticipation().findTrainingParticipationsByUser(requesterId, userId);
+        List<TrainingParticipationDTO> participations = serviceFactory.forTrainingParticipation()
+                .findTrainingParticipationsByUser(requesterId, userId);
         return Response.ok(participations).build();
     }
 
@@ -133,11 +153,12 @@ public class TrainingResource {
     @Path("/participation/stats/{userId}")
     @Secured
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTrainingParticipationStats(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader, @PathParam("userId") Long userId) {
+    public Response getTrainingParticipationStats(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader,
+            @PathParam("userId") Long userId) {
         Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
-        Map<Integer, Long> stats = serviceFactory.forTrainingParticipation().getTrainingParticipationTimeByYearByUser(requesterId, userId);
+        Map<Integer, Long> stats = serviceFactory.forTrainingParticipation()
+                .getTrainingParticipationTimeByYearByUser(requesterId, userId);
         return Response.ok(stats).build();
     }
-
 
 }
