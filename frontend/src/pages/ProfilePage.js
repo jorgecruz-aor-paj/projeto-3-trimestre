@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { UserProfileInfo } from '../components/users/UserProfileInfo';
-import ProfileSectionsToggle from '../components/profile/ProfileSectionsToggle';
-import { useAuthStore } from '../stores/AuthStore';
+import { UserProfileInfo } from 'components/users/UserProfileInfo';
+import { ProfileSectionsToggle } from 'components/profile/ProfileSectionsToggle';
+import { useAuthStore } from 'stores/AuthStore';
 import { useTranslation } from 'react-i18next';
-import '../styles/pages/ProfilePage.css';
+import 'styles/pages/ProfilePage.css';
 import { userService } from 'services';
 
 const ProfilePage = () => {
@@ -39,7 +39,11 @@ const ProfilePage = () => {
           }
           setProfileUser(response[0]);
         } catch (err) {
-          setError(err.message || t('auth.loginFailed'));
+          console.error(
+            'Failed to fetch user:',
+            err.message || t('auth.loginFailed')
+          );
+          setProfileUser(user);
         }
       }
     };

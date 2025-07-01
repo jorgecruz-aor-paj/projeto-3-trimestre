@@ -1,5 +1,6 @@
 import React from 'react';
-import { formatDateToDDMMYYYY } from '../../utils/dateUtils';
+import PropTypes from 'prop-types';
+import { formatDateToDDMMYYYY } from 'utils/dateUtils';
 import { useTranslation } from 'react-i18next';
 
 const ProfileParticipationCard = ({ participation }) => {
@@ -34,6 +35,20 @@ const ProfileParticipationCard = ({ participation }) => {
       )}
     </div>
   );
+};
+
+ProfileParticipationCard.propTypes = {
+  participation: PropTypes.shape({
+    createdAt: PropTypes.string,
+    training: PropTypes.shape({
+      title: PropTypes.string,
+      duration: PropTypes.number,
+      link: PropTypes.string,
+      trainingArea: PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    }),
+  }).isRequired,
 };
 
 export default ProfileParticipationCard;

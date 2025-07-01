@@ -8,7 +8,7 @@ import { ResetPasswordRequestPage } from 'components/auth/ResetPasswordRequestPa
 import { ConfirmRegistrationPage } from 'components/auth/ConfirmRegistrationPage';
 import { Dashboard } from 'pages/Dashboard';
 import { UsersPage } from 'pages/UsersPage';
-import ProfilePage from '../pages/ProfilePage';
+import ProfilePage from 'pages/ProfilePage';
 
 /**
  * AppRouter component that defines all application routes

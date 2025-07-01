@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { trainingParticipationService } from '../services/trainingParticipationService';
+import { trainingParticipationService } from 'services/trainingParticipationService';
 
 export const useParticipationStore = create(set => ({
   participations: [],
