@@ -29,6 +29,7 @@ const EXPORT_ENDPOINT = `${API_BASE_URL}/export`;
 const STATS_ENDPOINT = `${API_BASE_URL}/stats`;
 const TEST_ENDPOINT = `${API_BASE_URL}/test`;
 const WORKPLACES_ENDPOINT = `${API_BASE_URL}/workplaces`;
+const MESSAGES_ENDPOINT = `${API_BASE_URL}/messages`;
 
 /**
  * API Endpoints configuration
@@ -223,6 +224,32 @@ const API_ENDPOINTS = {
       requiresAuth: false,
     },
   },
+  messages: {
+    send: {
+      url: recipientId => `${MESSAGES_ENDPOINT}/send/${recipientId}`,
+      requiresAuth: true,
+    },
+    conversation: {
+      url: otherUserId => `${MESSAGES_ENDPOINT}/conversation/${otherUserId}`,
+      requiresAuth: true,
+    },
+    conversations: {
+      url: `${MESSAGES_ENDPOINT}/conversations`,
+      requiresAuth: true,
+    },
+    unreadCount: {
+      url: `${MESSAGES_ENDPOINT}/unread/count`,
+      requiresAuth: true,
+    },
+    markAsRead: {
+      url: messageId => `${MESSAGES_ENDPOINT}/${messageId}/read`,
+      requiresAuth: true,
+    },
+    all: {
+      url: `${MESSAGES_ENDPOINT}/all`,
+      requiresAuth: true,
+    },
+  },
 };
 
 export {
@@ -238,4 +265,5 @@ export {
   STATS_ENDPOINT,
   TEST_ENDPOINT,
   WORKPLACES_ENDPOINT,
+  MESSAGES_ENDPOINT,
 };
