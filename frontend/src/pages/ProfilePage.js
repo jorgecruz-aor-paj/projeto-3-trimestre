@@ -32,9 +32,10 @@ const ProfilePage = () => {
           const params = { id: paramId };
           const response = await userService.getAll(params);
           if (!response || response.length === 0) {
-            //TODO invalid user, handle accordingly
+            // Fallback: invalid user param, show logged user
             console.error('User not found');
             setProfileUser(user);
+            return;
           }
           setProfileUser(response[0]);
         } catch (err) {
@@ -54,7 +55,7 @@ const ProfilePage = () => {
   // Assuming profileUser.managerId or profileUser.manager?.id is available
   const isManager = profileUser.managerId
     ? user?.id === profileUser.managerId
-    : (profileUser.manager && user?.id === profileUser.manager.id);
+    : profileUser.manager && user?.id === profileUser.manager.id;
 
   const canViewSections = isAdmin || isSelf || isManager;
 
