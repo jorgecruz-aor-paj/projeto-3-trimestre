@@ -11,7 +11,7 @@ const getApiBaseUrl = () => {
 
 // Function to get the base URL for the WebSocket API
 const getWebSocketBaseUrl = () => {
-  const url = `wss://${window.location.hostname}:8443/jorgeosorio-proj3t/websocket`;
+  const url = `wss://${window.location.hostname}:8443/jorgeosorio-proj3t`;
   return url;
 };
 

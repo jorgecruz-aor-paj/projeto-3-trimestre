@@ -146,9 +146,17 @@ export const useMessageStore = create((set, get) => ({
 
       // Update the message in the store
       set(state => ({
-        messages: state.messages.map(msg =>
-          msg.id === messageId ? { ...msg, read: true } : msg
-        ),
+        messages: state.messages.map(msg => {
+          if (msg.id === messageId) {
+            const updatedMsg = { ...msg, read: true };
+            // Send read receipt via WebSocket if connected
+            if (websocketService.isConnected()) {
+              websocketService.sendReadReceipt(messageId, msg.senderId);
+            }
+            return updatedMsg;
+          }
+          return msg;
+        }),
       }));
 
       // Update unread count
@@ -174,23 +182,45 @@ export const useMessageStore = create((set, get) => ({
     const { activeConversation } = get();
     const currentUserId = useAuthStore.getState().user?.id;
 
-    // Add message to conversation if it's the active one
-    if (
-      activeConversation &&
-      (messageData.senderId === activeConversation.id ||
-        messageData.recipientId === activeConversation.id)
-    ) {
-      set(state => ({
-        messages: [...state.messages, messageData],
-      }));
+    // Handle different message types
+    if (messageData.type === 'message') {
+      const message = messageData.message || messageData;
 
-      // Mark as read if user is recipient and conversation is active
-      if (messageData.recipientId === currentUserId) {
-        get().markMessageAsRead(messageData.id);
+      // Add message to conversation if it's the active one
+      if (
+        activeConversation &&
+        (message.senderId === activeConversation.id ||
+          message.recipientId === activeConversation.id)
+      ) {
+        set(state => ({
+          messages: [...state.messages, message],
+        }));
+
+        // Mark as read if user is recipient and conversation is active
+        if (message.recipientId === currentUserId) {
+          get().markMessageAsRead(message.id);
+        }
+      } else if (message.recipientId === currentUserId) {
+        // Update unread count for messages not in active conversation
+        get().loadUnreadCount();
       }
-    } else if (messageData.recipientId === currentUserId) {
-      // Update unread count for messages not in active conversation
-      get().loadUnreadCount();
+    } else if (messageData.type === 'message_sent') {
+      // Handle sent message confirmation
+      const message = messageData.message || messageData;
+
+      if (activeConversation && message.recipientId === activeConversation.id) {
+        set(state => ({
+          messages: [...state.messages, message],
+        }));
+      }
+    } else if (messageData.type === 'message_read') {
+      // Handle read receipts
+      const messageId = messageData.messageId;
+      set(state => ({
+        messages: state.messages.map(msg =>
+          msg.id === messageId ? { ...msg, read: true } : msg
+        ),
+      }));
     }
 
     // Update conversations list to reflect new message
