@@ -53,8 +53,8 @@ public class EvaluationCsvDTO {
         this.createdAt = evaluationDTO.getCreatedAt();
         this.editedAt = evaluationDTO.getEditedAt();
         this.evaluationCycleId = evaluationDTO.getEvaluationCycleId();
-        this.evaluateeId = evaluationDTO.getEvaluateeId();
-        this.evaluatorId = evaluationDTO.getEvaluatorId();
+        this.evaluateeId = evaluationDTO.getEvaluatee().getId();
+        this.evaluatorId = evaluationDTO.getEvaluator().getId();
     }
 
     // Getters and setters

@@ -1,6 +1,7 @@
 package aor.proj3t.util.converterutils;
 
 import aor.proj3t.dto.EvaluationDTO;
+import aor.proj3t.dto.MiniUserDTO;
 import aor.proj3t.entities.Evaluation;
 import aor.proj3t.entities.EvaluationCycle;
 import aor.proj3t.entities.User;
@@ -57,11 +58,13 @@ public class EvaluationConverter extends AbstractConverter<Evaluation, Evaluatio
         }
 
         if (evaluation.getEvaluated() != null) {
-            dto.setEvaluateeId(evaluation.getEvaluated().getId());
+            MiniUserDTO miniUserDTO = new MiniUserDTO(evaluation.getEvaluated().getId(),evaluation.getEvaluated().getFirstName(),evaluation.getEvaluated().getLastName(),evaluation.getEvaluated().getEmail());
+            dto.setEvaluatee(miniUserDTO);
         }
 
         if (evaluation.getEvaluator() != null) {
-            dto.setEvaluatorId(evaluation.getEvaluator().getId());
+            MiniUserDTO miniUserDTO = new MiniUserDTO(evaluation.getEvaluator().getId(),evaluation.getEvaluator().getFirstName(),evaluation.getEvaluator().getLastName(),evaluation.getEvaluator().getEmail());
+            dto.setEvaluator(miniUserDTO);
         }
     }
 
@@ -77,10 +80,10 @@ public class EvaluationConverter extends AbstractConverter<Evaluation, Evaluatio
         EvaluationCycle evaluationCycle = findSafely(EvaluationCycle.class, dto.getEvaluationCycleId());
         evaluation.setEvaluationCycle(evaluationCycle);
 
-        User evaluatee = findSafely(User.class, dto.getEvaluateeId());
+        User evaluatee = findSafely(User.class, dto.getEvaluatee());
         evaluation.setEvaluated(evaluatee);
 
-        User evaluator = findSafely(User.class, dto.getEvaluatorId());
+        User evaluator = findSafely(User.class, dto.getEvaluator());
         evaluation.setEvaluator(evaluator);
     }
 }

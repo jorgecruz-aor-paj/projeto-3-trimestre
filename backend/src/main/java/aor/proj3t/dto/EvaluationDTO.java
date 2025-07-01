@@ -30,16 +30,16 @@ public class EvaluationDTO {
     @XmlElement(name = "evaluationCycleId")
     private Long evaluationCycleId;
     @XmlElement(name = "evaluateeId")
-    private Long evaluateeId;
+    private MiniUserDTO evaluatee;
     @XmlElement(name = "evaluatorId")
-    private Long evaluatorId;
+    private MiniUserDTO evaluator;
 
     public EvaluationDTO() {
     }
 
     public EvaluationDTO(Long id, EvaluationScale scale, EvaluationStatus state, String feedback,
-            Instant createdAt, Instant editedAt, Long evaluationCycleId,
-            Long evaluateeId, Long evaluatorId) {
+                         Instant createdAt, Instant editedAt, Long evaluationCycleId,
+                         MiniUserDTO evaluatee, MiniUserDTO evaluator) {
         this.id = id;
         this.scale = scale;
         this.status = state;
@@ -47,8 +47,8 @@ public class EvaluationDTO {
         this.createdAt = createdAt;
         this.editedAt = editedAt;
         this.evaluationCycleId = evaluationCycleId;
-        this.evaluateeId = evaluateeId;
-        this.evaluatorId = evaluatorId;
+        this.evaluatee = evaluatee;
+        this.evaluator = evaluator;
     }
 
     public Long getId() {
@@ -107,19 +107,19 @@ public class EvaluationDTO {
         this.evaluationCycleId = evaluationCycleId;
     }
 
-    public Long getEvaluateeId() {
-        return evaluateeId;
+    public MiniUserDTO getEvaluatee() {
+        return evaluatee;
     }
 
-    public void setEvaluateeId(Long evaluateeId) {
-        this.evaluateeId = evaluateeId;
+    public void setEvaluatee(MiniUserDTO evaluatee) {
+        this.evaluatee = evaluatee;
     }
 
-    public Long getEvaluatorId() {
-        return evaluatorId;
+    public MiniUserDTO getEvaluator() {
+        return evaluator;
     }
 
-    public void setEvaluatorId(Long evaluatorId) {
-        this.evaluatorId = evaluatorId;
+    public void setEvaluator(MiniUserDTO evaluator) {
+        this.evaluator = evaluator;
     }
 }
