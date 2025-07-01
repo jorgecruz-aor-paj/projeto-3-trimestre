@@ -6,6 +6,7 @@ import { Container, Navbar, Nav, Button, Dropdown } from 'react-bootstrap';
 import { LanguageSelector } from 'components/LanguageSelector';
 import { ProfilePicture } from 'components/common/ProfilePicture';
 import { useAuthStore } from 'stores/AuthStore';
+import { useMessageStore } from 'stores/MessageStore';
 import { authService } from 'services/authService';
 import 'styles/components/Header.css';
 
@@ -18,6 +19,12 @@ export const Header = () => {
   const { t } = useTranslation();
   const location = useLocation();
   const { token, user, clearState } = useAuthStore();
+  const {
+    unreadCount,
+    loadUnreadCount,
+    initializeWebSocket,
+    disconnectWebSocket,
+  } = useMessageStore();
   const navigate = useNavigate();
 
   const isAuthenticated = !!token;
@@ -33,9 +40,31 @@ export const Header = () => {
     setShowMobileMenu(false);
   }, [location.pathname]);
 
+  // Initialize WebSocket when user is authenticated
+  useEffect(() => {
+    if (isAuthenticated && user?.id) {
+      initializeWebSocket();
+      loadUnreadCount();
+    } else {
+      disconnectWebSocket();
+    }
+
+    // Cleanup WebSocket on unmount
+    return () => {
+      disconnectWebSocket();
+    };
+  }, [
+    isAuthenticated,
+    user?.id,
+    initializeWebSocket,
+    loadUnreadCount,
+    disconnectWebSocket,
+  ]);
+
   // Handle logout
   const handleLogout = async () => {
     try {
+      disconnectWebSocket();
       await authService.logout();
       navigate('/');
       clearState();
@@ -65,6 +94,25 @@ export const Header = () => {
 
             {isAuthenticated ? (
               <div className="d-flex align-items-center">
+                {/* Notification Bell */}
+                <div className="position-relative me-3">
+                  <Button
+                    variant="link"
+                    className="p-2 text-dark notification-bell"
+                    as={Link}
+                    to="/messages"
+                    style={{ textDecoration: 'none' }}
+                  >
+                    <i className="fas fa-bell"></i>
+                    {unreadCount > 0 && (
+                      <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        {unreadCount > 99 ? '99+' : unreadCount}
+                        <span className="visually-hidden">unread messages</span>
+                      </span>
+                    )}
+                  </Button>
+                </div>
+
                 <Dropdown align="end">
                   <Dropdown.Toggle
                     variant="link"
@@ -145,13 +193,27 @@ export const Header = () => {
                 {t('nav.evaluations')}
               </Nav.Link>
               {isAuthenticated && (
-                <Nav.Link
-                  as={Link}
-                  to="/dashboard"
-                  className={isActive('/dashboard') ? 'active' : ''}
-                >
-                  {t('nav.dashboard')}
-                </Nav.Link>
+                <>
+                  <Nav.Link
+                    as={Link}
+                    to="/dashboard"
+                    className={isActive('/dashboard') ? 'active' : ''}
+                  >
+                    {t('nav.dashboard')}
+                  </Nav.Link>
+                  <Nav.Link
+                    as={Link}
+                    to="/messages"
+                    className={isActive('/messages') ? 'active' : ''}
+                  >
+                    {t('nav.messages', 'Messages')}
+                    {unreadCount > 0 && (
+                      <span className="badge bg-danger ms-1 fs-6">
+                        {unreadCount > 9 ? '9+' : unreadCount}
+                      </span>
+                    )}
+                  </Nav.Link>
+                </>
               )}
               <Nav.Link
                 as={Link}
