@@ -38,7 +38,7 @@ export const UserProfileInfo = ({ user }) => {
               </ListGroup.Item>
               <ListGroup.Item>
                 <strong>{t('profile.workplace')}:</strong>{' '}
-                {user.workplaceName || user.workplace.name}
+                {user.workplace.name}
               </ListGroup.Item>
               <ListGroup.Item>
               <strong>{t('profile.biography')}:</strong> {user.biography}
