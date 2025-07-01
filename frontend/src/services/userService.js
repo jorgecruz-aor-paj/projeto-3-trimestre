@@ -47,6 +47,12 @@ export const userService = {
     });
   },
 
+  getMiniUsers: () => {
+    return apiRequest(API_ENDPOINTS.user.getMiniUsers, {
+      method: 'GET'
+    });
+  },
+
   /**
    * Upload a profile picture
    * @param {Number|String} userId - User ID

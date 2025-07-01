@@ -94,6 +94,10 @@ const API_ENDPOINTS = {
       url: `${USER_ENDPOINT}/managers`,
       requiresAuth: true,
     },
+    getMiniUsers: {
+      url: `${USER_ENDPOINT}/compact`,
+      requiresAuth: true,
+    },
   },
   trainings: {
     getAll: {
