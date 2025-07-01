@@ -391,7 +391,7 @@ public class UserServiceImpl extends BaseService implements UserService {
 
         String managerEmail = user.getManager().getEmail();
         String userFullName = user.getFirstName() + " " + user.getLastName();
-        String profileUrl = "http://localhost:3000/profile?id=" + user.getId();
+        String profileUrl =  AppConstants.Email.EMAIL_BASE_URL +  "/profile?id=" + user.getId();
 
         String title = "Team Member Profile Updated";
         String message = "Your team member <strong>" + userFullName + "</strong> has updated their profile.";
