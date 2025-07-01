@@ -101,6 +101,57 @@ export const LanguageProvider = ({ children }) => {
         return 'Invalid date';
       }
     },
+
+    // Convert Java Instant timestamp to JavaScript Date object
+    // Handles Unix timestamp in seconds with nanosecond precision from Java backend
+    convertInstantToDate: timestamp => {
+      try {
+        let date;
+
+        // Handle Java Instant format (Unix timestamp in seconds with nanosecond precision)
+        if (typeof timestamp === 'number') {
+          // Convert from seconds to milliseconds for JavaScript Date
+          date = new Date(timestamp * 1000);
+        } else if (typeof timestamp === 'string') {
+          // Handle ISO string format or numeric string
+          if (!isNaN(timestamp)) {
+            // Numeric string - treat as seconds
+            date = new Date(parseFloat(timestamp) * 1000);
+          } else {
+            // ISO string format
+            date = new Date(timestamp);
+          }
+        } else {
+          date = new Date(timestamp);
+        }
+
+        // Validate the date
+        if (isNaN(date.getTime())) {
+          console.warn('Invalid timestamp:', timestamp);
+          return null;
+        }
+
+        return date;
+      } catch (error) {
+        console.error(
+          'Error converting timestamp to date:',
+          error,
+          'Timestamp:',
+          timestamp
+        );
+        return null;
+      }
+    },
+
+    // Format Java Instant timestamp with localization
+    // Combines convertInstantToDate and formatDate for convenience
+    formatInstant: (timestamp, options = {}) => {
+      const date = languageUtils.convertInstantToDate(timestamp);
+      if (!date) {
+        return 'Invalid time';
+      }
+      return languageUtils.formatDate(date, options);
+    },
   };
 
   return (
