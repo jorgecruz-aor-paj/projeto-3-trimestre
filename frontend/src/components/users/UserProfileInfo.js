@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import { Card, Row, Col, ListGroup } from 'react-bootstrap';
 import { ProfilePicture } from 'components/common/ProfilePicture';
 import { useTranslation } from 'react-i18next';
+import { useLanguage } from 'contexts/LanguageContext';
 
 export const UserProfileInfo = ({ user }) => {
   const { t } = useTranslation();
+  const { formatDate } = useLanguage();
   return (
     <Card className="mb-4">
       <Card.Header as="h5">{t('profile.info')}</Card.Header>
@@ -22,7 +24,8 @@ export const UserProfileInfo = ({ user }) => {
           <Col md={8}>
             <ListGroup variant="flush">
               <ListGroup.Item>
-                <strong>{t('profile.name')}:</strong> {user.firstName} {user.lastName}
+                <strong>{t('profile.name')}:</strong> {user.firstName}{' '}
+                {user.lastName}
               </ListGroup.Item>
               <ListGroup.Item>
                 <strong>{t('profile.email')}:</strong> {user.email}
@@ -34,18 +37,23 @@ export const UserProfileInfo = ({ user }) => {
                 <strong>{t('profile.address')}:</strong> {user.address}
               </ListGroup.Item>
               <ListGroup.Item>
-                <strong>{t('profile.birthdate')}:</strong> {user.birthdate}
+                <strong>{t('profile.birthdate')}:</strong>{' '}
+                {formatDate(user.birthdate, {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}
               </ListGroup.Item>
               <ListGroup.Item>
                 <strong>{t('profile.workplace')}:</strong>{' '}
                 {user.workplaceName || user.workplace.name}
               </ListGroup.Item>
               <ListGroup.Item>
-              <strong>{t('profile.biography')}:</strong> {user.biography}
-            </ListGroup.Item>
-            <ListGroup.Item>
-              <strong>{t('profile.role')}:</strong> {user.role}
-            </ListGroup.Item>
+                <strong>{t('profile.biography')}:</strong> {user.biography}
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <strong>{t('profile.role')}:</strong> {user.role}
+              </ListGroup.Item>
             </ListGroup>
           </Col>
         </Row>
@@ -53,7 +61,6 @@ export const UserProfileInfo = ({ user }) => {
     </Card>
   );
 };
-            
 
 UserProfileInfo.propTypes = {
   user: PropTypes.shape({
