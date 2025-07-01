@@ -15,8 +15,6 @@
     "companyName": "AoR Tech",
     "userAvatar": "Avatar do utilizador",
     "loading": "A carregar...",
-    "edit": "Editar",
-    "save": "Guardar",
     "error": "Erro",
     "success": "Sucesso",
     "delete": "Eliminar",
@@ -353,6 +351,7 @@
     "newMessage": "Nova Mensagem",
     "selectUser": "Selecionar Utilizador",
     "typeMessage": "Escreva uma mensagem...",
+    "noMessages": "Ainda não há mensagens. Inicie uma conversa!",
     "noConversations": "Ainda não há conversas",
     "selectConversation": "Selecione uma conversa para começar a enviar mensagens",
     "online": "Online"
