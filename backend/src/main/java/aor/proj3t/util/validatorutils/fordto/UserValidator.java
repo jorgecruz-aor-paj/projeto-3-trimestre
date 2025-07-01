@@ -133,7 +133,7 @@ public class UserValidator {
         validateBiography(dto.getBiography());
         validateId(dto.getWorkplace().getId(), "Workplace");
         validatePhotograph(dto.getPhotograph());
-        validateId(dto.getManagerId(), "Manager");
+        validateId(dto.getManager().getId(), "Manager");
         validateRole(dto.getRole().getName());
     }
 

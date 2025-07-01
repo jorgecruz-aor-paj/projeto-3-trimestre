@@ -32,7 +32,6 @@ export const UserProfileInfo = ({ user }) => {
           'Failed to fetch user:',
           err.message || t('auth.loginFailed')
         );
-        setProfileUser(user);
       }
     };
     fetchData();
@@ -87,11 +86,11 @@ export const UserProfileInfo = ({ user }) => {
     ) {
       try {
         console.log(formData.managerId);
-       const response = await userService.assignManager({
+        const response = await userService.assignManager({
           managerId: formData.managerId,
           userIds: [user.id],
         });
-       console.log('Manager assigned successfully:', response);
+        console.log('Manager assigned successfully:', response);
       } catch (err) {
         // Optionally handle error, e.g., show notification
         console.error('Failed to assign manager:', err);
@@ -111,9 +110,9 @@ export const UserProfileInfo = ({ user }) => {
         biography: formData.biography,
         role: formData.role,
       };
-     const response = await userService.update(updatePayload);
-     console.log('User updated successfully:', response);
-     user = response;
+      const response = await userService.update(updatePayload);
+      console.log('User updated successfully:', response);
+      user = response;
     } catch (err) {
       // Optionally handle error, e.g., show notification
       console.error('Failed to update user:', err);
@@ -309,8 +308,11 @@ export const UserProfileInfo = ({ user }) => {
                       )}
                     </Dropdown.Menu>
                   </Dropdown>
-                ) : user.manager ? (
-                  `${user.manager.firstName} ${user.manager.lastName}`
+                ) : user.manager &&
+                  (user.manager.firstName || user.manager.lastName) ? (
+                  `${user.manager.firstName ? user.manager.firstName : ''}${
+                    user.manager.firstName && user.manager.lastName ? ' ' : ''
+                  }${user.manager.lastName ? user.manager.lastName : ''}`.trim()
                 ) : (
                   t('profile.noManager')
                 )}
