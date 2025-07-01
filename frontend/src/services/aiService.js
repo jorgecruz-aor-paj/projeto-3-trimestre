@@ -2,7 +2,7 @@
  * AI Service
  * Handles AI-related API calls
  */
-import apiService from './apiService';
+import { apiService } from './apiService';
 import { API_ENDPOINTS } from 'api/apiConfig';
 
 export const aiService = {
