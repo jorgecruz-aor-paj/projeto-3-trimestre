@@ -11,7 +11,8 @@
     "no": "No",
     "appName": "PMS Pro",
     "companyName": "AoR Tech",
-    "userAvatar": "User avatar"
+    "userAvatar": "User avatar",
+    "loading": "Loading...",
   },
   "roles": {
     "admin": "Administrator",
@@ -251,5 +252,28 @@
     "noResults": "No users found.",
     "loading": "Loading users...",
     "error": "Failed to load users."
+  },
+  "profile": {
+    "info": "Profile Information",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "address": "Address",
+    "birthdate": "Birthdate",
+    "workplace": "Workplace",
+    "biography": "Biography",
+    "role": "Role",
+    "evaluations": "Evaluations",
+    "trainings": "Trainings",
+    "area": "Area",
+    "duration": "Duration",
+    "downloadEvaluation": "Download Evaluation",
+    "noEvaluations": "No evaluations found.",
+    "noParticipations": "No participations found.",
+    "status": "Status",
+    "scale": "Scale",
+    "evaluator": "Evaluator",
+    "date": "Date",
+    "viewTraining": "View Training"
   }
 }

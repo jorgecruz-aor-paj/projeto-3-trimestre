@@ -1,16 +1,26 @@
 import React from 'react';
 import { formatDateToDDMMYYYY } from '../../utils/dateUtils';
+import { translateEvaluationScale } from '../../utils/evaluationScaleTranslations';
+import { useTranslation } from 'react-i18next';
 
 const ProfileEvaluationCard = ({ evaluation }) => {
+  const { t, i18n } = useTranslation();
   return (
     <div className="profile-evaluation-card">
       <div>
-        <strong>Evaluation #{evaluation.id}</strong>
+        <strong>
+          {t('profile.evaluations')} #{evaluation.id}
+        </strong>
       </div>
-      <div>Date: {formatDateToDDMMYYYY(evaluation.createdAt)}</div>
-      <div>Scale: {evaluation.scale}</div>
       <div>
-        Evaluator:{' '}
+        {t('profile.date')}: {formatDateToDDMMYYYY(evaluation.createdAt)}
+      </div>
+      <div>
+        {t('profile.scale')}:{' '}
+        {translateEvaluationScale(evaluation.scale, i18n.language)}
+      </div>
+      <div>
+        {t('profile.evaluator')}:{' '}
         {evaluation.evaluator
           ? `${evaluation.evaluator.firstName} ${evaluation.evaluator.lastName}`
           : '-'}
@@ -21,7 +31,7 @@ const ProfileEvaluationCard = ({ evaluation }) => {
           /* TODO: implement download */
         }}
       >
-        Download Evaluation
+        {t('profile.downloadEvaluation')}
       </button>
     </div>
   );

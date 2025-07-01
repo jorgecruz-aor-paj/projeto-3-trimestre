@@ -11,7 +11,8 @@
     "no": "Não",
     "appName": "SGD Pro",
     "companyName": "AoR Tech",
-    "userAvatar": "Avatar do utilizador"
+    "userAvatar": "Avatar do utilizador",
+    "loading": "A carregar..."
   },
   "roles": {
     "admin": "Administrador",
@@ -242,7 +243,7 @@
       "search": "Pesquisar...",
       "workplace": "Todos os Locais de Trabalho",
       "manager": "Todos os Gestores",
-      "sortBy": "Ordenar Por",
+      "sortBy": "Ordenar por",
       "noManager": "Sem Gestor",
       "ascending": "Ascendente",
       "descending": "Descendente",
@@ -251,5 +252,28 @@
     "noResults": "Nenhum utilizador encontrado.",
     "loading": "A carregar utilizadores...",
     "error": "Falha ao carregar utilizadores."
+  },
+  "profile": {
+    "info": "Informação do Perfil",
+    "name": "Nome",
+    "email": "Email",
+    "phone": "Telemóvel",
+    "address": "Morada",
+    "birthdate": "Data de nascimento",
+    "workplace": "Local de trabalho",
+    "biography": "Biografia",
+    "role": "Função",
+    "evaluations": "Avaliações",
+    "trainings": "Formações",
+    "area": "Área",
+    "duration": "Duração",
+    "downloadEvaluation": "Descarregar Avaliação",
+    "noEvaluations": "Nenhuma avaliação encontrada.",
+    "noParticipations": "Nenhuma participação encontrada.",
+    "status": "Estado",
+    "scale": "Escala",
+    "evaluator": "Avaliador",
+    "date": "Data",
+    "viewTraining": "Ver Formação"
   }
 }

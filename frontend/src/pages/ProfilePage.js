@@ -3,11 +3,14 @@ import { UserProfileInfo } from '../components/users/UserProfileInfo';
 import ProfileEvaluationsSection from '../components/profile/ProfileEvaluationsSection';
 import ProfileParticipationsSection from '../components/profile/ProfileParticipationsSection';
 import { useAuthStore } from '../stores/AuthStore';
+import { useTranslation } from 'react-i18next';
 import '../styles/pages/ProfilePage.css';
 
 const ProfilePage = () => {
   const [showEvaluations, setShowEvaluations] = useState(true);
   const user = useAuthStore(state => state.user);
+  const { t } = useTranslation();
+
   // No need to fetch here, handled in section components
   return (
     <div className="profile-page-container">
@@ -20,13 +23,13 @@ const ProfilePage = () => {
             className={showEvaluations ? 'active' : ''}
             onClick={() => setShowEvaluations(true)}
           >
-            Evaluations
+            {t('profile.evaluations')}
           </button>
           <button
             className={!showEvaluations ? 'active' : ''}
             onClick={() => setShowEvaluations(false)}
           >
-            Trainings
+            {t('profile.trainings')}
           </button>
         </div>
         <div className="profile-toggle-content">
