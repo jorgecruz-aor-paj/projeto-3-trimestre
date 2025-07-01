@@ -8,9 +8,7 @@ import { FormInput } from '../forms/FormInput';
 import { useAuthStore } from '../../stores/AuthStore';
 import { userService } from 'services';
 
-
 export const UserProfileInfo = ({ user }) => {
-
   const { t } = useTranslation();
   const { formatDate } = useLanguage();
   const loggedUser = useAuthStore(state => state.user);
@@ -18,32 +16,27 @@ export const UserProfileInfo = ({ user }) => {
   const isAdmin = loggedUser?.role === 'ADMIN';
   const [userList, setUserList] = useState(null);
 
-
-
-
-useEffect(() => {
+  useEffect(() => {
     const fetchData = async () => {
-        try {
-          const response = await userService.getMiniUsers();
-          if (!response || response.length === 0) {
-            // Fallback: invalid user param, show logged user
-           setUserList([]);
-            return;
-          }
-          console.log(response);
-          setUserList(response);
-        } catch (err) {
-          console.error(
-            'Failed to fetch user:',
-            err.message || t('auth.loginFailed')
-          );
-          setProfileUser(user);
+      try {
+        const response = await userService.getMiniUsers();
+        if (!response || response.length === 0) {
+          // Fallback: invalid user param, show logged user
+          setUserList([]);
+          return;
         }
-      };
+        console.log(response);
+        setUserList(response);
+      } catch (err) {
+        console.error(
+          'Failed to fetch user:',
+          err.message || t('auth.loginFailed')
+        );
+        setProfileUser(user);
+      }
+    };
     fetchData();
   }, []);
-
-
 
   const [editMode, setEditMode] = useState(false);
   const [formData, setFormData] = useState({
@@ -239,21 +232,29 @@ useEffect(() => {
                   user.biography
                 )}
               </ListGroup.Item>
-              {/* Manager (editable for admin, dropdown) */}
-              {(user.manager || isAdmin) && (
-                <ListGroup.Item>
-                  <strong>{t('profile.manager')}:</strong>{' '}
-                  {editMode && isAdmin ? (
-                    <Dropdown onSelect={handleManagerSelect}>
-                      <Dropdown.Toggle
-                        variant="outline-secondary"
-                        id="manager-dropdown"
-                      >
-                        {userList.find(u => u.id === formData.managerId)
-                          ?.firstName || t('profile.selectManager')}
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu>
-                        {userList.map(u => (
+              {/* Manager (always display, only admin can edit) */}
+              <ListGroup.Item>
+                <strong>{t('profile.manager')}:</strong>{' '}
+                {editMode && isAdmin ? (
+                  <Dropdown onSelect={handleManagerSelect}>
+                    <Dropdown.Toggle
+                      variant="outline-secondary"
+                      id="manager-dropdown"
+                    >
+                      {userList &&
+                      userList.find(u => u.id === formData.managerId)
+                        ? `${
+                            userList.find(u => u.id === formData.managerId)
+                              .firstName
+                          } ${
+                            userList.find(u => u.id === formData.managerId)
+                              .lastName
+                          }`
+                        : t('profile.selectManager')}
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      {userList && userList.length > 0 ? (
+                        userList.map(u => (
                           <Dropdown.Item
                             key={u.id}
                             eventKey={u.id}
@@ -261,16 +262,20 @@ useEffect(() => {
                           >
                             {u.firstName} {u.lastName}
                           </Dropdown.Item>
-                        ))}
-                      </Dropdown.Menu>
-                    </Dropdown>
-                  ) : user.manager ? (
-                    `${user.manager.firstName} ${user.manager.lastName}`
-                  ) : (
-                    t('profile.noManager')
-                  )}
-                </ListGroup.Item>
-              )}
+                        ))
+                      ) : (
+                        <Dropdown.Item disabled>
+                          {t('profile.noManager')}
+                        </Dropdown.Item>
+                      )}
+                    </Dropdown.Menu>
+                  </Dropdown>
+                ) : user.manager ? (
+                  `${user.manager.firstName} ${user.manager.lastName}`
+                ) : (
+                  t('profile.noManager')
+                )}
+              </ListGroup.Item>
             </ListGroup>
           </Col>
         </Row>
