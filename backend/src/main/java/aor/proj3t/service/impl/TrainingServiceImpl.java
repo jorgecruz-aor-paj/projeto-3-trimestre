@@ -52,8 +52,8 @@ public class TrainingServiceImpl extends BaseService implements TrainingService 
     @Override
     public TrainingDTO updateTraining(TrainingDTO trainingDTO) {
         TrainingArea trainingArea = getEntity(
-                daoFactory.forTrainingArea().findById(trainingDTO.getTrainingAreaId()),
-                trainingDTO.getTrainingAreaId(), "Training area");
+                daoFactory.forTrainingArea().findById(trainingDTO.getTrainingArea().getId()),
+                trainingDTO.getTrainingArea().getId(), "Training area");
         Training training = getEntity(daoFactory.forTraining().findById(trainingDTO.getId()), trainingDTO.getId(), "Training");
         training.setTitle(trainingDTO.getTitle());
         training.setDuration(trainingDTO.getDuration());

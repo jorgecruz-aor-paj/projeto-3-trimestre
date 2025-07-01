@@ -3,7 +3,9 @@ package aor.proj3t.util.converterutils;
 import aor.proj3t.dto.TrainingDTO;
 import aor.proj3t.entities.Training;
 import aor.proj3t.entities.TrainingArea;
+import aor.proj3t.service.interfaces.TrainingService;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 /**
  * Converter for Training entities and DTOs.
@@ -21,6 +23,9 @@ import jakarta.enterprise.context.ApplicationScoped;
  */
 @ApplicationScoped
 public class TrainingConverter extends AbstractConverter<Training, TrainingDTO, Long> {
+
+    @Inject
+    TrainingAreaConverter trainingAreaConverter;
 
     @Override
     protected Class<Training> getEntityClass() {
@@ -55,7 +60,7 @@ public class TrainingConverter extends AbstractConverter<Training, TrainingDTO, 
         dto.setEditedAt(training.getEditedAt());
 
         if (training.getTrainingArea() != null) {
-            dto.setTrainingAreaId(training.getTrainingArea().getId());
+            dto.setTrainingArea(trainingAreaConverter.toDTO(training.getTrainingArea()));
         }
     }
 
@@ -71,7 +76,7 @@ public class TrainingConverter extends AbstractConverter<Training, TrainingDTO, 
         training.setEditedAt(dto.getEditedAt());
 
         // Handle relationships using findSafely
-        TrainingArea trainingArea = findSafely(TrainingArea.class, dto.getTrainingAreaId());
+        TrainingArea trainingArea = findSafely(TrainingArea.class, dto.getTrainingArea());
         training.setTrainingArea(trainingArea);
     }
 }

@@ -31,14 +31,14 @@ public class TrainingDTO {
     private Instant createdAt;
     @XmlElement(name = "editedAt")
     private Instant editedAt;
-    @XmlElement(name = "trainingAreaId")
-    private Long trainingAreaId;
+    @XmlElement(name = "trainingArea")
+    private TrainingAreaDTO trainingArea;
 
     public TrainingDTO() {
     }
 
     public TrainingDTO(Long id, String title, Integer duration, String description, String link, String language,
-            boolean isActive, Instant createdAt, Instant editedAt, Long trainingAreaId) {
+            boolean isActive, Instant createdAt, Instant editedAt, TrainingAreaDTO trainingArea) {
         this.id = id;
         this.title = title;
         this.duration = duration;
@@ -48,7 +48,7 @@ public class TrainingDTO {
         this.isActive = isActive;
         this.createdAt = createdAt;
         this.editedAt = editedAt;
-        this.trainingAreaId = trainingAreaId;
+        this.trainingArea = trainingArea;
     }
 
     public Long getId() {
@@ -123,11 +123,11 @@ public class TrainingDTO {
         this.editedAt = editedAt;
     }
 
-    public Long getTrainingAreaId() {
-        return trainingAreaId;
+    public TrainingAreaDTO getTrainingArea() {
+        return trainingArea;
     }
 
-    public void setTrainingAreaId(Long trainingAreaId) {
-        this.trainingAreaId = trainingAreaId;
+    public void setTrainingArea(TrainingAreaDTO trainingArea) {
+        this.trainingArea = trainingArea;
     }
 }

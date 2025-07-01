@@ -58,7 +58,7 @@ public class TrainingCsvDTO {
         this.isActive = trainingDTO.isActive();
         this.createdAt = trainingDTO.getCreatedAt();
         this.editedAt = trainingDTO.getEditedAt();
-        this.trainingAreaId = trainingDTO.getTrainingAreaId();
+        this.trainingAreaId = trainingDTO.getTrainingArea().getId();
     }
 
     // Getters and setters

@@ -1,15 +1,11 @@
 package aor.proj3t.util.validatorutils.fordto;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 import java.util.regex.Pattern;
 
 import aor.proj3t.dto.NewTrainingDTO;
 import aor.proj3t.dto.TrainingAreaDTO;
 import aor.proj3t.dto.TrainingDTO;
-import aor.proj3t.enums.TrainingSortField;
 import aor.proj3t.exceptions.InvalidDataException;
-import aor.proj3t.filters.TrainingFilter;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
@@ -84,7 +80,7 @@ public class TrainingValidator {
         validateTrainingDescription(trainingDto.getDescription());
         validateTrainingLink(trainingDto.getLink());
         validateTrainingLanguage(trainingDto.getLanguage());
-        validateId(trainingDto.getTrainingAreaId(), "Training Area");
+        validateId(trainingDto.getTrainingArea().getId(), "Training Area");
     }
 
     public void validateTrainingAreaDTO(TrainingAreaDTO trainingAreaDto) {
