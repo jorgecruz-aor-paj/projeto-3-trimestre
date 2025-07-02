@@ -1,4 +1,5 @@
 import React from 'react';
+import { exportService } from '../../services/exportService';
 import { useUserList } from '../../hooks/useUserList';
 import { useTranslation } from 'react-i18next';
 import { toApiDateTime } from '../../utils/dateUtils';
@@ -70,11 +71,73 @@ const ProfileEvaluationsFilter = ({ filters, setFilters, displayedUserId }) => {
     }
   };
 
+  // Download all evaluations handler
+  const handleDownloadAll = async () => {
+    try {
+      // Prepare filters for export (remove display-only keys)
+      const exportFilters = { ...filters };
+      delete exportFilters.startDateDisplay;
+      delete exportFilters.endDateDisplay;
+      // Call exportService with current filters
+      const response = await exportService.evaluationsToCSVFiltered(
+        exportFilters
+      );
+      // Get filename from Content-Disposition header if available
+      let filename = 'evaluations.csv';
+      if (
+        response &&
+        response.headers &&
+        response.headers['content-disposition']
+      ) {
+        const match = response.headers['content-disposition'].match(
+          /filename="?([^";]+)"?/
+        );
+        if (match && match[1]) filename = match[1];
+      }
+      // Support both axios (response.data as Blob) and fetch (response as Blob)
+      const blob = response.data instanceof Blob ? response.data : response;
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      a.setAttribute('download', filename);
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => {
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      }, 200);
+    } catch (error) {
+      alert('Failed to download evaluations CSV.');
+      // Optionally: show a translated error
+    }
+  };
+
   return (
     <form
       className="profile-evaluations-filter row row-cols-lg-auto g-2 align-items-center mb-3 small"
-      style={{ fontSize: '0.95em' }}
+      style={{ fontSize: '0.95em', position: 'relative' }}
     >
+      {/* Download all evaluations icon button */}
+      <button
+        type="button"
+        className="btn btn-link p-0 position-absolute"
+        style={{ top: 0, right: 0, zIndex: 2 }}
+        title={t('evaluations.title') + ' CSV'}
+        onClick={handleDownloadAll}
+        aria-label={t('evaluations.title') + ' CSV'}
+      >
+        {/* Small download SVG icon */}
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="18"
+          height="18"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+        >
+          <path d="M10 2a1 1 0 0 1 1 1v7.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4A1 1 0 1 1 6.707 8.293L9 10.586V3a1 1 0 0 1 1-1zm-7 13a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H4a1 1 0 0 1-1-1z" />
+        </svg>
+      </button>
       {/* Evaluator */}
       <div className="col-auto">
         <label htmlFor="evaluatorId" className="form-label mb-0">
