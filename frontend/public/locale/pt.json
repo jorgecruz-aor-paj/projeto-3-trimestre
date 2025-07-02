@@ -454,6 +454,7 @@
     "area": "Área",
     "duration": "Duração",
     "downloadEvaluation": "Descarregar Avaliação",
+    "downloadError": "Erro ao descarregar avaliação",
     "noEvaluations": "Nenhuma avaliação encontrada.",
     "noParticipations": "Nenhuma participação encontrada.",
     "status": "Estado",
@@ -560,6 +561,7 @@
     "submitEvaluation": "Submeter Avaliação",
     "evaluationSubmitted": "Avaliação submetida com sucesso",
     "evaluationPeriod": "Período de Avaliação",
+    "downloadError": "Erro ao descarregar avaliações",
     "hero": {
       "subtitle": "Ferramentas abrangentes de avaliação de desempenho que impulsionam feedback significativo, crescimento e sucesso organizacional.",
       "viewEvaluations": "Ver Avaliações",

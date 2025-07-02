@@ -1,11 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFilePdf } from '@fortawesome/free-solid-svg-icons';
 import { formatDateToDDMMYYYY } from 'utils/dateUtils';
 import { translateEvaluationScale } from 'utils/evaluationScaleTranslations';
 import { useTranslation } from 'react-i18next';
+import { useAlert } from 'contexts/AlertContext';
 import { exportService } from 'services/exportService';
+
 const ProfileEvaluationCard = ({ evaluation }) => {
   const { t, i18n } = useTranslation();
+  const { showAlert } = useAlert();
 
   // Download handler: triggers file download from API response
   const handleDownload = () => {
@@ -42,7 +47,11 @@ const ProfileEvaluationCard = ({ evaluation }) => {
         }, 200);
       } catch (error) {
         console.error('Error downloading evaluation:', error);
-        alert(t('profile.downloadError'));
+        showAlert({
+          title: t('common.error', 'Error'),
+          message: t('profile.downloadError'),
+          variant: 'danger',
+        });
       }
     };
     fetchFile();
@@ -61,17 +70,7 @@ const ProfileEvaluationCard = ({ evaluation }) => {
         onClick={handleDownload}
         aria-label={t('profile.downloadEvaluation')}
       >
-        {/* SVG download icon TODO replace with fontAwesome pdf download icon */}
-
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-        >
-          <path d="M10 2a1 1 0 0 1 1 1v7.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4A1 1 0 1 1 6.707 8.293L9 10.586V3a1 1 0 0 1 1-1zm-7 13a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H4a1 1 0 0 1-1-1z" />
-        </svg>
+        <FontAwesomeIcon icon={faFilePdf} size="lg" color="currentColor" />
       </button>
       <div>
         {t('profile.date')}: {formatDateToDDMMYYYY(evaluation.createdAt)}

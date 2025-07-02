@@ -1,7 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFileCsv, faFileExcel } from '@fortawesome/free-solid-svg-icons';
 import { exportService } from '../../services/exportService';
 import { useUserList } from '../../hooks/useUserList';
 import { useTranslation } from 'react-i18next';
+import { useAlert } from '../../contexts/AlertContext';
 import { toApiDateTime } from '../../utils/dateUtils';
 
 const scaleOptions = [
@@ -21,14 +25,11 @@ const sortFieldOptions = [
   { value: 'SCALE', label: 'filters.endDate' },
 ];
 
-// Accept displayedUserId as a prop to filter out the displayed user from the evaluator dropdown
+// Accept displayedUserId as a prop to filter out the evaluator dropdown
 const ProfileEvaluationsFilter = ({ filters, setFilters, displayedUserId }) => {
   const { t } = useTranslation();
-  const {
-    userList,
-    loading: userListLoading,
-    error: userListError,
-  } = useUserList();
+  const { showAlert } = useAlert();
+  const { userList, loading: userListLoading } = useUserList();
   // Remove the displayed user from the evaluator dropdown
   const filteredUserList =
     userList && displayedUserId
@@ -108,8 +109,15 @@ const ProfileEvaluationsFilter = ({ filters, setFilters, displayedUserId }) => {
         document.body.removeChild(a);
       }, 200);
     } catch (error) {
-      alert('Failed to download evaluations CSV.');
-      // Optionally: show a translated error
+      console.error('Error downloading evaluations CSV:', error);
+      showAlert({
+        title: t('common.error', 'Error'),
+        message: t(
+          'evaluations.downloadError',
+          'Failed to download evaluations CSV.'
+        ),
+        variant: 'danger',
+      });
     }
   };
 
@@ -118,26 +126,32 @@ const ProfileEvaluationsFilter = ({ filters, setFilters, displayedUserId }) => {
       className="profile-evaluations-filter row row-cols-lg-auto g-2 align-items-center mb-3 small"
       style={{ fontSize: '0.95em', position: 'relative' }}
     >
-      {/* Download all evaluations icon button */}
-      <button
-        type="button"
-        className="btn btn-link p-0 position-absolute"
+      {/* Download all evaluations icon buttons */}
+      <div
+        className="position-absolute"
         style={{ top: 0, right: 0, zIndex: 2 }}
-        title={t('evaluations.title') + ' CSV'}
-        onClick={handleDownloadAll}
-        aria-label={t('evaluations.title') + ' CSV'}
       >
-        {/* Small download SVG icon */}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="18"
-          height="18"
-          fill="currentColor"
-          viewBox="0 0 20 20"
+        {/* CSV Download button */}
+        <button
+          type="button"
+          className="btn btn-link p-0 me-2"
+          title={t('evaluations.title') + ' CSV'}
+          onClick={handleDownloadAll}
+          aria-label={t('evaluations.title') + ' CSV'}
         >
-          <path d="M10 2a1 1 0 0 1 1 1v7.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4A1 1 0 1 1 6.707 8.293L9 10.586V3a1 1 0 0 1 1-1zm-7 13a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H4a1 1 0 0 1-1-1z" />
-        </svg>
-      </button>
+          <FontAwesomeIcon icon={faFileCsv} size="lg" />
+        </button>
+
+        {/* Excel Download button */}
+        <button
+          type="button"
+          className="btn btn-link p-0"
+          title={t('evaluations.title') + ' Excel'}
+          aria-label={t('evaluations.title') + ' Excel'}
+        >
+          <FontAwesomeIcon icon={faFileExcel} size="lg" />
+        </button>
+      </div>
       {/* Evaluator */}
       <div className="col-auto">
         <label htmlFor="evaluatorId" className="form-label mb-0">
@@ -275,6 +289,20 @@ const ProfileEvaluationsFilter = ({ filters, setFilters, displayedUserId }) => {
       </div>
     </form>
   );
+};
+
+ProfileEvaluationsFilter.propTypes = {
+  filters: PropTypes.shape({
+    evaluatorId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    evaluationScale: PropTypes.string,
+    searchText: PropTypes.string,
+    evaluationSortField: PropTypes.string,
+    ascending: PropTypes.bool,
+    startDateDisplay: PropTypes.string,
+    endDateDisplay: PropTypes.string,
+  }).isRequired,
+  setFilters: PropTypes.func.isRequired,
+  displayedUserId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 export default ProfileEvaluationsFilter;
