@@ -7,6 +7,7 @@ import { useLanguage } from 'contexts/LanguageContext';
 import { FormInput } from '../forms/FormInput';
 import { useAuthStore } from '../../stores/AuthStore';
 import { userService } from 'services';
+import { useUserList } from '../../hooks/useUserList';
 
 export const UserProfileInfo = ({ user }) => {
   const { t } = useTranslation();
@@ -14,28 +15,24 @@ export const UserProfileInfo = ({ user }) => {
   const loggedUser = useAuthStore(state => state.user);
   const isSelf = loggedUser?.id === user.id;
   const isAdmin = loggedUser?.role === 'ADMIN';
-  const [userList, setUserList] = useState(null);
 
+  const {
+    userList,
+    loading: userListLoading,
+    error: userListError,
+  } = useUserList();
+
+  // Filtered manager list (exclude current user)
+  const [filteredManagerList, setFilteredManagerList] = useState([]);
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await userService.getMiniUsers();
-        if (!response || response.length === 0) {
-          // Fallback: invalid user param, show logged user
-          setUserList([]);
-          return;
-        }
-        console.log(response);
-        setUserList(response);
-      } catch (err) {
-        console.error(
-          'Failed to fetch user:',
-          err.message || t('auth.loginFailed')
-        );
-      }
-    };
-    fetchData();
-  }, []);
+    if (userList && user && user.id) {
+      setFilteredManagerList(
+        userList.filter(u => String(u.id) !== String(user.id))
+      );
+    } else {
+      setFilteredManagerList(userList || []);
+    }
+  }, [userList, user]);
 
   const [editMode, setEditMode] = useState(false);
   const [formData, setFormData] = useState({
@@ -281,8 +278,9 @@ export const UserProfileInfo = ({ user }) => {
                       id="manager-dropdown"
                     >
                       {(() => {
-                        if (!userList) return t('profile.selectManager');
-                        const selected = userList.find(
+                        if (!filteredManagerList)
+                          return t('profile.selectManager');
+                        const selected = filteredManagerList.find(
                           u => String(u.id) === String(formData.managerId)
                         );
                         return selected
@@ -291,8 +289,8 @@ export const UserProfileInfo = ({ user }) => {
                       })()}
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                      {userList && userList.length > 0 ? (
-                        userList.map(u => (
+                      {filteredManagerList && filteredManagerList.length > 0 ? (
+                        filteredManagerList.map(u => (
                           <Dropdown.Item
                             key={u.id}
                             eventKey={u.id}
