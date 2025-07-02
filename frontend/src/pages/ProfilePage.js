@@ -50,7 +50,27 @@ const ProfilePage = () => {
     fetchData();
   }, []);
 
-  if (!profileUser) return null; // Or a loading spinner
+  if (!profileUser) {
+    return (
+      <div
+        className="profile-page-spinner-container"
+        style={{
+          minHeight: 200,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <div
+          className="spinner-border text-primary"
+          role="status"
+          aria-label="Loading"
+        >
+          <span className="visually-hidden">{t('common.loading')}</span>
+        </div>
+      </div>
+    );
+  }
   // console.log('Profile User:', profileUser);
   // console.log(profileUser.workplace);
   // Permission logic: admin, self, or manager of profileUser
