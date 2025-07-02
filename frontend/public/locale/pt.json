@@ -346,6 +346,22 @@
     "date": "Data",
     "viewTraining": "Ver Formação"
   },
+  "sortBy": "Ordenar por",
+  "sortFields": {
+    "id": "ID",
+    "evaluated": "Avaliado",
+    "evaluator": "Avaliador",
+    "status": "Estado",
+    "date": "Data",
+    "scale": "Escala"
+  },
+  "evaluationScale": {
+    "any": "Qualquer escala",
+    "low": "Contribuição baixa",
+    "partial": "Contribuição parcial",
+    "expected": "Contribuição esperada",
+    "exceed": "Contribuição excedida"
+  },
   "messages": {
     "title": "Mensagens",
     "newMessage": "Nova Mensagem",
@@ -423,5 +439,11 @@
     "noNotifications": "Nenhuma notificação",
     "newNotification": "Nova notificação",
     "settings": "Definições de notificações"
+  },
+  "filters":{
+    "title": "Filtros",
+    "ascending": "Ascendente",
+    "startDate": "Data de Início",
+    "endDate": "Data de Fim"
   }
 }
