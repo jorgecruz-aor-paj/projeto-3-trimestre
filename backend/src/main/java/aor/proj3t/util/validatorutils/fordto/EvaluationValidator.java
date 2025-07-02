@@ -63,7 +63,7 @@ public class EvaluationValidator {
     }
 
     public void validateEvaluationDTO(EvaluationDTO dto) {
-        validateId(dto.getEvaluationCycleId(), "Evaluation Cycle");
+        validateId(dto.getEvaluationCycle().getId(), "Evaluation Cycle");
         validateId(dto.getEvaluatee().getId(), "Evaluatee");
         validateId(dto.getEvaluator().getId(), "Evaluator");
         validateScale(dto.getScale());

@@ -6,6 +6,7 @@ import aor.proj3t.entities.Evaluation;
 import aor.proj3t.entities.EvaluationCycle;
 import aor.proj3t.entities.User;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 /**
  * Converter for Evaluation entities and DTOs.
@@ -24,6 +25,10 @@ import jakarta.enterprise.context.ApplicationScoped;
  */
 @ApplicationScoped
 public class EvaluationConverter extends AbstractConverter<Evaluation, EvaluationDTO, Long> {
+
+    @Inject
+    MiniEvaluationCycleConverter miniEvaluationCycleConverter;
+
     @Override
     protected Class<Evaluation> getEntityClass() {
         return Evaluation.class;
@@ -54,7 +59,7 @@ public class EvaluationConverter extends AbstractConverter<Evaluation, Evaluatio
         dto.setEditedAt(evaluation.getEditedAt());
 
         if (evaluation.getEvaluationCycle() != null) {
-            dto.setEvaluationCycleId(evaluation.getEvaluationCycle().getId());
+            dto.setEvaluationCycle( miniEvaluationCycleConverter.toMiniEvaluationCycleDTO(evaluation.getEvaluationCycle()));
         }
 
         if (evaluation.getEvaluated() != null) {
@@ -77,7 +82,7 @@ public class EvaluationConverter extends AbstractConverter<Evaluation, Evaluatio
         evaluation.setEditedAt(dto.getEditedAt());
 
         // Handle relationships using findSafely
-        EvaluationCycle evaluationCycle = findSafely(EvaluationCycle.class, dto.getEvaluationCycleId());
+        EvaluationCycle evaluationCycle = findSafely(EvaluationCycle.class, dto.getEvaluationCycle());
         evaluation.setEvaluationCycle(evaluationCycle);
 
         User evaluatee = findSafely(User.class, dto.getEvaluatee());
