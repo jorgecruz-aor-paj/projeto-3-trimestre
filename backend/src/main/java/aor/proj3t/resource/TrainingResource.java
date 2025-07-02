@@ -149,16 +149,5 @@ public class TrainingResource {
         return Response.ok(participations).build();
     }
 
-    @GET
-    @Path("/participation/stats/{userId}")
-    @Secured
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getTrainingParticipationStats(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader,
-            @PathParam("userId") Long userId) {
-        Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
-        Map<Integer, Long> stats = serviceFactory.forTrainingParticipation()
-                .getTrainingParticipationTimeByYearByUser(requesterId, userId);
-        return Response.ok(stats).build();
-    }
 
 }

@@ -73,17 +73,21 @@ public class TrainingParticipationServiceImpl extends BaseService implements Tra
     }
 
     @Override
-    public Map<Integer,Long> getTrainingParticipationTimeByYearByUser(Long requesterId, Long userId) {
-        User requester = getEntity(daoFactory.forUser().findById(requesterId),requesterId, "User");
-            User user = getEntity(daoFactory.forUser().findById(userId), userId, "User");
-        if (!requester.getId().equals(user.getId()) &&
-                (requester.getRole() != Role.ADMIN &&
-                        (user.getManager() == null || !user.getManager().getId().equals(requesterId)))) {
+    public Map<Integer, Long> getTrainingParticipationTimeByYearByUser(Long requesterId, Long userId) {
+        User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
+        User user = getEntity(daoFactory.forUser().findById(userId), userId, "User");
+
+        boolean isAdmin = requester.getRole() == Role.ADMIN;
+        boolean isSelf = requester.getId().equals(user.getId());
+        boolean isManager = user.getManager() != null && user.getManager().getId().equals(requesterId);
+
+        if (!(isAdmin || isSelf || isManager)) {
             throw new ForbiddenException(
                     "Permission denied",
-                    "User with id " + requesterId + " requested invalid access to user with id " + userId + " participation times by year");
+                    "User with id " + requesterId + " is not authorized to access user " + userId + "'s participation times.");
         }
-            return daoFactory.forTrainingParticipation().trainingTimeByYearByParticipantId(user.getId());
 
+        return daoFactory.forTrainingParticipation().trainingTimeByYearByParticipantId(user.getId());
     }
+
 }
