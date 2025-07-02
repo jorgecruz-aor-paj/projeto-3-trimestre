@@ -1,6 +1,7 @@
 import React from 'react';
 import { useUserList } from '../../hooks/useUserList';
 import { useTranslation } from 'react-i18next';
+import { toApiDateTime } from '../../utils/dateUtils';
 
 const scaleOptions = [
   { value: '', label: 'evaluationScale.any' },
@@ -33,12 +34,33 @@ const ProfileEvaluationsFilter = ({ filters, setFilters, displayedUserId }) => {
       ? userList.filter(u => String(u.id) !== String(displayedUserId))
       : userList;
 
+  // Keep both raw and API date in state for correct display and API usage
   const handleChange = e => {
     const { name, value, type, checked } = e.target;
-    setFilters(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value,
-    }));
+    if (name === 'startDate' || name === 'endDate') {
+      setFilters(prev => ({
+        ...prev,
+        [name]: value, // for input display
+        [`${name}Api`]: value ? toApiDateTime(value, name === 'endDate') : '', // for API
+      }));
+    } else {
+      setFilters(prev => {
+        const next = {
+          ...prev,
+          [name]: type === 'checkbox' ? checked : value,
+        };
+        // Remove empty string filter keys for select fields
+        if (
+          (name === 'evaluationScale' ||
+            name === 'evaluatorId' ||
+            name === 'evaluationSortField') &&
+          !value
+        ) {
+          delete next[name];
+        }
+        return next;
+      });
+    }
   };
 
   return (
