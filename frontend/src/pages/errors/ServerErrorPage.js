@@ -36,16 +36,12 @@ export const ServerErrorPage = () => {
               </div>
 
               <div className="error-illustration mb-4">
-                <img
-                  src="/images/500-illustration.svg"
-                  alt="Server error"
-                  className="img-fluid error-image"
-                  onError={e => {
-                    e.target.onerror = null;
-                    e.target.src =
-                      'https://via.placeholder.com/400x300?text=500+Server+Error';
-                  }}
-                />
+                <div className="server-error-icon-container mb-4">
+                  <i
+                    className="bi bi-exclamation-triangle-fill text-danger"
+                    style={{ fontSize: '8rem' }}
+                  ></i>
+                </div>
               </div>
 
               <h1 className="error-title mb-3">

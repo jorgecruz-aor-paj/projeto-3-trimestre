@@ -36,16 +36,10 @@ export const ForbiddenPage = () => {
               </div>
 
               <div className="error-illustration mb-4">
-                <img
-                  src="/images/403-illustration.svg"
-                  alt="Access forbidden"
-                  className="img-fluid error-image"
-                  onError={e => {
-                    e.target.onerror = null;
-                    e.target.src =
-                      'https://via.placeholder.com/400x300?text=403+Access+Forbidden';
-                  }}
-                />
+                <i
+                  className="bi bi-shield-lock-fill text-danger"
+                  style={{ fontSize: '10rem' }}
+                ></i>
               </div>
 
               <h1 className="error-title mb-3">

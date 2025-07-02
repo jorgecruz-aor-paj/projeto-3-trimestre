@@ -37,16 +37,10 @@ export const NetworkErrorPage = () => {
               </div>
 
               <div className="error-illustration mb-4">
-                <img
-                  src="/images/network-error-illustration.svg"
-                  alt="Network error"
-                  className="img-fluid error-image"
-                  onError={e => {
-                    e.target.onerror = null;
-                    e.target.src =
-                      'https://via.placeholder.com/400x300?text=Network+Error';
-                  }}
-                />
+                <i
+                  className="bi bi-wifi-off text-warning"
+                  style={{ fontSize: '10rem' }}
+                ></i>
               </div>
 
               <h1 className="error-title mb-3">
@@ -128,7 +122,10 @@ export const NetworkErrorPage = () => {
                 <div className="d-flex align-items-center justify-content-center">
                   <div className="connection-indicator offline me-2"></div>
                   <small className="text-muted">
-                    {t('errors.networkPage.status', 'Connection Status: Offline')}
+                    {t(
+                      'errors.networkPage.status',
+                      'Connection Status: Offline'
+                    )}
                   </small>
                 </div>
               </div>

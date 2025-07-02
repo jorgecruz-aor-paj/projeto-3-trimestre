@@ -31,17 +31,11 @@ export const NotFoundPage = () => {
                 <span className="error-number">404</span>
               </div>
               <div className="error-illustration mb-4">
-                <img
-                  src="/images/404-illustration.svg"
-                  alt="Page not found"
-                  className="img-fluid error-image"
-                  onError={e => {
-                    e.target.onerror = null;
-                    e.target.src =
-                      'https://via.placeholder.com/400x300?text=404+Page+Not+Found';
-                  }}
-                />
-              </div>{' '}
+                <i
+                  className="bi bi-question-circle-fill text-primary"
+                  style={{ fontSize: '8rem' }}
+                ></i>
+              </div>
               <h1 className="error-title mb-3">
                 {t('errors.notFoundPage.title', 'Page Not Found')}
               </h1>

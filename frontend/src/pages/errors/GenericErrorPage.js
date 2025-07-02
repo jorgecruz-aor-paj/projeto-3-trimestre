@@ -54,16 +54,10 @@ export const GenericErrorPage = ({
               </div>
 
               <div className="error-illustration mb-4">
-                <img
-                  src="/images/generic-error-illustration.svg"
-                  alt="Error occurred"
-                  className="img-fluid error-image"
-                  onError={e => {
-                    e.target.onerror = null;
-                    e.target.src =
-                      'https://via.placeholder.com/400x300?text=Unexpected+Error';
-                  }}
-                />
+                <i
+                  className="bi bi-exclamation-circle-fill text-danger"
+                  style={{ fontSize: '8rem' }}
+                ></i>
               </div>
 
               <h1 className="error-title mb-3">
@@ -107,7 +101,10 @@ export const GenericErrorPage = ({
 
               <div className="error-suggestions mt-5">
                 <h5 className="mb-3">
-                  {t('errors.genericPage.suggestions.title', 'What can you try?')}
+                  {t(
+                    'errors.genericPage.suggestions.title',
+                    'What can you try?'
+                  )}
                 </h5>
                 <ul className="list-unstyled text-start">
                   <li className="mb-2">
