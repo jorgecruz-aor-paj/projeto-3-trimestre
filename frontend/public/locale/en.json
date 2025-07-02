@@ -167,7 +167,122 @@
     "forbidden": "Access denied. You don't have permission to access this resource.",
     "notFound": "Resource not found.",
     "validation": "Validation error. Please check the entered data.",
-    "timeout": "The operation took too long. Please try again."
+    "timeout": "The operation took too long. Please try again.",
+    "notFoundPage": {
+      "title": "Page Not Found",
+      "description": "Sorry, the page you are looking for could not be found. It might have been moved, deleted, or you entered the wrong URL.",
+      "goHome": "Go to Homepage",
+      "goBack": "Go Back",
+      "suggestions": {
+        "title": "What can you do?",
+        "checkUrl": "Check the URL for any typos",
+        "useNavigation": "Use the navigation menu to find what you need",
+        "contact": "Contact support if you believe this is an error"
+      }
+    },
+    "forbiddenPage": {
+      "title": "Access Forbidden",
+      "description": "You don't have permission to access this resource. Please contact your administrator if you believe you should have access.",
+      "goDashboard": "Go to Dashboard",
+      "goHome": "Go to Homepage",
+      "goBack": "Go Back",
+      "suggestions": {
+        "title": "Need access?",
+        "checkRole": "Verify your account role and permissions",
+        "contactAdmin": "Contact your administrator for access",
+        "relogin": "Try logging out and logging back in"
+      }
+    },
+    "serverErrorPage": {
+      "title": "Something Went Wrong",
+      "description": "We're experiencing some technical difficulties. Our team has been notified and is working to resolve the issue.",
+      "refresh": "Try Again",
+      "goHome": "Go to Homepage",
+      "goBack": "Go Back",
+      "suggestions": {
+        "title": "What happened?",
+        "temporary": "This is likely a temporary issue",
+        "maintenance": "Server might be under maintenance",
+        "tryLater": "Please try again in a few minutes"
+      },
+      "errorId": "Error ID"
+    },
+    "networkPage": {
+      "title": "Connection Problem",
+      "description": "Unable to connect to our servers. Please check your internet connection and try again.",
+      "retry": "Retry Connection",
+      "goHome": "Go to Homepage",
+      "goOffline": "Continue Offline",
+      "suggestions": {
+        "title": "Troubleshooting steps:",
+        "checkConnection": "Check your internet connection",
+        "restartRouter": "Restart your router or modem",
+        "checkFirewall": "Check firewall or proxy settings",
+        "waitAndRetry": "Wait a moment and try again"
+      },
+      "status": "Connection Status: Offline"
+    },
+    "genericPage": {
+      "title": "Oops! Something went wrong",
+      "description": "An unexpected error has occurred. We apologize for the inconvenience and are working to fix this issue.",
+      "retry": "Try Again",
+      "goHome": "Go to Homepage",
+      "goBack": "Go Back",
+      "suggestions": {
+        "title": "What can you try?",
+        "refresh": "Refresh the page and try again",
+        "waitAndRetry": "Wait a few minutes and try again",
+        "goBack": "Go back to the previous page",
+        "contactSupport": "Contact support if the problem persists"
+      },
+      "contactSupport": "Contact Support",
+      "errorId": "Error ID",
+      "timestamp": "Time"
+    }
+  },
+  "offline": {
+    "title": "You're Offline",
+    "description": "No internet connection detected. Some features may not be available, but you can still access cached content.",
+    "retry": "Try Again",
+    "viewCached": "View Cached Content",
+    "goHome": "Go Home",
+    "stillOffline": "Still offline. Please check your connection.",
+    "features": {
+      "cached": {
+        "title": "Cached Content",
+        "description": "Access previously loaded content and data that's stored locally.",
+        "action": "Browse Cached"
+      },
+      "drafts": {
+        "title": "Work Offline",
+        "description": "Continue working with drafts and local data. Changes will sync when reconnected.",
+        "action": "View Drafts"
+      }
+    },
+    "tips": {
+      "title": "While you're offline:",
+      "browse": "Browse cached pages",
+      "edit": "Edit draft content",
+      "sync": "Auto-sync when online"
+    },
+    "status": "Status: Offline Mode",
+    "autoCheck": "Automatically checking for connection..."
+  },
+  "errorDemo": {
+    "title": "Error Handling Demo",
+    "info": {
+      "title": "How it works",
+      "description": "This demo shows how the error handling system works. Click the buttons below to simulate different error scenarios."
+    },
+    "simulate": {
+      "title": "Simulate Errors"
+    },
+    "direct": {
+      "title": "Direct Navigation"
+    },
+    "usage": {
+      "title": "Usage Examples"
+    }
   },
   "status": {
     "active": "Active",
@@ -384,7 +499,39 @@
     "difficulty": "Difficulty",
     "progress": "Progress",
     "enrollInTraining": "Enroll in Training",
-    "duration": "Duration"
+    "duration": "Duration",
+    "hero": {
+      "subtitle": "Unlock your potential with our comprehensive training programs designed to enhance skills and accelerate career growth.",
+      "exploreTrainings": "Explore Trainings",
+      "viewProgress": "View My Progress"
+    },
+    "features": {
+      "title": "Training Features",
+      "diverse": {
+        "title": "Diverse Programs",
+        "description": "Access a wide range of training programs covering technical skills, leadership, and professional development."
+      },
+      "progress": {
+        "title": "Progress Tracking",
+        "description": "Monitor your learning journey with detailed progress tracking and completion certificates."
+      },
+      "expert": {
+        "title": "Expert Instructors",
+        "description": "Learn from industry experts and experienced professionals with interactive sessions and mentoring."
+      }
+    },
+    "benefits": {
+      "title": "Why Choose Our Training Programs?",
+      "flexible": "Flexible scheduling to fit your work-life balance",
+      "personalized": "Personalized learning paths based on your role and goals",
+      "certificates": "Industry-recognized certificates upon completion",
+      "support": "24/7 learning support and community access"
+    },
+    "cta": {
+      "title": "Ready to advance your career with professional training?",
+      "description": "Join thousands of professionals who have enhanced their skills and accelerated their careers through our training programs.",
+      "button": "Start Learning Today"
+    }
   },
   "evaluations": {
     "title": "Evaluations",
@@ -404,7 +551,58 @@
     "evaluationNotes": "Evaluation Notes",
     "submitEvaluation": "Submit Evaluation",
     "evaluationSubmitted": "Evaluation submitted successfully",
-    "evaluationPeriod": "Evaluation Period"
+    "evaluationPeriod": "Evaluation Period",
+    "hero": {
+      "subtitle": "Comprehensive performance evaluation tools that drive meaningful feedback, growth, and organizational success.",
+      "viewEvaluations": "View Evaluations",
+      "learnProcess": "Learn the Process"
+    },
+    "features": {
+      "title": "Evaluation Features",
+      "comprehensive": {
+        "title": "360° Assessment",
+        "description": "Multi-dimensional evaluations including self-assessment, peer feedback, and manager reviews for complete insights."
+      },
+      "analytics": {
+        "title": "Performance Analytics",
+        "description": "Detailed analytics and reporting to identify strengths, areas for improvement, and performance trends."
+      },
+      "goals": {
+        "title": "Goal-Oriented",
+        "description": "Link evaluations to specific goals and objectives, ensuring alignment with organizational priorities."
+      }
+    },
+    "process": {
+      "title": "Evaluation Process",
+      "step1": {
+        "title": "Set Objectives",
+        "description": "Define clear performance objectives and key results for the evaluation period."
+      },
+      "step2": {
+        "title": "Continuous Feedback",
+        "description": "Provide ongoing feedback and support throughout the evaluation period."
+      },
+      "step3": {
+        "title": "Formal Review",
+        "description": "Conduct comprehensive evaluation sessions with structured assessments."
+      },
+      "step4": {
+        "title": "Development Plan",
+        "description": "Create personalized development plans based on evaluation results."
+      }
+    },
+    "benefits": {
+      "title": "Benefits of Regular Evaluations",
+      "growth": "Accelerated professional growth and skill development",
+      "clarity": "Clear understanding of expectations and performance standards",
+      "recognition": "Recognition of achievements and contributions",
+      "alignment": "Better alignment between individual and organizational goals"
+    },
+    "cta": {
+      "title": "Ready to transform your performance evaluation process?",
+      "description": "Join organizations worldwide using our evaluation system to build high-performing teams and drive success.",
+      "button": "Get Started"
+    }
   },
   "time": {
     "now": "Now",
@@ -444,11 +642,11 @@
     "endDate": "End Date"
   },
   "evaluationScale": {
-      "title": "Evaluation Scale",
-      "any": "Any scale",
-      "low": "Low contribution",
-      "partial": "Partial contribution",
-      "expected": "Expected contribution",
-      "exceed": "Exceeded contribution"
-    }
+    "title": "Evaluation Scale",
+    "any": "Any scale",
+    "low": "Low contribution",
+    "partial": "Partial contribution",
+    "expected": "Expected contribution",
+    "exceed": "Exceeded contribution"
+  }
 }

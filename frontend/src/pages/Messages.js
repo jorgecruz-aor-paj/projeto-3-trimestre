@@ -99,9 +99,9 @@ export const Messages = () => {
             </div>
 
             <div className="card-body p-0">
-              <div className="row g-0" style={{ height: '600px' }}>
+              <div className="row g-0 messages-layout">
                 {/* Conversations Sidebar */}
-                <div className="col-md-4 border-end">
+                <div className="col-md-4 border-end conversations-sidebar">
                   <div className="h-100 d-flex flex-column">
                     {/* User selection dropdown */}
                     {showUserList && (
@@ -210,7 +210,7 @@ export const Messages = () => {
                 </div>
 
                 {/* Chat Area */}
-                <div className="col-md-8">
+                <div className="col-md-8 chat-area">
                   {activeConversation ? (
                     <div className="h-100 d-flex flex-column">
                       <ChatHeader user={activeConversation} />
@@ -274,6 +274,30 @@ export const Messages = () => {
           font-weight: 600;
           color: white;
           font-size: 14px;
+        }
+        
+        /* Fixed height layout styles */
+        .messages-layout {
+          height: 600px;
+          overflow: hidden;
+        }
+        
+        .conversations-sidebar {
+          height: 100%;
+          overflow-y: hidden;
+        }
+        
+        .chat-area {
+          height: 100%;
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+        }
+        
+        .chat-area > div {
+          display: flex;
+          flex-direction: column;
+          height: 100%;
         }
       `}</style>
     </div>

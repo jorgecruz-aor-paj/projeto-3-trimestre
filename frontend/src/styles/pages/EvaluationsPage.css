@@ -1,0 +1,147 @@
+/* Evaluations page styles */
+.evaluations-page {
+
+    /* Ensure proper spacing between all sections */
+    & section {
+        padding: 4rem 0;
+    }
+}
+
+/* Hero section styles */
+.hero-section {
+    background-color: #f8f9fa;
+    padding: 6rem 0;
+}
+
+.hero-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Features section styles */
+.features-section {
+    background-color: #fff;
+}
+
+.feature-card {
+    transition: all 0.3s ease;
+    border: none;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    color: #C01722;
+    height: 70px;
+    width: 70px;
+    line-height: 70px;
+    margin: 0 auto;
+    border-radius: 50%;
+    background-color: rgba(192, 23, 34, 0.1);
+}
+
+/* Process section styles */
+.process-section {
+    background-color: #f8f9fa;
+}
+
+.process-step {
+    position: relative;
+}
+
+.step-number {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #C01722 0%, #8B0000 100%);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
+
+.process-step h5 {
+    color: #C01722;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+/* Add connecting lines between steps on larger screens */
+@media (min-width: 768px) {
+    .process-step:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        top: 30px;
+        left: calc(50% + 30px);
+        width: calc(100% - 60px);
+        height: 2px;
+        background: linear-gradient(90deg, #C01722 0%, rgba(192, 23, 34, 0.3) 100%);
+        z-index: 1;
+    }
+}
+
+/* Benefits section styles */
+.benefits-section {
+    background-color: #fff;
+}
+
+.benefit-item {
+    display: flex;
+    align-items: center;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
+
+.benefit-item i {
+    font-size: 1.25rem;
+}
+
+/* Call to action section styles */
+.cta-section {
+    background: linear-gradient(135deg, #C01722 0%, #8B0000 100%);
+    padding: 5rem 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .hero-section {
+        padding: 4rem 0;
+        text-align: center;
+    }
+
+    .hero-image {
+        margin-top: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .evaluations-page section {
+        padding: 3rem 0;
+    }
+
+    .benefit-item {
+        font-size: 1rem;
+    }
+
+    .step-number {
+        width: 50px;
+        height: 50px;
+        font-size: 1.25rem;
+    }
+
+    .process-step:not(:last-child)::after {
+        display: none;
+    }
+}

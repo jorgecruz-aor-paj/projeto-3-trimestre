@@ -167,7 +167,122 @@
     "forbidden": "Acesso negado. Não tem permissões para aceder a este recurso.",
     "notFound": "Recurso não encontrado.",
     "validation": "Erro de validação. Verifique os dados introduzidos.",
-    "timeout": "A operação demorou demasiado tempo. Tente novamente."
+    "timeout": "A operação demorou demasiado tempo. Tente novamente.",
+    "notFoundPage": {
+      "title": "Página Não Encontrada",
+      "description": "Desculpe, a página que procura não foi encontrada. Pode ter sido movida, eliminada ou introduziu um URL incorreto.",
+      "goHome": "Ir para a Página Inicial",
+      "goBack": "Voltar",
+      "suggestions": {
+        "title": "O que pode fazer?",
+        "checkUrl": "Verifique se há erros no URL",
+        "useNavigation": "Use o menu de navegação para encontrar o que precisa",
+        "contact": "Contacte o suporte se acredita que isto é um erro"
+      }
+    },
+    "forbiddenPage": {
+      "title": "Acesso Proibido",
+      "description": "Não tem permissão para aceder a este recurso. Contacte o seu administrador se acredita que deveria ter acesso.",
+      "goDashboard": "Ir para o Painel",
+      "goHome": "Ir para a Página Inicial",
+      "goBack": "Voltar",
+      "suggestions": {
+        "title": "Precisa de acesso?",
+        "checkRole": "Verifique a sua função e permissões da conta",
+        "contactAdmin": "Contacte o seu administrador para obter acesso",
+        "relogin": "Tente terminar sessão e iniciar sessão novamente"
+      }
+    },
+    "serverErrorPage": {
+      "title": "Algo Correu Mal",
+      "description": "Estamos a experienciar algumas dificuldades técnicas. A nossa equipa foi notificada e está a trabalhar para resolver o problema.",
+      "refresh": "Tentar Novamente",
+      "goHome": "Ir para a Página Inicial",
+      "goBack": "Voltar",
+      "suggestions": {
+        "title": "O que aconteceu?",
+        "temporary": "Isto é provavelmente um problema temporário",
+        "maintenance": "O servidor pode estar em manutenção",
+        "tryLater": "Tente novamente em alguns minutos"
+      },
+      "errorId": "ID do Erro"
+    },
+    "networkPage": {
+      "title": "Problema de Conexão",
+      "description": "Não foi possível conectar aos nossos servidores. Verifique a sua conexão à internet e tente novamente.",
+      "retry": "Tentar Conexão",
+      "goHome": "Ir para a Página Inicial",
+      "goOffline": "Continuar Offline",
+      "suggestions": {
+        "title": "Passos para resolução:",
+        "checkConnection": "Verifique a sua conexão à internet",
+        "restartRouter": "Reinicie o seu router ou modem",
+        "checkFirewall": "Verifique as configurações de firewall ou proxy",
+        "waitAndRetry": "Aguarde um momento e tente novamente"
+      },
+      "status": "Estado da Conexão: Offline"
+    },
+    "genericPage": {
+      "title": "Ups! Algo correu mal",
+      "description": "Ocorreu um erro inesperado. Pedimos desculpa pelo inconveniente e estamos a trabalhar para corrigir este problema.",
+      "retry": "Tentar Novamente",
+      "goHome": "Ir para a Página Inicial",
+      "goBack": "Voltar",
+      "suggestions": {
+        "title": "O que pode tentar?",
+        "refresh": "Atualize a página e tente novamente",
+        "waitAndRetry": "Aguarde alguns minutos e tente novamente",
+        "goBack": "Volte para a página anterior",
+        "contactSupport": "Contacte o suporte se o problema persistir"
+      },
+      "contactSupport": "Contactar Suporte",
+      "errorId": "ID do Erro",
+      "timestamp": "Hora"
+    }
+  },
+  "offline": {
+    "title": "Está Offline",
+    "description": "Não foi detetada conexão à internet. Algumas funcionalidades podem não estar disponíveis, mas ainda pode aceder ao conteúdo em cache.",
+    "retry": "Tentar Novamente",
+    "viewCached": "Ver Conteúdo em Cache",
+    "goHome": "Ir para o Início",
+    "stillOffline": "Ainda offline. Verifique a sua conexão.",
+    "features": {
+      "cached": {
+        "title": "Conteúdo em Cache",
+        "description": "Aceda a conteúdo e dados previamente carregados que estão armazenados localmente.",
+        "action": "Navegar em Cache"
+      },
+      "drafts": {
+        "title": "Trabalhar Offline",
+        "description": "Continue a trabalhar com rascunhos e dados locais. As alterações sincronizarão quando voltar a estar online.",
+        "action": "Ver Rascunhos"
+      }
+    },
+    "tips": {
+      "title": "Enquanto está offline:",
+      "browse": "Navegar páginas em cache",
+      "edit": "Editar conteúdo de rascunho",
+      "sync": "Sincronização automática quando online"
+    },
+    "status": "Estado: Modo Offline",
+    "autoCheck": "A verificar automaticamente a conexão..."
+  },
+  "errorDemo": {
+    "title": "Demonstração de Tratamento de Erros",
+    "info": {
+      "title": "Como funciona",
+      "description": "Esta demonstração mostra como funciona o sistema de tratamento de erros. Clique nos botões abaixo para simular diferentes cenários de erro."
+    },
+    "simulate": {
+      "title": "Simular Erros"
+    },
+    "direct": {
+      "title": "Navegação Direta"
+    },
+    "usage": {
+      "title": "Exemplos de Uso"
+    }
   },
   "status": {
     "active": "Ativo",
@@ -391,8 +506,40 @@
     "language": "Idioma",
     "difficulty": "Dificuldade",
     "progress": "Progresso",
+    "duration": "Duração",
     "enrollInTraining": "Inscrever-se na Formação",
-    "duration": "Duração"
+    "hero": {
+      "subtitle": "Desbloqueie o seu potencial com os nossos programas de formação abrangentes, concebidos para melhorar competências e acelerar o crescimento da carreira.",
+      "exploreTrainings": "Explorar Formações",
+      "viewProgress": "Ver o Meu Progresso"
+    },
+    "features": {
+      "title": "Funcionalidades de Formação",
+      "diverse": {
+        "title": "Programas Diversificados",
+        "description": "Aceda a uma vasta gama de programas de formação que cobrem competências técnicas, liderança e desenvolvimento profissional."
+      },
+      "progress": {
+        "title": "Acompanhamento de Progresso",
+        "description": "Monitorize a sua jornada de aprendizagem com acompanhamento detalhado do progresso e certificados de conclusão."
+      },
+      "expert": {
+        "title": "Instrutores Especialistas",
+        "description": "Aprenda com especialistas da indústria e profissionais experientes através de sessões interativas e mentoria."
+      }
+    },
+    "benefits": {
+      "title": "Porquê Escolher os Nossos Programas de Formação?",
+      "flexible": "Horários flexíveis para se adequar ao seu equilíbrio trabalho-vida",
+      "personalized": "Percursos de aprendizagem personalizados baseados na sua função e objetivos",
+      "certificates": "Certificados reconhecidos pela indústria após conclusão",
+      "support": "Suporte de aprendizagem 24/7 e acesso à comunidade"
+    },
+    "cta": {
+      "title": "Pronto para avançar na sua carreira com formação profissional?",
+      "description": "Junte-se a milhares de profissionais que melhoraram as suas competências e aceleraram as suas carreiras através dos nossos programas de formação.",
+      "button": "Começar a Aprender Hoje"
+    }
   },
   "evaluations": {
     "title": "Avaliações",
@@ -412,7 +559,58 @@
     "evaluationNotes": "Notas da Avaliação",
     "submitEvaluation": "Submeter Avaliação",
     "evaluationSubmitted": "Avaliação submetida com sucesso",
-    "evaluationPeriod": "Período de Avaliação"
+    "evaluationPeriod": "Período de Avaliação",
+    "hero": {
+      "subtitle": "Ferramentas abrangentes de avaliação de desempenho que impulsionam feedback significativo, crescimento e sucesso organizacional.",
+      "viewEvaluations": "Ver Avaliações",
+      "learnProcess": "Conhecer o Processo"
+    },
+    "features": {
+      "title": "Funcionalidades de Avaliação",
+      "comprehensive": {
+        "title": "Avaliação 360°",
+        "description": "Avaliações multidimensionais incluindo auto-avaliação, feedback de pares e revisões de gestores para insights completos."
+      },
+      "analytics": {
+        "title": "Análise de Desempenho",
+        "description": "Análises e relatórios detalhados para identificar pontos fortes, áreas de melhoria e tendências de desempenho."
+      },
+      "goals": {
+        "title": "Orientado por Objetivos",
+        "description": "Ligue avaliações a objetivos e metas específicos, garantindo alinhamento com as prioridades organizacionais."
+      }
+    },
+    "process": {
+      "title": "Processo de Avaliação",
+      "step1": {
+        "title": "Definir Objetivos",
+        "description": "Defina objetivos de desempenho claros e resultados-chave para o período de avaliação."
+      },
+      "step2": {
+        "title": "Feedback Contínuo",
+        "description": "Forneça feedback e suporte contínuos durante todo o período de avaliação."
+      },
+      "step3": {
+        "title": "Revisão Formal",
+        "description": "Conduza sessões de avaliação abrangentes com avaliações estruturadas."
+      },
+      "step4": {
+        "title": "Plano de Desenvolvimento",
+        "description": "Crie planos de desenvolvimento personalizados baseados nos resultados da avaliação."
+      }
+    },
+    "benefits": {
+      "title": "Benefícios das Avaliações Regulares",
+      "growth": "Crescimento profissional acelerado e desenvolvimento de competências",
+      "clarity": "Compreensão clara das expectativas e padrões de desempenho",
+      "recognition": "Reconhecimento de conquistas e contribuições",
+      "alignment": "Melhor alinhamento entre objetivos individuais e organizacionais"
+    },
+    "cta": {
+      "title": "Pronto para transformar o seu processo de avaliação de desempenho?",
+      "description": "Junte-se a organizações em todo o mundo que utilizam o nosso sistema de avaliação para construir equipas de alto desempenho e impulsionar o sucesso.",
+      "button": "Começar Agora"
+    }
   },
   "time": {
     "now": "Agora",

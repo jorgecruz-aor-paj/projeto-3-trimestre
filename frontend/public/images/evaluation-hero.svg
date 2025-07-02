@@ -1,0 +1,61 @@
+<svg width="600" height="400" viewBox="0 0 600 400"
+    xmlns="http://www.w3.org/2000/svg">
+    <!-- Background -->
+    <rect width="600" height="400" fill="#f8f9fa"/>
+
+    <!-- Main container -->
+    <rect x="50" y="50" width="500" height="300" rx="20" fill="#ffffff" stroke="#C01722" stroke-width="3"/>
+
+    <!-- 360 degree evaluation circle -->
+    <circle cx="200" cy="160" r="50" fill="none" stroke="#2A9D8F" stroke-width="4"/>
+    <circle cx="200" cy="160" r="30" fill="#E9C46A" opacity="0.3"/>
+
+    <!-- Evaluation points around circle -->
+    <circle cx="200" cy="110" r="8" fill="#C01722"/>
+    <text x="200" y="100" text-anchor="middle" fill="#1D3557" font-family="Arial" font-size="10" font-weight="bold">Self</text>
+
+    <circle cx="250" cy="160" r="8" fill="#C01722"/>
+    <text x="270" y="165" text-anchor="middle" fill="#1D3557" font-family="Arial" font-size="10" font-weight="bold">Manager</text>
+
+    <circle cx="200" cy="210" r="8" fill="#C01722"/>
+    <text x="200" y="230" text-anchor="middle" fill="#1D3557" font-family="Arial" font-size="10" font-weight="bold">Peers</text>
+
+    <circle cx="150" cy="160" r="8" fill="#C01722"/>
+    <text x="130" y="165" text-anchor="middle" fill="#1D3557" font-family="Arial" font-size="10" font-weight="bold">Team</text>
+
+    <!-- Analytics chart -->
+    <rect x="350" y="120" width="120" height="80" rx="8" fill="#457B9D" opacity="0.1"/>
+    <rect x="360" y="140" width="15" height="40" fill="#2A9D8F"/>
+    <rect x="380" y="130" width="15" height="50" fill="#F77F00"/>
+    <rect x="400" y="125" width="15" height="55" fill="#C01722"/>
+    <rect x="420" y="135" width="15" height="45" fill="#E9C46A"/>
+    <rect x="440" y="145" width="15" height="35" fill="#457B9D"/>
+
+    <!-- Goal targets -->
+    <circle cx="150" cy="280" r="15" fill="#2A9D8F" opacity="0.3"/>
+    <circle cx="150" cy="280" r="8" fill="#2A9D8F"/>
+    <text x="150" y="285" text-anchor="middle" fill="#F1FAEE" font-family="Arial" font-size="10" font-weight="bold">1</text>
+
+    <circle cx="200" cy="280" r="15" fill="#F77F00" opacity="0.3"/>
+    <circle cx="200" cy="280" r="8" fill="#F77F00"/>
+    <text x="200" y="285" text-anchor="middle" fill="#F1FAEE" font-family="Arial" font-size="10" font-weight="bold">2</text>
+
+    <circle cx="250" cy="280" r="15" fill="#C01722" opacity="0.3"/>
+    <circle cx="250" cy="280" r="8" fill="#C01722"/>
+    <text x="250" y="285" text-anchor="middle" fill="#F1FAEE" font-family="Arial" font-size="10" font-weight="bold">3</text>
+
+    <circle cx="300" cy="280" r="15" fill="#E9C46A" opacity="0.3"/>
+    <circle cx="300" cy="280" r="8" fill="#E9C46A"/>
+    <text x="300" y="285" text-anchor="middle" fill="#1D3557" font-family="Arial" font-size="10" font-weight="bold">4</text>
+
+    <!-- Connection lines -->
+    <line x1="165" y1="280" x2="185" y2="280" stroke="#2A9D8F" stroke-width="2"/>
+    <line x1="215" y1="280" x2="235" y2="280" stroke="#F77F00" stroke-width="2"/>
+    <line x1="265" y1="280" x2="285" y2="280" stroke="#C01722" stroke-width="2"/>
+
+    <!-- Title -->
+    <text x="300" y="90" text-anchor="middle" fill="#1D3557" font-family="Arial" font-size="24" font-weight="bold">Performance Evaluation</text>
+
+    <!-- Subtitle -->
+    <text x="300" y="320" text-anchor="middle" fill="#457B9D" font-family="Arial" font-size="16">Comprehensive 360° feedback and analytics</text>
+</svg>

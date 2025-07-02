@@ -1,6 +1,8 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Home } from 'pages/Home';
+import { TrainingsPage } from 'pages/TrainingsPage';
+import { EvaluationsPage } from 'pages/EvaluationsPage';
 import { MainLayout } from 'components/layout/MainLayout';
 import { AuthTogglePage } from 'pages/LoginRegisterPage';
 import { ResetPasswordPage } from 'components/auth/ResetPasswordPage';
@@ -10,6 +12,14 @@ import { Dashboard } from 'pages/Dashboard';
 import { UsersPage } from 'pages/UsersPage';
 import { Messages } from 'pages/Messages';
 import ProfilePage from 'pages/ProfilePage';
+import {
+  NotFoundRoute,
+  ForbiddenRoute,
+  ServerErrorRoute,
+  NetworkErrorRoute,
+  GenericErrorRoute,
+  OfflinePage,
+} from 'pages/errors';
 
 /**
  * AppRouter component that defines all application routes
@@ -36,6 +46,8 @@ export const AppRouter = () => {
       <Route element={<MainLayout />}>
         {/* Routes */}
         <Route path="/" element={<Home />} />
+        <Route path="/trainings" element={<TrainingsPage />} />
+        <Route path="/evaluations" element={<EvaluationsPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/auth" element={<AuthTogglePage />} />
         <Route path="/login" element={<AuthTogglePage />} />
@@ -46,6 +58,18 @@ export const AppRouter = () => {
         <Route path="/users" element={<UsersPage />} />
         <Route path="/messages" element={<Messages />} />
         <Route path="/profile" element={<ProfilePage />} />
+
+        {/* Error Routes */}
+        <Route path="/error/404" element={<NotFoundRoute />} />
+        <Route path="/error/403" element={<ForbiddenRoute />} />
+        <Route path="/error/500" element={<ServerErrorRoute />} />
+        <Route path="/error/network" element={<NetworkErrorRoute />} />
+        <Route path="/error/generic" element={<GenericErrorRoute />} />
+        <Route path="/offline" element={<OfflinePage />} />
+
+        {/* Catch-all route for undefined paths */}
+        <Route path="*" element={<NotFoundRoute />} />
+
         {/* Definir o resto das Routes */}
       </Route>
     </Routes>

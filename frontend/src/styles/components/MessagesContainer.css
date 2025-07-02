@@ -1,5 +1,9 @@
 .messages-container {
     background: #f8f9fa;
+    flex: 1;
+    overflow-y: auto;
+    max-height: 100%;
+    padding: 1rem;
 }
 
 .message-wrapper {
