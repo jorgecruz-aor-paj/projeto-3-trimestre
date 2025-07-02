@@ -1,0 +1,17 @@
+.message-input-container {
+    flex-shrink: 0;
+    z-index: 10;
+    position: relative;
+}
+
+.message-input-container .form-control {
+    border-radius: 20px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.message-input-container .btn {
+    border-radius: 20px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}

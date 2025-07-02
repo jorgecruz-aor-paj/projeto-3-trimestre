@@ -42,7 +42,7 @@ export const MessagesContainer = ({ messages, currentUserId }) => {
   }
 
   return (
-    <div className="flex-fill overflow-auto p-3 messages-container">
+    <div className="messages-container">
       {messages.map((message, index) => {
         const isOwnMessage = message.senderId === currentUserId;
 

@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
+import 'styles/components/MessageInput.css';
 
 export const MessageInput = ({ onSendMessage, disabled = false }) => {
   const { t } = useTranslation();
@@ -16,7 +17,7 @@ export const MessageInput = ({ onSendMessage, disabled = false }) => {
     }
   };
 
-  const handleKeyPress = e => {
+  const handleKeyDown = e => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSubmit(e);
@@ -24,7 +25,7 @@ export const MessageInput = ({ onSendMessage, disabled = false }) => {
   };
 
   return (
-    <div className="border-top p-3 bg-white">
+    <div className="message-input-container border-top p-3 bg-white">
       <form onSubmit={handleSubmit}>
         <div className="input-group">
           <input
@@ -34,7 +35,7 @@ export const MessageInput = ({ onSendMessage, disabled = false }) => {
             placeholder={t('messages.typeMessage', 'Type a message...')}
             value={message}
             onChange={e => setMessage(e.target.value)}
-            onKeyPress={handleKeyPress}
+            onKeyDown={handleKeyDown}
             disabled={disabled}
           />
           <button

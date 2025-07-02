@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
+import 'styles/components/ChatHeader.css';
 
 export const ChatHeader = ({ user }) => {
   const { t } = useTranslation();
@@ -8,7 +9,7 @@ export const ChatHeader = ({ user }) => {
   if (!user) return null;
 
   return (
-    <div className="border-bottom p-3 bg-light">
+    <div className="border-bottom p-3 bg-light chat-header">
       <div className="d-flex align-items-center">
         <div className="avatar-sm me-3">
           <div className="avatar-initial rounded-circle bg-primary">
