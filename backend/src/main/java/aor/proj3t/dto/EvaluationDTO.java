@@ -27,8 +27,8 @@ public class EvaluationDTO {
     private Instant createdAt;
     @XmlElement(name = "editedAt")
     private Instant editedAt;
-    @XmlElement(name = "evaluationCycleId")
-    private Long evaluationCycleId;
+    @XmlElement(name = "evaluationCycle")
+    private MiniEvaluationCycleDTO evaluationCycle;
     @XmlElement(name = "evaluateeId")
     private MiniUserDTO evaluatee;
     @XmlElement(name = "evaluatorId")
@@ -38,7 +38,7 @@ public class EvaluationDTO {
     }
 
     public EvaluationDTO(Long id, EvaluationScale scale, EvaluationStatus state, String feedback,
-                         Instant createdAt, Instant editedAt, Long evaluationCycleId,
+                         Instant createdAt, Instant editedAt, MiniEvaluationCycleDTO evaluationCycle,
                          MiniUserDTO evaluatee, MiniUserDTO evaluator) {
         this.id = id;
         this.scale = scale;
@@ -46,7 +46,7 @@ public class EvaluationDTO {
         this.feedback = feedback;
         this.createdAt = createdAt;
         this.editedAt = editedAt;
-        this.evaluationCycleId = evaluationCycleId;
+        this.evaluationCycle = evaluationCycle;
         this.evaluatee = evaluatee;
         this.evaluator = evaluator;
     }
@@ -99,12 +99,12 @@ public class EvaluationDTO {
         this.editedAt = editedAt;
     }
 
-    public Long getEvaluationCycleId() {
-        return evaluationCycleId;
+    public MiniEvaluationCycleDTO getEvaluationCycle() {
+        return evaluationCycle;
     }
 
-    public void setEvaluationCycleId(Long evaluationCycleId) {
-        this.evaluationCycleId = evaluationCycleId;
+    public void setEvaluationCycle(MiniEvaluationCycleDTO evaluationCycle) {
+        this.evaluationCycle = evaluationCycle;
     }
 
     public MiniUserDTO getEvaluatee() {

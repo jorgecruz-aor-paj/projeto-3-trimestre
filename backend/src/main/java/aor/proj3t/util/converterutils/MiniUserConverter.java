@@ -16,7 +16,7 @@ public class MiniUserConverter {
     }
 
     public List<MiniUserDTO> toMiniUserDTOList(List<User> users) {
-        List<MiniUserDTO> miniUserDTOList = new ArrayList<>();
+        List<MiniUserDTO> miniUserDTOList = new ArrayList<>(users.size());
         for (User user : users) {
             miniUserDTOList.add(toMiniUserDTO(user));
         }
