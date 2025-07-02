@@ -1,5 +1,22 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
+import { API_ENDPOINTS } from 'api/apiConfig';
+
+// Simple in-memory cache to avoid redundant requests
+const imageCache = new Map();
+
+// Debug function to inspect cache (available in browser console)
+window.profilePictureCache = {
+  getCache: () => imageCache,
+  clearCache: () => imageCache.clear(),
+  clearUser: userId => imageCache.delete(`profile_${userId}`),
+  inspect: () => {
+    console.log('Profile Picture Cache Contents:');
+    imageCache.forEach((value, key) => {
+      console.log(`${key}: ${value}`);
+    });
+  },
+};
 
 /**
  * Reusable ProfilePicture component that handles user profile pictures
@@ -15,31 +32,59 @@ export const ProfilePicture = ({
   onError,
   ...props
 }) => {
-  const [imgSrc, setImgSrc] = useState('');
+  const [imgSrc, setImgSrc] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   // Generate profile picture URL - backend handles all cases including default
   const generateSrc = useCallback(() => {
     if (!userId) return fallbackSrc; // Only use frontend fallback if no userId provided
+
+    // Check if we have a cached URL for this user
+    const cacheKey = `profile_${userId}`;
+    if (imageCache.has(cacheKey)) {
+      return imageCache.get(cacheKey);
+    }
+
     // Backend will serve either user's picture or default-profile-picture.png
-    return `/api/users/${userId}/profile/picture`;
+    const url = API_ENDPOINTS.user.profilePicture(userId).url;
+    imageCache.set(cacheKey, url);
+    return url;
   }, [userId, fallbackSrc]);
 
   // Initialize image source
   useEffect(() => {
     const newSrc = generateSrc();
-    setImgSrc(newSrc);
-    setIsLoading(true);
+    // Only set imgSrc if we have a valid URL (not empty string)
+    if (newSrc && newSrc.trim() !== '') {
+      setImgSrc(newSrc);
+      setIsLoading(true);
+    } else {
+      setImgSrc(null);
+      setIsLoading(false);
+    }
   }, [generateSrc]);
 
   // Listen for profile picture updates
   useEffect(() => {
     const handleProfilePictureUpdate = event => {
       if (event.detail?.userId === userId) {
-        // Force reload with timestamp to bypass cache
+        // Clear cache for this user
+        const cacheKey = `profile_${userId}`;
+        imageCache.delete(cacheKey);
+
+        // Force reload with timestamp to bypass browser cache
         const timestamp = Date.now();
-        setImgSrc(`/api/users/${userId}/profile/picture?_t=${timestamp}`);
-        setIsLoading(true);
+        const newSrc = `${
+          API_ENDPOINTS.user.profilePicture(userId).url
+        }?_t=${timestamp}`;
+
+        // Update our app cache with the new timestamped URL
+        imageCache.set(cacheKey, newSrc);
+
+        if (newSrc && newSrc.trim() !== '') {
+          setImgSrc(newSrc);
+          setIsLoading(true);
+        }
       }
     };
 
@@ -84,7 +129,7 @@ export const ProfilePicture = ({
     }
   };
 
-  return (
+  return imgSrc ? (
     <img
       src={imgSrc}
       alt={alt}
@@ -94,7 +139,7 @@ export const ProfilePicture = ({
       onLoad={handleLoad}
       {...props}
     />
-  );
+  ) : null;
 };
 
 ProfilePicture.propTypes = {

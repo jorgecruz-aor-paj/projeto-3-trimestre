@@ -105,6 +105,12 @@
             <artifactId>log4j-core</artifactId>
             <version>${log4j.version}</version>
         </dependency>
+        <!-- SLF4J to Log4j2 bridge to handle SLF4J calls from iText PDF library -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j2-impl</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
 
         <!-- Dependência do jBCrypt para hashing de senhas -->
         <dependency>

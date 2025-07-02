@@ -48,18 +48,7 @@ export const Header = () => {
     } else {
       disconnectWebSocket();
     }
-
-    // Cleanup WebSocket on unmount
-    return () => {
-      disconnectWebSocket();
-    };
-  }, [
-    isAuthenticated,
-    user?.id,
-    initializeWebSocket,
-    loadUnreadCount,
-    disconnectWebSocket,
-  ]);
+  }, [isAuthenticated, user?.id]);
 
   // Handle logout
   const handleLogout = async () => {

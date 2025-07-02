@@ -19,10 +19,11 @@ export const useMessageStore = create((set, get) => ({
     const currentUserId = useAuthStore.getState().user?.id;
     if (!currentUserId) return;
 
+    // Only connect if not already connected
     if (websocketService.isConnected()) return;
 
     try {
-      websocketService.connect(currentUserId);
+      websocketService.connect();
 
       // Subscribe to incoming messages
       websocketService.onMessage(messageData => {
