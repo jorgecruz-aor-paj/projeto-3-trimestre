@@ -35,6 +35,7 @@ const ProfileEvaluationsFilter = ({ filters, setFilters, displayedUserId }) => {
       : userList;
 
   // Keep both raw and API date in state for correct display and API usage
+  // Add dateDisplay for user-friendly display of selected date
   const handleChange = e => {
     const { name, value, type, checked } = e.target;
     if (name === 'startDate' || name === 'endDate') {
@@ -42,10 +43,10 @@ const ProfileEvaluationsFilter = ({ filters, setFilters, displayedUserId }) => {
         const next = { ...prev };
         if (value) {
           next[name] = toApiDateTime(value, name === 'endDate');
+          next[`${name}Display`] = value; // Store raw date for display
         } else {
           delete next[name];
-          // Also clear the input value for display
-          next[name] = '';
+          delete next[`${name}Display`];
         }
         return next;
       });
@@ -185,7 +186,7 @@ const ProfileEvaluationsFilter = ({ filters, setFilters, displayedUserId }) => {
                 id="startDate"
                 type="date"
                 name="startDate"
-                value={filters.startDate || ''}
+                value={filters.startDateDisplay || ''}
                 onChange={handleChange}
                 className="form-control form-control-sm"
                 style={{ minWidth: 120 }}
@@ -200,7 +201,7 @@ const ProfileEvaluationsFilter = ({ filters, setFilters, displayedUserId }) => {
                 id="endDate"
                 type="date"
                 name="endDate"
-                value={filters.endDate || ''}
+                value={filters.endDateDisplay || ''}
                 onChange={handleChange}
                 className="form-control form-control-sm"
                 style={{ minWidth: 120 }}
