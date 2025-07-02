@@ -99,17 +99,26 @@ public class MessageWebSocket {
             session.getUserProperties().put("userId", userId);
 
             try {
-                // Send connection confirmation
-                Map<String, Object> response = Map.of(
-                        "type", "connect",
-                        "status", "success",
-                        "userId", userId);
-                session.getBasicRemote().sendText(jsonb.toJson(response));
+                // Check if session is still open before sending
+                if (session.isOpen()) {
+                    // Send connection confirmation
+                    Map<String, Object> response = Map.of(
+                            "type", "connect",
+                            "status", "success",
+                            "userId", userId);
+                    session.getBasicRemote().sendText(jsonb.toJson(response));
 
-                // Send any pending notifications or messages
-                sendPendingNotifications(userId);
+                    // Send any pending notifications or messages
+                    sendPendingNotifications(userId);
+                } else {
+                    logger.warn("Session is already closed for user {}, skipping confirmation message", userId);
+                    // Remove from session manager since it's already closed
+                    WebSocketSessionManager.removeSession(userId);
+                }
             } catch (IOException | JsonbException e) {
                 logger.error("Error sending connection confirmation to user {}", userId, e);
+                // Clean up the session from the manager on error
+                WebSocketSessionManager.removeSession(userId);
             }
 
         } catch (Exception e) {
@@ -225,10 +234,15 @@ public class MessageWebSocket {
      */
     private void sendErrorMessage(Session session, String errorMessage) {
         try {
-            Map<String, Object> error = Map.of(
-                    "type", "error",
-                    "message", errorMessage);
-            session.getBasicRemote().sendText(jsonb.toJson(error));
+            // Check if session is still open before sending
+            if (session.isOpen()) {
+                Map<String, Object> error = Map.of(
+                        "type", "error",
+                        "message", errorMessage);
+                session.getBasicRemote().sendText(jsonb.toJson(error));
+            } else {
+                logger.debug("Session is closed, cannot send error message: {}", errorMessage);
+            }
         } catch (IOException | JsonbException e) {
             logger.error("Error sending error message", e);
         }
@@ -294,7 +308,11 @@ public class MessageWebSocket {
             }
 
             // Send confirmation to sender
-            session.getBasicRemote().sendText(jsonb.toJson(senderConfirmation));
+            if (session.isOpen()) {
+                session.getBasicRemote().sendText(jsonb.toJson(senderConfirmation));
+            } else {
+                logger.debug("Sender session is closed, cannot send message confirmation");
+            }
 
         } catch (JsonbException | IOException e) {
             logger.error("Error handling direct message", e);
@@ -399,32 +417,47 @@ public class MessageWebSocket {
      */
     private void sendPendingNotifications(Long userId) {
         try {
+            // Verify the session is still open before sending notifications
+            Session session = WebSocketSessionManager.getSession(userId);
+            if (session == null || !session.isOpen()) {
+                logger.debug("Session for user {} is not available or closed, skipping pending notifications", userId);
+                return;
+            }
+
             // Get unread notifications
-            serviceFactory.forNotification().getUserNotifications(userId).stream()
+            var notifications = serviceFactory.forNotification().getUserNotifications(userId).stream()
                     .filter(n -> !n.isRead())
-                    .forEach(notification -> {
-                        try {
-                            // Create notification data
-                            Map<String, Object> notificationObject = new HashMap<>();
-                            notificationObject.put("id", notification.getId());
-                            notificationObject.put("senderId", notification.getSenderId());
-                            notificationObject.put("recipientId", notification.getRecipientId());
-                            notificationObject.put("content", notification.getContent());
-                            notificationObject.put("type", notification.getType().toString());
-                            notificationObject.put("timestamp", Objects.toString(notification.getTimestampSent(), ""));
-                            notificationObject.put("read", notification.isRead());
+                    .toList();
 
-                            Map<String, Object> message = Map.of(
-                                    "type", "notification",
-                                    "notification", notificationObject);
+            for (var notification : notifications) {
+                try {
+                    // Check session is still open before each notification
+                    if (!session.isOpen()) {
+                        logger.debug("Session closed while sending notifications to user {}", userId);
+                        break; // Stop processing notifications
+                    }
 
-                            // Send to the user
-                            sendToUser(userId, jsonb.toJson(message));
+                    // Create notification data
+                    Map<String, Object> notificationObject = new HashMap<>();
+                    notificationObject.put("id", notification.getId());
+                    notificationObject.put("senderId", notification.getSenderId());
+                    notificationObject.put("recipientId", notification.getRecipientId());
+                    notificationObject.put("content", notification.getContent());
+                    notificationObject.put("type", notification.getType().toString());
+                    notificationObject.put("timestamp", Objects.toString(notification.getTimestampSent(), ""));
+                    notificationObject.put("read", notification.isRead());
 
-                        } catch (JsonbException e) {
-                            logger.error("Error sending notification", e);
-                        }
-                    });
+                    Map<String, Object> message = Map.of(
+                            "type", "notification",
+                            "notification", notificationObject);
+
+                    // Send to the user
+                    sendToUser(userId, jsonb.toJson(message));
+
+                } catch (JsonbException e) {
+                    logger.error("Error sending notification", e);
+                }
+            }
 
         } catch (Exception e) {
             logger.error("Error sending pending notifications", e);
@@ -443,9 +476,15 @@ public class MessageWebSocket {
             if (session != null && session.isOpen()) {
                 session.getAsyncRemote().sendText(message);
                 logger.debug("Message sent to user {}: {}", userId, message);
+            } else {
+                logger.debug("User {} is not connected or session is closed. Removing from session manager.", userId);
+                // Clean up closed session
+                WebSocketSessionManager.removeSession(userId);
             }
         } catch (Exception e) {
             logger.error("Error sending message to user {}", userId, e);
+            // Clean up problematic session
+            WebSocketSessionManager.removeSession(userId);
         }
     }
 
@@ -455,13 +494,20 @@ public class MessageWebSocket {
      * @param message The message to broadcast
      */
     public void broadcast(String message) {
-        WebSocketSessionManager.getAllSessions().forEach((userId, session) -> {
+        WebSocketSessionManager.getAllSessions().entrySet().removeIf(entry -> {
+            Long userId = entry.getKey();
+            Session session = entry.getValue();
             try {
                 if (session.isOpen()) {
                     session.getAsyncRemote().sendText(message);
+                    return false; // Keep the session
+                } else {
+                    logger.debug("Removing closed session for user {} during broadcast", userId);
+                    return true; // Remove the session
                 }
             } catch (Exception e) {
                 logger.error("Error broadcasting message to user {}", userId, e);
+                return true; // Remove problematic session
             }
         });
     }

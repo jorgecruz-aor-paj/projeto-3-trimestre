@@ -5,15 +5,15 @@ import { useAuthStore } from 'stores/AuthStore';
 class WebSocketService {
   constructor() {
     this.socket = null;
-    this.reconnectAttempts = 0;
-    this.maxReconnectAttempts = 5;
-    this.reconnectDelay = 1000;
     this.messageHandlers = [];
     this.notificationHandlers = [];
-    this.connected = false;
+    this.reconnectAttempts = 0;
+    this.maxReconnectAttempts = 3;
+    this.reconnectDelay = 2000; // 2 seconds
   }
 
-  connect(userId) {
+  connect() {
+    // If already connected, do nothing
     if (this.socket && this.socket.readyState === WebSocket.OPEN) {
       return this.socket;
     }
@@ -23,87 +23,47 @@ class WebSocketService {
         useAuthStore.getState()?.token || sessionStorage.getItem('token');
 
       if (!token) {
-        console.error(
-          'No authentication token available for WebSocket connection'
-        );
         throw new Error('Authentication token required');
       }
 
       const wsUrl = `${WEBSOCKET_BASE_URL}/websocket/${token}`;
+      console.log('Connecting to WebSocket...');
 
-      console.log('Connecting to WebSocket:', wsUrl);
       this.socket = new WebSocket(wsUrl);
 
       this.socket.onopen = () => {
         console.log('WebSocket connected');
-        this.connected = true;
-        this.reconnectAttempts = 0;
+        this.reconnectAttempts = 0; // Reset on successful connection
       };
 
       this.socket.onmessage = event => {
         try {
           const data = JSON.parse(event.data);
-          console.log('WebSocket message received:', data);
 
-          // Add type validation
-          if (!data.type) {
-            console.warn('Received message without type:', data);
-            return;
-          }
-
-          // Handle different message types more robustly
           switch (data.type) {
             case 'error':
-              console.error('WebSocket error from server:', data.message);
-              if (
-                data.message.includes('Authentication') ||
-                data.message.includes('Unauthorized') ||
-                data.message.includes('Invalid token')
-              ) {
-                this.disconnect();
-                console.error('WebSocket authentication failed, disconnecting');
-                return;
-              }
+              console.error('WebSocket error:', data.message);
               break;
 
             case 'message':
             case 'message_sent':
-              this.messageHandlers.forEach(handler => {
-                try {
-                  handler(data);
-                } catch (error) {
-                  console.error('Error in message handler:', error);
-                }
-              });
+              this.messageHandlers.forEach(handler => handler(data));
               break;
 
             case 'notification':
-              this.notificationHandlers.forEach(handler => {
-                try {
-                  handler(data);
-                } catch (error) {
-                  console.error('Error in notification handler:', error);
-                }
-              });
+              this.notificationHandlers.forEach(handler => handler(data));
               break;
 
             case 'connect':
-              console.log('WebSocket connection confirmed:', data);
+              console.log('WebSocket connection confirmed');
               break;
 
             case 'message_read':
-              // Handle read receipts
-              this.messageHandlers.forEach(handler => {
-                try {
-                  handler(data);
-                } catch (error) {
-                  console.error('Error in read receipt handler:', error);
-                }
-              });
+              this.messageHandlers.forEach(handler => handler(data));
               break;
 
             default:
-              console.warn('Unknown message type:', data.type, data);
+              console.warn('Unknown message type:', data.type);
           }
         } catch (error) {
           console.error('Error parsing WebSocket message:', error);
@@ -112,31 +72,16 @@ class WebSocketService {
 
       this.socket.onclose = event => {
         console.log('WebSocket disconnected:', event.code, event.reason);
-        this.connected = false;
+        this.socket = null;
 
-        // Don't attempt to reconnect on authentication errors
-        if (
-          event.code === 1008 ||
-          event.reason.includes('Authentication') ||
-          event.reason.includes('Unauthorized') ||
-          event.reason.includes('Invalid token')
-        ) {
-          console.error(
-            'WebSocket closed due to authentication error:',
-            event.reason
-          );
-          return;
-        }
-
-        if (event.code !== 1000) {
-          // Not a normal closure
-          this.handleReconnect(userId);
+        // Only try to reconnect if user is still authenticated and it wasn't a manual disconnect
+        if (event.reason !== 'User logout' && useAuthStore.getState()?.token) {
+          this.handleReconnect();
         }
       };
 
       this.socket.onerror = error => {
         console.error('WebSocket error:', error);
-        this.connected = false;
       };
 
       return this.socket;
@@ -146,23 +91,31 @@ class WebSocketService {
     }
   }
 
-  handleReconnect(userId) {
+  handleReconnect() {
     if (this.reconnectAttempts < this.maxReconnectAttempts) {
       this.reconnectAttempts++;
+      console.log(
+        `Attempting to reconnect... (${this.reconnectAttempts}/${this.maxReconnectAttempts})`
+      );
+
       setTimeout(() => {
-        console.log(
-          `Attempting to reconnect... (${this.reconnectAttempts}/${this.maxReconnectAttempts})`
-        );
-        this.connect(userId);
-      }, this.reconnectDelay * this.reconnectAttempts);
+        // Only reconnect if still authenticated
+        if (useAuthStore.getState()?.token) {
+          this.connect();
+        }
+      }, this.reconnectDelay);
+    } else {
+      console.error(
+        'Max reconnection attempts reached. Please refresh the page.'
+      );
     }
   }
 
   disconnect() {
     if (this.socket) {
-      this.socket.close(1000, 'Manual disconnect');
+      console.log('Disconnecting WebSocket');
+      this.socket.close(1000, 'User logout');
       this.socket = null;
-      this.connected = false;
     }
   }
 
@@ -174,22 +127,15 @@ class WebSocketService {
     }
   }
 
-  // Send read receipt via WebSocket
   sendReadReceipt(messageId, senderId) {
-    if (this.socket && this.socket.readyState === WebSocket.OPEN) {
-      const readReceiptData = {
-        type: 'mark_read',
-        senderId: useAuthStore.getState().user?.id,
-        recipientId: senderId, // The sender becomes the recipient of the read receipt
-        messageId: messageId,
-      };
-      this.socket.send(JSON.stringify(readReceiptData));
-    } else {
-      console.warn('WebSocket is not connected, cannot send read receipt');
-    }
+    this.send({
+      type: 'mark_read',
+      senderId: useAuthStore.getState().user?.id,
+      recipientId: senderId,
+      messageId: messageId,
+    });
   }
 
-  // Subscribe to message events
   onMessage(handler) {
     this.messageHandlers.push(handler);
     return () => {
@@ -197,7 +143,6 @@ class WebSocketService {
     };
   }
 
-  // Subscribe to notification events
   onNotification(handler) {
     this.notificationHandlers.push(handler);
     return () => {
@@ -207,11 +152,8 @@ class WebSocketService {
     };
   }
 
-  // Check if connected
   isConnected() {
-    return (
-      this.connected && this.socket && this.socket.readyState === WebSocket.OPEN
-    );
+    return this.socket && this.socket.readyState === WebSocket.OPEN;
   }
 }
 
