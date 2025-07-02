@@ -1,75 +1,48 @@
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileCsv, faFileExcel } from '@fortawesome/free-solid-svg-icons';
 import { exportService } from '../../services/exportService';
-import { useUserList } from '../../hooks/useUserList';
 import { useTranslation } from 'react-i18next';
 import { useAlert } from '../../contexts/AlertContext';
-import { toApiDateTime } from '../../utils/dateUtils';
+import EvaluationUserSelect from '../evaluations/filters/EvaluationUserSelect';
+import EvaluationScaleSelect from '../evaluations/filters/EvaluationScaleSelect';
+import EvaluationSortSelect from '../evaluations/filters/EvaluationSortSelect';
+import EvaluationDateRange from '../evaluations/filters/EvaluationDateRange';
 
-const scaleOptions = [
-  { value: '', label: 'evaluationScale.any' },
-  { value: 'LOW_CONTRIBUTION', label: 'evaluationScale.low' },
-  { value: 'PARCIAL_CONTRIBUTION', label: 'evaluationScale.partial' },
-  { value: 'EXPECTED_CONTRIBUTION', label: 'evaluationScale.expected' },
-  { value: 'EXCEED_CONTRIBUTION', label: 'evaluationScale.exceed' },
-];
-
-const sortFieldOptions = [
-  { value: 'EVALUATION_ID', label: 'profile.sortFields.id' },
-  { value: 'EVALUATED_ID', label: 'profile.sortFields.evaluated' },
-  { value: 'EVALUATOR_ID', label: 'profile.sortFields.evaluator' },
-  { value: 'STATUS', label: 'profile.sortFields.status' },
-  { value: 'DATE', label: 'filters.startDate' },
-  { value: 'SCALE', label: 'filters.endDate' },
-];
+// Accept displayedUserId as a prop to filter out the evaluator dropdown
 
 // Accept displayedUserId as a prop to filter out the evaluator dropdown
 const ProfileEvaluationsFilter = ({ filters, setFilters, displayedUserId }) => {
+
   const { t } = useTranslation();
   const { showAlert } = useAlert();
-  const { userList, loading: userListLoading } = useUserList();
-  // Remove the displayed user from the evaluator dropdown
-  const filteredUserList =
-    userList && displayedUserId
-      ? userList.filter(u => String(u.id) !== String(displayedUserId))
-      : userList;
 
-  // Keep both raw and API date in state for correct display and API usage
-  // Add dateDisplay for user-friendly display of selected date
+  // Unified handler for all modular filter components
   const handleChange = e => {
     const { name, value, type, checked } = e.target;
-    if (name === 'startDate' || name === 'endDate') {
-      setFilters(prev => {
-        const next = { ...prev };
+    setFilters(prev => {
+      const next = { ...prev, [name]: type === 'checkbox' ? checked : value };
+      // Remove empty string filter keys for select fields
+      if (
+        (name === 'evaluationScale' ||
+          name === 'evaluatorId' ||
+          name === 'evaluationSortField') &&
+        !value
+      ) {
+        delete next[name];
+      }
+      // For date fields, keep both display and API value
+      if (name === 'startDate' || name === 'endDate') {
         if (value) {
-          next[name] = toApiDateTime(value, name === 'endDate');
-          next[`${name}Display`] = value; // Store raw date for display
+          next[`${name}Display`] = value;
         } else {
-          delete next[name];
           delete next[`${name}Display`];
         }
-        return next;
-      });
-    } else {
-      setFilters(prev => {
-        const next = {
-          ...prev,
-          [name]: type === 'checkbox' ? checked : value,
-        };
-        // Remove empty string filter keys for select fields
-        if (
-          (name === 'evaluationScale' ||
-            name === 'evaluatorId' ||
-            name === 'evaluationSortField') &&
-          !value
-        ) {
-          delete next[name];
-        }
-        return next;
-      });
-    }
+      }
+      return next;
+    });
   };
 
   // Download all evaluations handler
@@ -121,6 +94,7 @@ const ProfileEvaluationsFilter = ({ filters, setFilters, displayedUserId }) => {
     }
   };
 
+
   return (
     <form
       className="profile-evaluations-filter row row-cols-lg-auto g-2 align-items-center mb-3 small"
@@ -152,50 +126,19 @@ const ProfileEvaluationsFilter = ({ filters, setFilters, displayedUserId }) => {
           <FontAwesomeIcon icon={faFileExcel} size="lg" />
         </button>
       </div>
-      {/* Evaluator */}
-      <div className="col-auto">
-        <label htmlFor="evaluatorId" className="form-label mb-0">
-          {t('profile.evaluator')}
-        </label>
-        <select
-          id="evaluatorId"
-          name="evaluatorId"
-          value={filters.evaluatorId || ''}
-          onChange={handleChange}
-          className="form-select form-select-sm"
-          disabled={userListLoading || !filteredUserList}
-        >
-          <option value="">{t('common.all')}</option>
-          {filteredUserList &&
-            filteredUserList.map(u => (
-              <option key={u.id} value={u.id}>
-                {u.firstName} {u.lastName}
-              </option>
-            ))}
-        </select>
-      </div>
 
-      {/* Scale */}
-      <div className="col-auto">
-        <label htmlFor="evaluationScale" className="form-label mb-0">
-          {t('evaluationScale.title')}
-        </label>
-        <select
-          id="evaluationScale"
-          name="evaluationScale"
-          value={filters.evaluationScale || ''}
-          onChange={handleChange}
-          className="form-select form-select-sm"
-        >
-          {scaleOptions.map(opt => (
-            <option key={opt.value} value={opt.value}>
-              {t(opt.label)}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {/* Search Text */}
+      {/* Modular filter components */}
+      <EvaluationUserSelect
+        value={filters.evaluatorId}
+        onChange={handleChange}
+        excludeUserId={displayedUserId}
+        name="evaluatorId"
+      />
+      <EvaluationScaleSelect
+        value={filters.evaluationScale}
+        onChange={handleChange}
+        name="evaluationScale"
+      />
       <div className="col-auto">
         <label htmlFor="searchText" className="form-label mb-0">
           {t('common.search')}
@@ -210,28 +153,11 @@ const ProfileEvaluationsFilter = ({ filters, setFilters, displayedUserId }) => {
           placeholder={t('common.search')}
         />
       </div>
-
-      {/* Sort Field */}
-      <div className="col-auto">
-        <label htmlFor="evaluationSortField" className="form-label mb-0">
-          {t('profile.sortBy')}
-        </label>
-        <select
-          id="evaluationSortField"
-          name="evaluationSortField"
-          value={filters.evaluationSortField || 'DATE'}
-          onChange={handleChange}
-          className="form-select form-select-sm"
-        >
-          {sortFieldOptions.map(opt => (
-            <option key={opt.value} value={opt.value}>
-              {t(opt.label)}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {/* Ascending */}
+      <EvaluationSortSelect
+        value={filters.evaluationSortField}
+        onChange={handleChange}
+        name="evaluationSortField"
+      />
       <div className="col-auto">
         <label className="form-label mb-0">{t('filters.ascending')}</label>
         <input
@@ -243,50 +169,11 @@ const ProfileEvaluationsFilter = ({ filters, setFilters, displayedUserId }) => {
           style={{ verticalAlign: 'middle' }}
         />
       </div>
-
-      {/* Evaluation Cycle Closure Date Range */}
-      <div className="col-auto">
-        <fieldset className="border rounded p-2 mb-0" style={{ minWidth: 220 }}>
-          <legend
-            className="float-none w-auto mb-1 px-2 small"
-            style={{ fontSize: '0.95em' }}
-          >
-            {t('filters.evaluationCycleDateRange') ||
-              'Evaluation Cycle Closure Date Range'}
-          </legend>
-          <div className="d-flex flex-row gap-2 align-items-center">
-            <div>
-              <label htmlFor="startDate" className="form-label mb-0">
-                {t('filters.startDate')}
-              </label>
-              <input
-                id="startDate"
-                type="date"
-                name="startDate"
-                value={filters.startDateDisplay || ''}
-                onChange={handleChange}
-                className="form-control form-control-sm"
-                style={{ minWidth: 120 }}
-              />
-            </div>
-            <span className="mx-1">-</span>
-            <div>
-              <label htmlFor="endDate" className="form-label mb-0">
-                {t('filters.endDate')}
-              </label>
-              <input
-                id="endDate"
-                type="date"
-                name="endDate"
-                value={filters.endDateDisplay || ''}
-                onChange={handleChange}
-                className="form-control form-control-sm"
-                style={{ minWidth: 120 }}
-              />
-            </div>
-          </div>
-        </fieldset>
-      </div>
+      <EvaluationDateRange
+        startDate={filters.startDateDisplay}
+        endDate={filters.endDateDisplay}
+        onChange={handleChange}
+      />
     </form>
   );
 };
