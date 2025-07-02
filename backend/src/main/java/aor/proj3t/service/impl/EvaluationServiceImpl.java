@@ -260,7 +260,7 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
             filter.setEvaluatorId(requesterId);
         }
         // Admin has no restrictions
-
+        filter.hydrate();
         List<Evaluation> evaluation = daoFactory.forEvaluation().getEvaluationsByFilters(filter);
         return converterFactory.forEvaluation().toDTOList(evaluation);
     }

@@ -11,10 +11,7 @@ import aor.proj3t.enums.EvaluationStatus;
 import aor.proj3t.filters.EvaluationFilter;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.TypedQuery;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.*;
 import jakarta.transaction.Transactional;
 
 /**
@@ -79,6 +76,7 @@ public class EvaluationDAOimpl extends AbstractDAO<Evaluation, Long> implements 
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Evaluation> query = cb.createQuery(Evaluation.class);
         Root<Evaluation> root = query.from(Evaluation.class);
+        Join<Evaluation, EvaluationCycle> cycleJoin = root.join("evaluationCycle", JoinType.INNER);
 
         List<Predicate> predicates = new ArrayList<>();
 
@@ -100,8 +98,11 @@ public class EvaluationDAOimpl extends AbstractDAO<Evaluation, Long> implements 
         if (filters.getDateRange() != null) {
             Instant start = filters.getDateRange().getStartDate();
             Instant end = filters.getDateRange().getEndDate();
-            predicates.add(cb.between(root.get("createdAt"), start, end));
+
+            // Use EvaluationCycle.closureDate instead of Evaluation.createdAt
+            predicates.add(cb.between(cycleJoin.get("closureDate"), start, end));
         }
+
 
         if (filters.getSearchText() != null && !filters.getSearchText().isEmpty()) {
             predicates.add(cb.like(cb.lower(root.get("feedback")), "%" + filters.getSearchText().toLowerCase() + "%"));
