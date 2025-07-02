@@ -3,6 +3,8 @@
  * Helper functions for managing profile picture cache and updates
  */
 
+import { API_ENDPOINTS } from 'api/apiConfig';
+
 /**
  * Trigger a profile picture update event
  * This will cause all ProfilePicture components to refresh for the specified user
@@ -31,7 +33,7 @@ export const preloadProfilePicture = userId => {
     const img = new Image();
     img.onload = () => resolve();
     img.onerror = () => reject(new Error('Failed to preload profile picture'));
-    img.src = `/api/users/${userId}/profile/picture`;
+    img.src = API_ENDPOINTS.user.profilePicture(userId).url;
   });
 };
 
@@ -46,5 +48,5 @@ export const getProfilePictureUrl = (
   fallback = '/images/default-profile-picture.png'
 ) => {
   if (!userId) return fallback;
-  return `/api/users/${userId}/profile/picture`;
+  return API_ENDPOINTS.user.profilePicture(userId).url;
 };
