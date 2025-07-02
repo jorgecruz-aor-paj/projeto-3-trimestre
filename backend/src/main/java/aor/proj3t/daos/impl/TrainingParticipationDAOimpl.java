@@ -1,6 +1,7 @@
 package aor.proj3t.daos.impl;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -42,21 +43,23 @@ public class TrainingParticipationDAOimpl extends AbstractDAO<TrainingParticipat
     }
 
     @Override
-    public Map<Integer,Long> trainingTimeByYearByParticipantId(Long participantId) {
+    public LinkedHashMap<Integer, Long> trainingTimeByYearByParticipantId(Long participantId) {
         String query = """
                     SELECT YEAR(tp.participatedAt), SUM(tp.training.duration)
                     FROM TrainingParticipation tp
                     WHERE tp.participant.id = :participantId
                     GROUP BY YEAR(tp.participatedAt)
+                    ORDER BY YEAR(tp.participatedAt) DESC
                 """;
+
 
         List<Object[]> results = em.createQuery(query, Object[].class)
                 .setParameter("participantId", participantId)
                 .getResultList();
 
-        Map<Integer,Long> trainingTimeByYear = new HashMap<>();
+        LinkedHashMap<Integer, Long> trainingTimeByYear = new LinkedHashMap<>();
         for (Object[] row : results) {
-            trainingTimeByYear.put( (Integer) row[0], ( (Long)row[1]));
+            trainingTimeByYear.put((Integer) row[0], ((Long) row[1]));
         }
 
         return trainingTimeByYear;

@@ -16,6 +16,7 @@ import jakarta.ws.rs.core.Response;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 
@@ -59,7 +60,7 @@ public class StatsResource {
     public Response getTrainingParticipationStats(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader,
                                                   @PathParam("userId") Long userId) {
         Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
-        Map<Integer, Long> stats = serviceFactory.forTrainingParticipation()
+        LinkedHashMap<Integer, Long> stats = serviceFactory.forTrainingParticipation()
                 .getTrainingParticipationTimeByYearByUser(requesterId, userId);
         return Response.ok(stats).build();
     }

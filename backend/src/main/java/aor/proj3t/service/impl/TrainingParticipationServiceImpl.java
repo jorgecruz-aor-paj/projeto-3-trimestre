@@ -1,9 +1,6 @@
 package aor.proj3t.service.impl;
 
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Objects;
+import java.util.*;
 
 import aor.proj3t.dto.NewTrainingParticipationDTO;
 import aor.proj3t.enums.Role;
@@ -73,7 +70,7 @@ public class TrainingParticipationServiceImpl extends BaseService implements Tra
     }
 
     @Override
-    public Map<Integer, Long> getTrainingParticipationTimeByYearByUser(Long requesterId, Long userId) {
+    public LinkedHashMap<Integer, Long> getTrainingParticipationTimeByYearByUser(Long requesterId, Long userId) {
         User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
         User user = getEntity(daoFactory.forUser().findById(userId), userId, "User");
 

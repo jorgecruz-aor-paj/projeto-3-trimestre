@@ -2,6 +2,7 @@ package aor.proj3t.daos.interfaces;
 
 import aor.proj3t.entities.TrainingParticipation;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,6 @@ public interface TrainingParticipationDAO extends BasicDAO<TrainingParticipation
 
     List<TrainingParticipation> findByManagerId(Long managerId);
 
-    Map<Integer,Long> trainingTimeByYearByParticipantId(Long participationId);
+    LinkedHashMap<Integer,Long> trainingTimeByYearByParticipantId(Long participationId);
 
 }
