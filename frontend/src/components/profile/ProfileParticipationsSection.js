@@ -4,6 +4,7 @@ import { useParticipationStore } from 'stores/ParticipationStore';
 import ProfileParticipationsFilter from './ProfileParticipationsFilter';
 import ProfileParticipationCard from './ProfileParticipationCard';
 import { useTranslation } from 'react-i18next';
+import TrainingParticipationStatsTable from './TrainingParticipationStatsTable';
 
 const ProfileParticipationsSection = ({ userId }) => {
   const { participations, fetchParticipations, loading, error } =
@@ -18,6 +19,8 @@ const ProfileParticipationsSection = ({ userId }) => {
   return (
     <div className="profile-participations-section">
       <ProfileParticipationsFilter filters={filters} setFilters={setFilters} />
+      {/* Training participation stats table */}
+      <TrainingParticipationStatsTable userId={userId} />
       <div className="profile-participations-list">
         {loading && <div>{t('common.loading') || 'Loading...'}</div>}
         {error && (

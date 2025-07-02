@@ -383,7 +383,8 @@
     "language": "Language",
     "difficulty": "Difficulty",
     "progress": "Progress",
-    "enrollInTraining": "Enroll in Training"
+    "enrollInTraining": "Enroll in Training",
+    "duration": "Duration"
   },
   "evaluations": {
     "title": "Evaluations",
@@ -424,7 +425,8 @@
     "daysAgo": "days ago",
     "weeksAgo": "weeks ago",
     "monthsAgo": "months ago",
-    "yearsAgo": "years ago"
+    "yearsAgo": "years ago",
+    "year": "Year"
   },
   "notifications": {
     "title": "Notifications",

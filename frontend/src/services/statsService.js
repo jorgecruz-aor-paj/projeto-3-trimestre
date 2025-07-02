@@ -21,4 +21,13 @@ export const statsService = {
   getEvaluationStats: () => {
     return apiService.getAll(API_ENDPOINTS.stats.evaluations);
   },
+
+  /**
+   * Get training participation stats by year for a user
+   * @param {number|string} userId
+   * @returns {Promise}
+   */
+  getParticipationStats: userId => {
+    return apiService.getAll(API_ENDPOINTS.stats.participations(userId));
+  },
 };

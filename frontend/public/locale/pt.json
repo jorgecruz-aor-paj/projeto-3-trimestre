@@ -391,7 +391,8 @@
     "language": "Idioma",
     "difficulty": "Dificuldade",
     "progress": "Progresso",
-    "enrollInTraining": "Inscrever-se na Formação"
+    "enrollInTraining": "Inscrever-se na Formação",
+    "duration": "Duração"
   },
   "evaluations": {
     "title": "Avaliações",
@@ -432,7 +433,8 @@
     "daysAgo": "há dias",
     "weeksAgo": "há semanas",
     "monthsAgo": "há meses",
-    "yearsAgo": "há anos"
+    "yearsAgo": "há anos",
+    "year": "Ano"
   },
   "notifications": {
     "title": "Notificações",

@@ -207,6 +207,10 @@ const API_ENDPOINTS = {
       requiresAuth: true,
       adminOnly: true,
     },
+    participations: userId => ({
+      url: `${STATS_ENDPOINT}/participation/${userId}`,
+      requiresAuth: true,
+    }),
   },
   test: {
     ping: {

@@ -32,6 +32,7 @@ export const apiService = {
    * @param {Object} params - Query parameters
    */
   getAll: (endpoint, params = {}) => {
+    console.log('Fetching all items from endpoint:', endpoint.url);
     return apiRequest(endpoint, {
       method: 'GET',
       params,
