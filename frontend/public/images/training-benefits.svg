@@ -1,0 +1,47 @@
+<svg width="500" height="350" viewBox="0 0 500 350"
+    xmlns="http://www.w3.org/2000/svg">
+    <!-- Background -->
+    <rect width="500" height="350" fill="#f8f9fa"/>
+
+    <!-- Main container -->
+    <rect x="25" y="25" width="450" height="300" rx="15" fill="#ffffff" stroke="#2A9D8F" stroke-width="2"/>
+
+    <!-- Flexible schedule icon -->
+    <circle cx="120" cy="100" r="35" fill="#E9C46A" opacity="0.3"/>
+    <rect x="105" y="85" width="30" height="30" rx="3" fill="#F77F00"/>
+    <line x1="115" y1="95" x2="120" y2="100" stroke="#ffffff" stroke-width="2"/>
+    <line x1="120" y1="100" x2="125" y2="90" stroke="#ffffff" stroke-width="2"/>
+
+    <!-- Personal growth icon -->
+    <circle cx="250" cy="100" r="35" fill="#2A9D8F" opacity="0.3"/>
+    <polygon points="235,110 250,85 265,110" fill="#457B9D"/>
+    <circle cx="250" cy="95" r="8" fill="#F1FAEE"/>
+
+    <!-- Certificate icon -->
+    <circle cx="380" cy="100" r="35" fill="#C01722" opacity="0.3"/>
+    <rect x="365" y="85" width="30" height="20" rx="2" fill="#E63946"/>
+    <circle cx="380" cy="95" r="6" fill="#F1FAEE"/>
+    <text x="380" y="99" text-anchor="middle" fill="#C01722" font-family="Arial" font-size="8" font-weight="bold">★</text>
+
+    <!-- Support 24/7 icon -->
+    <circle cx="185" cy="200" r="35" fill="#457B9D" opacity="0.3"/>
+    <circle cx="185" cy="200" r="15" fill="#1D3557"/>
+    <text x="185" y="205" text-anchor="middle" fill="#F1FAEE" font-family="Arial" font-size="12" font-weight="bold">24/7</text>
+
+    <!-- Community icon -->
+    <circle cx="315" cy="200" r="35" fill="#F77F00" opacity="0.3"/>
+    <circle cx="305" cy="195" r="8" fill="#FCBF49"/>
+    <circle cx="315" cy="195" r="8" fill="#FCBF49"/>
+    <circle cx="325" cy="195" r="8" fill="#FCBF49"/>
+    <circle cx="310" cy="205" r="8" fill="#FCBF49"/>
+    <circle cx="320" cy="205" r="8" fill="#FCBF49"/>
+
+    <!-- Connecting elements -->
+    <path d="M 80 150 Q 250 120 420 150" stroke="#2A9D8F" stroke-width="2" fill="none" opacity="0.6"/>
+
+    <!-- Benefits title -->
+    <text x="250" y="50" text-anchor="middle" fill="#1D3557" font-family="Arial" font-size="20" font-weight="bold">Training Benefits</text>
+
+    <!-- Bottom text -->
+    <text x="250" y="290" text-anchor="middle" fill="#457B9D" font-family="Arial" font-size="14">Flexibility • Growth • Recognition • Support</text>
+</svg>

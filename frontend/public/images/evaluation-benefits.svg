@@ -1,0 +1,50 @@
+<svg width="500" height="350" viewBox="0 0 500 350"
+    xmlns="http://www.w3.org/2000/svg">
+    <!-- Background -->
+    <rect width="500" height="350" fill="#f8f9fa"/>
+
+    <!-- Main container -->
+    <rect x="25" y="25" width="450" height="300" rx="15" fill="#ffffff" stroke="#457B9D" stroke-width="2"/>
+
+    <!-- Growth arrow -->
+    <path d="M 100 200 L 140 160 L 140 180 L 180 180 L 180 160 L 220 200 L 180 240 L 180 220 L 140 220 L 140 240 Z" fill="#2A9D8F"/>
+
+    <!-- Clarity/Understanding icon -->
+    <circle cx="320" cy="120" r="30" fill="#E9C46A" opacity="0.3"/>
+    <circle cx="320" cy="120" r="15" fill="#F77F00"/>
+    <path d="M 315 115 L 320 120 L 325 115" stroke="#F1FAEE" stroke-width="2" fill="none"/>
+    <circle cx="320" cy="125" r="2" fill="#F1FAEE"/>
+
+    <!-- Recognition star -->
+    <polygon points="380,80 385,90 395,90 387,97 390,107 380,102 370,107 373,97 365,90 375,90" fill="#C01722"/>
+    <circle cx="380" cy="95" r="20" fill="none" stroke="#C01722" stroke-width="2" opacity="0.3"/>
+
+    <!-- Alignment/Balance icon -->
+    <rect x="90" y="270" width="40" height="6" rx="3" fill="#457B9D"/>
+    <circle cx="110" cy="273" r="8" fill="#1D3557"/>
+    <rect x="140" y="270" width="40" height="6" rx="3" fill="#457B9D"/>
+    <circle cx="160" cy="273" r="8" fill="#1D3557"/>
+
+    <!-- Performance metrics -->
+    <rect x="280" y="200" width="80" height="60" rx="6" fill="#2A9D8F" opacity="0.1"/>
+    <rect x="285" y="210" width="8" height="30" fill="#2A9D8F"/>
+    <rect x="298" y="220" width="8" height="20" fill="#F77F00"/>
+    <rect x="311" y="205" width="8" height="35" fill="#C01722"/>
+    <rect x="324" y="215" width="8" height="25" fill="#E9C46A"/>
+    <rect x="337" y="225" width="8" height="15" fill="#457B9D"/>
+    <rect x="350" y="235" width="8" height="5" fill="#1D3557"/>
+
+    <!-- Development path -->
+    <path d="M 50 150 Q 150 100 250 150 Q 350 200 450 150" stroke="#2A9D8F" stroke-width="3" fill="none" opacity="0.6"/>
+    <circle cx="50" cy="150" r="4" fill="#2A9D8F"/>
+    <circle cx="150" cy="125" r="4" fill="#F77F00"/>
+    <circle cx="250" cy="150" r="4" fill="#C01722"/>
+    <circle cx="350" cy="175" r="4" fill="#E9C46A"/>
+    <circle cx="450" cy="150" r="4" fill="#457B9D"/>
+
+    <!-- Benefits title -->
+    <text x="250" y="50" text-anchor="middle" fill="#1D3557" font-family="Arial" font-size="20" font-weight="bold">Evaluation Benefits</text>
+
+    <!-- Bottom text -->
+    <text x="250" y="315" text-anchor="middle" fill="#457B9D" font-family="Arial" font-size="14">Growth • Clarity • Recognition • Alignment</text>
+</svg>
