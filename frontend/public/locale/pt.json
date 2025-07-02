@@ -649,6 +649,8 @@
     "evaluationCycleDateRange": "Intervalo de Fecho do Ciclo de Avaliação",
     "ascending": "Ascendente",
     "startDate": "Data de Início",
-    "endDate": "Data de Fim"
+    "endDate": "Data de Fim",
+    "creationDate": "Data",
+    "scale": "Escala"
   }
 }

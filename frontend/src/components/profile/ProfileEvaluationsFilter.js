@@ -1,4 +1,3 @@
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -15,7 +14,6 @@ import EvaluationDateRange from '../evaluations/filters/EvaluationDateRange';
 
 // Accept displayedUserId as a prop to filter out the evaluator dropdown
 const ProfileEvaluationsFilter = ({ filters, setFilters, displayedUserId }) => {
-
   const { t } = useTranslation();
   const { showAlert } = useAlert();
 
@@ -93,7 +91,6 @@ const ProfileEvaluationsFilter = ({ filters, setFilters, displayedUserId }) => {
       });
     }
   };
-
 
   return (
     <form

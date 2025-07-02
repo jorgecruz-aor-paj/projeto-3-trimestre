@@ -641,7 +641,9 @@
     "evaluationCycleDateRange": "Evaluation Cycle Closure Date Range",
     "ascending": "Ascending",
     "startDate": "Start Date",
-    "endDate": "End Date"
+    "endDate": "End Date",
+    "creationDate": "Creation Date",
+    "scale": "Scale"
   },
   "evaluationScale": {
     "title": "Evaluation Scale",
