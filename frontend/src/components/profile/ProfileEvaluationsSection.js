@@ -17,7 +17,11 @@ const ProfileEvaluationsSection = ({ userId }) => {
   const { t } = useTranslation();
   return (
     <div className="profile-evaluations-section">
-      <ProfileEvaluationsFilter filters={filters} setFilters={setFilters} />
+      <ProfileEvaluationsFilter
+        filters={filters}
+        setFilters={setFilters}
+        displayedUserId={userId}
+      />
       <div className="profile-evaluations-list">
         {loading && <div>{t('common.loading') || 'Loading...'}</div>}
         {error && <div>{t('common.error') || 'Error loading evaluations'}</div>}

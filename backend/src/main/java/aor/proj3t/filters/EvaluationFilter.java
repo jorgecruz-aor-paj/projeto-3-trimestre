@@ -160,9 +160,15 @@ public class EvaluationFilter {
             try {
                 if (startDate != null && !startDate.isEmpty()) {
                     start = Instant.parse(startDate); // ISO-8601 format expected (e.g., 2025-06-23T08:30:00Z)
+                    if(endDate == null || endDate.isEmpty()) {
+                        end = Instant.now();
+                    }
                 }
                 if (endDate != null && !endDate.isEmpty()) {
                     end = Instant.parse(endDate);
+                    if(start == null || startDate.isEmpty()) {
+                        start = Instant.MIN;
+                    }
                 }
             } catch (DateTimeParseException e) {
                 throw new BadRequestException("Invalid startDate or endDate format. Use ISO-8601 format like 2025-06-23T08:30:00Z.");
@@ -172,4 +178,22 @@ public class EvaluationFilter {
         }
     }
 
+    @Override
+    public String toString() {
+        return "EvaluationFilter{" +
+                "evaluationId=" + evaluationId +
+                ", evaluatedId=" + evaluatedId +
+                ", evaluatorId=" + evaluatorId +
+                ", evaluationStatus=" + evaluationStatus +
+                ", dateString='" + dateString + '\'' +
+                ", evaluationScale=" + evaluationScale +
+                ", evaluationSortField=" + evaluationSortField +
+                ", ascending=" + ascending +
+                ", searchText='" + searchText + '\'' +
+                ", startDate='" + startDate + '\'' +
+                ", endDate='" + endDate + '\'' +
+                ", date=" + date +
+                ", dateRange=" + dateRange +
+                '}';
+    }
 }

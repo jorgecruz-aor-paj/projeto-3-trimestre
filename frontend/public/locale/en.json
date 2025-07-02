@@ -39,7 +39,8 @@
     "create": "Create",
     "update": "Update",
     "send": "Send",
-    "receive": "Receive"
+    "receive": "Receive",
+    "all": "All"
   },
   "roles": {
     "admin": "Administrator",
@@ -344,7 +345,16 @@
     "scale": "Scale",
     "evaluator": "Evaluator",
     "date": "Date",
-    "viewTraining": "View Training"
+    "viewTraining": "View Training",
+    "sortBy": "Sort by",
+    "sortFields": {
+      "id": "ID",
+      "evaluated": "Evaluated",
+      "evaluator": "Evaluator",
+      "status": "Status",
+      "date": "Date",
+      "scale": "Scale"
+    }
   },
   "messages": {
     "title": "Messages",
@@ -423,5 +433,20 @@
     "noNotifications": "No notifications",
     "newNotification": "New notification",
     "settings": "Notification settings"
-  }
+  },
+  "filters": {
+    "title": "Filters",
+    "evaluationCycleDateRange": "Evaluation Cycle Closure Date Range",
+    "ascending": "Ascending",
+    "startDate": "Start Date",
+    "endDate": "End Date"
+  },
+  "evaluationScale": {
+      "title": "Evaluation Scale",
+      "any": "Any scale",
+      "low": "Low contribution",
+      "partial": "Partial contribution",
+      "expected": "Expected contribution",
+      "exceed": "Exceeded contribution"
+    }
 }
