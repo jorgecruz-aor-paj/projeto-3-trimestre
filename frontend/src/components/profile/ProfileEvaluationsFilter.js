@@ -38,11 +38,17 @@ const ProfileEvaluationsFilter = ({ filters, setFilters, displayedUserId }) => {
   const handleChange = e => {
     const { name, value, type, checked } = e.target;
     if (name === 'startDate' || name === 'endDate') {
-      setFilters(prev => ({
-        ...prev,
-        [name]: value, // for input display
-        [`${name}Api`]: value ? toApiDateTime(value, name === 'endDate') : '', // for API
-      }));
+      setFilters(prev => {
+        const next = { ...prev };
+        if (value) {
+          next[name] = toApiDateTime(value, name === 'endDate');
+        } else {
+          delete next[name];
+          // Also clear the input value for display
+          next[name] = '';
+        }
+        return next;
+      });
     } else {
       setFilters(prev => {
         const next = {
@@ -160,34 +166,48 @@ const ProfileEvaluationsFilter = ({ filters, setFilters, displayedUserId }) => {
         />
       </div>
 
-      {/* Start Date */}
+      {/* Evaluation Cycle Closure Date Range */}
       <div className="col-auto">
-        <label htmlFor="startDate" className="form-label mb-0">
-          {t('filters.startDate')}
-        </label>
-        <input
-          id="startDate"
-          type="date"
-          name="startDate"
-          value={filters.startDate || ''}
-          onChange={handleChange}
-          className="form-control form-control-sm"
-        />
-      </div>
-
-      {/* End Date */}
-      <div className="col-auto">
-        <label htmlFor="endDate" className="form-label mb-0">
-          {t('filters.endDate')}
-        </label>
-        <input
-          id="endDate"
-          type="date"
-          name="endDate"
-          value={filters.endDate || ''}
-          onChange={handleChange}
-          className="form-control form-control-sm"
-        />
+        <fieldset className="border rounded p-2 mb-0" style={{ minWidth: 220 }}>
+          <legend
+            className="float-none w-auto mb-1 px-2 small"
+            style={{ fontSize: '0.95em' }}
+          >
+            {t('filters.evaluationCycleDateRange') ||
+              'Evaluation Cycle Closure Date Range'}
+          </legend>
+          <div className="d-flex flex-row gap-2 align-items-center">
+            <div>
+              <label htmlFor="startDate" className="form-label mb-0">
+                {t('filters.startDate')}
+              </label>
+              <input
+                id="startDate"
+                type="date"
+                name="startDate"
+                value={filters.startDate || ''}
+                onChange={handleChange}
+                className="form-control form-control-sm"
+                style={{ minWidth: 120 }}
+              />
+            </div>
+            <span className="mx-1">-</span>
+            <div>
+              <label htmlFor="endDate" className="form-label mb-0">
+                {t('filters.endDate')}
+              </label>
+              <input
+                id="endDate"
+                type="date"
+                name="endDate"
+                value={filters.endDate || ''}
+                onChange={handleChange}
+                className="form-control form-control-sm"
+                style={{ minWidth: 120 }}
+              />
+            </div>
+          </div>
+        </fieldset>
       </div>
     </form>
   );

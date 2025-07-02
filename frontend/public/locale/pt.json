@@ -39,7 +39,8 @@
     "create": "Criar",
     "update": "Atualizar",
     "send": "Enviar",
-    "receive": "Receber"
+    "receive": "Receber",
+    "all": "Todos"
   },
   "roles": {
     "admin": "Administrador",
@@ -344,18 +345,19 @@
     "scale": "Escala",
     "evaluator": "Avaliador",
     "date": "Data",
-    "viewTraining": "Ver Formação"
-  },
-  "sortBy": "Ordenar por",
-  "sortFields": {
-    "id": "ID",
-    "evaluated": "Avaliado",
-    "evaluator": "Avaliador",
-    "status": "Estado",
-    "date": "Data",
-    "scale": "Escala"
+    "viewTraining": "Ver Formação",
+    "sortBy": "Ordenar por",
+    "sortFields": {
+      "id": "ID",
+      "evaluated": "Avaliado",
+      "evaluator": "Avaliador",
+      "status": "Estado",
+      "date": "Data",
+      "scale": "Escala"
+    }
   },
   "evaluationScale": {
+    "title": "Escala de Avaliação",
     "any": "Qualquer escala",
     "low": "Contribuição baixa",
     "partial": "Contribuição parcial",
@@ -440,8 +442,9 @@
     "newNotification": "Nova notificação",
     "settings": "Definições de notificações"
   },
-  "filters":{
+  "filters": {
     "title": "Filtros",
+    "evaluationCycleDateRange": "Intervalo de Fecho do Ciclo de Avaliação",
     "ascending": "Ascendente",
     "startDate": "Data de Início",
     "endDate": "Data de Fim"

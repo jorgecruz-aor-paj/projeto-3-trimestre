@@ -356,14 +356,6 @@
       "scale": "Scale"
     }
   },
-  "evaluationScale": {
-    "title": "Evaluation Scale",
-    "any": "Any scale",
-    "low": "Low contribution",
-    "partial": "Partial contribution",
-    "expected": "Expected contribution",
-    "exceed": "Exceeded contribution"
-  },
   "messages": {
     "title": "Messages",
     "newMessage": "New Message",
@@ -442,10 +434,19 @@
     "newNotification": "New notification",
     "settings": "Notification settings"
   },
-  "filters":{
+  "filters": {
     "title": "Filters",
+    "evaluationCycleDateRange": "Evaluation Cycle Closure Date Range",
     "ascending": "Ascending",
     "startDate": "Start Date",
     "endDate": "End Date"
-  }
+  },
+  "evaluationScale": {
+      "title": "Evaluation Scale",
+      "any": "Any scale",
+      "low": "Low contribution",
+      "partial": "Partial contribution",
+      "expected": "Expected contribution",
+      "exceed": "Exceeded contribution"
+    }
 }
