@@ -40,7 +40,19 @@
     "update": "Atualizar",
     "send": "Enviar",
     "receive": "Receber",
-    "all": "Todos"
+    "all": "Todos",
+    "active": "Ativo",
+    "inactive": "Inativo",
+    "status": "Estado",
+    "actions": "Ações",
+    "retry": "Tentar Novamente",
+    "filters": "Filtros",
+    "clearFilters": "Limpar Filtros",
+    "activeFilters": "Filtros Ativos",
+    "sortBy": "Ordenar Por",
+    "ascending": "Ascendente",
+    "descending": "Descendente",
+    "minutes": "minutos"
   },
   "roles": {
     "admin": "Administrador",
@@ -157,7 +169,8 @@
     "passwordMinLength": "A palavra-passe deve ter pelo menos 6 caracteres",
     "confirmPasswordRequired": "Por favor, confirme a sua palavra-passe",
     "passwordsDontMatch": "As palavras-passe não coincidem",
-    "fieldRequired": "Este campo é obrigatório"
+    "fieldRequired": "Este campo é obrigatório",
+    "required": "Este campo é obrigatório"
   },
   "errors": {
     "unexpected": "Ocorreu um erro inesperado",
@@ -472,7 +485,6 @@
       "scale": "Escala"
     }
   },
-
   "messages": {
     "title": "Mensagens",
     "newMessage": "Nova Mensagem",
@@ -505,7 +517,9 @@
     "hero": {
       "subtitle": "Desbloqueie o seu potencial com os nossos programas de formação abrangentes, concebidos para melhorar competências e acelerar o crescimento da carreira.",
       "exploreTrainings": "Explorar Formações",
-      "viewProgress": "Ver o Meu Progresso"
+      "viewProgress": "Ver o Meu Progresso",
+      "getStarted": "Começar",
+      "learnMore": "Saber Mais"
     },
     "features": {
       "title": "Funcionalidades de Formação",
@@ -533,7 +547,87 @@
       "title": "Pronto para avançar na sua carreira com formação profissional?",
       "description": "Junte-se a milhares de profissionais que melhoraram as suas competências e aceleraram as suas carreiras através dos nossos programas de formação.",
       "button": "Começar a Aprender Hoje"
-    }
+    },
+    "admin": {
+      "title": "Gestão de Formações",
+      "subtitle": "Gerir programas de formação e áreas",
+      "newTraining": "Nova Formação",
+      "newArea": "Nova Área",
+      "editTraining": "Editar Formação",
+      "createFirst": "Criar Primeira Formação",
+      "trainingsList": "Lista de Formações",
+      "trainingsCount": "formações",
+      "noTrainings": "Nenhuma formação disponível",
+      "noTrainingsDesc": "Comece por criar o seu primeiro programa de formação",
+      "loading": "A carregar formações...",
+      "fetchError": "Falha ao carregar formações",
+      "success": "Sucesso",
+      "error": "Erro",
+      "createSuccess": "Formação criada com sucesso",
+      "createError": "Falha ao criar formação",
+      "updateSuccess": "Formação atualizada com sucesso",
+      "updateError": "Falha ao atualizar formação",
+      "deactivateTitle": "Desativar Formação",
+      "deactivateMessage": "Tem a certeza que deseja desativar a formação '{title}'?",
+      "deactivateSuccess": "Formação desativada com sucesso",
+      "deactivateError": "Falha ao desativar formação",
+      "deactivate": "Desativar",
+      "viewLink": "Ver Link",
+      "areaCreateSuccess": "Área de formação criada com sucesso",
+      "areaCreateError": "Falha ao criar área de formação",
+      "areaNamePlaceholder": "Introduza o nome da área..."
+    },
+    "fields": {
+      "title": "Título",
+      "area": "Área",
+      "areaName": "Nome da Área",
+      "duration": "Duração",
+      "language": "Idioma",
+      "status": "Estado",
+      "created": "Criado",
+      "description": "Descrição",
+      "link": "Link"
+    },
+    "form": {
+      "titlePlaceholder": "Introduza o título da formação...",
+      "selectArea": "Selecionar área de formação",
+      "durationPlaceholder": "Duração em minutos",
+      "durationHint": "Duração em minutos (ex: 60 para 1 hora)",
+      "selectLanguage": "Selecionar idioma",
+      "descriptionPlaceholder": "Introduza a descrição da formação...",
+      "descriptionHint": "Forneça uma descrição detalhada (10-1000 caracteres)",
+      "linkPlaceholder": "https://exemplo.com/formacao",
+      "linkHint": "Link opcional para recursos de formação externos"
+    },
+    "filter": {
+      "searchPlaceholder": "Pesquisar formações...",
+      "durationPlaceholder": "Duração máxima"
+    },
+    "sort": {
+      "title": "Título",
+      "date": "Data de Criação",
+      "duration": "Duração",
+      "language": "Idioma",
+      "area": "Área de Formação"
+    },
+    "validation": {
+      "titleTooLong": "O título deve ter 100 caracteres ou menos",
+      "descriptionTooShort": "A descrição deve ter pelo menos 10 caracteres",
+      "descriptionTooLong": "A descrição deve ter 1000 caracteres ou menos",
+      "durationInvalid": "A duração deve ser maior que 0",
+      "invalidUrl": "Por favor, introduza um URL válido"
+    },
+    "user": {
+      "subtitle": "Descubra e explore oportunidades de desenvolvimento profissional",
+      "accessTraining": "Aceder à Formação",
+      "addedOn": "Adicionado",
+      "showingResults": "A mostrar {{count}} formação(ões)",
+      "noMatchingTrainings": "Nenhuma formação corresponde aos seus critérios",
+      "tryDifferentFilters": "Tente ajustar os seus filtros",
+      "checkBackLater": "Volte mais tarde para novos programas de formação"
+    },
+    "loading": "A carregar formações...",
+    "fetchError": "Falha ao carregar formações"
   },
   "evaluations": {
     "title": "Avaliações",
@@ -652,12 +746,12 @@
     "evaluator": "Avaliador"
   },
   "evaluationScale": {
-    "title": "Evaluation Scale",
-    "any": "Any scale",
-    "low": "Low contribution",
-    "partial": "Partial contribution",
-    "expected": "Expected contribution",
-    "exceed": "Exceeded contribution"
+    "title": "Escala de Avaliação",
+    "any": "Qualquer escala",
+    "low": "Contribuição baixa",
+    "partial": "Contribuição parcial",
+    "expected": "Contribuição esperada",
+    "exceed": "Contribuição excedida"
   },
   "evaluationStatus": {
     "title": "Estado da Avaliação",
