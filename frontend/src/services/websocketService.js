@@ -5,7 +5,6 @@ import { useAuthStore } from 'stores/AuthStore';
 class WebSocketService {
   constructor() {
     this.socket = null;
-    this.messageHandlers = [];
     this.notificationHandlers = [];
     this.reconnectAttempts = 0;
     this.maxReconnectAttempts = 3;
@@ -39,18 +38,16 @@ class WebSocketService {
       this.socket.onmessage = event => {
         try {
           const data = JSON.parse(event.data);
+          console.log('WebSocket notification received:', data);
 
           switch (data.type) {
             case 'error':
               console.error('WebSocket error:', data.message);
               break;
 
-            case 'message':
-            case 'message_sent':
-              this.messageHandlers.forEach(handler => handler(data));
-              break;
-
-            case 'notification':
+            case 'new_message':
+            case 'message_read':
+              // Just pass notifications to handlers
               this.notificationHandlers.forEach(handler => handler(data));
               break;
 
@@ -58,15 +55,11 @@ class WebSocketService {
               console.log('WebSocket connection confirmed');
               break;
 
-            case 'message_read':
-              this.messageHandlers.forEach(handler => handler(data));
-              break;
-
             default:
-              console.warn('Unknown message type:', data.type);
+              console.warn('Unknown notification type:', data.type);
           }
         } catch (error) {
-          console.error('Error parsing WebSocket message:', error);
+          console.error('Error parsing WebSocket notification:', error);
         }
       };
 
@@ -127,20 +120,11 @@ class WebSocketService {
     }
   }
 
-  sendReadReceipt(messageId, senderId) {
+  sendReadReceipt(messageId) {
     this.send({
       type: 'mark_read',
-      senderId: useAuthStore.getState().user?.id,
-      recipientId: senderId,
       messageId: messageId,
     });
-  }
-
-  onMessage(handler) {
-    this.messageHandlers.push(handler);
-    return () => {
-      this.messageHandlers = this.messageHandlers.filter(h => h !== handler);
-    };
   }
 
   onNotification(handler) {

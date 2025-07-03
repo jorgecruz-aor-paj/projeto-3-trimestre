@@ -12,41 +12,6 @@ export const useMessageStore = create((set, get) => ({
   unreadCount: 0,
   isLoading: false,
   error: null,
-  wsConnected: false,
-
-  // Initialize WebSocket connection
-  initializeWebSocket: () => {
-    const currentUserId = useAuthStore.getState().user?.id;
-    if (!currentUserId) return;
-
-    // Only connect if not already connected
-    if (websocketService.isConnected()) return;
-
-    try {
-      websocketService.connect();
-
-      // Subscribe to incoming messages
-      websocketService.onMessage(messageData => {
-        get().handleIncomingMessage(messageData);
-      });
-
-      // Subscribe to notifications
-      websocketService.onNotification(notificationData => {
-        console.log('Notification received:', notificationData);
-        get().loadUnreadCount();
-      });
-
-      set({ wsConnected: true });
-    } catch (error) {
-      console.error('Failed to initialize WebSocket:', error);
-    }
-  },
-
-  // Disconnect WebSocket
-  disconnectWebSocket: () => {
-    websocketService.disconnect();
-    set({ wsConnected: false });
-  },
 
   // Actions
   setActiveConversation: conversation => {
@@ -119,7 +84,7 @@ export const useMessageStore = create((set, get) => ({
         }
       );
 
-      // Add the new message to the current conversation if it's active
+      // Add message to current conversation immediately
       const { activeConversation } = get();
       if (activeConversation && activeConversation.id === recipientId) {
         set(state => ({
@@ -149,12 +114,11 @@ export const useMessageStore = create((set, get) => ({
       set(state => ({
         messages: state.messages.map(msg => {
           if (msg.id === messageId) {
-            const updatedMsg = { ...msg, read: true };
             // Send read receipt via WebSocket if connected
             if (websocketService.isConnected()) {
-              websocketService.sendReadReceipt(messageId, msg.senderId);
+              websocketService.sendReadReceipt(messageId);
             }
-            return updatedMsg;
+            return { ...msg, read: true };
           }
           return msg;
         }),
@@ -178,59 +142,33 @@ export const useMessageStore = create((set, get) => ({
     }
   },
 
-  // WebSocket message handling
-  handleIncomingMessage: messageData => {
-    const { activeConversation } = get();
-    const currentUserId = useAuthStore.getState().user?.id;
+  // Handle WebSocket notifications (just refresh data)
+  handleNotification: notificationData => {
+    console.log('Received notification:', notificationData);
 
-    // Handle different message types
-    if (messageData.type === 'message') {
-      const message = messageData.message || messageData;
-
-      // Add message to conversation if it's the active one
-      if (
-        activeConversation &&
-        (message.senderId === activeConversation.id ||
-          message.recipientId === activeConversation.id)
-      ) {
-        set(state => ({
-          messages: [...state.messages, message],
-        }));
-
-        // Mark as read if user is recipient and conversation is active
-        if (message.recipientId === currentUserId) {
-          get().markMessageAsRead(message.id);
-        }
-      } else if (message.recipientId === currentUserId) {
-        // Update unread count for messages not in active conversation
-        get().loadUnreadCount();
+    if (notificationData.type === 'new_message') {
+      // Refresh current conversation if it's active
+      const { activeConversation } = get();
+      if (activeConversation) {
+        get().loadConversationMessages(activeConversation.id);
       }
-    } else if (messageData.type === 'message_sent') {
-      // Handle sent message confirmation
-      const message = messageData.message || messageData;
 
-      if (activeConversation && message.recipientId === activeConversation.id) {
-        set(state => ({
-          messages: [...state.messages, message],
-        }));
-      }
-    } else if (messageData.type === 'message_read') {
-      // Handle read receipts
-      const messageId = messageData.messageId;
+      // Update conversations list and unread count
+      get().loadConversations();
+      get().loadUnreadCount();
+    } else if (notificationData.type === 'message_read') {
+      // Update read status for the message
+      const messageId = notificationData.messageId;
       set(state => ({
         messages: state.messages.map(msg =>
           msg.id === messageId ? { ...msg, read: true } : msg
         ),
       }));
     }
-
-    // Update conversations list to reflect new message
-    get().loadConversations();
   },
 
   // Clear store state
   clearStore: () => {
-    get().disconnectWebSocket();
     set({
       conversations: [],
       activeConversation: null,
@@ -238,7 +176,6 @@ export const useMessageStore = create((set, get) => ({
       unreadCount: 0,
       isLoading: false,
       error: null,
-      wsConnected: false,
     });
   },
 }));

@@ -8,13 +8,21 @@ export const MessagesContainer = ({ messages, currentUserId }) => {
   const { t } = useTranslation();
   const { formatInstant, convertInstantToDate } = useLanguage();
   const messagesEndRef = useRef(null);
+  const prevMessagesLengthRef = useRef(0);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'end',
+    });
   };
 
   useEffect(() => {
-    scrollToBottom();
+    // Only scroll to bottom if new messages were added (not on initial load or message updates)
+    if (messages && messages.length > prevMessagesLengthRef.current) {
+      scrollToBottom();
+    }
+    prevMessagesLengthRef.current = messages ? messages.length : 0;
   }, [messages]);
 
   const formatMessageTime = timestamp => {
@@ -55,7 +63,7 @@ export const MessagesContainer = ({ messages, currentUserId }) => {
 
         return (
           <div
-            key={message.id}
+            key={`message-${message.id || index}`}
             className={`message-wrapper ${
               isOwnMessage ? 'own-message' : 'other-message'
             }`}
