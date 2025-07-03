@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { statsService } from 'services/statsService';
 
-const TrainingParticipationStatsTable = ({ userId }) => {
+export const TrainingParticipationStatsTable = ({ userId }) => {
   const { t } = useTranslation();
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -80,4 +80,3 @@ TrainingParticipationStatsTable.propTypes = {
   userId: PropTypes.number.isRequired,
 };
 
-export default TrainingParticipationStatsTable;

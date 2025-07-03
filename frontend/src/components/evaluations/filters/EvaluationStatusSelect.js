@@ -4,13 +4,12 @@ import { useTranslation } from 'react-i18next';
 
 const statusOptions = [
   { value: '', label: 'common.all' },
-  { value: 'OPEN', label: 'evaluations.status.OPEN' },
-  { value: 'CLOSED', label: 'evaluations.status.CLOSED' },
-  { value: 'IN_PROGRESS', label: 'evaluations.status.IN_PROGRESS' },
-  { value: 'DRAFT', label: 'evaluations.status.DRAFT' },
+  { value: 'ONGOING', label: 'evaluationStatus.ongoing' },
+  { value: 'CLOSED', label: 'evaluationStatus.closed' },
+  { value: 'COMPLETED', label: 'evaluationStatus.completed' },
 ];
 
-const EvaluationStatusSelect = ({ value, onChange, label, name }) => {
+export const EvaluationStatusSelect = ({ value, onChange, label, name }) => {
   const { t } = useTranslation();
   return (
     <div className="col-auto">
@@ -40,5 +39,3 @@ EvaluationStatusSelect.propTypes = {
   label: PropTypes.string,
   name: PropTypes.string.isRequired,
 };
-
-export default EvaluationStatusSelect;

@@ -7,11 +7,11 @@ const sortFieldOptions = [
   { value: 'EVALUATED_ID', label: 'profile.sortFields.evaluated' },
   { value: 'EVALUATOR_ID', label: 'profile.sortFields.evaluator' },
   { value: 'STATUS', label: 'profile.sortFields.status' },
-  { value: 'DATE', label: 'filters.startDate' },
-  { value: 'SCALE', label: 'filters.endDate' },
+  { value: 'DATE', label: 'filters.creationDate' },
+  { value: 'SCALE', label: 'filters.scale' },
 ];
 
-const EvaluationSortSelect = ({ value, onChange, label, name }) => {
+export const EvaluationSortSelect = ({ value, onChange, label, name }) => {
   const { t } = useTranslation();
   return (
     <div className="col-auto">
@@ -41,5 +41,3 @@ EvaluationSortSelect.propTypes = {
   label: PropTypes.string,
   name: PropTypes.string.isRequired,
 };
-
-export default EvaluationSortSelect;

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
-const EvaluationDateRange = ({ startDate, endDate, onChange }) => {
+export const EvaluationDateRange = ({ startDate, endDate, onChange }) => {
   const { t } = useTranslation();
   return (
     <div className="col-auto">
@@ -55,5 +55,3 @@ EvaluationDateRange.propTypes = {
   endDate: PropTypes.string,
   onChange: PropTypes.func.isRequired,
 };
-
-export default EvaluationDateRange;

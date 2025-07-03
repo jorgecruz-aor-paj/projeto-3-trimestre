@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { formatDateToDDMMYYYY } from 'utils/dateUtils';
 import { useTranslation } from 'react-i18next';
 
-const ProfileParticipationCard = ({ participation }) => {
+export const ProfileParticipationCard = ({ participation }) => {
   const { t } = useTranslation();
   return (
     <div className="profile-participation-card">
@@ -51,4 +51,3 @@ ProfileParticipationCard.propTypes = {
   }).isRequired,
 };
 
-export default ProfileParticipationCard;

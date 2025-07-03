@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import ProfileEvaluationsSection from '../profile/ProfileEvaluationsSection';
-import ProfileParticipationsSection from '../profile/ProfileParticipationsSection';
+import { ProfileEvaluationsSection } from '../profile/ProfileEvaluationsSection';
+import { ProfileParticipationsSection } from '../profile/ProfileParticipationsSection';
 import { useTranslation } from 'react-i18next';
 
 export const ProfileSectionsToggle = ({ userId }) => {

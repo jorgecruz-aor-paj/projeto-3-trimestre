@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { useAlert } from 'contexts/AlertContext';
 import { exportService } from 'services/exportService';
 
-const ProfileEvaluationCard = ({ evaluation }) => {
+export const ProfileEvaluationCard = ({ evaluation }) => {
   const { t, i18n } = useTranslation();
   const { showAlert } = useAlert();
 
@@ -101,4 +101,3 @@ ProfileEvaluationCard.propTypes = {
   }).isRequired,
 };
 
-export default ProfileEvaluationCard;

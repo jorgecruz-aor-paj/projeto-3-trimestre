@@ -10,7 +10,7 @@ const scaleOptions = [
   { value: 'EXCEED_CONTRIBUTION', label: 'evaluationScale.exceed' },
 ];
 
-const EvaluationScaleSelect = ({ value, onChange, label, name }) => {
+export const EvaluationScaleSelect = ({ value, onChange, label, name }) => {
   const { t } = useTranslation();
   return (
     <div className="col-auto">
@@ -40,5 +40,3 @@ EvaluationScaleSelect.propTypes = {
   label: PropTypes.string,
   name: PropTypes.string.isRequired,
 };
-
-export default EvaluationScaleSelect;

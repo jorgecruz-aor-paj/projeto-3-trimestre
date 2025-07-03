@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ProfileParticipationsFilter = ({ filters, setFilters }) => {
+export const ProfileParticipationsFilter = ({ filters, setFilters }) => {
   // Add filter fields as needed for participations
   return (
     <div className="profile-participations-filter">
@@ -8,5 +8,3 @@ const ProfileParticipationsFilter = ({ filters, setFilters }) => {
     </div>
   );
 };
-
-export default ProfileParticipationsFilter;

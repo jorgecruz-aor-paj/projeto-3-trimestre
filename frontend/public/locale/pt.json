@@ -472,14 +472,7 @@
       "scale": "Escala"
     }
   },
-  "evaluationScale": {
-    "title": "Escala de Avaliação",
-    "any": "Qualquer escala",
-    "low": "Contribuição baixa",
-    "partial": "Contribuição parcial",
-    "expected": "Contribuição esperada",
-    "exceed": "Contribuição excedida"
-  },
+
   "messages": {
     "title": "Mensagens",
     "newMessage": "Nova Mensagem",
@@ -652,5 +645,20 @@
     "endDate": "Data de Fim",
     "creationDate": "Data",
     "scale": "Escala"
+  },
+  "evaluationScale": {
+    "title": "Evaluation Scale",
+    "any": "Any scale",
+    "low": "Low contribution",
+    "partial": "Partial contribution",
+    "expected": "Expected contribution",
+    "exceed": "Exceeded contribution"
+  },
+    "evaluationStatus": {
+    "title": "Estado da Avaliação",
+    "any": "todos",
+    "closed": "Fechado",
+    "ongoing": "Em curso",
+    "completed": "Concluído"
   }
 }

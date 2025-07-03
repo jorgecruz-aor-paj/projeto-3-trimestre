@@ -5,15 +5,15 @@ import { faFileCsv, faFileExcel } from '@fortawesome/free-solid-svg-icons';
 import { exportService } from '../../services/exportService';
 import { useTranslation } from 'react-i18next';
 import { useAlert } from '../../contexts/AlertContext';
-import EvaluationUserSelect from '../evaluations/filters/EvaluationUserSelect';
-import EvaluationScaleSelect from '../evaluations/filters/EvaluationScaleSelect';
-import EvaluationSortSelect from '../evaluations/filters/EvaluationSortSelect';
-import EvaluationDateRange from '../evaluations/filters/EvaluationDateRange';
+import {EvaluationUserSelect} from '../evaluations/filters/EvaluationUserSelect';
+import {EvaluationScaleSelect} from '../evaluations/filters/EvaluationScaleSelect';
+import {EvaluationSortSelect} from '../evaluations/filters/EvaluationSortSelect';
+import {EvaluationDateRange} from '../evaluations/filters/EvaluationDateRange';
 
 // Accept displayedUserId as a prop to filter out the evaluator dropdown
 
 // Accept displayedUserId as a prop to filter out the evaluator dropdown
-const ProfileEvaluationsFilter = ({ filters, setFilters, displayedUserId }) => {
+export const ProfileEvaluationsFilter = ({ filters, setFilters, displayedUserId }) => {
   const { t } = useTranslation();
   const { showAlert } = useAlert();
 
@@ -189,4 +189,3 @@ ProfileEvaluationsFilter.propTypes = {
   displayedUserId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
-export default ProfileEvaluationsFilter;

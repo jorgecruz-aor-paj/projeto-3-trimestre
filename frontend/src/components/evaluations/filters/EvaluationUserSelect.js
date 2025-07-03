@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useUserList } from '../../../hooks/useUserList';
 import { useTranslation } from 'react-i18next';
 
-const EvaluationUserSelect = ({
+export const EvaluationUserSelect = ({
   value,
   onChange,
   excludeUserId,
@@ -49,5 +49,3 @@ EvaluationUserSelect.propTypes = {
   label: PropTypes.string,
   name: PropTypes.string.isRequired,
 };
-
-export default EvaluationUserSelect;

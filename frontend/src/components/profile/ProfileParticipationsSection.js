@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useParticipationStore } from 'stores/ParticipationStore';
-import ProfileParticipationsFilter from './ProfileParticipationsFilter';
-import ProfileParticipationCard from './ProfileParticipationCard';
+import { ProfileParticipationsFilter } from './ProfileParticipationsFilter';
+import { ProfileParticipationCard } from './ProfileParticipationCard';
 import { useTranslation } from 'react-i18next';
-import TrainingParticipationStatsTable from './TrainingParticipationStatsTable';
+import { TrainingParticipationStatsTable } from './TrainingParticipationStatsTable';
 
-const ProfileParticipationsSection = ({ userId }) => {
+export const ProfileParticipationsSection = ({ userId }) => {
   const { participations, fetchParticipations, loading, error } =
     useParticipationStore();
   const [filters, setFilters] = useState({ participantId: userId });
@@ -39,5 +39,3 @@ const ProfileParticipationsSection = ({ userId }) => {
 ProfileParticipationsSection.propTypes = {
   userId: PropTypes.number.isRequired,
 };
-
-export default ProfileParticipationsSection;

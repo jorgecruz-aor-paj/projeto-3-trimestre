@@ -652,5 +652,12 @@
     "partial": "Partial contribution",
     "expected": "Expected contribution",
     "exceed": "Exceeded contribution"
+  },
+  "evaluationStatus": {
+    "title": "Evaluation Status",
+    "any": "Any status",
+    "closed": "Closed",
+    "ongoing": "Ongoing",
+    "completed": "Completed"
   }
 }
