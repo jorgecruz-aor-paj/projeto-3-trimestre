@@ -49,6 +49,26 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
   });
   const [errors, setErrors] = useState({});
 
+  // Sync user state when initialUser prop changes
+  useEffect(() => {
+    setUser(initialUser);
+  }, [initialUser]);
+
+  // Sync formData when user changes
+  useEffect(() => {
+    setFormData({
+      firstName: user.firstName || '',
+      lastName: user.lastName || '',
+      phoneNumber: user.phoneNumber || '',
+      address: user.address || '',
+      birthdate: user.birthdate || '',
+      workplace: user.workplace?.name || '',
+      biography: user.biography || '',
+      role: user.role || '',
+      managerId: user.manager?.id || '',
+    });
+  }, [user]);
+
   const handleChange = e => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -110,11 +130,13 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
       };
       const response = await userService.update(updatePayload);
       console.log('User updated successfully:', response);
+
+      // Always update local user state
+      setUser(response);
+
       if (isSelf) {
         // Update logged user in auth store if it's the self profile
         useAuthStore.setState({ user: response });
-      } else {
-        setUser(response); // Update local user object for non-self profiles
       }
 
       // Call the parent's update callback if provided
