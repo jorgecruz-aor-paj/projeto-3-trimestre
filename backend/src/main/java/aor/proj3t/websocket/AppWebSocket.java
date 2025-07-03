@@ -1,7 +1,6 @@
 package aor.proj3t.websocket;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
@@ -141,36 +140,16 @@ public class AppWebSocket {
     }
 
     /**
-     * Public method to send a new message to a user via WebSocket
-     * This is called from MessageResource after saving the message
+     * Notify recipient of new message (simple notification only)
      */
-    public void notifyNewMessage(MessageDTO messageDTO) {
-        logger.info("Notifying new message: from {} to {}", messageDTO.getSenderId(), messageDTO.getRecipientId());
+    public void notifyNewMessage(Long recipientId, Long messageId) {
+        logger.info("Notifying new message {} to user {}", messageId, recipientId);
 
-        // Prepare message data
-        Map<String, Object> messageObject = new HashMap<>();
-        messageObject.put("id", messageDTO.getId());
-        messageObject.put("senderId", messageDTO.getSenderId());
-        messageObject.put("recipientId", messageDTO.getRecipientId());
-        messageObject.put("content", messageDTO.getContent());
-        messageObject.put("timestampSent", messageDTO.getTimestampSent().toString());
-        messageObject.put("read", messageDTO.isRead());
+        Map<String, Object> notification = Map.of(
+                "type", "new_message",
+                "messageId", messageId);
 
-        // Send to recipient
-        Map<String, Object> recipientMessage = Map.of(
-                "type", "message",
-                "message", messageObject);
-
-        // Send to sender as confirmation
-        Map<String, Object> senderConfirmation = Map.of(
-                "type", "message_sent",
-                "message", messageObject);
-
-        // Send to recipient if connected
-        sendToUser(messageDTO.getRecipientId(), recipientMessage);
-
-        // Send confirmation to sender if connected
-        sendToUser(messageDTO.getSenderId(), senderConfirmation);
+        sendToUser(recipientId, notification);
     }
 
     /**

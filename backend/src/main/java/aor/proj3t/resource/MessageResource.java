@@ -95,8 +95,8 @@ public class MessageResource {
             aor.proj3t.entities.Message savedMessage = serviceFactory.forMessage().createMessage(message);
             MessageDTO messageDTO = serviceFactory.forMessage().getMessage(savedMessage.getId());
 
-            // Send message via WebSocket for real-time delivery
-            webSocket.notifyNewMessage(messageDTO);
+            // Send simple notification via WebSocket (no message content)
+            webSocket.notifyNewMessage(recipientId, savedMessage.getId());
 
             logger.info("Message successfully created with ID: {}", savedMessage.getId());
             return Response.status(Response.Status.CREATED).entity(messageDTO).build();
