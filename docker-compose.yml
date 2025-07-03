@@ -14,7 +14,10 @@ services:
     networks:
       - proj3t-network
     depends_on:
-      - ai_service
+      postgres_db:
+        condition: service_healthy
+      ai_service:
+        condition: service_started
     hostname: backend
 
   ai_service:
@@ -32,6 +35,44 @@ services:
       - proj3t-network
     hostname: ai-service
 
+  postgres_db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: proj3t_db
+      POSTGRES_USER: proj3t_user
+      POSTGRES_PASSWORD: proj3t_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - proj3t-network
+    hostname: postgres-db
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U proj3t_user -d proj3t_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@localhost.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    ports:
+      - "5050:80"
+    networks:
+      - proj3t-network
+    depends_on:
+      - postgres_db
+    restart: unless-stopped
+
 networks:
   proj3t-network:
     driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
