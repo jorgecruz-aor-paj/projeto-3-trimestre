@@ -10,18 +10,18 @@ import { FormInput } from '../forms/FormInput';
 import { FormDropdownInput } from '../forms/FormDropdownInput';
 import { evaluationService } from 'services/evaluationService';
 
-const scaleNumberMap = {
-  LOW_CONTRIBUTION: 1,
-  PARCIAL_CONTRIBUTION: 2,
-  EXPECTED_CONTRIBUTION: 3,
-  EXCEED_CONTRIBUTION: 4,
-};
-
 export const EditableEvaluationCard = ({ evaluation, onEdit }) => {
   const { t, i18n } = useTranslation();
   const { showAlert } = useAlert();
   const [form, setForm] = useState({ ...evaluation });
   const [editing, setEditing] = useState(false);
+
+  const scaleNumberMap = {
+    LOW_CONTRIBUTION: 1,
+    PARCIAL_CONTRIBUTION: 2,
+    EXPECTED_CONTRIBUTION: 3,
+    EXCEED_CONTRIBUTION: 4,
+  };
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -144,7 +144,7 @@ export const EditableEvaluationCard = ({ evaluation, onEdit }) => {
       </div>
       {/* Closure date */}
       <div className="mb-1">
-        <strong>{t('evaluationCycle.closureDate')}:</strong>{' '}
+        <strong>{t('evaluationCycle.cycleClosureDate')}:</strong>{' '}
         {form.evaluationCycle?.closureDate
           ? formatDateToDDMMYYYY(form.evaluationCycle.closureDate)
           : t('evaluationCycle.closureDateNotAvailable')}
