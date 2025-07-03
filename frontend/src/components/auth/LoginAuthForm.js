@@ -50,7 +50,9 @@ export const LoginAuthForm = () => {
       try {
         const userResponse = await userService.getMe();
         setUserInfo(userResponse);
-      } catch {}
+      } catch {
+        /* empty */
+      }
       navigate('/dashboard');
     } catch (err) {
       setError(err.message || t('auth.loginFailed'));
