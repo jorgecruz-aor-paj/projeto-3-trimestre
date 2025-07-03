@@ -654,11 +654,39 @@
     "expected": "Expected contribution",
     "exceed": "Exceeded contribution"
   },
-    "evaluationStatus": {
+  "evaluationStatus": {
     "title": "Estado da Avaliação",
     "any": "todos",
-    "closed": "Fechado",
-    "ongoing": "Em curso",
-    "completed": "Concluído"
+    "CLOSED": "Fechado",
+    "ONGOING": "Em curso",
+    "COMPLETED": "Concluído"
+  },
+  "evaluationCycle": {
+    "title": "Ciclos de Avaliação",
+    "createNew": "Criar Novo Ciclo de Avaliação",
+    "editCycle": "Editar Ciclo de Avaliação",
+    "deleteCycle": "Excluir Ciclo de Avaliação",
+    "viewCycle": "Ver Ciclo de Avaliação",
+    "cycleName": "Nome do Ciclo",
+    "cycleDescription": "Descrição do Ciclo",
+    "startDate": "Data de Início",
+    "endDate": "Data de Fim",
+    "endDateNotAvailable": "Data de fim não disponível",
+    "closureDate": "Data de Fecho",
+    "closureDateNotAvailable": "Data de fecho não disponível",
+    "status": "Status",
+    "createdBy": "Criado Por",
+    "createdAt": "Criado Em",
+    "updatedAt": "Atualizado Em",
+    "noCyclesFound": "Nenhum ciclo de avaliação encontrado.",
+    "loadingCycles": "Carregando ciclos de avaliação...",
+    "errorLoadingCycles": "Erro ao carregar ciclos de avaliação.",
+    "confirmDeleteCycle": {
+      "title": "Confirmar Exclusão do Ciclo",
+      "message": "Tem certeza de que deseja excluir este ciclo de avaliação? Esta ação não pode ser desfeita."
+    },
+    "cycleDeletedSuccess": "Ciclo de avaliação excluído com sucesso.",
+    "cycleCreatedSuccess": "Ciclo de avaliação criado com sucesso.",
+    "cycleUpdatedSuccess": "Ciclo de avaliação atualizado com sucesso."
   }
 }

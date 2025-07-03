@@ -1,43 +1,147 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFilePdf } from '@fortawesome/free-solid-svg-icons';
 import { useTranslation } from 'react-i18next';
+import { useAlert } from 'contexts/AlertContext';
+import { exportService } from 'services/exportService';
+import { formatDateToDDMMYYYY } from 'utils/dateUtils';
+import { translateEvaluationScale } from 'utils/evaluationScaleTranslations';
 
-/**
- * EvaluationCard displays a single evaluation's details in a card format.
- * Add download, status, and other actions as needed.
- */
+const scaleNumberMap = {
+  LOW_CONTRIBUTION: 1,
+  PARCIAL_CONTRIBUTION: 2,
+  EXPECTED_CONTRIBUTION: 3,
+  EXCEED_CONTRIBUTION: 4,
+};
+
 export const EvaluationCard = ({ evaluation }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const { showAlert } = useAlert();
 
-  // Example fields, adjust as needed
-  const { id, evaluator, scale, status, date, comments } = evaluation;
+  const handleDownload = () => {
+    const fetchFile = async () => {
+      try {
+        const response = await exportService.evaluationToPDF(evaluation.id);
+        let filename = `evaluation_${evaluation.id}.pdf`;
+        if (
+          response &&
+          response.headers &&
+          response.headers['content-disposition']
+        ) {
+          const match = response.headers['content-disposition'].match(
+            /filename="?([^";]+)"?/
+          );
+          if (match && match[1]) filename = match[1];
+        }
+        const blob = response.data instanceof Blob ? response.data : response;
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.setAttribute('download', filename);
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => {
+          window.URL.revokeObjectURL(url);
+          document.body.removeChild(a);
+        }, 200);
+      } catch (error) {
+        console.error('Error downloading evaluation:', error);
+        showAlert({
+          title: t('common.error', 'Error'),
+          message: t('profile.downloadError'),
+          variant: 'danger',
+        });
+      }
+    };
+    fetchFile();
+  };
+
+  const profilePicUrl = evaluation.evaluatee?.photograph
+    ? `/public/images/${evaluation.evaluatee.photograph}`
+    : '/public/images/default-profile-picture.png';
+
+  const scaleNumber = scaleNumberMap[evaluation.scale] || '-';
+  const scaleLabel = evaluation.scale
+    ? translateEvaluationScale(evaluation.scale, i18n.language)
+    : '-';
 
   return (
-    <div className="card evaluation-card mb-3">
-      <div className="card-body">
-        <h5 className="card-title">
-          {t('evaluations.evaluation')} #{id}
-        </h5>
-        <p className="card-text">
-          <strong>{t('evaluations.evaluator')}:</strong>{' '}
-          {evaluator?.name || '-'}
-          <br />
-          <strong>{t('evaluations.scale')}:</strong> {scale || '-'}
-          <br />
-          <strong>{t('evaluations.status')}:</strong>{' '}
-          {t(`evaluations.status.${status}`) || status}
-          <br />
-          <strong>{t('evaluations.date')}:</strong>{' '}
-          {date ? new Date(date).toLocaleDateString() : '-'}
-          <br />
-          <strong>{t('evaluations.comments')}:</strong> {comments || '-'}
-        </p>
-        {/* Add download button, edit button, etc. here if needed */}
+    <div
+      className="card evaluation-card mb-3 position-relative"
+      style={{ paddingTop: 28 }}
+    >
+      {/* Download icon button in top right */}
+      <button
+        className="btn btn-link p-0 position-absolute"
+        style={{ top: 4, right: 8, zIndex: 2 }}
+        title={t('profile.downloadEvaluation')}
+        onClick={handleDownload}
+        aria-label={t('profile.downloadEvaluation')}
+      >
+        <FontAwesomeIcon icon={faFilePdf} size="lg" color="currentColor" />
+      </button>
+      <div className="d-flex align-items-center mb-2">
+        <img
+          src={profilePicUrl}
+          alt={
+            evaluation.evaluatee
+              ? `${evaluation.evaluatee.firstName} ${evaluation.evaluatee.lastName}`
+              : 'Profile'
+          }
+          className="rounded-circle me-3"
+          style={{
+            width: 48,
+            height: 48,
+            objectFit: 'cover',
+            border: '1px solid #ccc',
+          }}
+        />
+        <div>
+          <div className="fw-bold">
+            {evaluation.evaluatee
+              ? `${evaluation.evaluatee.firstName} ${evaluation.evaluatee.lastName}`
+              : '-'}
+          </div>
+          <div className="text-muted small">
+            {t('profile.status')}:{' '}
+            {t(`evaluationStatus.${evaluation.status}`) || evaluation.status}
+          </div>
+        </div>
+      </div>
+      <div className="mb-1">
+        <strong>{t('evaluationCycle.closureDate')}:</strong>{' '}
+        {evaluation.evaluationCycle?.closureDate
+          ? formatDateToDDMMYYYY(evaluation.evaluationCycle.closureDate)
+          : t('evaluationCycle.closureDateNotAvailable')}
+      </div>
+      <div className="mb-1">
+        <strong>{t('evaluationScale.title')}:</strong>{' '}
+        {scaleNumber !== '-'
+          ? `${scaleNumber} - ${scaleLabel}`
+          : t('evaluationScale.notEvaluated')}
       </div>
     </div>
   );
 };
 
 EvaluationCard.propTypes = {
-  evaluation: PropTypes.object.isRequired,
+  evaluation: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    scale: PropTypes.string,
+    status: PropTypes.string,
+    evaluationCycle: PropTypes.shape({
+      closureDate: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+        PropTypes.instanceOf(Date),
+      ]),
+    }),
+    evaluatee: PropTypes.shape({
+      firstName: PropTypes.string,
+      lastName: PropTypes.string,
+      photograph: PropTypes.string,
+    }),
+  }).isRequired,
 };

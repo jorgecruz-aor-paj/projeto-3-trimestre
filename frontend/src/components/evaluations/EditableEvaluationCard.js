@@ -58,8 +58,8 @@ export const EditableEvaluationCard = ({ evaluation, onEdit }) => {
               <br />
               <strong>{t('evaluations.scale')}:</strong> {form.scale || '-'}
               <br />
-              <strong>{t('evaluations.status')}:</strong>{' '}
-              {t(`evaluations.status.${form.status}`) || form.status}
+              <strong>{t('evaluationStatus')}:</strong>{' '}
+              {t(`evaluationStatus.${form.status}`) || form.status}
               <br />
               <strong>{t('evaluations.date')}:</strong>{' '}
               {form.date ? new Date(form.date).toLocaleDateString() : '-'}

@@ -651,13 +651,42 @@
     "low": "Low contribution",
     "partial": "Partial contribution",
     "expected": "Expected contribution",
-    "exceed": "Exceeded contribution"
+    "exceed": "Exceeded contribution",
+    "notEvaluated": "Not evaluated"
   },
   "evaluationStatus": {
     "title": "Evaluation Status",
     "any": "Any status",
-    "closed": "Closed",
-    "ongoing": "Ongoing",
-    "completed": "Completed"
+    "CLOSED": "Closed",
+    "ONGOING": "Ongoing",
+    "COMPLETED": "Completed"
+  },
+  "evaluationCycle": {
+    "title": "Evaluation Cycle",
+    "createNew": "Create New Evaluation Cycle",
+    "editCycle": "Edit Evaluation Cycle",
+    "deleteCycle": "Delete Evaluation Cycle",
+    "viewCycle": "View Evaluation Cycle",
+    "cycleName": "Cycle Name",
+    "cycleDescription": "Cycle Description",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "endDateNotAvailable": "End date not available",
+    "closureDate": "Closure Date",
+    "closureDateNotAvailable": "Closure date not available",
+    "status": "Status",
+    "createdBy": "Created By",
+    "createdAt": "Created At",
+    "updatedAt": "Updated At",
+    "noCyclesFound": "No evaluation cycles found.",
+    "loadingCycles": "Loading evaluation cycles...",
+    "errorLoadingCycles": "Error loading evaluation cycles.",
+    "confirmDeleteCycle": {
+      "title": "Confirm Delete Cycle",
+      "message": "Are you sure you want to delete this evaluation cycle? This action cannot be undone."
+    },
+    "cycleDeletedSuccess": "Evaluation cycle deleted successfully.",
+    "cycleCreatedSuccess": "Evaluation cycle created successfully.",
+    "cycleUpdatedSuccess": "Evaluation cycle updated successfully."
   }
 }

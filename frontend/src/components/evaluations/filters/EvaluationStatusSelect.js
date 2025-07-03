@@ -4,9 +4,9 @@ import { useTranslation } from 'react-i18next';
 
 const statusOptions = [
   { value: '', label: 'common.all' },
-  { value: 'ONGOING', label: 'evaluationStatus.ongoing' },
-  { value: 'CLOSED', label: 'evaluationStatus.closed' },
-  { value: 'COMPLETED', label: 'evaluationStatus.completed' },
+  { value: 'ONGOING', label: 'evaluationStatus.ONGOING' },
+  { value: 'CLOSED', label: 'evaluationStatus.CLOSED' },
+  { value: 'COMPLETED', label: 'evaluationStatus.COMPLETED' },
 ];
 
 export const EvaluationStatusSelect = ({ value, onChange, label, name }) => {
@@ -14,7 +14,7 @@ export const EvaluationStatusSelect = ({ value, onChange, label, name }) => {
   return (
     <div className="col-auto">
       <label htmlFor={name} className="form-label mb-0">
-        {label || t('evaluations.status.title')}
+        {label || t('evaluationStatus.title')}
       </label>
       <select
         id={name}
