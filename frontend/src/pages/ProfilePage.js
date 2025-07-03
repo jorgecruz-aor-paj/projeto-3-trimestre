@@ -21,6 +21,10 @@ const ProfilePage = () => {
     return id ? parseInt(id, 10) : null;
   }
 
+  const handleUserUpdate = updatedUser => {
+    setProfileUser(updatedUser);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       const paramId = getUserIdFromQuery();
@@ -86,7 +90,7 @@ const ProfilePage = () => {
   return (
     <div className="profile-page-container">
       <section className="profile-info-section">
-        <UserProfileInfo user={profileUser} />
+        <UserProfileInfo user={profileUser} onUserUpdate={handleUserUpdate} />
       </section>
       {canViewSections && <ProfileSectionsToggle userId={profileUser.id} />}
     </div>

@@ -9,10 +9,11 @@ import { useAuthStore } from '../../stores/AuthStore';
 import { userService } from 'services';
 import { useUserList } from '../../hooks/useUserList';
 
-export const UserProfileInfo = ({ user }) => {
+export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
   const { t } = useTranslation();
   const { formatDate } = useLanguage();
   const loggedUser = useAuthStore(state => state.user);
+  const [user, setUser] = useState(initialUser);
   const isSelf = loggedUser?.id === user.id;
   const isAdmin = loggedUser?.role === 'ADMIN';
 
@@ -53,7 +54,7 @@ export const UserProfileInfo = ({ user }) => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleManagerSelect = async id => {
+  const handleManagerSelect = id => {
     setFormData(prev => ({ ...prev, managerId: id }));
   };
 
@@ -109,7 +110,17 @@ export const UserProfileInfo = ({ user }) => {
       };
       const response = await userService.update(updatePayload);
       console.log('User updated successfully:', response);
-      user = response;
+      if (isSelf) {
+        // Update logged user in auth store if it's the self profile
+        useAuthStore.setState({ user: response });
+      } else {
+        setUser(response); // Update local user object for non-self profiles
+      }
+
+      // Call the parent's update callback if provided
+      if (onUserUpdate) {
+        onUserUpdate(response);
+      }
     } catch (err) {
       // Optionally handle error, e.g., show notification
       console.error('Failed to update user:', err);
@@ -344,4 +355,5 @@ UserProfileInfo.propTypes = {
       lastName: PropTypes.string,
     }),
   }).isRequired,
+  onUserUpdate: PropTypes.func, // New optional prop
 };
