@@ -555,6 +555,9 @@
     "evaluationSubmitted": "Avaliação submetida com sucesso",
     "evaluationPeriod": "Período de Avaliação",
     "downloadError": "Erro ao descarregar avaliações",
+    "saveSuccess": "Avaliação guardada com sucesso",
+
+    "feedback": "Feedback",
     "hero": {
       "subtitle": "Ferramentas abrangentes de avaliação de desempenho que impulsionam feedback significativo, crescimento e sucesso organizacional.",
       "viewEvaluations": "Ver Avaliações",
@@ -644,7 +647,9 @@
     "startDate": "Data de Início",
     "endDate": "Data de Fim",
     "creationDate": "Data",
-    "scale": "Escala"
+    "scale": "Escala",
+    "evaluatee": "Avaliado",
+    "evaluator": "Avaliador"
   },
   "evaluationScale": {
     "title": "Evaluation Scale",

@@ -12,6 +12,7 @@ export const ProfileEvaluationCard = ({ evaluation }) => {
   const { t, i18n } = useTranslation();
   const { showAlert } = useAlert();
 
+  console.log('Rendering ProfileEvaluationCard for evaluation:', evaluation);
   // Download handler: triggers file download from API response
   const handleDownload = () => {
     const fetchFile = async () => {
@@ -76,7 +77,7 @@ export const ProfileEvaluationCard = ({ evaluation }) => {
         {t('profile.date')}: {formatDateToDDMMYYYY(evaluation.createdAt)}
       </div>
       <div>
-        {t('profile.scale')}:{' '}
+        {t('evaluationScale.title')}:{' '}
         {translateEvaluationScale(evaluation.scale, i18n.language)}
       </div>
       <div>

@@ -17,7 +17,7 @@ public class EvaluationFilter {
     private Long evaluatedId;
     @QueryParam("evaluatorId")
     private Long evaluatorId;
-    @QueryParam("evaluationStatus")
+    @QueryParam("status")
     private EvaluationStatus evaluationStatus;
     @QueryParam("date")
     private String dateString;

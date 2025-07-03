@@ -554,6 +554,8 @@
     "evaluationSubmitted": "Evaluation submitted successfully",
     "evaluationPeriod": "Evaluation Period",
     "downloadError": "Error downloading evaluations",
+    "feedback": "Feedback",
+    "saveSuccess": "Evaluation saved successfully",
     "hero": {
       "subtitle": "Comprehensive performance evaluation tools that drive meaningful feedback, growth, and organizational success.",
       "viewEvaluations": "View Evaluations",
@@ -643,7 +645,9 @@
     "startDate": "Start Date",
     "endDate": "End Date",
     "creationDate": "Creation Date",
-    "scale": "Scale"
+    "scale": "Scale",
+    "evaluatee": "Evaluatee",
+    "evaluator": "Evaluator"
   },
   "evaluationScale": {
     "title": "Evaluation Scale",

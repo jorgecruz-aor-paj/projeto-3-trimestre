@@ -1,4 +1,5 @@
 import React from 'react';
+import { ProfilePicture } from '../common/ProfilePicture';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf } from '@fortawesome/free-solid-svg-icons';
@@ -58,15 +59,10 @@ export const EvaluationCard = ({ evaluation }) => {
     fetchFile();
   };
 
-  const profilePicUrl = evaluation.evaluatee?.photograph
-    ? `/public/images/${evaluation.evaluatee.photograph}`
-    : '/public/images/default-profile-picture.png';
-
   const scaleNumber = scaleNumberMap[evaluation.scale] || '-';
   const scaleLabel = evaluation.scale
     ? translateEvaluationScale(evaluation.scale, i18n.language)
     : '-';
-
   return (
     <div
       className="card evaluation-card mb-3 position-relative"
@@ -83,14 +79,14 @@ export const EvaluationCard = ({ evaluation }) => {
         <FontAwesomeIcon icon={faFilePdf} size="lg" color="currentColor" />
       </button>
       <div className="d-flex align-items-center mb-2">
-        <img
-          src={profilePicUrl}
+        <ProfilePicture
+          userId={evaluation.evaluatee?.id}
+          className="rounded-circle me-3"
           alt={
             evaluation.evaluatee
               ? `${evaluation.evaluatee.firstName} ${evaluation.evaluatee.lastName}`
               : 'Profile'
           }
-          className="rounded-circle me-3"
           style={{
             width: 48,
             height: 48,
