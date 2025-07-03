@@ -40,7 +40,19 @@
     "update": "Update",
     "send": "Send",
     "receive": "Receive",
-    "all": "All"
+    "all": "All",
+    "active": "Active",
+    "inactive": "Inactive",
+    "status": "Status",
+    "actions": "Actions",
+    "retry": "Retry",
+    "filters": "Filters",
+    "clearFilters": "Clear Filters",
+    "activeFilters": "Active Filters",
+    "sortBy": "Sort By",
+    "ascending": "Ascending",
+    "descending": "Descending",
+    "minutes": "minutes"
   },
   "roles": {
     "admin": "Administrator",
@@ -157,7 +169,8 @@
     "passwordMinLength": "Password must be at least 6 characters long",
     "confirmPasswordRequired": "Please confirm your password",
     "passwordsDontMatch": "Passwords do not match",
-    "fieldRequired": "This field is required"
+    "fieldRequired": "This field is required",
+    "required": "This field is required"
   },
   "errors": {
     "unexpected": "An unexpected error occurred",
@@ -504,7 +517,9 @@
     "hero": {
       "subtitle": "Unlock your potential with our comprehensive training programs designed to enhance skills and accelerate career growth.",
       "exploreTrainings": "Explore Trainings",
-      "viewProgress": "View My Progress"
+      "viewProgress": "View My Progress",
+      "getStarted": "Get Started",
+      "learnMore": "Learn More"
     },
     "features": {
       "title": "Training Features",
@@ -532,7 +547,87 @@
       "title": "Ready to advance your career with professional training?",
       "description": "Join thousands of professionals who have enhanced their skills and accelerated their careers through our training programs.",
       "button": "Start Learning Today"
-    }
+    },
+    "admin": {
+      "title": "Training Management",
+      "subtitle": "Manage training programs and areas",
+      "newTraining": "New Training",
+      "newArea": "New Area",
+      "editTraining": "Edit Training",
+      "createFirst": "Create First Training",
+      "trainingsList": "Trainings List",
+      "trainingsCount": "trainings",
+      "noTrainings": "No trainings available",
+      "noTrainingsDesc": "Start by creating your first training program",
+      "loading": "Loading trainings...",
+      "fetchError": "Failed to load trainings",
+      "success": "Success",
+      "error": "Error",
+      "createSuccess": "Training created successfully",
+      "createError": "Failed to create training",
+      "updateSuccess": "Training updated successfully",
+      "updateError": "Failed to update training",
+      "deactivateTitle": "Deactivate Training",
+      "deactivateMessage": "Are you sure you want to deactivate the training '{title}'?",
+      "deactivateSuccess": "Training deactivated successfully",
+      "deactivateError": "Failed to deactivate training",
+      "deactivate": "Deactivate",
+      "viewLink": "View Link",
+      "areaCreateSuccess": "Training area created successfully",
+      "areaCreateError": "Failed to create training area",
+      "areaNamePlaceholder": "Enter area name..."
+    },
+    "fields": {
+      "title": "Title",
+      "area": "Area",
+      "areaName": "Area Name",
+      "duration": "Duration",
+      "language": "Language",
+      "status": "Status",
+      "created": "Created",
+      "description": "Description",
+      "link": "Link"
+    },
+    "form": {
+      "titlePlaceholder": "Enter training title...",
+      "selectArea": "Select training area",
+      "durationPlaceholder": "Duration in minutes",
+      "durationHint": "Duration in minutes (e.g., 60 for 1 hour)",
+      "selectLanguage": "Select language",
+      "descriptionPlaceholder": "Enter training description...",
+      "descriptionHint": "Provide a detailed description (10-1000 characters)",
+      "linkPlaceholder": "https://example.com/training",
+      "linkHint": "Optional link to external training resources"
+    },
+    "filter": {
+      "searchPlaceholder": "Search trainings...",
+      "durationPlaceholder": "Max duration"
+    },
+    "sort": {
+      "title": "Title",
+      "date": "Date Created",
+      "duration": "Duration",
+      "language": "Language",
+      "area": "Training Area"
+    },
+    "validation": {
+      "titleTooLong": "Title must be 100 characters or less",
+      "descriptionTooShort": "Description must be at least 10 characters",
+      "descriptionTooLong": "Description must be 1000 characters or less",
+      "durationInvalid": "Duration must be greater than 0",
+      "invalidUrl": "Please enter a valid URL"
+    },
+    "user": {
+      "subtitle": "Discover and explore professional development opportunities",
+      "accessTraining": "Access Training",
+      "addedOn": "Added",
+      "showingResults": "Showing {{count}} training(s)",
+      "noMatchingTrainings": "No trainings match your criteria",
+      "tryDifferentFilters": "Try adjusting your filters",
+      "checkBackLater": "Check back later for new training programs"
+    },
+    "loading": "Loading trainings...",
+    "fetchError": "Failed to load trainings"
   },
   "evaluations": {
     "title": "Evaluations",
