@@ -25,6 +25,8 @@ public class EvaluationFilter {
     private EvaluationScale evaluationScale;
     @QueryParam("evaluationSortField")
     private EvaluationSortField evaluationSortField = EvaluationSortField.DATE;
+    @QueryParam("cycleClosed")
+    private Boolean cycleClosed = false;
     @QueryParam("ascending")
     private Boolean ascending = false;
     @QueryParam("searchText")
@@ -140,6 +142,14 @@ public class EvaluationFilter {
 
     public void setDateString(String dateString) {
         this.dateString = dateString;
+    }
+
+    public Boolean getCycleClosed() {
+        return cycleClosed;
+    }
+
+    public void setCycleClosed(Boolean cycleClosed) {
+        this.cycleClosed = cycleClosed;
     }
 
     public void hydrate() {

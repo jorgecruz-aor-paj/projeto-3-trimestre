@@ -253,6 +253,7 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
         if (requester.getRole().equals(Role.USER)) {
             // Users can only see their own evaluations
             filter.setEvaluatedId(requesterId);
+            filter.setCycleClosed(true);
         } else if (requester.getRole().equals(Role.MANAGER) && filter.getEvaluatedId() == null
                 && filter.getEvaluatorId() == null) {
             // If no specific filter is provided, limit managers to evaluations they

@@ -7,6 +7,7 @@ import java.util.List;
 import aor.proj3t.daos.interfaces.EvaluationDAO;
 import aor.proj3t.entities.Evaluation;
 import aor.proj3t.entities.EvaluationCycle;
+import aor.proj3t.enums.EvaluationCycleStatus;
 import aor.proj3t.enums.EvaluationStatus;
 import aor.proj3t.filters.EvaluationFilter;
 import jakarta.ejb.Stateless;
@@ -106,6 +107,10 @@ public class EvaluationDAOimpl extends AbstractDAO<Evaluation, Long> implements 
 
         if (filters.getSearchText() != null && !filters.getSearchText().isEmpty()) {
             predicates.add(cb.like(cb.lower(root.get("feedback")), "%" + filters.getSearchText().toLowerCase() + "%"));
+        }
+
+        if (filters.getCycleClosed() != null && filters.getCycleClosed()) {
+            predicates.add(cb.equal(cycleJoin.get("status"), EvaluationCycleStatus.CLOSED));
         }
 
         query.where(cb.and(predicates.toArray(Predicate[]::new)));

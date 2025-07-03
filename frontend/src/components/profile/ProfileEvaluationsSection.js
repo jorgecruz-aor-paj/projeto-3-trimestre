@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 export const ProfileEvaluationsSection = ({ userId }) => {
   const { evaluations, fetchEvaluations, loading, error } =
     useEvaluationStore();
-  const [filters, setFilters] = useState({ evaluatedId: userId , status: 'CLOSED' });
+  const [filters, setFilters] = useState({ evaluatedId: userId , status: 'CLOSED', cycleClosed: true});
 
   useEffect(() => {
     fetchEvaluations(filters);
