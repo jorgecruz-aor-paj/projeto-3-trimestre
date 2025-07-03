@@ -10,7 +10,17 @@ services:
       - "9990:9990"
     volumes:
       - ./backend/target/jorge-osorio-proj3t/:/opt/wildfly/standalone/deployments/jorge-osorio-proj3t.war
-      - ./backend/.env:/opt/wildfly/standalone/deployments/.env
+      - ./backend/.env:/opt/wildfly/standalone/.env
+    env_file:
+      - ./backend/.env
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ISSUER=${JWT_ISSUER}
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_USERNAME=${SMTP_USERNAME}
+      - SMTP_PASSWORD=${SMTP_PASSWORD}
+      - JAVA_OPTS=-DJWT_SECRET=${JWT_SECRET} -DJWT_ISSUER=${JWT_ISSUER} -DSMTP_HOST=${SMTP_HOST} -DSMTP_PORT=${SMTP_PORT} -DSMTP_USERNAME=${SMTP_USERNAME} -DSMTP_PASSWORD=${SMTP_PASSWORD}
     networks:
       - proj3t-network
     depends_on:
