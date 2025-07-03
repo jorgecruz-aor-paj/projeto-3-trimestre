@@ -63,12 +63,22 @@ public class EvaluationConverter extends AbstractConverter<Evaluation, Evaluatio
         }
 
         if (evaluation.getEvaluated() != null) {
-            MiniUserDTO miniUserDTO = new MiniUserDTO(evaluation.getEvaluated().getId(),evaluation.getEvaluated().getFirstName(),evaluation.getEvaluated().getLastName(),evaluation.getEvaluated().getEmail());
+            MiniUserDTO miniUserDTO = new MiniUserDTO(
+                    evaluation.getEvaluated().getId(),
+                    evaluation.getEvaluated().getFirstName(),
+                    evaluation.getEvaluated().getLastName(),
+                    evaluation.getEvaluated().getEmail(),
+                    evaluation.getEvaluated().getPhotograph());
             dto.setEvaluatee(miniUserDTO);
         }
 
         if (evaluation.getEvaluator() != null) {
-            MiniUserDTO miniUserDTO = new MiniUserDTO(evaluation.getEvaluator().getId(),evaluation.getEvaluator().getFirstName(),evaluation.getEvaluator().getLastName(),evaluation.getEvaluator().getEmail());
+            MiniUserDTO miniUserDTO = new MiniUserDTO(
+                    evaluation.getEvaluator().getId(),
+                    evaluation.getEvaluator().getFirstName(),
+                    evaluation.getEvaluator().getLastName(),
+                    evaluation.getEvaluator().getEmail(),
+                    evaluation.getEvaluator().getPhotograph());
             dto.setEvaluator(miniUserDTO);
         }
     }

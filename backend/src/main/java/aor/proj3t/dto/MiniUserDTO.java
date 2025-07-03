@@ -5,15 +5,17 @@ public class MiniUserDTO {
         private String firstName;
         private String lastName;
         private String email;
+        private String photograph;
 
     public MiniUserDTO() {
     }
 
-    public MiniUserDTO(Long id, String firstName, String lastName, String email) {
+    public MiniUserDTO(Long id, String firstName, String lastName, String email,String photograph) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.photograph = photograph;
     }
 
     public Long getId() {
@@ -44,5 +46,12 @@ public class MiniUserDTO {
     }
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPhotograph() {
+        return photograph;
+    }
+    public void setPhotograph(String photograph) {
+        this.photograph = photograph;
     }
 }

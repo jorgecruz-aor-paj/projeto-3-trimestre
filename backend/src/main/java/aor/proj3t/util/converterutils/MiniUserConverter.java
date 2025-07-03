@@ -12,7 +12,7 @@ import java.util.List;
 public class MiniUserConverter {
 
     public MiniUserDTO toMiniUserDTO(User user) {
-        return new MiniUserDTO(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail());
+        return new MiniUserDTO(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhotograph());
     }
 
     public List<MiniUserDTO> toMiniUserDTOList(List<User> users) {

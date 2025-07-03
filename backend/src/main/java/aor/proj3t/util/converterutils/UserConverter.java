@@ -67,7 +67,12 @@ public class UserConverter extends AbstractConverter<User, UserDTO, Long> {
 
         // Handle nullable relationships safely
         if (user.getManager() != null) {
-            MiniUserDTO mini = new MiniUserDTO(user.getManager().getId(), user.getManager().getFirstName(),user.getManager().getLastName(),user.getManager().getEmail());
+            MiniUserDTO mini = new MiniUserDTO(
+                    user.getManager().getId(),
+                    user.getManager().getFirstName(),
+                    user.getManager().getLastName(),
+                    user.getManager().getEmail(),
+                    user.getManager().getPhotograph());
             dto.setManager(mini);
         }
 
