@@ -772,6 +772,7 @@
     "endDate": "Data de Fim",
     "endDateNotAvailable": "Data de fim não disponível",
     "closureDate": "Data de Fecho",
+    "cycleClosureDate": "Data de Fecho do Ciclo",
     "closureDateNotAvailable": "Data de fecho não disponível",
     "status": "Status",
     "createdBy": "Criado Por",

@@ -772,6 +772,7 @@
     "endDate": "End Date",
     "endDateNotAvailable": "End date not available",
     "closureDate": "Closure Date",
+    "cycleClosureDate": "Cycle Closure Date",
     "closureDateNotAvailable": "Closure date not available",
     "status": "Status",
     "createdBy": "Created By",

@@ -107,7 +107,7 @@ export const EvaluationCard = ({ evaluation }) => {
         </div>
       </div>
       <div className="mb-1">
-        <strong>{t('evaluationCycle.closureDate')}:</strong>{' '}
+        <strong>{t('evaluationCycle.cycleClosureDate')}:</strong>{' '}
         {evaluation.evaluationCycle?.closureDate
           ? formatDateToDDMMYYYY(evaluation.evaluationCycle.closureDate)
           : t('evaluationCycle.closureDateNotAvailable')}
