@@ -12,8 +12,6 @@ export const EvaluationPage = () => {
 
   useEffect(() => {
     fetchEvaluations(filters);
-    // If your linter complains about exhaustive-deps, ensure fetchEvaluations is stable (from Zustand) or ignore the warning.
-    // Remove the eslint-disable-next-line if your linter does not recognize the rule.
   }, [JSON.stringify(filters)]);
 
   return (
