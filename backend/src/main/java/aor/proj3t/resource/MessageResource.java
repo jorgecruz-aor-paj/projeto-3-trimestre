@@ -11,6 +11,7 @@ import aor.proj3t.dto.MessageDTO;
 import aor.proj3t.dto.UserDTO;
 import aor.proj3t.service.ServiceFactory;
 import aor.proj3t.util.authutils.Secured;
+import aor.proj3t.websocket.AppWebSocket;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
@@ -44,6 +45,9 @@ public class MessageResource {
 
     @Inject
     DAOFactory daoFactory;
+
+    @Inject
+    AppWebSocket webSocket;
 
     /**
      * Send a new message to another user
@@ -90,6 +94,9 @@ public class MessageResource {
             // Save message
             aor.proj3t.entities.Message savedMessage = serviceFactory.forMessage().createMessage(message);
             MessageDTO messageDTO = serviceFactory.forMessage().getMessage(savedMessage.getId());
+
+            // Send message via WebSocket for real-time delivery
+            webSocket.notifyNewMessage(messageDTO);
 
             logger.info("Message successfully created with ID: {}", savedMessage.getId());
             return Response.status(Response.Status.CREATED).entity(messageDTO).build();
