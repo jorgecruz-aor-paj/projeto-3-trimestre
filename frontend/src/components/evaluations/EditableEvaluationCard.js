@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
-import { ProfilePicture } from '../common/ProfilePicture';
+import { ProfilePicture } from 'components/common/ProfilePicture';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf } from '@fortawesome/free-solid-svg-icons';
 import { useTranslation } from 'react-i18next';
 import { useAlert } from 'contexts/AlertContext';
 import { exportService } from 'services/exportService';
-import { FormInput } from '../forms/FormInput';
-import { FormDropdownInput } from '../forms/FormDropdownInput';
+import { FormInput } from 'components/forms/FormInput';
+import { FormDropdownInput } from 'components/forms/FormDropdownInput';
 import { evaluationService } from 'services/evaluationService';
+import { formatDateToDDMMYYYY } from 'utils/dateUtils';
+import { translateEvaluationScale } from 'utils/evaluationScaleTranslations';
 
 export const EditableEvaluationCard = ({ evaluation, onEdit }) => {
   const { t, i18n } = useTranslation();
@@ -92,146 +94,201 @@ export const EditableEvaluationCard = ({ evaluation, onEdit }) => {
 
   const scaleNumber = scaleNumberMap[form.scale] || '-';
   const scaleLabel = form.scale
-    ? require('utils/evaluationScaleTranslations').translateEvaluationScale(
-        form.scale,
-        i18n.language
-      )
+    ? translateEvaluationScale(form.scale, i18n.language)
     : '-';
 
   return (
-    <div
-      className="card evaluation-card mb-3 position-relative"
-      style={{ paddingTop: 28 }}
-    >
-      {/* Download icon button in top right */}
-      <button
-        className="btn btn-link p-0 position-absolute"
-        style={{ top: 4, right: 8, zIndex: 2 }}
-        title={t('profile.downloadEvaluation')}
-        onClick={handleDownload}
-        aria-label={t('profile.downloadEvaluation')}
-      >
-        <FontAwesomeIcon icon={faFilePdf} size="lg" color="currentColor" />
-      </button>
-      {/* Profile picture and name */}
-      <div className="d-flex align-items-center mb-2">
-        <ProfilePicture
-          userId={form.evaluatee?.id}
-          className="rounded-circle me-3"
-          alt={
-            form.evaluatee
-              ? `${form.evaluatee.firstName} ${form.evaluatee.lastName}`
-              : 'Profile'
-          }
-          style={{
-            width: 48,
-            height: 48,
-            objectFit: 'cover',
-            border: '1px solid #ccc',
-          }}
-        />
-        <div>
-          <div className="fw-bold">
-            {form.evaluatee
-              ? `${form.evaluatee.firstName} ${form.evaluatee.lastName}`
-              : '-'}
+    <div className="card h-100 shadow-sm evaluation-card">
+      <div className="card-body d-flex flex-column">
+        {/* Header with profile and download */}
+        <div className="d-flex justify-content-between align-items-start mb-3">
+          <div className="d-flex align-items-center">
+            <ProfilePicture
+              userId={form.evaluatee?.id}
+              className="rounded-circle me-3"
+              alt={
+                form.evaluatee
+                  ? `${form.evaluatee.firstName} ${form.evaluatee.lastName}`
+                  : 'Profile'
+              }
+              style={{
+                width: 48,
+                height: 48,
+                objectFit: 'cover',
+                border: '1px solid #dee2e6',
+              }}
+            />
+            <div>
+              <h6 className="card-title mb-1">
+                {form.evaluatee
+                  ? `${form.evaluatee.firstName} ${form.evaluatee.lastName}`
+                  : '-'}
+              </h6>
+              <div className="small text-muted">
+                <i className="bi bi-person-badge me-1"></i>
+                {t('filters.evaluatee', 'Evaluatee')}
+              </div>
+            </div>
           </div>
-          <div className="text-muted small">
-            {t('profile.status')}:{' '}
-            {t(`evaluationStatus.${form.status}`) || form.status}
-          </div>
-        </div>
-      </div>
-      {/* Closure date */}
-      <div className="mb-1">
-        <strong>{t('evaluationCycle.cycleClosureDate')}:</strong>{' '}
-        {form.evaluationCycle?.closureDate
-          ? formatDateToDDMMYYYY(form.evaluationCycle.closureDate)
-          : t('evaluationCycle.closureDateNotAvailable')}
-      </div>
-      <div className="mb-1">
-        <strong>{t('evaluationScale.title')}:</strong>{' '}
-        {scaleNumber !== '-'
-          ? `${scaleNumber} - ${scaleLabel}`
-          : t('evaluationScale.notEvaluated')}
-      </div>
-      {editing ? (
-        <div className="mt-2">
-          <FormDropdownInput
-            name="scale"
-            label={t('evaluationScale.title')}
-            value={form.scale || ''}
-            onChange={handleChange}
-            options={[
-              { value: '', label: t('evaluationScale.notEvaluated') },
-              {
-                value: 'LOW_CONTRIBUTION',
-                label: `1 - ${require('utils/evaluationScaleTranslations').translateEvaluationScale(
-                  'LOW_CONTRIBUTION',
-                  i18n.language
-                )}`,
-              },
-              {
-                value: 'PARCIAL_CONTRIBUTION',
-                label: `2 - ${require('utils/evaluationScaleTranslations').translateEvaluationScale(
-                  'PARCIAL_CONTRIBUTION',
-                  i18n.language
-                )}`,
-              },
-              {
-                value: 'EXPECTED_CONTRIBUTION',
-                label: `3 - ${require('utils/evaluationScaleTranslations').translateEvaluationScale(
-                  'EXPECTED_CONTRIBUTION',
-                  i18n.language
-                )}`,
-              },
-              {
-                value: 'EXCEED_CONTRIBUTION',
-                label: `4 - ${require('utils/evaluationScaleTranslations').translateEvaluationScale(
-                  'EXCEED_CONTRIBUTION',
-                  i18n.language
-                )}`,
-              },
-            ]}
-          />
-          <FormDropdownInput
-            name="status"
-            label={t('profile.status')}
-            value={form.status || ''}
-            onChange={handleChange}
-            options={[
-              { value: 'ONGOING', label: t('evaluationStatus.ONGOING') },
-              { value: 'COMPLETED', label: t('evaluationStatus.COMPLETED') },
-              { value: 'CLOSED', label: t('evaluationStatus.CLOSED') },
-            ]}
-          />
-          <FormInput
-            name="feedback"
-            label={t('evaluations.feedback')}
-            type="text"
-            value={form.feedback || ''}
-            onChange={handleChange}
-          />
-          <button className="btn btn-primary me-2" onClick={handleSave}>
-            {t('common.save')}
-          </button>
           <button
-            className="btn btn-secondary"
-            onClick={() => setEditing(false)}
+            className="btn btn-outline-secondary btn-sm"
+            title={t('profile.downloadEvaluation')}
+            onClick={handleDownload}
+            aria-label={t('profile.downloadEvaluation')}
           >
-            {t('common.cancel')}
+            <FontAwesomeIcon icon={faFilePdf} />
           </button>
         </div>
-      ) : (
-        <div className="mt-2">
+
+        {/* Status and Scale badges */}
+        {!editing && (
+          <div className="d-flex gap-2 mb-3">
+            <span
+              className={`badge ${
+                form.status === 'COMPLETED'
+                  ? 'bg-success'
+                  : form.status === 'ONGOING'
+                  ? 'bg-warning'
+                  : form.status === 'CLOSED'
+                  ? 'bg-danger'
+                  : 'bg-secondary'
+              }`}
+            >
+              <i className="bi bi-info-circle me-1"></i>
+              {t(`evaluationStatus.${form.status}`) || form.status}
+            </span>
+            {scaleNumber !== '-' && (
+              <span className="badge bg-primary">
+                <i className="bi bi-award me-1"></i>
+                {scaleNumber} - {scaleLabel}
+              </span>
+            )}
+          </div>
+        )}
+
+        {/* Evaluation details or edit form */}
+        <div className="flex-grow-1">
+          {editing ? (
+            <div className="mt-2">
+              <FormDropdownInput
+                name="scale"
+                label={t('evaluationScale.title')}
+                value={form.scale || ''}
+                onChange={handleChange}
+                options={[
+                  { value: '', label: t('evaluationScale.notEvaluated') },
+                  {
+                    value: 'LOW_CONTRIBUTION',
+                    label: `1 - ${translateEvaluationScale(
+                      'LOW_CONTRIBUTION',
+                      i18n.language
+                    )}`,
+                  },
+                  {
+                    value: 'PARCIAL_CONTRIBUTION',
+                    label: `2 - ${translateEvaluationScale(
+                      'PARCIAL_CONTRIBUTION',
+                      i18n.language
+                    )}`,
+                  },
+                  {
+                    value: 'EXPECTED_CONTRIBUTION',
+                    label: `3 - ${translateEvaluationScale(
+                      'EXPECTED_CONTRIBUTION',
+                      i18n.language
+                    )}`,
+                  },
+                  {
+                    value: 'EXCEED_CONTRIBUTION',
+                    label: `4 - ${translateEvaluationScale(
+                      'EXCEED_CONTRIBUTION',
+                      i18n.language
+                    )}`,
+                  },
+                ]}
+              />
+              <FormDropdownInput
+                name="status"
+                label={t('profile.status')}
+                value={form.status || ''}
+                onChange={handleChange}
+                options={[
+                  { value: 'ONGOING', label: t('evaluationStatus.ONGOING') },
+                  {
+                    value: 'COMPLETED',
+                    label: t('evaluationStatus.COMPLETED'),
+                  },
+                  { value: 'CLOSED', label: t('evaluationStatus.CLOSED') },
+                ]}
+              />
+              <FormInput
+                name="feedback"
+                label={t('evaluations.feedback')}
+                type="text"
+                value={form.feedback || ''}
+                onChange={handleChange}
+              />
+            </div>
+          ) : (
+            <>
+              <div className="mb-2">
+                <small className="text-muted d-block">
+                  <i className="bi bi-calendar3 me-1"></i>
+                  {t('evaluationCycle.cycleClosureDate')}
+                </small>
+                <div>
+                  {form.evaluationCycle?.closureDate
+                    ? formatDateToDDMMYYYY(form.evaluationCycle.closureDate)
+                    : t('evaluationCycle.closureDateNotAvailable')}
+                </div>
+              </div>
+
+              {form.evaluator && (
+                <div className="mb-2">
+                  <small className="text-muted d-block">
+                    <i className="bi bi-person-check me-1"></i>
+                    {t('filters.evaluator')}
+                  </small>
+                  <div>
+                    {`${form.evaluator.firstName} ${form.evaluator.lastName}`}
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      </div>
+
+      <div className="card-footer bg-transparent d-flex justify-content-between align-items-center">
+        <small className="text-muted">
+          <i className="bi bi-hash me-1"></i>
+          ID: {form.id}
+        </small>
+        {editing ? (
+          <div>
+            <button
+              className="btn btn-primary btn-sm me-2"
+              onClick={handleSave}
+            >
+              {t('common.save')}
+            </button>
+            <button
+              className="btn btn-secondary btn-sm"
+              onClick={() => setEditing(false)}
+            >
+              {t('common.cancel')}
+            </button>
+          </div>
+        ) : (
           <button
-            className="btn btn-outline-primary"
+            className="btn btn-outline-primary btn-sm"
             onClick={() => setEditing(true)}
           >
+            <i className="bi bi-pencil me-1"></i>
             {t('common.edit')}
           </button>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
@@ -249,11 +306,18 @@ EditableEvaluationCard.propTypes = {
       ]),
     }),
     evaluatee: PropTypes.shape({
+      id: PropTypes.number,
       firstName: PropTypes.string,
       lastName: PropTypes.string,
       photograph: PropTypes.string,
     }),
+    evaluator: PropTypes.shape({
+      id: PropTypes.number,
+      firstName: PropTypes.string,
+      lastName: PropTypes.string,
+    }),
     comments: PropTypes.string,
+    feedback: PropTypes.string,
   }).isRequired,
   onEdit: PropTypes.func,
 };

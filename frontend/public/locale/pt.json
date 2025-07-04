@@ -48,11 +48,17 @@
     "retry": "Tentar Novamente",
     "filters": "Filtros",
     "clearFilters": "Limpar Filtros",
+    "listView": "Vista de Lista",
+    "tableView": "Vista de Tabela",
+    "list": "Lista",
+    "table": "Tabela",
     "activeFilters": "Filtros Ativos",
     "sortBy": "Ordenar Por",
     "ascending": "Ascendente",
     "descending": "Descendente",
-    "minutes": "minutos"
+    "minutes": "minutos",
+    "noResults": "Nenhum resultado encontrado",
+    "noData": "Nenhum dado disponível"
   },
   "roles": {
     "admin": "Administrador",
@@ -723,7 +729,44 @@
       "title": "Pronto para transformar o seu processo de avaliação de desempenho?",
       "description": "Junte-se a organizações em todo o mundo que utilizam o nosso sistema de avaliação para construir equipas de alto desempenho e impulsionar o sucesso.",
       "button": "Começar Agora"
-    }
+    },
+    "admin": {
+      "title": "Gestão de Avaliações",
+      "subtitle": "Gere e supervisione todas as avaliações organizacionais",
+      "createCycle": "Criar Ciclo de Avaliação",
+      "settings": "Definições",
+      "closeSelected": "Fechar Selecionadas",
+      "selected": "selecionadas",
+      "evaluationsList": "Lista de Avaliações",
+      "evaluationsCount": "avaliações",
+      "noEvaluations": "Nenhuma avaliação disponível",
+      "noEvaluationsDesc": "Ainda não foram criadas avaliações",
+      "loading": "A carregar avaliações...",
+      "fetchError": "Falha ao carregar avaliações",
+      "viewToggle": {
+        "list": "Vista de Lista",
+        "table": "Vista de Tabela"
+      },
+      "bulkActions": {
+        "title": "Ações em Lote",
+        "closeSelected": "Fechar Avaliações Selecionadas",
+        "selectAll": "Selecionar Todas",
+        "selectNone": "Selecionar Nenhuma"
+      }
+    },
+    "user": {
+      "title": "As Minhas Avaliações",
+      "subtitle": "Veja e gira as suas avaliações de desempenho"
+    },
+    "stats": {
+      "total": "Total de Avaliações",
+      "ongoing": "Em Curso",
+      "completed": "Concluídas",
+      "closed": "Fechadas"
+    },
+    "searchFeedback": "Pesquisar no Feedback",
+    "searchFeedbackPlaceholder": "Pesquisar feedback de avaliações...",
+    "noResults": "Nenhuma avaliação encontrada"
   },
   "time": {
     "now": "Agora",
@@ -764,19 +807,30 @@
     "creationDate": "Data",
     "scale": "Escala",
     "evaluatee": "Avaliado",
-    "evaluator": "Avaliador"
+    "evaluator": "Avaliador",
+    "evaluatorId": "Avaliador",
+    "evaluatedId": "Avaliado",
+    "searchText": "Pesquisa",
+    "status": "Estado",
+    "evaluationScale": "Escala",
+    "evaluationSortField": "Ordenar Por"
   },
   "evaluationScale": {
     "title": "Escala de Avaliação",
     "any": "Qualquer escala",
     "low": "Contribuição baixa",
+    "low_contribution": "Contribuição baixa",
     "partial": "Contribuição parcial",
+    "parcial_contribution": "Contribuição parcial",
     "expected": "Contribuição esperada",
-    "exceed": "Contribuição excedida"
+    "expected_contribution": "Contribuição esperada",
+    "exceed": "Contribuição excedida",
+    "exceed_contribution": "Contribuição excedida",
+    "notEvaluated": "Não avaliado"
   },
   "evaluationStatus": {
     "title": "Estado da Avaliação",
-    "any": "todos",
+    "any": "Qualquer estado",
     "CLOSED": "Fechado",
     "ONGOING": "Em curso",
     "COMPLETED": "Concluído"

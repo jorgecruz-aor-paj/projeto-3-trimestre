@@ -48,11 +48,17 @@
     "retry": "Retry",
     "filters": "Filters",
     "clearFilters": "Clear Filters",
+    "listView": "List View",
+    "tableView": "Table View",
+    "list": "List",
+    "table": "Table",
     "activeFilters": "Active Filters",
     "sortBy": "Sort By",
     "ascending": "Ascending",
     "descending": "Descending",
-    "minutes": "minutes"
+    "minutes": "minutes",
+    "noResults": "No results found",
+    "noData": "No data available"
   },
   "roles": {
     "admin": "Administrator",
@@ -723,7 +729,44 @@
       "title": "Ready to transform your performance evaluation process?",
       "description": "Join organizations worldwide using our evaluation system to build high-performing teams and drive success.",
       "button": "Get Started"
-    }
+    },
+    "admin": {
+      "title": "Evaluation Management",
+      "subtitle": "Manage and oversee all organizational evaluations",
+      "createCycle": "Create Evaluation Cycle",
+      "settings": "Settings",
+      "closeSelected": "Close Selected",
+      "selected": "selected",
+      "evaluationsList": "Evaluations List",
+      "evaluationsCount": "evaluations",
+      "noEvaluations": "No evaluations available",
+      "noEvaluationsDesc": "No evaluations have been created yet",
+      "loading": "Loading evaluations...",
+      "fetchError": "Failed to load evaluations",
+      "viewToggle": {
+        "list": "List View",
+        "table": "Table View"
+      },
+      "bulkActions": {
+        "title": "Bulk Actions",
+        "closeSelected": "Close Selected Evaluations",
+        "selectAll": "Select All",
+        "selectNone": "Select None"
+      }
+    },
+    "user": {
+      "title": "My Evaluations",
+      "subtitle": "View and manage your performance evaluations"
+    },
+    "stats": {
+      "total": "Total Evaluations",
+      "ongoing": "Ongoing",
+      "completed": "Completed",
+      "closed": "Closed"
+    },
+    "searchFeedback": "Search in Feedback",
+    "searchFeedbackPlaceholder": "Search evaluation feedback...",
+    "noResults": "No evaluations found"
   },
   "time": {
     "now": "Now",
@@ -764,15 +807,25 @@
     "creationDate": "Creation Date",
     "scale": "Scale",
     "evaluatee": "Evaluatee",
-    "evaluator": "Evaluator"
+    "evaluator": "Evaluator",
+    "evaluatorId": "Evaluator",
+    "evaluatedId": "Evaluatee",
+    "searchText": "Search",
+    "status": "Status",
+    "evaluationScale": "Scale",
+    "evaluationSortField": "Sort By"
   },
   "evaluationScale": {
     "title": "Evaluation Scale",
     "any": "Any scale",
     "low": "Low contribution",
+    "low_contribution": "Low contribution",
     "partial": "Partial contribution",
+    "parcial_contribution": "Partial contribution",
     "expected": "Expected contribution",
+    "expected_contribution": "Expected contribution",
     "exceed": "Exceeded contribution",
+    "exceed_contribution": "Exceeded contribution",
     "notEvaluated": "Not evaluated"
   },
   "evaluationStatus": {

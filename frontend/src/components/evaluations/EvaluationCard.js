@@ -1,5 +1,5 @@
 import React from 'react';
-import { ProfilePicture } from '../common/ProfilePicture';
+import { ProfilePicture } from 'components/common/ProfilePicture';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf } from '@fortawesome/free-solid-svg-icons';
@@ -64,59 +64,105 @@ export const EvaluationCard = ({ evaluation }) => {
     ? translateEvaluationScale(evaluation.scale, i18n.language)
     : '-';
   return (
-    <div
-      className="card evaluation-card mb-3 position-relative"
-      style={{ paddingTop: 28 }}
-    >
-      {/* Download icon button in top right */}
-      <button
-        className="btn btn-link p-0 position-absolute"
-        style={{ top: 4, right: 8, zIndex: 2 }}
-        title={t('profile.downloadEvaluation')}
-        onClick={handleDownload}
-        aria-label={t('profile.downloadEvaluation')}
-      >
-        <FontAwesomeIcon icon={faFilePdf} size="lg" color="currentColor" />
-      </button>
-      <div className="d-flex align-items-center mb-2">
-        <ProfilePicture
-          userId={evaluation.evaluatee?.id}
-          className="rounded-circle me-3"
-          alt={
-            evaluation.evaluatee
-              ? `${evaluation.evaluatee.firstName} ${evaluation.evaluatee.lastName}`
-              : 'Profile'
-          }
-          style={{
-            width: 48,
-            height: 48,
-            objectFit: 'cover',
-            border: '1px solid #ccc',
-          }}
-        />
-        <div>
-          <div className="fw-bold">
-            {evaluation.evaluatee
-              ? `${evaluation.evaluatee.firstName} ${evaluation.evaluatee.lastName}`
-              : '-'}
+    <div className="card h-100 shadow-sm evaluation-card">
+      <div className="card-body d-flex flex-column">
+        {/* Header with profile and download */}
+        <div className="d-flex justify-content-between align-items-start mb-3">
+          <div className="d-flex align-items-center">
+            <ProfilePicture
+              userId={evaluation.evaluatee?.id}
+              className="rounded-circle me-3"
+              alt={
+                evaluation.evaluatee
+                  ? `${evaluation.evaluatee.firstName} ${evaluation.evaluatee.lastName}`
+                  : 'Profile'
+              }
+              style={{
+                width: 48,
+                height: 48,
+                objectFit: 'cover',
+                border: '1px solid #dee2e6',
+              }}
+            />
+            <div>
+              <h6 className="card-title mb-1">
+                {evaluation.evaluatee
+                  ? `${evaluation.evaluatee.firstName} ${evaluation.evaluatee.lastName}`
+                  : '-'}
+              </h6>
+              <div className="small text-muted">
+                <i className="bi bi-person-badge me-1"></i>
+                {t('filters.evaluatee', 'Evaluatee')}
+              </div>
+            </div>
           </div>
-          <div className="text-muted small">
-            {t('profile.status')}:{' '}
+          <button
+            className="btn btn-outline-secondary btn-sm"
+            title={t('profile.downloadEvaluation')}
+            onClick={handleDownload}
+            aria-label={t('profile.downloadEvaluation')}
+          >
+            <FontAwesomeIcon icon={faFilePdf} />
+          </button>
+        </div>
+
+        {/* Status and Scale badges */}
+        <div className="d-flex gap-2 mb-3">
+          <span
+            className={`badge ${
+              evaluation.status === 'COMPLETED'
+                ? 'bg-success'
+                : evaluation.status === 'ONGOING'
+                ? 'bg-warning'
+                : evaluation.status === 'CLOSED'
+                ? 'bg-danger'
+                : 'bg-secondary'
+            }`}
+          >
+            <i className="bi bi-info-circle me-1"></i>
             {t(`evaluationStatus.${evaluation.status}`) || evaluation.status}
+          </span>
+          {scaleNumber !== '-' && (
+            <span className="badge bg-primary">
+              <i className="bi bi-award me-1"></i>
+              {scaleNumber} - {scaleLabel}
+            </span>
+          )}
+        </div>
+
+        {/* Evaluation details */}
+        <div className="flex-grow-1">
+          <div className="mb-2">
+            <small className="text-muted d-block">
+              <i className="bi bi-calendar3 me-1"></i>
+              {t('evaluationCycle.cycleClosureDate')}
+            </small>
+            <div>
+              {evaluation.evaluationCycle?.closureDate
+                ? formatDateToDDMMYYYY(evaluation.evaluationCycle.closureDate)
+                : t('evaluationCycle.closureDateNotAvailable')}
+            </div>
           </div>
+
+          {evaluation.evaluator && (
+            <div className="mb-2">
+              <small className="text-muted d-block">
+                <i className="bi bi-person-check me-1"></i>
+                {t('filters.evaluator')}
+              </small>
+              <div>
+                {`${evaluation.evaluator.firstName} ${evaluation.evaluator.lastName}`}
+              </div>
+            </div>
+          )}
         </div>
       </div>
-      <div className="mb-1">
-        <strong>{t('evaluationCycle.cycleClosureDate')}:</strong>{' '}
-        {evaluation.evaluationCycle?.closureDate
-          ? formatDateToDDMMYYYY(evaluation.evaluationCycle.closureDate)
-          : t('evaluationCycle.closureDateNotAvailable')}
-      </div>
-      <div className="mb-1">
-        <strong>{t('evaluationScale.title')}:</strong>{' '}
-        {scaleNumber !== '-'
-          ? `${scaleNumber} - ${scaleLabel}`
-          : t('evaluationScale.notEvaluated')}
+
+      <div className="card-footer bg-transparent border-top-0 pt-0">
+        <small className="text-muted">
+          <i className="bi bi-hash me-1"></i>
+          ID: {evaluation.id}
+        </small>
       </div>
     </div>
   );
@@ -135,9 +181,15 @@ EvaluationCard.propTypes = {
       ]),
     }),
     evaluatee: PropTypes.shape({
+      id: PropTypes.number,
       firstName: PropTypes.string,
       lastName: PropTypes.string,
       photograph: PropTypes.string,
+    }),
+    evaluator: PropTypes.shape({
+      id: PropTypes.number,
+      firstName: PropTypes.string,
+      lastName: PropTypes.string,
     }),
   }).isRequired,
 };

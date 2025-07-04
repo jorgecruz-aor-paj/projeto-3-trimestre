@@ -2,7 +2,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Home } from 'pages/Home';
 import { TrainingsPage } from 'pages/TrainingsPage';
-import { EvaluationPage } from 'pages/EvaluationPage';
+import { EvaluationsPage } from 'pages/EvaluationsPage';
 import { MainLayout } from 'components/layout/MainLayout';
 import { AuthTogglePage } from 'pages/LoginRegisterPage';
 import { ResetPasswordPage } from 'components/auth/ResetPasswordPage';
@@ -49,7 +49,7 @@ export const AppRouter = () => {
         {/* Routes */}
         <Route path="/" element={<Home />} />
         <Route path="/trainings" element={<TrainingsPage />} />
-        <Route path="/evaluations" element={<EvaluationPage />} />
+        <Route path="/evaluations" element={<EvaluationsPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/auth" element={<AuthTogglePage />} />
         <Route path="/login" element={<AuthTogglePage />} />
