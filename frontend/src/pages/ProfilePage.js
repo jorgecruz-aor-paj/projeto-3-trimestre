@@ -28,7 +28,6 @@ const ProfilePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       const paramId = getUserIdFromQuery();
-      console.log(paramId);
       if (!paramId || (user && paramId === user.id)) {
         setProfileUser(user);
       } else {

@@ -70,9 +70,7 @@ export const AddParticipationModal = ({
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>
-          {t('profile.addParticipation') || 'Add Participation'}
-        </Modal.Title>
+        <Modal.Title>{t('profile.addParticipation')}</Modal.Title>
       </Modal.Header>
       <Form onSubmit={handleSubmit}>
         <Modal.Body>
@@ -84,16 +82,16 @@ export const AddParticipationModal = ({
             <>
               <FormDropdownInput
                 name="trainingId"
-                label={t('profile.training') || 'Training'}
+                label={t('profile.training')}
                 value={form.trainingId}
                 onChange={handleFormChange}
                 options={trainings}
                 error={formError.trainingId}
-                placeholder={t('profile.selectTraining') || 'Select training'}
+                placeholder={t('profile.selectTraining')}
               />
               <FormInput
                 name="participatedAt"
-                label={t('profile.participatedAt') || 'Participation Date'}
+                label={t('profile.participatedAt')}
                 type="datetime-local"
                 value={form.participatedAt}
                 onChange={handleFormChange}

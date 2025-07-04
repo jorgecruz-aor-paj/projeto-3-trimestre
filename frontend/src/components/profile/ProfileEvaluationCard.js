@@ -12,7 +12,6 @@ export const ProfileEvaluationCard = ({ evaluation }) => {
   const { t, i18n } = useTranslation();
   const { showAlert } = useAlert();
 
-  console.log('Rendering ProfileEvaluationCard for evaluation:', evaluation);
   // Download handler: triggers file download from API response
   const handleDownload = () => {
     const fetchFile = async () => {
