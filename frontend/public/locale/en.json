@@ -493,7 +493,25 @@
     "noMessages": "No messages yet. Start the conversation!",
     "noConversations": "No conversations yet",
     "selectConversation": "Select a conversation to start messaging",
+    "startConversation": "Start Conversation",
     "online": "Online"
+  },
+  "chatbot": {
+    "title": "AI Assistant",
+    "assistant": "Assistant",
+    "virtual": "Virtual",
+    "description": "Intelligent assistant for your questions",
+    "welcome": "Hello! I'm your virtual assistant. How can I help you today?",
+    "startConversation": "Start a conversation below.",
+    "capabilities": "I can help with:",
+    "help1": "Training information",
+    "help2": "Evaluation clarifications",
+    "help3": "General system guidance",
+    "help4": "Feature questions",
+    "openChat": "Open chat with assistant",
+    "close": "Close",
+    "typePlaceholder": "Type your message...",
+    "talkToAssistant": "Talk to AI Assistant"
   },
   "trainings": {
     "title": "Trainings",

@@ -59,15 +59,15 @@ public class JwtUtil {
             issuer = dotenv.get("JWT_ISSUER");
 
             if (secretKey == null || secretKey.isEmpty()) {
-                logger.warn("JWT_SECRET environment variable is not set or empty");
+                logger.warn("JWT_SECRET is not set in environment variables or .env file");
             }
             if (issuer == null || issuer.isEmpty()) {
-                logger.warn("JWT_ISSUER environment variable is not set or empty");
+                logger.warn("JWT_ISSUER is not set in environment variables or .env file");
             }
 
             logger.info("JWT utility service initialized successfully");
         } catch (DotenvException e) {
-            logger.error("Failed to load JWT configuration from environment variables", e);
+            logger.error("Failed to load JWT configuration from environment variables or .env file", e);
         } catch (Exception e) {
             logger.error("Unexpected error during JWT utility initialization", e);
         }

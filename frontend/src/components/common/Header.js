@@ -8,6 +8,7 @@ import { ProfilePicture } from 'components/common/ProfilePicture';
 import { useAuthStore } from 'stores/AuthStore';
 import { useMessageStore } from 'stores/MessageStore';
 import { authService } from 'services/authService';
+import { websocketService } from 'services/websocketService';
 import 'styles/components/Header.css';
 
 /**
@@ -19,15 +20,20 @@ export const Header = () => {
   const { t } = useTranslation();
   const location = useLocation();
   const { token, user, clearState } = useAuthStore();
-  const {
-    unreadCount,
-    loadUnreadCount,
-    initializeWebSocket,
-    disconnectWebSocket,
-  } = useMessageStore();
+  const { unreadCount, loadUnreadCount } = useMessageStore();
   const navigate = useNavigate();
 
   const isAuthenticated = !!token;
+
+  // Handle WebSocket notifications in the Header (for unread count updates)
+  const handleHeaderNotification = notificationData => {
+    console.log('Header received notification:', notificationData);
+
+    if (notificationData.type === 'new_message') {
+      // Update unread count when new message arrives
+      loadUnreadCount();
+    }
+  };
 
   // Check if the current route is active
   const isActive = path => location.pathname === path;
@@ -43,17 +49,24 @@ export const Header = () => {
   // Initialize WebSocket when user is authenticated
   useEffect(() => {
     if (isAuthenticated && user?.id) {
-      initializeWebSocket();
+      websocketService.connect();
+      const unsubscribe = websocketService.onNotification(
+        handleHeaderNotification
+      );
       loadUnreadCount();
+
+      return () => {
+        unsubscribe();
+      };
     } else {
-      disconnectWebSocket();
+      websocketService.disconnect();
     }
-  }, [isAuthenticated, user?.id]);
+  }, [isAuthenticated, user?.id, loadUnreadCount]);
 
   // Handle logout
   const handleLogout = async () => {
     try {
-      disconnectWebSocket();
+      websocketService.disconnect();
       await authService.logout();
       navigate('/');
       clearState();

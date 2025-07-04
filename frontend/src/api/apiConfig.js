@@ -135,6 +135,15 @@ const API_ENDPOINTS = {
       url: `${TRAININGS_ENDPOINT}/participations`,
       requiresAuth: true,
     },
+    getUnparticipatedByUser: userId => ({
+      url: `${TRAININGS_ENDPOINT}/unparticipated/${userId}`,
+      requiresAuth: true,
+      managerOrAdmin: true,
+    }),
+    register: {
+      url: `${TRAININGS_ENDPOINT}/participation`,
+      requiresAuth: true,
+    },
   },
   evaluations: {
     getAll: {
@@ -163,6 +172,14 @@ const API_ENDPOINTS = {
     },
     predictPerformance: {
       url: `${AI_ENDPOINT}/predict-performance`,
+      requiresAuth: true,
+    },
+    chatbot: {
+      url: `${AI_ENDPOINT}/chatbot`,
+      requiresAuth: true,
+    },
+    generateReport: {
+      url: `${AI_ENDPOINT}/generate-report`,
       requiresAuth: true,
     },
   },

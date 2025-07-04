@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMessageStore } from 'stores/MessageStore';
+import { useChatbotStore } from 'stores/ChatbotStore';
 import { useAuthStore } from 'stores/AuthStore';
 import { ChatHeader } from 'components/messages/ChatHeader';
 import { MessagesContainer } from 'components/messages/MessagesContainer';
+import { ChatbotMessagesContainer } from 'components/chatbot/ChatbotMessagesContainer';
+import { VirtualAssistant } from 'components/chatbot/VirtualAssistant';
 import { MessageInput } from 'components/messages/MessageInput';
 import { axiosInstance } from 'api/axiosInstance';
 import { API_ENDPOINTS } from 'api/apiConfig';
+import { websocketService } from 'services/websocketService';
+import 'styles/pages/Messages.css';
 
 export const Messages = () => {
   const { t } = useTranslation();
@@ -21,25 +26,44 @@ export const Messages = () => {
     loadConversations,
     sendMessage,
     clearStore,
-    initializeWebSocket,
+    handleNotification,
   } = useMessageStore();
+
+  // Chatbot state
+  const {
+    messages: chatbotMessages,
+    isLoading: chatbotLoading,
+    sendMessage: sendChatbotMessage,
+  } = useChatbotStore();
 
   const [users, setUsers] = useState([]);
   const [loadingUsers, setLoadingUsers] = useState(false);
   const [showUserList, setShowUserList] = useState(false);
+  const [isVirtualAssistantActive, setIsVirtualAssistantActive] =
+    useState(false);
+
+  // Virtual assistant conversation object
+  const virtualAssistant = {
+    id: 'virtual-assistant',
+    firstName: t('chatbot.assistant', 'Assistente'),
+    lastName: t('chatbot.virtual', 'Virtual'),
+    email: 'ai@sistema.com',
+    isVirtualAssistant: true,
+  };
 
   useEffect(() => {
-    // Initialize WebSocket connection
-    initializeWebSocket();
+    // Subscribe to notifications (WebSocket is already connected via Header)
+    const unsubscribe = websocketService.onNotification(handleNotification);
 
     // Load conversations when component mounts
     loadConversations();
 
     // Cleanup when component unmounts
     return () => {
+      unsubscribe();
       clearStore();
     };
-  }, [loadConversations, clearStore, initializeWebSocket]);
+  }, [loadConversations, clearStore, handleNotification]);
 
   // Load all users for starting new conversations
   const loadUsers = async () => {
@@ -62,17 +86,36 @@ export const Messages = () => {
 
   const handleStartConversation = selectedUser => {
     setActiveConversation(selectedUser);
+    setIsVirtualAssistantActive(false);
+    setShowUserList(false);
+  };
+
+  const handleSelectVirtualAssistant = () => {
+    setActiveConversation(null);
+    setIsVirtualAssistantActive(true);
     setShowUserList(false);
   };
 
   const handleSendMessage = async content => {
-    if (activeConversation && content.trim()) {
+    if (isVirtualAssistantActive) {
+      // Send to chatbot
+      await sendChatbotMessage(content);
+    } else if (activeConversation && content.trim()) {
+      // Send to user
       try {
         await sendMessage(activeConversation.id, content);
       } catch (err) {
         console.error('Failed to send message:', err);
       }
     }
+  };
+
+  const getCurrentMessages = () => {
+    return isVirtualAssistantActive ? chatbotMessages : messages;
+  };
+
+  const getCurrentLoading = () => {
+    return isVirtualAssistantActive ? chatbotLoading : isLoading;
   };
 
   return (
@@ -121,15 +164,11 @@ export const Messages = () => {
                             </div>
                           </div>
                         ) : (
-                          <div
-                            className="user-list"
-                            style={{ maxHeight: '200px', overflowY: 'auto' }}
-                          >
+                          <div className="user-list">
                             {users.map(userItem => (
                               <div
                                 key={userItem.id}
                                 className="d-flex align-items-center p-2 cursor-pointer user-item"
-                                style={{ cursor: 'pointer' }}
                                 onClick={() =>
                                   handleStartConversation(userItem)
                                 }
@@ -155,6 +194,12 @@ export const Messages = () => {
                       </div>
                     )}
 
+                    {/* Virtual Assistant */}
+                    <VirtualAssistant
+                      onClick={handleSelectVirtualAssistant}
+                      isActive={isVirtualAssistantActive}
+                    />
+
                     {/* Conversations List */}
                     <div className="flex-fill overflow-auto">
                       {isLoading ? (
@@ -178,12 +223,14 @@ export const Messages = () => {
                           <div
                             key={conversation.id}
                             className={`conversation-item p-3 border-bottom cursor-pointer ${
-                              activeConversation?.id === conversation.id
+                              activeConversation?.id === conversation.id &&
+                              !isVirtualAssistantActive
                                 ? 'bg-light'
                                 : ''
                             }`}
-                            style={{ cursor: 'pointer' }}
-                            onClick={() => setActiveConversation(conversation)}
+                            onClick={() =>
+                              handleStartConversation(conversation)
+                            }
                           >
                             <div className="d-flex align-items-center">
                               <div className="avatar-sm me-3">
@@ -211,28 +258,69 @@ export const Messages = () => {
 
                 {/* Chat Area */}
                 <div className="col-md-8 chat-area">
-                  {activeConversation ? (
+                  {isVirtualAssistantActive ? (
+                    <div className="h-100 d-flex flex-column">
+                      <ChatHeader user={virtualAssistant} />
+                      <ChatbotMessagesContainer
+                        messages={getCurrentMessages()}
+                        isLoading={getCurrentLoading()}
+                      />
+                      <MessageInput
+                        onSendMessage={handleSendMessage}
+                        disabled={getCurrentLoading()}
+                        placeholder={t(
+                          'chatbot.typePlaceholder',
+                          'Digite sua pergunta...'
+                        )}
+                      />
+                    </div>
+                  ) : activeConversation ? (
                     <div className="h-100 d-flex flex-column">
                       <ChatHeader user={activeConversation} />
                       <MessagesContainer
-                        messages={messages}
+                        messages={getCurrentMessages()}
                         currentUserId={user?.id}
                       />
                       <MessageInput
                         onSendMessage={handleSendMessage}
-                        disabled={isLoading}
+                        disabled={getCurrentLoading()}
                       />
                     </div>
                   ) : (
                     <div className="h-100 d-flex align-items-center justify-content-center text-muted">
                       <div className="text-center">
                         <i className="fas fa-comment-dots fa-3x mb-3"></i>
-                        <p className="fs-5">
+                        <p className="fs-5 mb-3">
                           {t(
                             'messages.selectConversation',
                             'Select a conversation to start messaging'
                           )}
                         </p>
+                        <div className="d-flex justify-content-center gap-3">
+                          <button
+                            className="btn btn-outline-primary"
+                            onClick={handleSelectVirtualAssistant}
+                          >
+                            <i className="fas fa-robot me-2"></i>
+                            {t(
+                              'chatbot.talkToAssistant',
+                              'Talk to AI Assistant'
+                            )}
+                          </button>
+                          <button
+                            className="btn btn-primary"
+                            onClick={() => {
+                              setShowUserList(true);
+                              loadUsers();
+                            }}
+                          >
+                            <i className="fas fa-user me-2"></i>
+                            {t(
+                              'messages.startConversation',
+                              'Start Conversation'
+                            )}
+                          </button>
+                        </div>
                       </div>
                     </div>
                   )}
@@ -250,56 +338,6 @@ export const Messages = () => {
           )}
         </div>
       </div>
-
-      <style>{`
-        .user-item:hover {
-          background-color: #f8f9fa !important;
-        }
-        
-        .conversation-item:hover {
-          background-color: #f8f9fa !important;
-        }
-        
-        .avatar-sm {
-          width: 40px;
-          height: 40px;
-        }
-        
-        .avatar-initial {
-          width: 100%;
-          height: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-weight: 600;
-          color: white;
-          font-size: 14px;
-        }
-        
-        /* Fixed height layout styles */
-        .messages-layout {
-          height: 600px;
-          overflow: hidden;
-        }
-        
-        .conversations-sidebar {
-          height: 100%;
-          overflow-y: hidden;
-        }
-        
-        .chat-area {
-          height: 100%;
-          overflow: hidden;
-          display: flex;
-          flex-direction: column;
-        }
-        
-        .chat-area > div {
-          display: flex;
-          flex-direction: column;
-          height: 100%;
-        }
-      `}</style>
     </div>
   );
 };

@@ -133,17 +133,25 @@ public class TrainingServiceImpl extends BaseService implements TrainingService 
 
     }
 
-    @Override
-    public List<TrainingDTO> getUnparticipatedTrainingsByUserId(Long managerId, Long userId) {
-        User manager = getEntity(daoFactory.forUser().findById(managerId), userId, "User");
-        User user = getEntity(daoFactory.forUser().findById(userId), userId, "User");
-        if(user.getManager().getId() != manager.getId()){
-            throw new ForbiddenException(
-                    "Permission denied",
-                    "Manager with ID " + managerId + " accessed unparticipated trainings for a non-managed user with ID " + userId
-            );
-        }
-        return converterFactory.forTraining().toDTOList(daoFactory.forTraining().findTrainingsNotParticipatedByUser(userId));
+   @Override
+public List<TrainingDTO> getUnparticipatedTrainingsByUserId(Long requesterId, Long userId) {
+    User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
+    User user = getEntity(daoFactory.forUser().findById(userId), userId, "User");
+
+    boolean isAdmin = requester.getRole() == Role.ADMIN;
+    boolean isManager = user.getManager() != null && user.getManager().getId().equals(requesterId);
+
+    if (!isAdmin && !isManager) {
+        throw new ForbiddenException(
+            "Permission denied",
+            "User with ID " + requesterId + " is not authorized to access unparticipated trainings for user ID " + userId
+        );
     }
+
+    return converterFactory.forTraining().toDTOList(
+        daoFactory.forTraining().findTrainingsNotParticipatedByUser(userId)
+    );
+}
+
 
 }

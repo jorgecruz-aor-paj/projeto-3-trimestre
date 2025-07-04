@@ -64,21 +64,21 @@ public class EmailUtil {
             smtpPassword = dotenv.get("SMTP_PASSWORD");
 
             if (smtpHost == null || smtpHost.isEmpty()) {
-                logger.warn("SMTP_HOST environment variable is not set or empty");
+                logger.warn("SMTP_HOST is not set in environment variables or .env file");
             }
             if (smtpPort == null || smtpPort.isEmpty()) {
-                logger.warn("SMTP_PORT environment variable is not set or empty");
+                logger.warn("SMTP_PORT is not set in environment variables or .env file");
             }
             if (smtpUsername == null || smtpUsername.isEmpty()) {
-                logger.warn("SMTP_USERNAME environment variable is not set or empty");
+                logger.warn("SMTP_USERNAME is not set in environment variables or .env file");
             }
             if (smtpPassword == null || smtpPassword.isEmpty()) {
-                logger.warn("SMTP_PASSWORD environment variable is not set or empty");
+                logger.warn("SMTP_PASSWORD is not set in environment variables or .env file");
             }
 
             logger.info("Email utility service initialized successfully");
         } catch (DotenvException e) {
-            logger.error("Failed to load email configuration from environment variables", e);
+            logger.error("Failed to load email configuration from environment variables or .env file", e);
         } catch (Exception e) {
             logger.error("Unexpected error during email utility initialization", e);
         }

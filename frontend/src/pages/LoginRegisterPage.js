@@ -11,7 +11,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { LoginAuthForm } from 'components/auth/LoginAuthForm';
 import { RegisterAuthForm } from 'components/auth/RegisterAuthForm';
-import 'styles/pages/auth/LoginPage.css';
+import 'styles/pages/LoginPage.css';
 
 export const AuthTogglePage = () => {
   const { t } = useTranslation();
