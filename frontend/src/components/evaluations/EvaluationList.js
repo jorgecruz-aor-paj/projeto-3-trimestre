@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Row, Col, Spinner } from 'react-bootstrap';
 import { EditableEvaluationCard } from './EditableEvaluationCard';
 import { EvaluationCard } from './EvaluationCard';
 import { useTranslation } from 'react-i18next';
@@ -12,7 +13,6 @@ export const EvaluationList = ({
   evaluations = [],
   loading = false,
   error = null,
-  editable,
   onEdit,
   renderCheckbox = false,
   selectedEvaluations = [],
@@ -23,22 +23,9 @@ export const EvaluationList = ({
 
   if (loading)
     return (
-      <div
-        className="profile-page-spinner-container"
-        style={{
-          minHeight: 200,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <div
-          className="spinner-border text-primary"
-          role="status"
-          aria-label="Loading"
-        >
-          <span className="visually-hidden">{t('common.loading')}</span>
-        </div>
+      <div className="text-center py-5">
+        <Spinner animation="border" variant="primary" className="mb-3" />
+        <p>{t('common.loading')}</p>
       </div>
     );
 
@@ -48,33 +35,58 @@ export const EvaluationList = ({
     }
     return null;
   }
-  if (!evaluations.length) return <div>{t('evaluations.noResults')}</div>;
+
+  if (!evaluations.length) {
+    return (
+      <div className="text-center py-5">
+        <i className="bi bi-clipboard-check display-4 text-muted"></i>
+        <h5 className="mt-3 text-muted">{t('evaluations.noResults')}</h5>
+        <p className="text-muted">
+          {t(
+            'evaluations.admin.noEvaluationsDesc',
+            'No evaluations match your current filters'
+          )}
+        </p>
+      </div>
+    );
+  }
 
   return (
-    <div className="evaluation-list" {...props}>
-      {evaluations.map(evaluation => {
-        if (evaluation.status === 'CLOSED') {
-          return <EvaluationCard key={evaluation.id} evaluation={evaluation} />;
-        }
-        // Editable evaluation: render checkbox if admin
-        return (
-          <div key={evaluation.id} className="d-flex align-items-start mb-2">
+    <Row className="evaluation-list" {...props}>
+      {evaluations.map(evaluation => (
+        <Col key={evaluation.id} md={6} lg={4} className="mb-4">
+          <div className="position-relative h-100">
             {renderCheckbox && (
-              <input
-                type="checkbox"
-                className="form-check-input mt-2 me-2"
-                checked={selectedEvaluations.includes(evaluation.id)}
-                onChange={e =>
-                  onSelectEvaluation(evaluation.id, e.target.checked)
-                }
-                aria-label={t('common.select')}
-              />
+              <div
+                className="position-absolute"
+                style={{ top: '-8px', left: '-8px', zIndex: 3 }}
+              >
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  checked={selectedEvaluations.includes(evaluation.id)}
+                  onChange={e =>
+                    onSelectEvaluation(evaluation.id, e.target.checked)
+                  }
+                  aria-label={t('common.select')}
+                  style={{
+                    width: '20px',
+                    height: '20px',
+                    backgroundColor: 'white',
+                    border: '2px solid #dee2e6',
+                  }}
+                />
+              </div>
             )}
-            <EditableEvaluationCard evaluation={evaluation} onEdit={onEdit} />
+            {evaluation.status === 'CLOSED' ? (
+              <EvaluationCard evaluation={evaluation} />
+            ) : (
+              <EditableEvaluationCard evaluation={evaluation} onEdit={onEdit} />
+            )}
           </div>
-        );
-      })}
-    </div>
+        </Col>
+      ))}
+    </Row>
   );
 };
 
@@ -82,7 +94,6 @@ EvaluationList.propTypes = {
   evaluations: PropTypes.array,
   loading: PropTypes.bool,
   error: PropTypes.any,
-  editable: PropTypes.bool,
   onEdit: PropTypes.func,
   renderCheckbox: PropTypes.bool,
   selectedEvaluations: PropTypes.array,
@@ -90,6 +101,5 @@ EvaluationList.propTypes = {
 };
 
 EvaluationList.defaultProps = {
-  editable: false,
   onEdit: undefined,
 };
