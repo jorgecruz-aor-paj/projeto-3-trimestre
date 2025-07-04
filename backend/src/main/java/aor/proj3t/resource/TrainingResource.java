@@ -87,7 +87,7 @@ public class TrainingResource {
     @Secured(Role.ADMIN)
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTrainings(TrainingAreaDTO trainingAreaDTO) {
+    public Response addTrainingArea(TrainingAreaDTO trainingAreaDTO) {
         validator.validateTrainingAreaDTO(trainingAreaDTO);
         TrainingAreaDTO trainingAreaDto = serviceFactory.forTraining().addTrainingArea(trainingAreaDTO);
         return Response.status(Response.Status.OK).entity(trainingAreaDto).build();
@@ -99,8 +99,8 @@ public class TrainingResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUnparticipatedTrainings(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader,
             @PathParam("userId") Long userId) {
-        Long managerId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
-        List<TrainingDTO> trainings = serviceFactory.forTraining().getUnparticipatedTrainingsByUserId(managerId,
+        Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
+        List<TrainingDTO> trainings = serviceFactory.forTraining().getUnparticipatedTrainingsByUserId(requesterId,
                 userId);
         return Response.ok(trainings).build();
     }

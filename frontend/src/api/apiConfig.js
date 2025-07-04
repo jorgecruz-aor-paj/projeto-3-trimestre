@@ -135,6 +135,15 @@ const API_ENDPOINTS = {
       url: `${TRAININGS_ENDPOINT}/participations`,
       requiresAuth: true,
     },
+    getUnparticipatedByUser: userId => ({
+      url: `${TRAININGS_ENDPOINT}/unparticipated/${userId}`,
+      requiresAuth: true,
+      managerOrAdmin: true,
+    }),
+    register: {
+      url: `${TRAININGS_ENDPOINT}/participation`,
+      requiresAuth: true,
+    },
   },
   evaluations: {
     getAll: {

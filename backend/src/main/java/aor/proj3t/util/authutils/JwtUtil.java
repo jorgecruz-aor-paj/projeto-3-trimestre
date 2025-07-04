@@ -47,26 +47,32 @@ public class JwtUtil {
     public void init() {
         logger.info("Initializing JWT utility service");
         try {
-            // Dotenv configuration
-            logger.debug("Loading environment variables for JWT configuration");
-            Dotenv dotenv = Dotenv
-                    .configure()
-                    .ignoreIfMalformed()
-                    .load();
-            // Load JWT configuration from environment variables
-            secretKey = dotenv.get("JWT_SECRET");
-            issuer = dotenv.get("JWT_ISSUER");
+            // Try to get from environment variables first
+            secretKey = System.getenv("JWT_SECRET");
+            issuer = System.getenv("JWT_ISSUER");
+
+            // If not found, try Dotenv (.env file)
+            if ((secretKey == null || secretKey.isEmpty()) || (issuer == null || issuer.isEmpty())) {
+                logger.debug("Environment variable(s) not set, trying to load from .env file");
+                Dotenv dotenv = Dotenv.configure().ignoreIfMalformed().load();
+                if (secretKey == null || secretKey.isEmpty()) {
+                    secretKey = dotenv.get("JWT_SECRET");
+                }
+                if (issuer == null || issuer.isEmpty()) {
+                    issuer = dotenv.get("JWT_ISSUER");
+                }
+            }
 
             if (secretKey == null || secretKey.isEmpty()) {
-                logger.warn("JWT_SECRET environment variable is not set or empty");
+                logger.warn("JWT_SECRET is not set in environment variables or .env file");
             }
             if (issuer == null || issuer.isEmpty()) {
-                logger.warn("JWT_ISSUER environment variable is not set or empty");
+                logger.warn("JWT_ISSUER is not set in environment variables or .env file");
             }
 
             logger.info("JWT utility service initialized successfully");
         } catch (DotenvException e) {
-            logger.error("Failed to load JWT configuration from environment variables", e);
+            logger.error("Failed to load JWT configuration from environment variables or .env file", e);
         } catch (Exception e) {
             logger.error("Unexpected error during JWT utility initialization", e);
         }
