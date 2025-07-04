@@ -493,7 +493,25 @@
     "noMessages": "Ainda não há mensagens. Inicie uma conversa!",
     "noConversations": "Ainda não há conversas",
     "selectConversation": "Selecione uma conversa para começar a enviar mensagens",
+    "startConversation": "Iniciar Conversa",
     "online": "Online"
+  },
+  "chatbot": {
+    "title": "Assistente IA",
+    "assistant": "Assistente",
+    "virtual": "Virtual",
+    "description": "Assistente inteligente para as suas dúvidas",
+    "welcome": "Olá! Sou o seu assistente virtual. Como posso ajudá-lo hoje?",
+    "startConversation": "Inicie uma conversa abaixo.",
+    "capabilities": "Posso ajudar com:",
+    "help1": "Informações sobre formações",
+    "help2": "Esclarecimentos sobre avaliações",
+    "help3": "Orientações gerais do sistema",
+    "help4": "Dúvidas sobre funcionalidades",
+    "openChat": "Abrir chat com assistente",
+    "close": "Fechar",
+    "typePlaceholder": "Digite a sua mensagem...",
+    "talkToAssistant": "Falar com Assistente IA"
   },
   "trainings": {
     "title": "Formações",
@@ -650,7 +668,6 @@
     "evaluationPeriod": "Período de Avaliação",
     "downloadError": "Erro ao descarregar avaliações",
     "saveSuccess": "Avaliação guardada com sucesso",
-
     "feedback": "Feedback",
     "hero": {
       "subtitle": "Ferramentas abrangentes de avaliação de desempenho que impulsionam feedback significativo, crescimento e sucesso organizacional.",
