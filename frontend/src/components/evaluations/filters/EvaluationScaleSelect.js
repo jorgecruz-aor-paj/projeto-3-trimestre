@@ -14,7 +14,7 @@ export const EvaluationScaleSelect = ({ value, onChange, label, name }) => {
   const { t } = useTranslation();
   return (
     <div className="col-auto">
-      <label htmlFor={name} className="form-label mb-0">
+      <label htmlFor={name} className="form-label small fw-semibold">
         {label || t('evaluationScale.title')}
       </label>
       <select
@@ -22,7 +22,7 @@ export const EvaluationScaleSelect = ({ value, onChange, label, name }) => {
         name={name}
         value={value || ''}
         onChange={onChange}
-        className="form-select form-select-sm"
+        className="form-select"
       >
         {scaleOptions.map(opt => (
           <option key={opt.value} value={opt.value}>

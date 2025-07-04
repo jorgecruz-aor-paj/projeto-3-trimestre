@@ -1,19 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileCsv, faFileExcel } from '@fortawesome/free-solid-svg-icons';
-import { exportService } from '../../services/exportService';
+import { Button, Row, Col, Form } from 'react-bootstrap';
+import { exportService } from 'services/exportService';
 import { useTranslation } from 'react-i18next';
-import { useAlert } from '../../contexts/AlertContext';
-import {EvaluationUserSelect} from '../evaluations/filters/EvaluationUserSelect';
-import {EvaluationScaleSelect} from '../evaluations/filters/EvaluationScaleSelect';
-import {EvaluationSortSelect} from '../evaluations/filters/EvaluationSortSelect';
-import {EvaluationDateRange} from '../evaluations/filters/EvaluationDateRange';
+import { useAlert } from 'contexts/AlertContext';
+import { SearchableUserSelect } from 'components/evaluations/filters/SearchableUserSelect';
+import { EvaluationScaleSelect } from 'components/evaluations/filters/EvaluationScaleSelect';
+import { EvaluationSortSelect } from 'components/evaluations/filters/EvaluationSortSelect';
+import { EvaluationDateRange } from 'components/evaluations/filters/EvaluationDateRange';
 
 // Accept displayedUserId as a prop to filter out the evaluator dropdown
 
 // Accept displayedUserId as a prop to filter out the evaluator dropdown
-export const ProfileEvaluationsFilter = ({ filters, setFilters, displayedUserId }) => {
+export const ProfileEvaluationsFilter = ({
+  filters,
+  setFilters,
+  displayedUserId,
+}) => {
   const { t } = useTranslation();
   const { showAlert } = useAlert();
 
@@ -93,85 +96,123 @@ export const ProfileEvaluationsFilter = ({ filters, setFilters, displayedUserId 
   };
 
   return (
-    <form
-      className="profile-evaluations-filter row row-cols-lg-auto g-2 align-items-center mb-3 small"
-      style={{ fontSize: '0.95em', position: 'relative' }}
-    >
-      {/* Download all evaluations icon buttons */}
-      <div
-        className="position-absolute"
-        style={{ top: 0, right: 0, zIndex: 2 }}
-      >
-        {/* CSV Download button */}
-        <button
-          type="button"
-          className="btn btn-link p-0 me-2"
-          title={t('evaluations.title') + ' CSV'}
+    <div className="profile-evaluations-filter">
+      {/* Export buttons */}
+      <div className="d-flex justify-content-end gap-2 mb-3">
+        <Button
+          variant="outline-primary"
+          size="sm"
           onClick={handleDownloadAll}
-          aria-label={t('evaluations.title') + ' CSV'}
+          title={t('evaluations.title') + ' CSV'}
         >
-          <FontAwesomeIcon icon={faFileCsv} size="lg" />
-        </button>
-
-        {/* Excel Download button */}
-        <button
-          type="button"
-          className="btn btn-link p-0"
+          <i className="fas fa-file-csv me-1" />
+          CSV
+        </Button>
+        <Button
+          variant="outline-success"
+          size="sm"
           title={t('evaluations.title') + ' Excel'}
-          aria-label={t('evaluations.title') + ' Excel'}
+          disabled
         >
-          <FontAwesomeIcon icon={faFileExcel} size="lg" />
-        </button>
+          <i className="fas fa-file-excel me-1" />
+          Excel
+        </Button>
       </div>
 
-      {/* Modular filter components */}
-      <EvaluationUserSelect
-        value={filters.evaluatorId}
-        onChange={handleChange}
-        excludeUserId={displayedUserId}
-        name="evaluatorId"
-      />
-      <EvaluationScaleSelect
-        value={filters.evaluationScale}
-        onChange={handleChange}
-        name="evaluationScale"
-      />
-      <div className="col-auto">
-        <label htmlFor="searchText" className="form-label mb-0">
-          {t('common.search')}
-        </label>
-        <input
-          id="searchText"
-          type="text"
-          name="searchText"
-          value={filters.searchText || ''}
-          onChange={handleChange}
-          className="form-control form-control-sm"
-          placeholder={t('common.search')}
-        />
-      </div>
-      <EvaluationSortSelect
-        value={filters.evaluationSortField}
-        onChange={handleChange}
-        name="evaluationSortField"
-      />
-      <div className="col-auto">
-        <label className="form-label mb-0">{t('filters.ascending')}</label>
-        <input
-          type="checkbox"
-          name="ascending"
-          checked={!!filters.ascending}
-          onChange={handleChange}
-          className="form-check-input ms-1"
-          style={{ verticalAlign: 'middle' }}
-        />
-      </div>
-      <EvaluationDateRange
-        startDate={filters.startDateDisplay}
-        endDate={filters.endDateDisplay}
-        onChange={handleChange}
-      />
-    </form>
+      {/* Filter Form */}
+      <Form>
+        <Row className="g-3 align-items-end">
+          {/* Evaluator Select */}
+          <Col md={3}>
+            <SearchableUserSelect
+              value={filters.evaluatorId}
+              onChange={handleChange}
+              excludeUserId={displayedUserId}
+              name="evaluatorId"
+              label={t('profile.evaluator')}
+              placeholder={t('common.search')}
+            />
+          </Col>
+
+          {/* Evaluation Scale */}
+          <Col md={2}>
+            <EvaluationScaleSelect
+              value={filters.evaluationScale}
+              onChange={handleChange}
+              name="evaluationScale"
+            />
+          </Col>
+
+          {/* Search Text */}
+          <Col md={2}>
+            <Form.Group>
+              <Form.Label className="small fw-semibold">
+                {t('common.search')}
+              </Form.Label>
+              <Form.Control
+                type="text"
+                name="searchText"
+                value={filters.searchText || ''}
+                onChange={handleChange}
+                placeholder={t('common.search')}
+              />
+            </Form.Group>
+          </Col>
+
+          {/* Sort Field */}
+          <Col md={2}>
+            <EvaluationSortSelect
+              value={filters.evaluationSortField}
+              onChange={handleChange}
+              name="evaluationSortField"
+            />
+          </Col>
+
+          {/* Ascending Toggle */}
+          <Col md="auto">
+            <Form.Group>
+              <Form.Label className="small fw-semibold d-block">
+                {t('filters.ascending')}
+              </Form.Label>
+              <Button
+                variant={
+                  filters.ascending ? 'outline-primary' : 'outline-secondary'
+                }
+                size="sm"
+                onClick={() =>
+                  handleChange({
+                    target: {
+                      name: 'ascending',
+                      value: !filters.ascending,
+                      type: 'checkbox',
+                      checked: !filters.ascending,
+                    },
+                  })
+                }
+                title={
+                  filters.ascending
+                    ? t('common.ascending')
+                    : t('common.descending')
+                }
+              >
+                <i
+                  className={`bi bi-sort-${filters.ascending ? 'up' : 'down'}`}
+                />
+              </Button>
+            </Form.Group>
+          </Col>
+
+          {/* Date Range */}
+          <Col md={4}>
+            <EvaluationDateRange
+              startDate={filters.startDateDisplay}
+              endDate={filters.endDateDisplay}
+              onChange={handleChange}
+            />
+          </Col>
+        </Row>
+      </Form>
+    </div>
   );
 };
 
@@ -188,4 +229,3 @@ ProfileEvaluationsFilter.propTypes = {
   setFilters: PropTypes.func.isRequired,
   displayedUserId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
-

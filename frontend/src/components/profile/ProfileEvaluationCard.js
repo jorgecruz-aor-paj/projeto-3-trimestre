@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilePdf } from '@fortawesome/free-solid-svg-icons';
+import { Button } from 'react-bootstrap';
 import { formatDateToDDMMYYYY } from 'utils/dateUtils';
 import { translateEvaluationScale } from 'utils/evaluationScaleTranslations';
 import { useTranslation } from 'react-i18next';
@@ -63,15 +62,17 @@ export const ProfileEvaluationCard = ({ evaluation }) => {
       style={{ paddingTop: 28 }}
     >
       {/* Download icon button in top right */}
-      <button
-        className="btn btn-link p-0 position-absolute"
+      <Button
+        variant="outline-primary"
+        size="sm"
+        className="position-absolute"
         style={{ top: 4, right: 8, zIndex: 2 }}
         title={t('profile.downloadEvaluation')}
         onClick={handleDownload}
         aria-label={t('profile.downloadEvaluation')}
       >
-        <FontAwesomeIcon icon={faFilePdf} size="lg" color="currentColor" />
-      </button>
+        <i className="fas fa-file-pdf" />
+      </Button>
       <div>
         {t('profile.date')}: {formatDateToDDMMYYYY(evaluation.createdAt)}
       </div>
@@ -100,4 +101,3 @@ ProfileEvaluationCard.propTypes = {
     }),
   }).isRequired,
 };
-

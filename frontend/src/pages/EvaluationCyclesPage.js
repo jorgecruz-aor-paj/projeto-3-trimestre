@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
-import { EvaluationCycleBox } from '../components/evaluationCycles/EvaluationCycleBox';
-import { AdminStatsGrid } from '../components/dashboard/AdminStatsGrid';
+import { EvaluationCycleBox } from 'components/evaluationCycles/EvaluationCycleBox';
+import { AdminStatsGrid } from 'components/dashboard/AdminStatsGrid';
 import { cycleService } from 'services/cycleService';
 
 export const EvaluationCyclesPage = () => {

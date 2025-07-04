@@ -15,7 +15,7 @@ export const EvaluationSortSelect = ({ value, onChange, label, name }) => {
   const { t } = useTranslation();
   return (
     <div className="col-auto">
-      <label htmlFor={name} className="form-label mb-0">
+      <label htmlFor={name} className="form-label small fw-semibold">
         {label || t('profile.sortBy')}
       </label>
       <select
@@ -23,7 +23,7 @@ export const EvaluationSortSelect = ({ value, onChange, label, name }) => {
         name={name}
         value={value || 'DATE'}
         onChange={onChange}
-        className="form-select form-select-sm"
+        className="form-select"
       >
         {sortFieldOptions.map(opt => (
           <option key={opt.value} value={opt.value}>

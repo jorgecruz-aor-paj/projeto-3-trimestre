@@ -41,6 +41,7 @@
     "send": "Send",
     "receive": "Receive",
     "all": "All",
+    "default": "Default",
     "active": "Active",
     "inactive": "Inactive",
     "status": "Status",
@@ -381,6 +382,21 @@
         "reportsDesc": "Generate and view system reports",
         "exportData": "Export Data",
         "exportDataDesc": "Export system data for analysis"
+      },
+      "users": {
+        "title": "User Profile Management",
+        "subtitle": "Manage user profiles, permissions, and access",
+        "list": "User Profiles",
+        "viewProfile": "View Profile",
+        "viewFullProfile": "View Full Profile",
+        "profileDetails": "Profile Details",
+        "noUsers": "No users found",
+        "activate": "Activate",
+        "deactivate": "Deactivate",
+        "confirmStatusChange": "Confirm Status Change",
+        "confirmStatusChangeMessage": "Are you sure you want to change this user's status?",
+        "statusUpdated": "User status updated successfully",
+        "statusUpdateFailed": "Failed to update user status"
       }
     },
     "manager": {
@@ -441,13 +457,15 @@
     "title": "Users",
     "filters": {
       "search": "Search...",
+      "searchPlaceholder": "Search users...",
       "workplace": "All Workplaces",
       "manager": "All Managers",
       "sortBy": "Sort By",
       "noManager": "No Manager",
       "ascending": "Ascending",
       "descending": "Descending",
-      "createdAt": "Created At"
+      "createdAt": "Created At",
+      "role": "Role"
     },
     "noResults": "No users found.",
     "loading": "Loading users...",
@@ -486,6 +504,14 @@
     "date": "Date",
     "viewTraining": "View Training",
     "sortBy": "Sort by",
+    "user": {
+      "title": "My Profile",
+      "titleOther": "{name}'s Profile",
+      "subtitle": "Manage your profile and view your professional journey",
+      "subtitleOther": "View professional profile and achievements"
+    },
+    "userNotFound": "User not found",
+    "userNotFoundDesc": "The requested user profile could not be found.",
     "sortFields": {
       "id": "ID",
       "evaluated": "Evaluated",
@@ -676,7 +702,7 @@
     "submitEvaluation": "Submit Evaluation",
     "evaluationSubmitted": "Evaluation submitted successfully",
     "evaluationPeriod": "Evaluation Period",
-    "downloadError": "Error downloading evaluations",
+    "downloadError": "Failed to download evaluations CSV.",
     "feedback": "Feedback",
     "saveSuccess": "Evaluation saved successfully",
     "hero": {
@@ -814,6 +840,22 @@
     "status": "Status",
     "evaluationScale": "Scale",
     "evaluationSortField": "Sort By"
+  },
+  "participations": {
+    "searchPlaceholder": "Search trainings...",
+    "status": {
+      "title": "Status",
+      "registered": "Registered",
+      "attended": "Attended",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "sort": {
+      "trainingTitle": "Training Title",
+      "status": "Status",
+      "registrationDate": "Registration Date",
+      "completionDate": "Completion Date"
+    }
   },
   "evaluationScale": {
     "title": "Evaluation Scale",

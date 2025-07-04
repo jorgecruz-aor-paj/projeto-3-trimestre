@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
-import { FormInput } from '../forms/FormInput';
-import { FormDropdownInput } from '../forms/FormDropdownInput';
+import { FormInput } from 'components/forms/FormInput';
+import { FormDropdownInput } from 'components/forms/FormDropdownInput';
 import PropTypes from 'prop-types';
 
 /**

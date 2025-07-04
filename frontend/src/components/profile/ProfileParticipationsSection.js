@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useParticipationStore } from 'stores/ParticipationStore';
-import { ProfileParticipationsFilter } from './ProfileParticipationsFilter';
-import { ProfileParticipationCard } from './ProfileParticipationCard';
+import { ProfileParticipationsFilter } from 'components/profile/ProfileParticipationsFilter';
+import { ProfileParticipationCard } from 'components/profile/ProfileParticipationCard';
 import { useTranslation } from 'react-i18next';
-import { TrainingParticipationStatsTable } from './TrainingParticipationStatsTable';
+import { TrainingParticipationStatsTable } from 'components/profile/TrainingParticipationStatsTable';
 import { Button } from 'react-bootstrap';
-import { AddParticipationModal } from './AddParticipationModal';
+import { AddParticipationModal } from 'components/profile/AddParticipationModal';
 import { trainingParticipationService } from 'services/trainingParticipationService';
 import { useAuthStore } from 'stores/AuthStore';
 

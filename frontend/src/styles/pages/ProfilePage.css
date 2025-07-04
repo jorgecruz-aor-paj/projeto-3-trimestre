@@ -1,81 +1,264 @@
-.profile-page-container {
-  max-width: 900px;
-  margin: 2rem auto;
+/* Profile Page Styles */
+.profile-page {
+  background: #f8f9fa;
+  min-height: 100vh;
+}
+
+.profile-page .page-header {
   background: #fff;
   border-radius: 12px;
+  padding: 2rem;
   box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
-  padding: 2rem 2.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.profile-page .page-header h2 {
+  color: #1976d2;
+  font-weight: 600;
 }
 
 .profile-info-section {
-  margin-bottom: 2rem;
-  border-bottom: 1px solid #e0e0e0;
-  padding-bottom: 1.5rem;
+  background: #fff;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
 }
 
 .profile-toggle-section {
-  margin-top: 1.5rem;
+  background: #fff;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
 }
 
 .profile-toggle-buttons {
   display: flex;
   gap: 1rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #e9ecef;
+  padding-bottom: 1rem;
 }
 
 .profile-toggle-buttons button {
-  background: #f5f5f5;
+  background: transparent;
   border: none;
-  border-radius: 6px;
-  padding: 0.5rem 1.5rem;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
   font-size: 1rem;
+  font-weight: 500;
   cursor: pointer;
-  color: #333;
-  transition: background 0.2s, color 0.2s;
+  color: #6c757d;
+  transition: all 0.3s ease;
+  position: relative;
 }
 
-.profile-toggle-buttons button.active,
 .profile-toggle-buttons button:hover {
+  background: #f8f9fa;
+  color: #1976d2;
+}
+
+.profile-toggle-buttons button.active {
   background: #1976d2;
   color: #fff;
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.3);
+}
+
+.profile-toggle-buttons button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid #1976d2;
 }
 
 .profile-evaluations-section,
 .profile-participations-section {
-  margin-bottom: 2rem;
+  margin-top: 1.5rem;
 }
 
 .profile-evaluations-list,
 .profile-participations-list {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1.5rem;
+  margin-top: 1.5rem;
 }
 
 .profile-evaluation-card,
 .profile-participation-card {
-  background: #fafbfc;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 1rem 1.5rem;
-  min-width: 260px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
-  flex: 1 1 260px;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  background: #fff;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-evaluation-card:hover,
+.profile-participation-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  border-color: #1976d2;
+}
+
+.profile-evaluation-card::before,
+.profile-participation-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #1976d2, #42a5f5);
 }
 
 .profile-evaluation-card strong,
 .profile-participation-card strong {
   color: #1976d2;
   font-size: 1.1rem;
+  font-weight: 600;
 }
 
+.profile-evaluation-card div,
+.profile-participation-card div {
+  margin-bottom: 0.5rem;
+  color: #495057;
+  line-height: 1.5;
+}
+
+.profile-evaluation-card div:last-child,
+.profile-participation-card div:last-child {
+  margin-bottom: 0;
+}
+
+/* Enhanced Filter Styles */
 .profile-evaluations-filter,
 .profile-participations-filter {
-  margin-bottom: 1rem;
-  display: flex;
-  gap: 1rem;
-  align-items: center;
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid #e9ecef;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.profile-evaluations-filter .form-label,
+.profile-participations-filter .form-label {
+  color: #495057;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.profile-evaluations-filter .form-control,
+.profile-evaluations-filter .form-select,
+.profile-participations-filter .form-control,
+.profile-participations-filter .form-select {
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.profile-evaluations-filter .form-control:focus,
+.profile-evaluations-filter .form-select:focus,
+.profile-participations-filter .form-control:focus,
+.profile-participations-filter .form-select:focus {
+  border-color: #1976d2;
+  box-shadow: 0 0 0 0.2rem rgba(25, 118, 210, 0.25);
+}
+
+.profile-evaluations-filter .btn-outline-primary,
+.profile-evaluations-filter .btn-outline-secondary,
+.profile-participations-filter .btn-outline-primary,
+.profile-participations-filter .btn-outline-secondary {
+  border-width: 1px;
+  font-weight: 500;
+}
+
+.profile-evaluations-filter .btn-outline-primary:hover,
+.profile-participations-filter .btn-outline-primary:hover {
+  background-color: #1976d2;
+  border-color: #1976d2;
+}
+
+/* Export buttons styling */
+.profile-evaluations-filter .btn-outline-success {
+  border-color: #28a745;
+  color: #28a745;
+}
+
+.profile-evaluations-filter .btn-outline-success:hover {
+  background-color: #28a745;
+  border-color: #28a745;
+  color: #fff;
+}
+
+/* Loading and empty states */
+.profile-evaluations-list>div:first-child,
+.profile-participations-list>div:first-child {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 2rem;
+  color: #6c757d;
+  font-style: italic;
+}
+
+/* Stats table styling */
+.profile-participations-section .table {
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  margin-bottom: 1.5rem;
+}
+
+.profile-participations-section .table thead th {
+  background: #f8f9fa;
+  border-bottom: 2px solid #e9ecef;
+  font-weight: 600;
+  color: #495057;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+
+  .profile-page .page-header,
+  .profile-info-section,
+  .profile-toggle-section {
+    padding: 1.5rem;
+  }
+
+  .profile-toggle-buttons {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .profile-toggle-buttons button {
+    text-align: left;
+  }
+
+  .profile-evaluations-list,
+  .profile-participations-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 576px) {
+
+  .profile-page .page-header,
+  .profile-info-section,
+  .profile-toggle-section {
+    padding: 1rem;
+  }
+
+  .profile-evaluation-card,
+  .profile-participation-card {
+    padding: 1rem;
+  }
 }

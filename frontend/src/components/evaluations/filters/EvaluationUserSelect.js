@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useUserList } from '../../../hooks/useUserList';
+import { useUserList } from 'hooks/useUserList';
 import { useTranslation } from 'react-i18next';
 
 export const EvaluationUserSelect = ({

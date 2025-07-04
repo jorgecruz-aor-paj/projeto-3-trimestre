@@ -41,6 +41,7 @@
     "send": "Enviar",
     "receive": "Receber",
     "all": "Todos",
+    "default": "Padrão",
     "active": "Ativo",
     "inactive": "Inativo",
     "status": "Estado",
@@ -381,6 +382,21 @@
         "reportsDesc": "Gerar e ver relatórios do sistema",
         "exportData": "Exportar Dados",
         "exportDataDesc": "Exportar dados do sistema para análise"
+      },
+      "users": {
+        "title": "Gestão de Perfis de Utilizador",
+        "subtitle": "Gerir perfis de utilizador, permissões e acesso",
+        "list": "Perfis de Utilizador",
+        "viewProfile": "Ver Perfil",
+        "viewFullProfile": "Ver Perfil Completo",
+        "profileDetails": "Detalhes do Perfil",
+        "noUsers": "Nenhum utilizador encontrado",
+        "activate": "Ativar",
+        "deactivate": "Desativar",
+        "confirmStatusChange": "Confirmar Alteração de Estado",
+        "confirmStatusChangeMessage": "Tem a certeza que quer alterar o estado deste utilizador?",
+        "statusUpdated": "Estado do utilizador atualizado com sucesso",
+        "statusUpdateFailed": "Falha ao atualizar estado do utilizador"
       }
     },
     "manager": {
@@ -441,13 +457,15 @@
     "title": "Utilizadores",
     "filters": {
       "search": "Pesquisar...",
+      "searchPlaceholder": "Pesquisar utilizadores...",
       "workplace": "Todos os Locais de Trabalho",
       "manager": "Todos os Gestores",
       "sortBy": "Ordenar por",
       "noManager": "Sem Gestor",
       "ascending": "Ascendente",
       "descending": "Descendente",
-      "createdAt": "Criado em"
+      "createdAt": "Criado em",
+      "role": "Função"
     },
     "noResults": "Nenhum utilizador encontrado.",
     "loading": "A carregar utilizadores...",
@@ -486,6 +504,14 @@
     "date": "Data",
     "viewTraining": "Ver Formação",
     "sortBy": "Ordenar por",
+    "user": {
+      "title": "O Meu Perfil",
+      "titleOther": "Perfil de {name}",
+      "subtitle": "Faça a gestão do seu perfil e veja a sua jornada profissional",
+      "subtitleOther": "Vê o perfil profissional e conquistas"
+    },
+    "userNotFound": "Utilizador não encontrado",
+    "userNotFoundDesc": "O perfil de utilizador solicitado não foi encontrado.",
     "sortFields": {
       "id": "ID",
       "evaluated": "Avaliado",
@@ -676,7 +702,7 @@
     "submitEvaluation": "Submeter Avaliação",
     "evaluationSubmitted": "Avaliação submetida com sucesso",
     "evaluationPeriod": "Período de Avaliação",
-    "downloadError": "Erro ao descarregar avaliações",
+    "downloadError": "Falha ao descarregar CSV de avaliações.",
     "saveSuccess": "Avaliação guardada com sucesso",
     "feedback": "Feedback",
     "hero": {
@@ -814,6 +840,22 @@
     "status": "Estado",
     "evaluationScale": "Escala",
     "evaluationSortField": "Ordenar Por"
+  },
+  "participations": {
+    "searchPlaceholder": "Pesquisar formações...",
+    "status": {
+      "title": "Estado",
+      "registered": "Registado",
+      "attended": "Participou",
+      "completed": "Concluído",
+      "cancelled": "Cancelado"
+    },
+    "sort": {
+      "trainingTitle": "Título da Formação",
+      "status": "Estado",
+      "registrationDate": "Data de Registo",
+      "completionDate": "Data de Conclusão"
+    }
   },
   "evaluationScale": {
     "title": "Escala de Avaliação",

@@ -5,18 +5,14 @@ import { useTranslation } from 'react-i18next';
 export const EvaluationDateRange = ({ startDate, endDate, onChange }) => {
   const { t } = useTranslation();
   return (
-    <div className="col-auto">
-      <fieldset className="border rounded p-2 mb-0" style={{ minWidth: 220 }}>
-        <legend
-          className="float-none w-auto mb-1 px-2 small"
-          style={{ fontSize: '0.95em' }}
-        >
-          {t('filters.evaluationCycleDateRange') ||
-            'Evaluation Cycle Closure Date Range'}
-        </legend>
-        <div className="d-flex flex-row gap-2 align-items-center">
-          <div>
-            <label htmlFor="startDate" className="form-label mb-0">
+    <div>
+      <label className="form-label small fw-semibold">
+        {t('filters.evaluationCycleDateRange') || 'Date Range'}
+      </label>
+      <div className="border rounded p-2" style={{ minWidth: '300px' }}>
+        <div className="row g-2">
+          <div className="col-6">
+            <label htmlFor="startDate" className="form-label mb-1 small">
               {t('filters.startDate')}
             </label>
             <input
@@ -25,13 +21,11 @@ export const EvaluationDateRange = ({ startDate, endDate, onChange }) => {
               name="startDate"
               value={startDate || ''}
               onChange={onChange}
-              className="form-control form-control-sm"
-              style={{ minWidth: 120 }}
+              className="form-control"
             />
           </div>
-          <span className="mx-1">-</span>
-          <div>
-            <label htmlFor="endDate" className="form-label mb-0">
+          <div className="col-6">
+            <label htmlFor="endDate" className="form-label mb-1 small">
               {t('filters.endDate')}
             </label>
             <input
@@ -40,12 +34,11 @@ export const EvaluationDateRange = ({ startDate, endDate, onChange }) => {
               name="endDate"
               value={endDate || ''}
               onChange={onChange}
-              className="form-control form-control-sm"
-              style={{ minWidth: 120 }}
+              className="form-control"
             />
           </div>
         </div>
-      </fieldset>
+      </div>
     </div>
   );
 };
