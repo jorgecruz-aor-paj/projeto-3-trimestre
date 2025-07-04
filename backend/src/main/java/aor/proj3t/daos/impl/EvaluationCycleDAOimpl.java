@@ -44,7 +44,7 @@ public class EvaluationCycleDAOimpl extends AbstractDAO<EvaluationCycle, Long> i
 
     @Override
     public List<EvaluationCycle> findAll(boolean loadEvaluations) {
-        List<EvaluationCycle> cycles = super.findAll();
+        List<EvaluationCycle> cycles = executeNamedQuery("EvaluationCycle.findAll", EvaluationCycle.class);
         if (loadEvaluations) {
             for (EvaluationCycle cycle : cycles) {
                 Hibernate.initialize(cycle.getEvaluations());
