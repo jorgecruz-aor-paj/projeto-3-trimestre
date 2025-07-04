@@ -7,6 +7,7 @@ import { MessagesContainer } from 'components/messages/MessagesContainer';
 import { MessageInput } from 'components/messages/MessageInput';
 import { axiosInstance } from 'api/axiosInstance';
 import { API_ENDPOINTS } from 'api/apiConfig';
+import { websocketService } from 'services/websocketService';
 
 export const Messages = () => {
   const { t } = useTranslation();
@@ -21,7 +22,7 @@ export const Messages = () => {
     loadConversations,
     sendMessage,
     clearStore,
-    initializeWebSocket,
+    handleNotification,
   } = useMessageStore();
 
   const [users, setUsers] = useState([]);
@@ -29,17 +30,18 @@ export const Messages = () => {
   const [showUserList, setShowUserList] = useState(false);
 
   useEffect(() => {
-    // Initialize WebSocket connection
-    initializeWebSocket();
+    // Subscribe to notifications (WebSocket is already connected via Header)
+    const unsubscribe = websocketService.onNotification(handleNotification);
 
     // Load conversations when component mounts
     loadConversations();
 
     // Cleanup when component unmounts
     return () => {
+      unsubscribe();
       clearStore();
     };
-  }, [loadConversations, clearStore, initializeWebSocket]);
+  }, [loadConversations, clearStore, handleNotification]);
 
   // Load all users for starting new conversations
   const loadUsers = async () => {
