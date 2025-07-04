@@ -24,6 +24,7 @@ const AUTH_ENDPOINT = `${API_BASE_URL}/auth`;
 const USER_ENDPOINT = `${API_BASE_URL}/users`;
 const TRAININGS_ENDPOINT = `${API_BASE_URL}/trainings`;
 const EVALUATIONS_ENDPOINT = `${API_BASE_URL}/evaluations`;
+const CYCLES_ENDPOINT = `${EVALUATIONS_ENDPOINT}/cycle`;
 const AI_ENDPOINT = `${API_BASE_URL}/ai`;
 const EXPORT_ENDPOINT = `${API_BASE_URL}/export`;
 const STATS_ENDPOINT = `${API_BASE_URL}/stats`;
@@ -269,6 +270,23 @@ const API_ENDPOINTS = {
     all: {
       url: `${MESSAGES_ENDPOINT}/all`,
       requiresAuth: true,
+    },
+  },
+  cycles: {
+    getCurrent: {
+      url: `${CYCLES_ENDPOINT}/current`,
+      requiresAuth: true,
+      adminOnly: true,
+    },
+    startNew: {
+      url: `${CYCLES_ENDPOINT}`,
+      requiresAuth: true,
+      adminOnly: true,
+    },
+    getAll: {
+      url: `${CYCLES_ENDPOINT}/all`,
+      requiresAuth: true,
+      adminOnly: true,
     },
   },
 };
