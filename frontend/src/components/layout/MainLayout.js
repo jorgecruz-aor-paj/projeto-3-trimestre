@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 
 import { Header } from 'components/common/Header';
 import { Footer } from 'components/common/Footer';
+import { FloatingChatbot } from 'components/chatbot/FloatingChatbot';
 import 'styles/components/MainLayout.css';
 
 /**
@@ -29,6 +30,7 @@ export const MainLayout = () => {
         <Outlet />
       </main>
       <Footer />
+      <FloatingChatbot />
     </div>
   );
 };

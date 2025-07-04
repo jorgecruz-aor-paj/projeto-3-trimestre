@@ -3,7 +3,11 @@ import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import 'styles/components/MessageInput.css';
 
-export const MessageInput = ({ onSendMessage, disabled = false }) => {
+export const MessageInput = ({
+  onSendMessage,
+  disabled = false,
+  placeholder,
+}) => {
   const { t } = useTranslation();
   const [message, setMessage] = useState('');
   const inputRef = useRef(null);
@@ -32,7 +36,9 @@ export const MessageInput = ({ onSendMessage, disabled = false }) => {
             ref={inputRef}
             type="text"
             className="form-control"
-            placeholder={t('messages.typeMessage', 'Type a message...')}
+            placeholder={
+              placeholder || t('messages.typeMessage', 'Type a message...')
+            }
             value={message}
             onChange={e => setMessage(e.target.value)}
             onKeyDown={handleKeyDown}
@@ -60,4 +66,5 @@ export const MessageInput = ({ onSendMessage, disabled = false }) => {
 MessageInput.propTypes = {
   onSendMessage: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
+  placeholder: PropTypes.string,
 };

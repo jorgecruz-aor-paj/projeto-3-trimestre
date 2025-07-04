@@ -165,6 +165,14 @@ const API_ENDPOINTS = {
       url: `${AI_ENDPOINT}/predict-performance`,
       requiresAuth: true,
     },
+    chatbot: {
+      url: `${AI_ENDPOINT}/chatbot`,
+      requiresAuth: true,
+    },
+    generateReport: {
+      url: `${AI_ENDPOINT}/generate-report`,
+      requiresAuth: true,
+    },
   },
   export: {
     usersCSV: {
