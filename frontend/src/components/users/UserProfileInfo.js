@@ -96,6 +96,7 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
 
   const handleSave = async () => {
     // Only call assignManager if manager changed (admin only)
+    let newManager = user.manager;
     if (
       isAdmin &&
       user.id &&
@@ -108,6 +109,10 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
           managerId: formData.managerId,
           userIds: [user.id],
         });
+        // Find the selected manager from the filteredManagerList
+        newManager = filteredManagerList.find(
+          u => String(u.id) === String(formData.managerId)
+        );
         console.log('Manager assigned successfully:', response);
       } catch (err) {
         // Optionally handle error, e.g., show notification
@@ -127,6 +132,7 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
         workplace: { ...user.workplace, name: formData.workplace },
         biography: formData.biography,
         role: formData.role,
+        manager: newManager,
       };
       const response = await userService.update(updatePayload);
       console.log('User updated successfully:', response);

@@ -33,7 +33,7 @@ export const TrainingParticipationStatsTable = ({ userId }) => {
     return (
       <div className="mb-2 text-danger">{t('common.error') || 'Error'}</div>
     );
-  if (!stats || Object.keys(stats).length === 0) return null;
+  if (!stats || !Array.isArray(stats) || stats.length === 0) return null;
 
   // Helper to format minutes as "Xh Ym"
   const formatMinutes = mins => {
@@ -43,11 +43,6 @@ export const TrainingParticipationStatsTable = ({ userId }) => {
     if (h > 0) return `${h}h`;
     return `${m}m`;
   };
-
-  // Sort years descending (most recent first)
-  const sortedEntries = Object.entries(stats).sort(
-    (a, b) => Number(b[0]) - Number(a[0])
-  );
 
   return (
     <div className="training-participation-stats-table mb-3">
@@ -64,7 +59,7 @@ export const TrainingParticipationStatsTable = ({ userId }) => {
           </tr>
         </thead>
         <tbody>
-          {sortedEntries.map(([year, minutes]) => (
+          {stats.map(({ year, minutes }) => (
             <tr key={year}>
               <td>{year}</td>
               <td>{formatMinutes(minutes)}</td>
@@ -79,4 +74,3 @@ export const TrainingParticipationStatsTable = ({ userId }) => {
 TrainingParticipationStatsTable.propTypes = {
   userId: PropTypes.number.isRequired,
 };
-

@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import 'styles/pages/ProfilePage.css';
 import { userService } from 'services';
 
-const ProfilePage = () => {
+export const ProfilePage = () => {
   // const [showEvaluations, setShowEvaluations] = useState(true); // moved to ProfileSectionsToggle
   const [profileUser, setProfileUser] = useState(null);
   const user = useAuthStore(state => state.user);
@@ -28,7 +28,6 @@ const ProfilePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       const paramId = getUserIdFromQuery();
-      console.log(paramId);
       if (!paramId || (user && paramId === user.id)) {
         setProfileUser(user);
       } else {
@@ -96,5 +95,3 @@ const ProfilePage = () => {
     </div>
   );
 };
-
-export default ProfilePage;

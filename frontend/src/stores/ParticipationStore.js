@@ -16,7 +16,6 @@ export const useParticipationStore = create(set => ({
       const data = await trainingParticipationService.getByParticipantId(
         filters.participantId
       );
-      console.log('Fetched participations:', data); // Debugging log
       set({ participations: data, loading: false });
     } catch (error) {
       set({ error, loading: false });

@@ -63,7 +63,9 @@ export const ProfileParticipationsSection = ({ userId }) => {
         managerId: currentUser.id,
       };
       console.log('Adding participation:', participationToSend);
-      const response = await trainingParticipationService.register(participationToSend);
+      const response = await trainingParticipationService.register(
+        participationToSend
+      );
       console.log('Add participation response:', response);
       fetchParticipations(filters);
       handleCloseModal();
@@ -90,7 +92,7 @@ export const ProfileParticipationsSection = ({ userId }) => {
       {isManagerOrAdmin && (
         <div style={{ marginBottom: 16 }}>
           <Button variant="primary" onClick={handleOpenModal}>
-            {t('profile.addParticipation') || 'Add Participation'}
+            {t('profile.addParticipation')}
           </Button>
         </div>
       )}

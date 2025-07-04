@@ -11,7 +11,9 @@ import { ConfirmRegistrationPage } from 'components/auth/ConfirmRegistrationPage
 import { Dashboard } from 'pages/Dashboard';
 import { UsersPage } from 'pages/UsersPage';
 import { Messages } from 'pages/Messages';
-import ProfilePage from 'pages/ProfilePage';
+import { ProfilePage } from 'pages/ProfilePage';
+import { EvaluationCyclesPage } from 'pages/EvaluationCyclesPage';
+
 import {
   NotFoundRoute,
   ForbiddenRoute,
@@ -57,7 +59,9 @@ export const AppRouter = () => {
         <Route path="/register/confirm" element={<ConfirmRegistrationPage />} />
         <Route path="/users" element={<UsersPage />} />
         <Route path="/messages" element={<Messages />} />
+
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/evaluation-cycles" element={<EvaluationCyclesPage />} />
 
         {/* Error Routes */}
         <Route path="/error/404" element={<NotFoundRoute />} />
