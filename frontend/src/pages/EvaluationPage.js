@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { EvaluationFilters } from '../components/evaluations/EvaluationFilters';
-import { EvaluationList } from '../components/evaluations/EvaluationList';
-import { useAuthStore } from '../stores/AuthStore';
-import { useEvaluationStore } from '../stores/EvaluationStore';
+import { EvaluationFilter } from 'components/filters';
+import { EvaluationList } from 'components/evaluations/EvaluationList';
+import { useAuthStore } from 'stores/AuthStore';
+import { useEvaluationStore } from 'stores/EvaluationStore';
+import { useAlert } from 'contexts/AlertContext';
+import { evaluationService } from 'services/evaluationService';
 
 export const EvaluationPage = () => {
   const [filters, setFilters] = useState({});
@@ -10,7 +12,7 @@ export const EvaluationPage = () => {
   const user = useAuthStore(state => state.user);
   const { evaluations, fetchEvaluations, loading, error } =
     useEvaluationStore();
-  const { showAlert } = require('../contexts/AlertContext');
+  const { showAlert } = useAlert();
 
   useEffect(() => {
     fetchEvaluations(filters);
@@ -38,7 +40,6 @@ export const EvaluationPage = () => {
       return;
     }
     try {
-      const { evaluationService } = require('../services/evaluationService');
       await evaluationService.closeEvaluation({
         cycleId,
         evaluationIds: selectedEvaluations,
@@ -50,10 +51,10 @@ export const EvaluationPage = () => {
       });
       setSelectedEvaluations([]);
       fetchEvaluations(filters);
-    } catch (error) {
+    } catch (err) {
       showAlert({
         title: 'Error',
-        message: error?.message || 'Failed to close evaluations.',
+        message: err?.message || 'Failed to close evaluations.',
         variant: 'danger',
       });
     }
@@ -65,11 +66,7 @@ export const EvaluationPage = () => {
   return (
     <div className="container py-4">
       <h2 className="mb-4">Avaliações</h2>
-      <EvaluationFilters
-        filters={filters}
-        setFilters={setFilters}
-        user={user}
-      />
+      <EvaluationFilter filters={filters} setFilters={setFilters} user={user} />
       {isAdmin && (
         <div className="mb-3">
           <button
