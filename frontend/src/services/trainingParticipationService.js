@@ -26,4 +26,9 @@ export const trainingParticipationService = {
     // Use apiService.getAll to match the rest of the codebase and support interceptors, etc.
     return apiService.getAll(endpoint);
   },
-};
+  getUnparticipatedTrainingsByUserId: userId => {
+    const endpoint =
+      API_ENDPOINTS.trainingParticipation.getUnparticipatedByUser(userId);
+    return apiService.getAll(endpoint);
+  },
+}
