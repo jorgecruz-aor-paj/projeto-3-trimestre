@@ -53,6 +53,7 @@ public class EmailUtil {
         logger.info("Initializing Email utility service");
         try {
             // Load email configuration from environment variables
+            // TODO remover coment para commit
             Dotenv dotenv = Dotenv.configure()
                     .ignoreIfMalformed()
                     .load();
