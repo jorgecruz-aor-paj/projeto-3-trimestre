@@ -15,9 +15,12 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import aor.proj3t.dto.TrainingYearStatDTO;
 
-import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.LinkedHashMap;
+
 
 
 @Path("/stats")
@@ -60,9 +63,12 @@ public class StatsResource {
     public Response getTrainingParticipationStats(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader,
                                                   @PathParam("userId") Long userId) {
         Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
-        LinkedHashMap<Integer, Long> stats = serviceFactory.forTrainingParticipation()
+        LinkedHashMap<Integer, Long> statsMap = serviceFactory.forTrainingParticipation()
                 .getTrainingParticipationTimeByYearByUser(requesterId, userId);
-        return Response.ok(stats).build();
+        List<TrainingYearStatDTO> statsList = statsMap.entrySet().stream()
+                .map(e -> new TrainingYearStatDTO(e.getKey(), e.getValue()))
+                .toList();
+        return Response.ok(statsList).build();
     }
 }
 

@@ -17,14 +17,12 @@ export const EvaluationCyclesPage = () => {
       setError(null);
       try {
         const currentCycle = await cycleService.getCurrent();
-        console.log(currentCycle);
         if (currentCycle.id == null) {
           setCurrentCycle(null);
         } else {
           setCurrentCycle(currentCycle);
         }
         const closedCycles = await cycleService.getAll({ complete: fatcycles });
-        console.log(closedCycles);
         setClosedCycles(closedCycles);
       } catch (err) {
         setError('Failed to load evaluation cycles.');
