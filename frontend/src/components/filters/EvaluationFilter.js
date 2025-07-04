@@ -256,7 +256,10 @@ export const EvaluationFilter = ({
               </InputGroup.Text>
               <Form.Control
                 type="text"
-                placeholder={t('evaluations.searchFeedbackPlaceholder', 'Search evaluation feedback...')}
+                placeholder={t(
+                  'evaluations.searchFeedbackPlaceholder',
+                  'Search evaluation feedback...'
+                )}
                 value={searchTerm}
                 onChange={e => setSearchTerm(e.target.value)}
               />
