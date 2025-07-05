@@ -1,8 +1,5 @@
 package aor.proj3t.daos.impl;
 
-import java.util.List;
-import java.util.Optional;
-
 import aor.proj3t.daos.interfaces.BasicDAO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -10,6 +7,9 @@ import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
+
+import java.util.List;
+import java.util.Optional;
 
 public abstract class AbstractDAO<T, ID> implements BasicDAO<T, ID> {
 

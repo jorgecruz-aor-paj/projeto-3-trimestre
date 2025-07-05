@@ -2,7 +2,6 @@ package aor.proj3t.util.converterutils;
 
 import aor.proj3t.dto.MiniUserDTO;
 import aor.proj3t.entities.User;
-import aor.proj3t.enums.Role;
 import jakarta.enterprise.context.ApplicationScoped;
 
 import java.util.ArrayList;

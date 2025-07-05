@@ -1,10 +1,10 @@
 package aor.proj3t.util.validatorutils.forfilters;
 
-import java.util.List;
-
 import aor.proj3t.enums.EvaluationSortField;
 import aor.proj3t.filters.EvaluationFilter;
 import jakarta.enterprise.context.ApplicationScoped;
+
+import java.util.List;
 
 /**
  * Validator for EvaluationFilter objects.

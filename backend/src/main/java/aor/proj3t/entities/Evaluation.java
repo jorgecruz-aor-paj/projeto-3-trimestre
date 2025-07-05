@@ -3,8 +3,6 @@ package aor.proj3t.entities;
 import aor.proj3t.enums.EvaluationScale;
 import aor.proj3t.enums.EvaluationStatus;
 import jakarta.persistence.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
 

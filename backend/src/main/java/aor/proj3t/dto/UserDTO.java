@@ -1,13 +1,13 @@
 package aor.proj3t.dto;
 
-import java.time.Instant;
-import java.time.LocalDate;
-
 import aor.proj3t.enums.Role;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
+
+import java.time.Instant;
+import java.time.LocalDate;
 
 /**
  * Data Transfer Object for User entity

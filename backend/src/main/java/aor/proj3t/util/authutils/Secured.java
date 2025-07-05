@@ -1,12 +1,12 @@
 package aor.proj3t.util.authutils;
 
+import aor.proj3t.enums.Role;
+import jakarta.ws.rs.NameBinding;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import aor.proj3t.enums.Role;
-import jakarta.ws.rs.NameBinding;
 
 /**
  * Annotation for marking JAX-RS resources that require JWT authentication.

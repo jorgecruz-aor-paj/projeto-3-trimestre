@@ -1,13 +1,11 @@
 package aor.proj3t.entities;
 
-import java.time.LocalDate;
-import java.time.Instant;
-import java.util.List;
-
-import jakarta.persistence.*;
-import org.hibernate.annotations.CreationTimestamp;
-
 import aor.proj3t.enums.Role;
+import jakarta.persistence.*;
+
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "users")

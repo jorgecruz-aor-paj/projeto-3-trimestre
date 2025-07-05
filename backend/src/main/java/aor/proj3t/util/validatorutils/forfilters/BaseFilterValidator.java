@@ -1,13 +1,13 @@
 package aor.proj3t.util.validatorutils.forfilters;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
 import aor.proj3t.exceptions.InvalidDataException;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Base validator class that provides common validation functionality

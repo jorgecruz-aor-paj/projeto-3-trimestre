@@ -1,6 +1,7 @@
 package aor.proj3t.util.validatorutils.fordto;
 
-import aor.proj3t.dto.*;
+import aor.proj3t.dto.EvaluationCloseDTO;
+import aor.proj3t.dto.EvaluationDTO;
 import aor.proj3t.enums.EvaluationScale;
 import aor.proj3t.enums.EvaluationStatus;
 import aor.proj3t.exceptions.InvalidDataException;

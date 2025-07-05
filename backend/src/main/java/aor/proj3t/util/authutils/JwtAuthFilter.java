@@ -1,7 +1,5 @@
 package aor.proj3t.util.authutils;
 
-import java.util.Arrays;
-
 import aor.proj3t.enums.Role;
 import aor.proj3t.exceptions.ForbiddenException;
 import aor.proj3t.service.impl.TokenService;
@@ -12,6 +10,8 @@ import jakarta.ws.rs.container.ResourceInfo;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.ext.Provider;
+
+import java.util.Arrays;
 
 @Provider
 @Secured

@@ -1,10 +1,10 @@
 package aor.proj3t.util.validatorutils.forfilters;
 
-import java.util.List;
-
 import aor.proj3t.enums.UserSortField;
 import aor.proj3t.filters.UserFilter;
 import jakarta.enterprise.context.ApplicationScoped;
+
+import java.util.List;
 
 /**
  * Validator for UserFilter objects.

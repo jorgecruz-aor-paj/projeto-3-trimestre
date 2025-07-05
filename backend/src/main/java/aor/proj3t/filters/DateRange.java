@@ -1,8 +1,8 @@
 package aor.proj3t.filters;
 
-import java.time.Instant;
-
 import jakarta.ws.rs.QueryParam;
+
+import java.time.Instant;
 
 public class DateRange {
     @QueryParam("startDate")

@@ -1,12 +1,12 @@
 package aor.proj3t.daos.impl;
 
-import java.time.Instant;
-import java.util.Optional;
-
 import aor.proj3t.daos.interfaces.PendingRegistrationDAO;
 import aor.proj3t.entities.PendingRegistration;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.TypedQuery;
+
+import java.time.Instant;
+import java.util.Optional;
 
 @Stateless
 public class PendingRegistrationDAOimpl extends AbstractDAO<PendingRegistration, Long>

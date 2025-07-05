@@ -1,13 +1,5 @@
 package aor.proj3t.service.impl;
 
-import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import aor.proj3t.daos.DAOFactory;
 import aor.proj3t.dto.NotificationDTO;
 import aor.proj3t.entities.Notification;
@@ -17,6 +9,13 @@ import aor.proj3t.util.converterutils.ConverterFactory;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.time.Instant;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Implementation of the NotificationService interface

@@ -1,14 +1,13 @@
 package aor.proj3t.util.validatorutils.forfilters;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
-import java.util.List;
-import java.util.regex.Pattern;
-
 import aor.proj3t.enums.TrainingSortField;
 import aor.proj3t.filters.TrainingFilter;
 import jakarta.enterprise.context.ApplicationScoped;
+
+import java.time.Instant;
+import java.time.format.DateTimeParseException;
+import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Validator for TrainingFilter objects.
@@ -18,7 +17,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 public class TrainingFilterValidator extends BaseFilterValidator<TrainingFilter> {
 
     private static final Pattern LANGUAGE_PATTERN = Pattern.compile("^[a-zA-Z ]+$");
-    private static final Pattern DATE_PATTERN = Pattern.compile("^\\d{4}-\\d{2}-\\d{2}$");
     private static final int MAX_SEARCH_TEXT_LENGTH = 255;
     private static final int MIN_LANGUAGE_LENGTH = 2;
     private static final int MAX_LANGUAGE_LENGTH = 50;

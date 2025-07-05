@@ -1,9 +1,9 @@
 package aor.proj3t.daos.interfaces;
 
-import java.util.List;
-
 import aor.proj3t.entities.Message;
 import aor.proj3t.entities.User;
+
+import java.util.List;
 
 public interface MessageDAO extends BasicDAO<Message, Long> {
 

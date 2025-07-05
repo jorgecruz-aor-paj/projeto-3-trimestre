@@ -1,15 +1,15 @@
 package aor.proj3t.daos.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import aor.proj3t.daos.interfaces.UserDAO;
 import aor.proj3t.entities.User;
 import aor.proj3t.enums.Role;
 import aor.proj3t.filters.UserFilter;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.criteria.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Implementation of the UserDAO interface that provides data access

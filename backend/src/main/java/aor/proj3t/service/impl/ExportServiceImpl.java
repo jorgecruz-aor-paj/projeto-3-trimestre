@@ -1,16 +1,18 @@
 package aor.proj3t.service.impl;
 
-import java.io.ByteArrayOutputStream;
-import java.io.StringWriter;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
+import aor.proj3t.daos.DAOFactory;
+import aor.proj3t.dto.*;
+import aor.proj3t.entities.Evaluation;
+import aor.proj3t.entities.Training;
+import aor.proj3t.entities.User;
+import aor.proj3t.enums.EvaluationStatus;
+import aor.proj3t.exceptions.BadRequestException;
+import aor.proj3t.exceptions.NotFoundException;
+import aor.proj3t.filters.EvaluationFilter;
+import aor.proj3t.filters.TrainingFilter;
+import aor.proj3t.filters.UserFilter;
+import aor.proj3t.service.interfaces.ExportService;
+import aor.proj3t.util.converterutils.ConverterFactory;
 import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
@@ -25,27 +27,18 @@ import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
-
-import aor.proj3t.daos.DAOFactory;
-import aor.proj3t.dto.EvaluationCsvDTO;
-import aor.proj3t.dto.EvaluationDTO;
-import aor.proj3t.dto.TrainingCsvDTO;
-import aor.proj3t.dto.TrainingDTO;
-import aor.proj3t.dto.UserCsvDTO;
-import aor.proj3t.dto.UserDTO;
-import aor.proj3t.entities.Evaluation;
-import aor.proj3t.entities.Training;
-import aor.proj3t.entities.User;
-import aor.proj3t.enums.EvaluationStatus;
-import aor.proj3t.exceptions.BadRequestException;
-import aor.proj3t.exceptions.NotFoundException;
-import aor.proj3t.filters.EvaluationFilter;
-import aor.proj3t.filters.TrainingFilter;
-import aor.proj3t.filters.UserFilter;
-import aor.proj3t.service.interfaces.ExportService;
-import aor.proj3t.util.converterutils.ConverterFactory;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.ByteArrayOutputStream;
+import java.io.StringWriter;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Implementation of ExportService that provides functionality for exporting

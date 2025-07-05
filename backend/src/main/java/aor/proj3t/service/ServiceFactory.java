@@ -1,7 +1,6 @@
 package aor.proj3t.service;
 
 import aor.proj3t.service.impl.TokenService;
-import aor.proj3t.service.impl.WorkplaceServiceImpl;
 import aor.proj3t.service.interfaces.*;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;

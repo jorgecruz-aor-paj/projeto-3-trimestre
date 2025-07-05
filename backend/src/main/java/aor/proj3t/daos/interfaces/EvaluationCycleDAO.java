@@ -1,10 +1,10 @@
 package aor.proj3t.daos.interfaces;
 
-import java.util.List;
-
 import aor.proj3t.entities.EvaluationCycle;
 import aor.proj3t.enums.EvaluationCycleStatus;
 import aor.proj3t.enums.EvaluationStatus;
+
+import java.util.List;
 
 /**
  * Repository interface for EvaluationCycle entity operations.

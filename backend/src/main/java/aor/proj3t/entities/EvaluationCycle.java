@@ -2,9 +2,7 @@ package aor.proj3t.entities;
 
 import aor.proj3t.enums.EvaluationCycleStatus;
 import jakarta.persistence.*;
-import org.hibernate.annotations.CreationTimestamp;
 
-import javax.xml.namespace.QName;
 import java.time.Instant;
 import java.util.List;
 

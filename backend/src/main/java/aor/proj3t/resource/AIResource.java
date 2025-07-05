@@ -1,15 +1,6 @@
 package aor.proj3t.resource;
 
-import aor.proj3t.dto.ai.ChatRequestDTO;
-import aor.proj3t.dto.ai.ChatResponseDTO;
-import aor.proj3t.dto.ai.FeedbackDTO;
-import aor.proj3t.dto.ai.PerformancePredictionDTO;
-import aor.proj3t.dto.ai.PredictionRequestDTO;
-import aor.proj3t.dto.ai.ReportRequestDTO;
-import aor.proj3t.dto.ai.ReportResponseDTO;
-import aor.proj3t.dto.ai.SentimentResponseDTO;
-import aor.proj3t.dto.ai.TrainingRecommendationDTO;
-import aor.proj3t.dto.ai.TrainingRequestDTO;
+import aor.proj3t.dto.ai.*;
 import aor.proj3t.service.ServiceFactory;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;

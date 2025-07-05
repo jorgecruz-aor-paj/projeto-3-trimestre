@@ -1,31 +1,22 @@
 package aor.proj3t.service.impl;
 
-import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import aor.proj3t.config.AppConstants;
 import aor.proj3t.config.SettingsProvider;
 import aor.proj3t.daos.DAOFactory;
 import aor.proj3t.dto.LoginDTO;
-import aor.proj3t.dto.UserDTO;
 import aor.proj3t.entities.Session;
-import aor.proj3t.entities.Settings;
 import aor.proj3t.entities.User;
-import aor.proj3t.enums.Role;
-import aor.proj3t.exceptions.NotFoundException;
 import aor.proj3t.exceptions.UnauthorizedException;
 import aor.proj3t.service.ServiceFactory;
 import aor.proj3t.service.interfaces.AuthService;
 import aor.proj3t.util.authutils.JwtUtil;
 import aor.proj3t.util.authutils.PasswordUtil;
-import aor.proj3t.util.converterutils.ConverterFactory;
-import io.jsonwebtoken.Claims;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.time.Instant;
+import java.util.List;
 
 /**
  * Implementation of the AuthService interface.
