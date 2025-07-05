@@ -962,13 +962,25 @@
     "noCycles": "Sem ciclos encerrados.",
     "startCycle": {
       "button": "Iniciar Novo Ciclo",
-      "disabled": "Não é possível iniciar um novo ciclo enquanto existirem utilizadores sem gestor.",
+      "disabled": "Não é possível iniciar um novo ciclo enquanto houver utilizadores sem gestor.",
       "assignManagers": "Atribuir Gestores",
       "unmanagedWarning": {
         "single": "Existe {{count}} utilizador sem gestor.",
         "multiple": "Existem {{count}} utilizadores sem gestor.",
-        "action": "Clique em \"Atribuir Gestores\" para atribuir."
-      }
+        "action": "Clique em \"Atribuir Gestores\" para resolver."
+      },
+      "modalTitle": "Iniciar Novo Ciclo de Avaliação",
+      "startDate": "Data de Início",
+      "startDateHint": "O ciclo começará hoje à meia-noite",
+      "endDate": "Data de Fim",
+      "endDateHint": "Selecione quando o ciclo deve terminar",
+      "starting": "A iniciar ciclo...",
+      "start": "Iniciar Ciclo",
+      "error": {
+        "invalidEndDate": "A data de fim deve ser posterior à data de início",
+        "generic": "Falha ao iniciar ciclo de avaliação. Por favor tente novamente."
+      },
+      "success": "Ciclo de avaliação iniciado com sucesso"
     },
     "cycleInfo": {
       "startDate": "Data de Início",

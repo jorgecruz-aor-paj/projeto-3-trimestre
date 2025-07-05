@@ -8,6 +8,7 @@ import { cycleService } from 'services/cycleService';
 import { statsService } from 'services/statsService';
 import { userService } from 'services/userService';
 import { StartCycleButton } from 'components/evaluationCycles/StartCycleButton';
+import { StartCycleModal } from 'components/modals/StartCycleModal';
 
 export const EvaluationCyclesPage = () => {
   const { t } = useTranslation();
@@ -21,8 +22,9 @@ export const EvaluationCyclesPage = () => {
   const [statsLoading, setStatsLoading] = useState(true);
   const [statsError, setStatsError] = useState(null);
 
-  // Modal state
+  // Modal states
   const [showAssignModal, setShowAssignModal] = useState(false);
+  const [showStartCycleModal, setShowStartCycleModal] = useState(false);
   const [unmanagedUsers, setUnmanagedUsers] = useState([]);
   const [managers, setManagers] = useState([]);
 
@@ -125,6 +127,25 @@ export const EvaluationCyclesPage = () => {
       throw err;
     }
   };
+
+  // handlers
+  const handleStartCycle = async cycleData => {
+    try {
+      console.log('Cycle started:', cycleData);
+
+      await cycleService.start(cycleData);
+      // Refresh current cycle
+      const currentCycle = await cycleService.getCurrent();
+      setCurrentCycle(currentCycle);
+      // Show success message
+      // You might want to add a toast or alert system for this
+      fetchStats();
+      setShowStartCycleModal(false);
+    } catch (err) {
+      throw new Error(t('evaluationCycles.startCycle.error.generic'));
+    }
+  };
+
   return (
     <div className="container py-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
@@ -133,9 +154,7 @@ export const EvaluationCyclesPage = () => {
           <StartCycleButton
             disabled={stats.managers && stats.managers.unmanaged > 0}
             unmanagedCount={stats.managers?.unmanaged || 0}
-            onClick={() => {
-              /* TODO: implement start cycle logic */
-            }}
+            onClick={() => setShowStartCycleModal(true)}
             onAssignManagers={handleAssignManagers}
           />
         )}
@@ -191,6 +210,12 @@ export const EvaluationCyclesPage = () => {
         onComplete={handleAssignmentComplete}
         unmanagedUsers={unmanagedUsers}
         managers={managers}
+      />
+
+      <StartCycleModal
+        show={showStartCycleModal}
+        onHide={() => setShowStartCycleModal(false)}
+        onSubmit={handleStartCycle}
       />
     </div>
   );
