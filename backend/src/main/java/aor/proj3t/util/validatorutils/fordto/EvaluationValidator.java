@@ -92,10 +92,19 @@ public class EvaluationValidator {
                     "start date must be before end date",
                     "Evaluation cycle started without start end after end date");
         }
-        if(dateRange.getStartDate().isBefore(Instant.now())) {
+        // Validate that start date is on the current day (not before or after)
+        Instant now = Instant.now();
+        java.time.LocalDate startDate = dateRange.getStartDate()
+                .atZone(java.time.ZoneId.systemDefault())
+                .toLocalDate();
+        java.time.LocalDate today = now
+                .atZone(java.time.ZoneId.systemDefault())
+                .toLocalDate();
+                
+        if (!startDate.equals(today)) {
             throw new InvalidDataException(
-                    "start date should be after current time",
-                    "Evaluation cycle started without start date previous to current time");
+                    "start date must be on the current day",
+                    "Evaluation cycle must start on the current day");
         }
     }
 
