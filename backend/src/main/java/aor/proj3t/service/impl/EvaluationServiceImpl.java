@@ -111,6 +111,7 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
 
         daoFactory.forEvaluation().update(evaluation);
         checkAndCompleteEvaluationCycle(evaluation.getEvaluationCycle().getId());
+        checkAndCloseEvaluationCycle(evaluation.getEvaluationCycle().getId());
     }
 
     @Override
@@ -287,6 +288,7 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
                     evaluationCycleId, "EvaluationCycle");
             cycle.setStatus(EvaluationCycleStatus.CLOSED);
             cycle.setClosureDate(Instant.now());
+            daoFactory.forEvaluationCycle().update(cycle);
             logger.info("Evaluation cycle with id {} has been closed", evaluationCycleId);
         }
     }

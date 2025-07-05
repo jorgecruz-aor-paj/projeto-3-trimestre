@@ -10,8 +10,9 @@ import { useLanguage } from 'contexts/LanguageContext';
  * @param {Object} props
  * @param {Object} props.cycle - The evaluation cycle object
  * @param {boolean} props.isClosed - Whether the cycle is closed
+ * @param {Function} props.onEvaluationEdit - Callback function called when an evaluation is edited
  */
-export const EvaluationCycleBox = ({ cycle, isClosed }) => {
+export const EvaluationCycleBox = ({ cycle, isClosed, onEvaluationEdit }) => {
   const { formatInstant } = useLanguage();
   const [expanded, setExpanded] = useState(false);
   if (!cycle) return null;
@@ -57,7 +58,11 @@ export const EvaluationCycleBox = ({ cycle, isClosed }) => {
               isClosed || ev.status === 'CLOSED' ? (
                 <EvaluationCard key={ev.id} evaluation={ev} />
               ) : (
-                <EditableEvaluationCard key={ev.id} evaluation={ev} />
+                <EditableEvaluationCard 
+                  key={ev.id} 
+                  evaluation={ev} 
+                  onEdit={onEvaluationEdit}
+                />
               )
             )
           ) : (
@@ -72,4 +77,5 @@ export const EvaluationCycleBox = ({ cycle, isClosed }) => {
 EvaluationCycleBox.propTypes = {
   cycle: PropTypes.object,
   isClosed: PropTypes.bool,
+  onEvaluationEdit: PropTypes.func,
 };

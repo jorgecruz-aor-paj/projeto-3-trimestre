@@ -12,7 +12,7 @@ import java.util.List;
 @Table(name = "evaluation_cycles")
 
 @NamedQueries({
-        @NamedQuery(name = "EvaluationCycle.findActive", query = "SELECT ec FROM EvaluationCycle ec WHERE ec.status = 'ACTIVE'"),
+        @NamedQuery(name = "EvaluationCycle.findActive", query = "SELECT ec FROM EvaluationCycle ec WHERE ec.status = 'ACTIVE' OR ec.status = 'COMPLETED'"),
         @NamedQuery(name = "EvaluationCycle.findAll", query = "SELECT ec FROM EvaluationCycle ec WHERE ec.status = 'CLOSED' ORDER BY ec.closureDate DESC"),
         @NamedQuery(
                 name = "EvaluationCycle.countActive",
