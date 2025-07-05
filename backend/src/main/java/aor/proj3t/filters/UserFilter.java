@@ -18,6 +18,8 @@ public class UserFilter {
     private String searchText;
     @QueryParam("noManager")
     private boolean noManager;
+    @QueryParam("includeAdmin")
+    private boolean includeAdmin = false;
     @QueryParam("sortField")
     private UserSortField sortField = UserSortField.NAME;
     @QueryParam("ascending")
@@ -100,6 +102,14 @@ public class UserFilter {
 
     public void setManagerId(Long managerId) {
         this.managerId = managerId;
+    }
+
+    public boolean isIncludeAdmin() {
+        return includeAdmin;
+    }
+
+    public void setIncludeAdmin(boolean includeAdmin) {
+        this.includeAdmin = includeAdmin;
     }
 
     public void hydrate(DAOFactory daoFactory) {

@@ -159,6 +159,11 @@ public class UserDAOimpl extends AbstractDAO<User, Long> implements UserDAO {
             predicates.add(cb.isNull(root.get("manager")));
         }
 
+        // Exclude admins unless explicitly included
+        if (!filters.isIncludeAdmin()) {
+            predicates.add(cb.notEqual(root.get("role"), Role.ADMIN));
+        }
+
         // Filter by workplace
         if (filters.getWorkplace() != null) {
             predicates.add(cb.equal(root.get("workplace"), filters.getWorkplace()));
