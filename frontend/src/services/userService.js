@@ -36,20 +36,40 @@ export const userService = {
   },
 
   /**
-   * Assign a manager to users
-   * @param {Object} data - Manager assignment data
+   * Get users without assigned managers
+   * @returns {Promise} - List of unmanaged users
+   */
+  getUnmanagedUsers: () => {
+    return apiService.getAll(API_ENDPOINTS.user.getAll, { noManager: true});
+  },
+
+  /**
+   * Get all users with manager role
+   * @returns {Promise} - List of managers
+   */
+  getManagers: () => {
+    return apiService.getAll(API_ENDPOINTS.user.getAllManagers);
+  },
+
+  /**
+   * Assign a manager to multiple users
+   * @param {Object} assignment - Assignment data with managerId and userIds array
    * @returns {Promise} - Assignment result
    */
-  assignManager: data => {
+  assignManager: assignment => {
     return apiRequest(API_ENDPOINTS.user.assignManager, {
       method: 'PATCH',
-      data,
+      data: assignment,
     });
   },
 
+  /**
+   * Get mini user profiles
+   * @returns {Promise} - List of mini user profiles
+   */
   getMiniUsers: () => {
     return apiRequest(API_ENDPOINTS.user.getMiniUsers, {
-      method: 'GET'
+      method: 'GET',
     });
   },
 

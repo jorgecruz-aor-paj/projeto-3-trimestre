@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { EvaluationCycleBox } from 'components/evaluationCycles/EvaluationCycleBox';
 import { StatsDisplay } from 'components/dashboard/StatsDisplay';
+import { AssignManagerModal } from 'components/modals/AssignManagerModal';
 import { cycleService } from 'services/cycleService';
 import { statsService } from 'services/statsService';
-import { StartCycleButton } from '../components/evaluationCycles/StartCycleButton';
+import { userService } from 'services/userService';
+import { StartCycleButton } from 'components/evaluationCycles/StartCycleButton';
 
 export const EvaluationCyclesPage = () => {
+  const { t } = useTranslation();
   const [currentCycle, setCurrentCycle] = useState(null);
   const [closedCycles, setClosedCycles] = useState([]);
   const [expandedCycleId, setExpandedCycleId] = useState(null);
@@ -16,6 +20,12 @@ export const EvaluationCyclesPage = () => {
   const [stats, setStats] = useState({});
   const [statsLoading, setStatsLoading] = useState(true);
   const [statsError, setStatsError] = useState(null);
+
+  // Modal state
+  const [showAssignModal, setShowAssignModal] = useState(false);
+  const [unmanagedUsers, setUnmanagedUsers] = useState([]);
+  const [managers, setManagers] = useState([]);
+
   // fatcycles is a flag to determine if we want to fetch closed cycles with their evaluations array or not
 
   const fetchStats = async () => {
@@ -83,10 +93,42 @@ export const EvaluationCyclesPage = () => {
       setLoading(false);
     }
   };
+
+  const handleAssignManagers = async () => {
+    try {
+      // Fetch unmanaged users and available managers
+      const [unmanagedUsersData, managersData] = await Promise.all([
+        userService.getUnmanagedUsers(),
+        userService.getManagers(),
+      ]);
+      console.log('Unmanaged users:', unmanagedUsersData);
+      console.log('Managers:', managersData);
+      setUnmanagedUsers(unmanagedUsersData);
+      setManagers(managersData);
+      setShowAssignModal(true);
+    } catch (err) {
+      console.error('Failed to fetch users for manager assignment:', err);
+      // You might want to show an error alert here
+    }
+  };
+
+  const handleAssignmentComplete = async assignment => {
+    try {
+      console.log(assignment);
+      await userService.assignManager(assignment);
+
+      // Refresh stats after successful assignment
+      await fetchStats();
+      setShowAssignModal(false);
+    } catch (err) {
+      // Error will be handled by the modal component
+      throw err;
+    }
+  };
   return (
     <div className="container py-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <h2>Evaluation Cycles</h2>
+        <h2>{t('evaluationCycles.title')}</h2>
         {!currentCycle && (
           <StartCycleButton
             disabled={stats.managers && stats.managers.unmanaged > 0}
@@ -94,6 +136,7 @@ export const EvaluationCyclesPage = () => {
             onClick={() => {
               /* TODO: implement start cycle logic */
             }}
+            onAssignManagers={handleAssignManagers}
           />
         )}
       </div>
@@ -140,6 +183,15 @@ export const EvaluationCyclesPage = () => {
           </div>
         </>
       )}
+
+      {/* Manager Assignment Modal */}
+      <AssignManagerModal
+        show={showAssignModal}
+        onBack={() => setShowAssignModal(false)}
+        onComplete={handleAssignmentComplete}
+        unmanagedUsers={unmanagedUsers}
+        managers={managers}
+      />
     </div>
   );
 };
