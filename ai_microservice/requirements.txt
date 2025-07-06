@@ -1,8 +1,14 @@
+# Direct dependencies
 fastapi
 uvicorn
 textblob
 pydantic
 transformers
 torch
+langdetect
+
+# Indirect dependencies (required by transformers for DialoGPT)
 sentencepiece
 protobuf
+safetensors
+tokenizers
