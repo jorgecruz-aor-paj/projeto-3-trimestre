@@ -35,7 +35,6 @@ services:
     restart: unless-stopped
     environment:
       - LOG_LEVEL=info
-      - TRANSFORMERS_CACHE=/app/models/chatbot_cache
       - HF_HOME=/app/models/chatbot_cache
     networks:
       - proj3t-network

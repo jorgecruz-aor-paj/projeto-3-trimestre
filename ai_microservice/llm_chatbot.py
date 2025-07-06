@@ -9,7 +9,7 @@ class LLMChatbot:
     def __init__(self):
         model_name = "microsoft/DialoGPT-small"
         
-        cache_dir = os.environ.get("TRANSFORMERS_CACHE", "/app/models/chatbot_cache")
+        cache_dir = os.environ.get("HF_HOME", "/app/models/chatbot_cache")
         print(f"🤖 Loading model from/to: {cache_dir}")
 
         try:
