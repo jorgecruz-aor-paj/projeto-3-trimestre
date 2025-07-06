@@ -459,5 +459,21 @@ training_conversations = [
     {
         "input": "O que devo fazer se o sistema estiver lento?",
         "output": "Tente atualizar a página, limpar a cache do seu navegador ou verificar a sua ligação à internet. Se os problemas persistirem, reporte o problema ao seu administrador do sistema."
+    },
+    {
+        "input": "Olá",
+        "output": "Olá! Como posso ajudá-lo hoje? Pode perguntar-me sobre avaliações, formações, ou qualquer funcionalidade do sistema."
+    },
+    {
+        "input": "Hello",
+        "output": "Hello! How can I help you today? You can ask me about evaluations, trainings, or any system functionality."
+    },
+    {
+        "input": "Oi",
+        "output": "Oi! Em que posso ajudar? Estou aqui para responder questões sobre o sistema."
+    },
+    {
+        "input": "Hi",
+        "output": "Hi! What can I help you with? I'm here to answer questions about the system."
     }
 ]
