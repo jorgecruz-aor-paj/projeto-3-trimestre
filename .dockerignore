@@ -1,0 +1,75 @@
+# Version control
+.git
+.gitignore
+.gitattributes
+
+# Node.js / Frontend
+frontend/node_modules
+frontend/.npm
+frontend/npm-debug.log
+frontend/yarn-debug.log
+frontend/yarn-error.log
+frontend/.pnp
+frontend/.pnp.js
+frontend/coverage
+frontend/build
+frontend/.DS_Store
+frontend/.env
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+
+# Java / Backend
+backend/target/*
+!backend/target/jorge-osorio-proj3t.war
+!backend/target/jorge-osorio-proj3t/
+backend/.classpath
+backend/.project
+backend/.settings
+backend/logs
+backend/*.log
+backend/.env
+
+# Python / AI Microservice
+ai_microservice/__pycache__/
+ai_microservice/*.py[cod]
+ai_microservice/*$py.class
+ai_microservice/.env
+ai_microservice/venv/
+ai_microservice/env/
+ai_microservice/.venv/
+ai_microservice/.Python
+ai_microservice/.pytest_cache/
+ai_microservice/.coverage
+ai_microservice/htmlcov/
+
+# WildFly
+wildfly/standalone/log/
+wildfly/standalone/tmp/
+wildfly/standalone/data/*
+!wildfly/standalone/data/profile-pictures/
+wildfly/domain/log/
+wildfly/domain/tmp/
+wildfly/domain/data/
+wildfly/standalone/deployments/*
+!wildfly/standalone/deployments/README.txt
+
+# Docker files
+**/Dockerfile
+**/.dockerignore
+**/docker-compose*.yml
+
+# Editors and IDEs
+**/.idea/
+**/.vscode/
+**/.vs/
+**/*.sublime-*
+**/*.swp
+**/*.swo
+**/.DS_Store
+
+# Documentation and misc
+*.md
+LICENSE
+README*

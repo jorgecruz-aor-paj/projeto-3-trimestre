@@ -2,3 +2,7 @@ fastapi
 uvicorn
 textblob
 pydantic
+transformers
+torch
+sentencepiece
+protobuf
