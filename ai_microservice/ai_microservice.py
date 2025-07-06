@@ -4,7 +4,7 @@ from textblob import TextBlob
 from typing import List
 
 # Import the LLM chatbot
-from llm_chatbot import llm_chatbot
+from chatbot import llm_chatbot
 
 app = FastAPI(title="AI Microservice for Performance Management", version="1.0")
 
