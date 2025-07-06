@@ -43,6 +43,7 @@ ai_microservice/.Python
 ai_microservice/.pytest_cache/
 ai_microservice/.coverage
 ai_microservice/htmlcov/
+ai_microservice/_backup/
 
 # WildFly
 wildfly/standalone/log/
