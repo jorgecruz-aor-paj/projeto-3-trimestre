@@ -28,8 +28,7 @@ public class UserConverter extends AbstractConverter<User, UserDTO, Long> {
 
     @Inject
     MiniUserConverter miniUserConverter;
-    @Inject
-    private ConverterFactory converterFactory;
+    
 
     @Override
     protected Class<User> getEntityClass() {

@@ -1,12 +1,12 @@
 package aor.proj3t.util.validatorutils.fordto;
 
-import java.util.regex.Pattern;
-
 import aor.proj3t.dto.NewTrainingDTO;
 import aor.proj3t.dto.TrainingAreaDTO;
 import aor.proj3t.dto.TrainingDTO;
 import aor.proj3t.exceptions.InvalidDataException;
 import jakarta.enterprise.context.ApplicationScoped;
+
+import java.util.regex.Pattern;
 
 @ApplicationScoped
 public class TrainingValidator {

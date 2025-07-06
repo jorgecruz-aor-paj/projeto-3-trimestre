@@ -1,12 +1,12 @@
 package aor.proj3t.dto.ai;
 
-import java.io.Serializable;
-import java.util.List;
-
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * Data Transfer Object for Performance Prediction Request

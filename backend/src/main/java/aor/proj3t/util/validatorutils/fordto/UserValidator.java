@@ -1,9 +1,5 @@
 package aor.proj3t.util.validatorutils.fordto;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.regex.Pattern;
-
 import aor.proj3t.dto.LoginDTO;
 import aor.proj3t.dto.ManagerAssignDTO;
 import aor.proj3t.dto.UserDTO;
@@ -11,6 +7,10 @@ import aor.proj3t.dto.UserRegistrationDTO;
 import aor.proj3t.enums.Role;
 import aor.proj3t.exceptions.InvalidDataException;
 import jakarta.enterprise.context.ApplicationScoped;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.regex.Pattern;
 
 @ApplicationScoped
 public class UserValidator {

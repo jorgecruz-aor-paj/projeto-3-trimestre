@@ -1,13 +1,13 @@
 package aor.proj3t.dto;
 
-import java.time.Instant;
-
 import aor.proj3t.enums.EvaluationScale;
 import aor.proj3t.enums.EvaluationStatus;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
+
+import java.time.Instant;
 
 /**
  * Data Transfer Object for Evaluation entity

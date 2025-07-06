@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { EditableEvaluationCard } from '../evaluations/EditableEvaluationCard';
 import { EvaluationCard } from '../evaluations/EvaluationCard';
@@ -10,10 +10,16 @@ import { useLanguage } from 'contexts/LanguageContext';
  * @param {Object} props
  * @param {Object} props.cycle - The evaluation cycle object
  * @param {boolean} props.isClosed - Whether the cycle is closed
+ * @param {Function} props.onEvaluationEdit - Callback function called when an evaluation is edited
  */
-export const EvaluationCycleBox = ({ cycle, isClosed }) => {
+export const EvaluationCycleBox = ({
+  cycle,
+  isClosed,
+  onEvaluationEdit,
+  expanded,
+  onToggleExpand,
+}) => {
   const { formatInstant } = useLanguage();
-  const [expanded, setExpanded] = useState(false);
   if (!cycle) return null;
   return (
     <div
@@ -24,7 +30,7 @@ export const EvaluationCycleBox = ({ cycle, isClosed }) => {
       <div
         className="d-flex justify-content-between align-items-center p-3 bg-light border-bottom"
         style={{ cursor: 'pointer' }}
-        onClick={() => setExpanded(e => !e)}
+        onClick={onToggleExpand}
       >
         <div>
           <strong>Start Date:</strong> {formatDateToDDMMYYYY(cycle.startDate)}
@@ -39,6 +45,10 @@ export const EvaluationCycleBox = ({ cycle, isClosed }) => {
               <strong>End Date:</strong> {formatDateToDDMMYYYY(cycle.endDate)}
             </>
           )}
+          {'  '}
+          <span className="badge bg-secondary ms-2" style={{ fontSize: '1em' }}>
+            Status: {cycle.status}
+          </span>
         </div>
         <span
           style={{
@@ -53,13 +63,19 @@ export const EvaluationCycleBox = ({ cycle, isClosed }) => {
       {expanded && (
         <div className="p-3">
           {cycle.evaluations && cycle.evaluations.length > 0 ? (
-            cycle.evaluations.map(ev =>
-              isClosed || ev.status === 'CLOSED' ? (
+            cycle.evaluations.map(ev => {
+              const isClosedEval =
+                ev.status && ev.status.toUpperCase() === 'CLOSED';
+              return isClosed || isClosedEval ? (
                 <EvaluationCard key={ev.id} evaluation={ev} />
               ) : (
-                <EditableEvaluationCard key={ev.id} evaluation={ev} />
-              )
-            )
+                <EditableEvaluationCard
+                  key={ev.id}
+                  evaluation={ev}
+                  onEdit={onEvaluationEdit}
+                />
+              );
+            })
           ) : (
             <div>No evaluations in this cycle.</div>
           )}
@@ -72,4 +88,7 @@ export const EvaluationCycleBox = ({ cycle, isClosed }) => {
 EvaluationCycleBox.propTypes = {
   cycle: PropTypes.object,
   isClosed: PropTypes.bool,
+  onEvaluationEdit: PropTypes.func,
+  expanded: PropTypes.bool,
+  onToggleExpand: PropTypes.func,
 };

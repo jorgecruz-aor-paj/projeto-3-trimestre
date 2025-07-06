@@ -1,13 +1,9 @@
 package aor.proj3t.util.validatorutils.fordto;
 
 import aor.proj3t.dto.NewTrainingParticipationDTO;
-import aor.proj3t.entities.TrainingParticipation;
 import aor.proj3t.exceptions.InvalidDataException;
 
 import java.time.Instant;
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
-import java.util.regex.Pattern;
 
 public class TrainingParticipationValidator {
 

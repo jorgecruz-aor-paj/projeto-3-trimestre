@@ -1,27 +1,9 @@
 package aor.proj3t.service.impl;
 
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Objects;
-import java.util.Optional;
-
-import aor.proj3t.config.SettingsProvider;
-import aor.proj3t.dto.*;
-import aor.proj3t.util.converterutils.MiniUserConverter;
-import jakarta.transaction.Transactional;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import aor.proj3t.config.AppConstants;
 import aor.proj3t.config.SettingsProvider;
 import aor.proj3t.daos.DAOFactory;
+import aor.proj3t.dto.*;
 import aor.proj3t.dto.paginated.UserPaginationDTO;
 import aor.proj3t.entities.PendingRegistration;
 import aor.proj3t.entities.User;
@@ -37,9 +19,16 @@ import aor.proj3t.util.FileStorageUtil;
 import aor.proj3t.util.authutils.JwtUtil;
 import aor.proj3t.util.authutils.PasswordUtil;
 import aor.proj3t.util.converterutils.ConverterFactory;
+import aor.proj3t.util.converterutils.MiniUserConverter;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 
 @ApplicationScoped
 public class UserServiceImpl extends BaseService implements UserService {
@@ -184,7 +173,7 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     @Override
     public List<UserDTO> getUsersByFilters(Long requesterId, UserFilter filters) {
-        User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
+        //User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
         // TODO remove if no filter limits are needed for users
         // if (requester.getRole() == Role.USER && filters.getManager() != null) {
         // throw new ForbiddenException(

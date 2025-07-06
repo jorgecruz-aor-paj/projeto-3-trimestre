@@ -1,10 +1,7 @@
 package aor.proj3t.config;
 
 import aor.proj3t.daos.DAOFactory;
-import aor.proj3t.daos.impl.SettingsDAOimpl;
-import aor.proj3t.daos.interfaces.SettingsDAO;
 import aor.proj3t.entities.Settings;
-import aor.proj3t.service.impl.UserServiceImpl;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.apache.logging.log4j.LogManager;

@@ -1,12 +1,12 @@
 package aor.proj3t.daos.impl;
 
-import java.time.Instant;
-import java.util.List;
-
 import aor.proj3t.daos.interfaces.MessageDAO;
 import aor.proj3t.entities.Message;
 import aor.proj3t.entities.User;
 import jakarta.ejb.Stateless;
+
+import java.time.Instant;
+import java.util.List;
 
 @Stateless
 public class MessageDAOimpl extends AbstractDAO<Message, Long> implements MessageDAO {

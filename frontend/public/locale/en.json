@@ -905,5 +905,89 @@
     "cycleDeletedSuccess": "Evaluation cycle deleted successfully.",
     "cycleCreatedSuccess": "Evaluation cycle created successfully.",
     "cycleUpdatedSuccess": "Evaluation cycle updated successfully."
+  },
+  "managerAssignment": {
+    "modalTitle": "Assign Manager to Users",
+    "phases": {
+      "selectUsers": "Select Users",
+      "chooseManager": "Choose Manager",
+      "confirm": "Confirm Assignment"
+    },
+    "selectUsers": {
+      "title": "Select Users to Assign a Manager",
+      "description": "Choose which unmanaged users you want to assign a manager to.",
+      "selectionCount": "{{selected}} of {{total}} users selected",
+      "selectAll": "Select All",
+      "deselectAll": "Deselect All",
+      "noUsers": "No unmanaged users found.",
+      "buttons": {
+        "cancel": "Cancel",
+        "next": "Next: Choose Manager"
+      }
+    },
+    "selectManager": {
+      "title": "Select Manager",
+      "description": {
+        "single": "Choose a manager to assign to the selected user.",
+        "multiple": "Choose a manager to assign to the {{count}} selected users."
+      },
+      "selectedUsers": "Selected Users",
+      "noManagers": "No managers available.",
+      "buttons": {
+        "back": "Back",
+        "next": "Next: Confirm Assignment"
+      }
+    },
+    "confirm": {
+      "title": "Confirm Manager Assignment",
+      "description": "Please review the assignment details before confirming.",
+      "selectedManager": "Selected Manager",
+      "usersToAssign": "Users to Assign",
+      "summary": {
+        "single": "{{managerName}} will be assigned as the manager for 1 user.",
+        "multiple": "{{managerName}} will be assigned as the manager for {{count}} users."
+      },
+      "error": "Failed to assign manager. Please try again.",
+      "buttons": {
+        "back": "Back",
+        "confirm": "Confirm Assignment",
+        "confirming": "Assigning..."
+      }
+    }
+  },
+  "evaluationCycles": {
+    "title": "Evaluation Cycles",
+    "noCurrentCycle": "No current cycle",
+    "closedCycles": "Closed Evaluation Cycles",
+    "noCycles": "No closed cycles.",
+    "startCycle": {
+      "button": "Start New Cycle",
+      "disabled": "Cannot start a new cycle while there are unmanaged users.",
+      "assignManagers": "Assign Managers",
+      "unmanagedWarning": {
+        "single": "There is {{count}} unmanaged user.",
+        "multiple": "There are {{count}} unmanaged users.",
+        "action": "Click \"Assign Managers\" to assign them."
+      },
+      "modalTitle": "Start New Evaluation Cycle",
+      "startDate": "Start Date",
+      "startDateHint": "The cycle will start today at midnight",
+      "endDate": "End Date",
+      "endDateHint": "Select when the cycle should end",
+      "starting": "Starting cycle...",
+      "start": "Start Cycle",
+      "error": {
+        "invalidEndDate": "End date must be after start date",
+        "generic": "Failed to start evaluation cycle. Please try again."
+      },
+      "success": "Evaluation cycle started successfully"
+    },
+    "cycleInfo": {
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "closureDate": "Closure Date",
+      "status": "Status",
+      "noEvaluations": "No evaluations in this cycle."
+    }
   }
 }

@@ -1,9 +1,9 @@
 package aor.proj3t.service.interfaces;
 
-import java.util.List;
-
 import aor.proj3t.dto.MessageDTO;
 import aor.proj3t.entities.Message;
+
+import java.util.List;
 
 /**
  * Service interface for Message operations

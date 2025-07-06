@@ -1,12 +1,10 @@
 package aor.proj3t.daos.interfaces;
 
+import aor.proj3t.entities.Evaluation;
+import aor.proj3t.filters.EvaluationFilter;
+
 import java.time.Instant;
 import java.util.List;
-
-import aor.proj3t.entities.Evaluation;
-import aor.proj3t.entities.EvaluationCycle;
-import aor.proj3t.enums.EvaluationStatus;
-import aor.proj3t.filters.EvaluationFilter;
 
 /**
  * Repository interface for Evaluation entity operations.

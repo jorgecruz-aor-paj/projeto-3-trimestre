@@ -1,31 +1,7 @@
 package aor.proj3t.util.converterutils;
 
-import aor.proj3t.dto.EvaluationCycleDTO;
-import aor.proj3t.dto.EvaluationDTO;
-import aor.proj3t.dto.MessageDTO;
-import aor.proj3t.dto.NotificationDTO;
-import aor.proj3t.dto.PendingRegistrationDTO;
-import aor.proj3t.dto.ResetPasswordDTO;
-import aor.proj3t.dto.SessionDTO;
-import aor.proj3t.dto.SettingsDTO;
-import aor.proj3t.dto.TrainingAreaDTO;
-import aor.proj3t.dto.TrainingDTO;
-import aor.proj3t.dto.TrainingParticipationDTO;
-import aor.proj3t.dto.UserDTO;
-import aor.proj3t.dto.WorkplaceDTO;
-import aor.proj3t.entities.Evaluation;
-import aor.proj3t.entities.EvaluationCycle;
-import aor.proj3t.entities.Message;
-import aor.proj3t.entities.Notification;
-import aor.proj3t.entities.PendingRegistration;
-import aor.proj3t.entities.ResetPassword;
-import aor.proj3t.entities.Session;
-import aor.proj3t.entities.Settings;
-import aor.proj3t.entities.Training;
-import aor.proj3t.entities.TrainingArea;
-import aor.proj3t.entities.TrainingParticipation;
-import aor.proj3t.entities.User;
-import aor.proj3t.entities.Workplace;
+import aor.proj3t.dto.*;
+import aor.proj3t.entities.*;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 

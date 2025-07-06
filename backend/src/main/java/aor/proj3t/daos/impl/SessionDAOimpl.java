@@ -1,13 +1,13 @@
 package aor.proj3t.daos.impl;
 
-import java.util.List;
-import java.util.Optional;
-
 import aor.proj3t.daos.interfaces.SessionDAO;
 import aor.proj3t.entities.Session;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
+
+import java.util.List;
+import java.util.Optional;
 
 @Stateless
 public class SessionDAOimpl extends AbstractDAO<Session, Long> implements SessionDAO {

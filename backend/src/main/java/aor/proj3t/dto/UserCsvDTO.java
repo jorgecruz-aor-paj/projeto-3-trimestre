@@ -1,9 +1,9 @@
 package aor.proj3t.dto;
 
-import java.time.LocalDate;
-
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvDate;
+
+import java.time.LocalDate;
 
 /**
  * DTO specifically designed for CSV export of User data

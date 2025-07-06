@@ -1,9 +1,5 @@
 package aor.proj3t.daos.impl;
 
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-
 import aor.proj3t.daos.interfaces.EvaluationDAO;
 import aor.proj3t.entities.Evaluation;
 import aor.proj3t.entities.EvaluationCycle;
@@ -14,6 +10,10 @@ import jakarta.ejb.Stateless;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
 import jakarta.transaction.Transactional;
+
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Implementation of the EvaluationRepository interface.

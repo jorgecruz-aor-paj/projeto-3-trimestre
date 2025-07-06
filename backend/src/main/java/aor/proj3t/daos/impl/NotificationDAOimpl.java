@@ -1,11 +1,11 @@
 package aor.proj3t.daos.impl;
 
-import java.time.Instant;
-import java.util.List;
-
 import aor.proj3t.daos.interfaces.NotificationDAO;
 import aor.proj3t.entities.Notification;
 import jakarta.ejb.Stateless;
+
+import java.time.Instant;
+import java.util.List;
 
 @Stateless
 public class NotificationDAOimpl extends AbstractDAO<Notification, Long> implements NotificationDAO {

@@ -1,15 +1,15 @@
 package aor.proj3t.daos.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import aor.proj3t.daos.interfaces.UserDAO;
 import aor.proj3t.entities.User;
 import aor.proj3t.enums.Role;
 import aor.proj3t.filters.UserFilter;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.criteria.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Implementation of the UserDAO interface that provides data access
@@ -157,6 +157,11 @@ public class UserDAOimpl extends AbstractDAO<User, Long> implements UserDAO {
             predicates.add(cb.equal(root.get("manager"), filters.getManager()));
         } else if (filters.isNoManager()) {
             predicates.add(cb.isNull(root.get("manager")));
+        }
+
+        // Exclude admins unless explicitly included
+        if (!filters.isIncludeAdmin()) {
+            predicates.add(cb.notEqual(root.get("role"), Role.ADMIN));
         }
 
         // Filter by workplace

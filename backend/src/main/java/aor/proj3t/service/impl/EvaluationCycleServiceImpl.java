@@ -1,23 +1,5 @@
 package aor.proj3t.service.impl;
 
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-
-import aor.proj3t.config.AppConstants;
-import aor.proj3t.exceptions.ConflictException;
-import aor.proj3t.exceptions.ForbiddenException;
-import aor.proj3t.exceptions.InvalidDataException;
-import aor.proj3t.exceptions.NotFoundException;
-import aor.proj3t.filters.DateRange;
-import aor.proj3t.util.EmailUtil;
-import jakarta.transaction.Transactional;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import aor.proj3t.daos.DAOFactory;
 import aor.proj3t.dto.EvaluationCycleDTO;
 import aor.proj3t.entities.Evaluation;
@@ -25,11 +7,22 @@ import aor.proj3t.entities.EvaluationCycle;
 import aor.proj3t.entities.User;
 import aor.proj3t.enums.EvaluationCycleStatus;
 import aor.proj3t.enums.Role;
+import aor.proj3t.exceptions.ConflictException;
+import aor.proj3t.exceptions.InvalidDataException;
+import aor.proj3t.filters.DateRange;
 import aor.proj3t.service.interfaces.EvaluationCycleService;
+import aor.proj3t.util.EmailUtil;
 import aor.proj3t.util.converterutils.ConverterFactory;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import org.hibernate.Hibernate;
+import jakarta.transaction.Transactional;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 @ApplicationScoped
 public class EvaluationCycleServiceImpl extends BaseService implements EvaluationCycleService {

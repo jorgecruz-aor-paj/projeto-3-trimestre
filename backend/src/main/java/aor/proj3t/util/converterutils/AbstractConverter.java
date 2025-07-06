@@ -1,11 +1,11 @@
 package aor.proj3t.util.converterutils;
 
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
 
 /**
  * Abstract base class for entity-DTO converters that implements common

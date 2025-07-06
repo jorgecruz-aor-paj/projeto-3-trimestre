@@ -4,7 +4,6 @@ import aor.proj3t.entities.TrainingParticipation;
 
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 public interface TrainingParticipationDAO extends BasicDAO<TrainingParticipation, Long> {
 

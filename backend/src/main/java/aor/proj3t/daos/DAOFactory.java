@@ -1,18 +1,6 @@
 package aor.proj3t.daos;
 
-import aor.proj3t.daos.interfaces.EvaluationCycleDAO;
-import aor.proj3t.daos.interfaces.EvaluationDAO;
-import aor.proj3t.daos.interfaces.MessageDAO;
-import aor.proj3t.daos.interfaces.NotificationDAO;
-import aor.proj3t.daos.interfaces.PendingRegistrationDAO;
-import aor.proj3t.daos.interfaces.ResetPasswordDAO;
-import aor.proj3t.daos.interfaces.SessionDAO;
-import aor.proj3t.daos.interfaces.SettingsDAO;
-import aor.proj3t.daos.interfaces.TrainingAreaDAO;
-import aor.proj3t.daos.interfaces.TrainingDAO;
-import aor.proj3t.daos.interfaces.TrainingParticipationDAO;
-import aor.proj3t.daos.interfaces.UserDAO;
-import aor.proj3t.daos.interfaces.WorkplaceDAO;
+import aor.proj3t.daos.interfaces.*;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 

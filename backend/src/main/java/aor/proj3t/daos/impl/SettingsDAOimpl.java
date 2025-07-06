@@ -1,11 +1,11 @@
 package aor.proj3t.daos.impl;
 
-import java.util.Optional;
-
 import aor.proj3t.daos.interfaces.SettingsDAO;
 import aor.proj3t.entities.Settings;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.TypedQuery;
+
+import java.util.Optional;
 
 @Stateless
 public class SettingsDAOimpl extends AbstractDAO<Settings, Long> implements SettingsDAO {

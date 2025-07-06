@@ -1,27 +1,26 @@
 package aor.proj3t.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-
-import aor.proj3t.dto.NewTrainingDTO;
-import aor.proj3t.entities.User;
-import aor.proj3t.enums.Role;
-import aor.proj3t.exceptions.ConflictException;
-import aor.proj3t.exceptions.ForbiddenException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import aor.proj3t.daos.DAOFactory;
+import aor.proj3t.dto.NewTrainingDTO;
 import aor.proj3t.dto.TrainingAreaDTO;
 import aor.proj3t.dto.TrainingDTO;
 import aor.proj3t.entities.Training;
 import aor.proj3t.entities.TrainingArea;
+import aor.proj3t.entities.User;
+import aor.proj3t.enums.Role;
+import aor.proj3t.exceptions.ConflictException;
+import aor.proj3t.exceptions.ForbiddenException;
 import aor.proj3t.filters.TrainingFilter;
 import aor.proj3t.service.interfaces.TrainingService;
 import aor.proj3t.util.converterutils.ConverterFactory;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 @ApplicationScoped
 public class TrainingServiceImpl extends BaseService implements TrainingService {

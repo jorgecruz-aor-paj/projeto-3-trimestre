@@ -1,13 +1,11 @@
 package aor.proj3t.daos.impl;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import aor.proj3t.daos.interfaces.TrainingParticipationDAO;
 import aor.proj3t.entities.TrainingParticipation;
 import jakarta.ejb.Stateless;
+
+import java.util.LinkedHashMap;
+import java.util.List;
 
 @Stateless
 public class TrainingParticipationDAOimpl extends AbstractDAO<TrainingParticipation, Long>

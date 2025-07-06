@@ -3,7 +3,6 @@ package aor.proj3t.util.converterutils;
 import aor.proj3t.dto.TrainingDTO;
 import aor.proj3t.entities.Training;
 import aor.proj3t.entities.TrainingArea;
-import aor.proj3t.service.interfaces.TrainingService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 

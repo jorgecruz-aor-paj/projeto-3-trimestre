@@ -1,11 +1,10 @@
 package aor.proj3t.util.authutils;
 
-import java.util.regex.Pattern;
-
-import org.mindrot.jbcrypt.BCrypt;
-
 import aor.proj3t.config.AppConstants;
 import jakarta.enterprise.context.ApplicationScoped;
+import org.mindrot.jbcrypt.BCrypt;
+
+import java.util.regex.Pattern;
 
 @ApplicationScoped
 public class PasswordUtil {

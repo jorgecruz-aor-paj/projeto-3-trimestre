@@ -1,8 +1,8 @@
 package aor.proj3t.dto.paginated;
 
-import java.util.List;
-
 import aor.proj3t.dto.NotificationDTO;
+
+import java.util.List;
 
 /**
  * Data Transfer Object for paginated notification search results.

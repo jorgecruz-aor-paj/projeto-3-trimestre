@@ -1,8 +1,8 @@
 package aor.proj3t.daos.interfaces;
 
-import java.util.List;
-
 import aor.proj3t.entities.Notification;
+
+import java.util.List;
 
 public interface NotificationDAO extends BasicDAO<Notification, Long> {
 

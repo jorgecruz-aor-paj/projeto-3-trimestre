@@ -1,14 +1,6 @@
 package aor.proj3t.resource;
 
-import java.util.List;
-import java.util.Map;
-
-import aor.proj3t.dto.APIResponseDTO;
-import aor.proj3t.dto.NewTrainingDTO;
-import aor.proj3t.dto.NewTrainingParticipationDTO;
-import aor.proj3t.dto.TrainingAreaDTO;
-import aor.proj3t.dto.TrainingDTO;
-import aor.proj3t.dto.TrainingParticipationDTO;
+import aor.proj3t.dto.*;
 import aor.proj3t.enums.Role;
 import aor.proj3t.filters.TrainingFilter;
 import aor.proj3t.service.ServiceFactory;
@@ -17,19 +9,12 @@ import aor.proj3t.util.validatorutils.fordto.TrainingValidator;
 import aor.proj3t.util.validatorutils.forfilters.FilterValidatorFactory;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.BeanParam;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.HeaderParam;
-import jakarta.ws.rs.PATCH;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.PUT;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+
+import java.util.List;
 
 /**
  * REST endpoint for training-related operations.

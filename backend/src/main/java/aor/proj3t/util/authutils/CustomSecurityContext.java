@@ -2,6 +2,7 @@ package aor.proj3t.util.authutils;
 
 import aor.proj3t.enums.Role;
 import jakarta.ws.rs.core.SecurityContext;
+
 import java.security.Principal;
 
 public class CustomSecurityContext implements SecurityContext {

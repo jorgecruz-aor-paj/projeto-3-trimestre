@@ -2,7 +2,6 @@ package aor.proj3t.daos.impl;
 
 import aor.proj3t.daos.interfaces.TrainingAreaDAO;
 import aor.proj3t.entities.TrainingArea;
-import aor.proj3t.entities.User;
 import jakarta.ejb.Stateless;
 
 import java.util.Optional;

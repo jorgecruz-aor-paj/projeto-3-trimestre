@@ -1,9 +1,9 @@
 package aor.proj3t.daos.interfaces;
 
+import aor.proj3t.entities.Session;
+
 import java.util.List;
 import java.util.Optional;
-
-import aor.proj3t.entities.Session;
 
 public interface SessionDAO extends BasicDAO<Session, Long> {
 

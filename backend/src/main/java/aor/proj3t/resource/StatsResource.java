@@ -1,11 +1,9 @@
 package aor.proj3t.resource;
 
-import aor.proj3t.entities.User;
+import aor.proj3t.dto.TrainingYearStatDTO;
 import aor.proj3t.enums.Role;
 import aor.proj3t.service.ServiceFactory;
-import aor.proj3t.util.authutils.JwtUtil;
 import aor.proj3t.util.authutils.Secured;
-import aor.proj3t.util.validatorutils.fordto.UserValidator;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -13,13 +11,10 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import aor.proj3t.dto.TrainingYearStatDTO;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.LinkedHashMap;
 
 
 

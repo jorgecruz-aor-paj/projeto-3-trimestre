@@ -1,9 +1,9 @@
 package aor.proj3t.dto;
 
-import java.time.Instant;
-
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvDate;
+
+import java.time.Instant;
 
 /**
  * DTO specifically designed for CSV export of Training data

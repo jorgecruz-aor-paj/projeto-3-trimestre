@@ -1,8 +1,8 @@
 package aor.proj3t.dto.paginated;
 
-import java.util.List;
-
 import aor.proj3t.config.AppConstants;
+
+import java.util.List;
 
 /**
  * Generic Data Transfer Object for paginated responses.
