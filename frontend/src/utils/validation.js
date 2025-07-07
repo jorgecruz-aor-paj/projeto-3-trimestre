@@ -84,8 +84,6 @@ export const validateForm = (formData, validationRules) => {
   }
 };
 
-
-
 /**
  * Custom hook for form validation
  * @param {Object} initialFormData - Initial form data
@@ -127,6 +125,19 @@ export const useFormValidation = (initialFormData, validationRules) => {
     resetForm,
     setFormData,
   };
+};
+
+/**
+ * Validation rules for training area form
+ */
+export const trainingAreaValidationRules = {
+  name: {
+    required: true,
+    minLength: 2,
+    maxLength: 50,
+    pattern: /^[a-zA-Z0-9\s\-]+$/,
+    patternError: 'validation.trainingAreaNameFormat',
+  },
 };
 
 /**
@@ -187,7 +198,8 @@ export const trainingValidationRules = {
 export const loginValidationRules = {
   email: {
     required: true,
-    pattern: /^(?=.{1,64}@.{1,255}$)([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})$/,
+    pattern:
+      /^(?=.{1,64}@.{1,255}$)([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})$/,
     patternError: 'validation.emailInvalid',
     maxLength: 255,
   },
@@ -243,7 +255,7 @@ export const profileValidationRules = {
   },
   phoneNumber: {
     required: true,
-    pattern: /^[\d\s\-\+\(\)]+$/,
+    pattern: /^\d{9}$/,
     patternError: 'validation.phoneInvalid',
   },
   address: {
@@ -276,6 +288,9 @@ export const profileValidationRules = {
   biography: {
     required: false,
     maxLength: 500,
+  },
+  workplaceId: {
+    required: true,
   },
 };
 
@@ -334,14 +349,15 @@ export const messageValidationRules = {
 export const resetPasswordRequestValidationRules = {
   email: {
     required: true,
-    pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+    pattern:
+      /^(?=.{1,64}@.{1,255}$)([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})$/,
     patternError: 'validation.emailInvalid',
     maxLength: 255,
   },
 };
 
 export const setNewPasswordValidationRules = {
-   password: {
+  password: {
     required: true,
     pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&.-_])\S{8,}$/,
     patternError: 'validation.passwordInvalid',

@@ -4,10 +4,9 @@ import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { FormInput } from './FormInput';
 import { FormDropdownInput } from './FormDropdownInput';
-import {
-  useFormValidation,
-  trainingValidationRules,
-} from '../../utils/validation';
+import { useFormValidation } from 'utils/validation';
+import { trainingValidationRules } from 'utils/validation';
+import { useErrorMessage } from 'hooks/useErrorMessage';
 
 /**
  * Training form component for creating and editing trainings
@@ -29,6 +28,7 @@ export const TrainingForm = ({
   isEditing = false,
 }) => {
   const { t } = useTranslation();
+  const { getErrorMessage } = useErrorMessage();
 
   const { formData, errors, handleChange, validateAll, reset, setFormData } =
     useFormValidation(
@@ -57,17 +57,6 @@ export const TrainingForm = ({
       });
     }
   }, [training, setFormData]);
-
-  const getErrorMessage = error => {
-    if (!error) return null;
-    if (typeof error === 'string') {
-      return t(error);
-    }
-    if (error.key && error.options) {
-      return t(error.key, error.options);
-    }
-    return t(error);
-  };
 
   const handleInputChange = e => {
     const { name, value } = e.target;

@@ -180,7 +180,9 @@
     "passwordsDontMatch": "As senhas não coincidem",
     "birthdateInvalid": "Por favor, insira uma data de nascimento válida (idade deve estar entre 13 e 120 anos)",
     "workplaceRequired": "Por favor, selecione um local de trabalho",
-    "phoneInvalid": "Por favor, insira um número de telefone válido"
+    "phoneInvalid": "Por favor, insira um número de telefone válido",
+    "trainingAreaRequired": "A área de formação é obrigatória",
+    "trainingAreaNameFormat": "O nome da área de formação só pode conter letras, números, espaços e hífens"
   },
   "errors": {
     "unexpected": "Ocorreu um erro inesperado",

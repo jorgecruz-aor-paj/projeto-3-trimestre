@@ -180,7 +180,9 @@
     "passwordsDontMatch": "Passwords do not match",
     "birthdateInvalid": "Please enter a valid birthdate (age must be between 13 and 120 years)",
     "workplaceRequired": "Please select a workplace",
-    "phoneInvalid": "Please enter a valid phone number"
+    "phoneInvalid": "Please enter a valid phone number",
+    "trainingAreaRequired": "Training area is required",
+    "trainingAreaNameFormat": "Training area name can only contain letters, numbers, spaces and hyphens"
   },
   "errors": {
     "unexpected": "An unexpected error occurred",
