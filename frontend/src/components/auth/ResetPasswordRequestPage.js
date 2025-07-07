@@ -1,42 +1,47 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Form, Alert, Card, Container, Row, Col } from 'react-bootstrap';
-import { FormInput } from 'components/forms/FormInput';
-import { SubmitButton } from 'components/forms/SubmitButton';
+import { Alert, Card, Container, Row, Col } from 'react-bootstrap';
 import { authService } from 'services/authService';
+import { ResetPasswordRequestForm } from 'components/forms/ResetPasswordRequestForm';
+import {
+  useFormValidation,
+  resetPasswordRequestValidationRules,
+} from 'utils/validation';
+import { useErrorMessage } from 'hooks/useErrorMessage';
 
 export const ResetPasswordRequestPage = () => {
   const { t } = useTranslation();
-  const [email, setEmail] = useState('');
+  const { getErrorMessage } = useErrorMessage();
+
+  const {
+    formData,
+    errors = {},
+    handleChange,
+    validateAll,
+  } = useFormValidation({ email: '' }, resetPasswordRequestValidationRules);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-  const [validationError, setValidationError] = useState(null);
 
-  const handleChange = e => {
-    setEmail(e.target.value);
-    setValidationError(null);
-    setError(null);
+  const handleInputChange = e => {
+    const { name, value } = e.target;
+    handleChange(name, value);
   };
 
-  const validate = () => {
-    if (!email) return t('validation.emailRequired');
-    if (!/\S+@\S+\.\S+/.test(email)) return t('validation.emailInvalid');
-    return null;
+  const safeGetErrorMessage = error => {
+    if (!error) return null;
+    return getErrorMessage(error);
   };
 
   const handleSubmit = async e => {
     e.preventDefault();
     setError(null);
     setSuccess(null);
-    const err = validate();
-    if (err) {
-      setValidationError(err);
-      return;
-    }
+    if (!validateAll()) return;
     setLoading(true);
     try {
-      await authService.requestPasswordReset( email );
+      await authService.requestPasswordReset(formData.email);
       setSuccess(t('auth.resetPasswordEmailSent'));
     } catch (err) {
       setError(err.message || t('auth.resetPasswordFailed'));
@@ -59,24 +64,14 @@ export const ResetPasswordRequestPage = () => {
               </p>
               {success && <Alert variant="success">{success}</Alert>}
               {error && <Alert variant="danger">{error}</Alert>}
-              <Form onSubmit={handleSubmit}>
-                <FormInput
-                  label={t('auth.email')}
-                  type="email"
-                  name="email"
-                  value={email}
-                  onChange={handleChange}
-                  placeholder={t('auth.emailPlaceholder')}
-                  error={validationError}
-                  disabled={loading}
-                  autoFocus
-                />
-                <SubmitButton
-                  isLoading={loading}
-                  label={t('auth.sendResetLink')}
-                  className="w-100 py-2 mt-3 mb-4"
-                />
-              </Form>
+              <ResetPasswordRequestForm
+                formData={formData}
+                onChange={handleInputChange}
+                onSubmit={handleSubmit}
+                errors={errors}
+                loading={loading}
+                getErrorMessage={safeGetErrorMessage}
+              />
             </Card.Body>
           </Card>
         </Col>

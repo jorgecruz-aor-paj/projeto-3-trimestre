@@ -84,6 +84,51 @@ export const validateForm = (formData, validationRules) => {
   }
 };
 
+
+
+/**
+ * Custom hook for form validation
+ * @param {Object} initialFormData - Initial form data
+ * @param {Object} validationRules - Validation rules for the form
+ * @returns {Object} Form validation utilities
+ */
+export const useFormValidation = (initialFormData, validationRules) => {
+  const [formData, setFormData] = useState(initialFormData);
+  const [errors, setErrors] = useState({});
+
+  const handleChange = (name, value) => {
+    const newFormData = { ...formData, [name]: value };
+    setFormData(newFormData);
+
+    // Validate single field on change
+    const fieldError = validateField(value, validationRules[name], newFormData);
+    setErrors(prevErrors => ({
+      ...prevErrors,
+      [name]: fieldError,
+    }));
+  };
+
+  const validateAll = () => {
+    const newErrors = validateForm(formData, validationRules);
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const resetForm = () => {
+    setFormData(initialFormData);
+    setErrors({});
+  };
+
+  return {
+    formData,
+    errors,
+    handleChange,
+    validateAll,
+    resetForm,
+    setFormData,
+  };
+};
+
 /**
  * Validation rules for training forms
  */
@@ -142,8 +187,7 @@ export const trainingValidationRules = {
 export const loginValidationRules = {
   email: {
     required: true,
-    pattern:
-      /^(?=.{1,64}@.{1,255}$)([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})$/,
+    pattern: /^(?=.{1,64}@.{1,255}$)([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})$/,
     patternError: 'validation.emailInvalid',
     maxLength: 255,
   },
@@ -285,133 +329,32 @@ export const messageValidationRules = {
 };
 
 /**
- * Validation rules for filter components (usually optional validation)
+ * Validation rules for reset password request form
  */
-export const filterValidationRules = {
-  searchText: {
-    required: false,
-    maxLength: 100,
-  },
-  workplaceId: {
-    required: false,
-  },
-  managerId: {
-    required: false,
-  },
-  sortField: {
-    required: false,
+export const resetPasswordRequestValidationRules = {
+  email: {
+    required: true,
+    pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+    patternError: 'validation.emailInvalid',
+    maxLength: 255,
   },
 };
 
-/**
- * Validation rules for user registration confirmation
- */
-export const confirmRegistrationValidationRules = {
-  firstName: {
+export const setNewPasswordValidationRules = {
+   password: {
     required: true,
-    minLength: 2,
-    maxLength: 50,
+    pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&.-_])\S{8,}$/,
+    patternError: 'validation.passwordInvalid',
+    minLength: 8,
   },
-  lastName: {
+  confirmPassword: {
     required: true,
-    minLength: 2,
-    maxLength: 50,
-  },
-  address: {
-    required: true,
-    minLength: 5,
-    maxLength: 200,
-  },
-  phoneNumber: {
-    required: true,
-    pattern: /^\+?[0-9\s\-()]{8,20}$/,
-    patternError: 'validation.phoneInvalid',
-  },
-  birthdate: {
-    required: true,
-    custom: value => {
-      if (!value) return null;
-
-      const date = new Date(value);
-      const today = new Date();
-
-      // Age must be between 13 and 120 years
-      const minDate = new Date(
-        today.getFullYear() - 120,
-        today.getMonth(),
-        today.getDate()
-      );
-      const maxDate = new Date(
-        today.getFullYear() - 13,
-        today.getMonth(),
-        today.getDate()
-      );
-
-      if (date < minDate || date > maxDate) {
-        return 'validation.birthdateInvalid';
+    minLength: 8,
+    custom: (value, formData) => {
+      if (value !== formData?.password) {
+        return 'validation.passwordsDontMatch';
       }
       return null;
     },
   },
-  workplaceId: {
-    required: true,
-  },
-  biography: {
-    required: false,
-    maxLength: 500,
-  },
-};
-
-/**
- * Hook for form validation
- * @param {Object} initialData - Initial form data
- * @param {Object} validationRules - Validation rules
- * @returns {Object} Form state and handlers
- */
-export const useFormValidation = (initialData, validationRules) => {
-  const [formData, setFormData] = useState(initialData);
-  const [errors, setErrors] = useState({});
-  const [touched, setTouched] = useState({});
-
-  const handleChange = (name, value) => {
-    console.log(`Validation - field changed: ${name} = ${value}`);
-    const updatedFormData = { ...formData, [name]: value };
-    setFormData(updatedFormData);
-    setTouched(prev => ({ ...prev, [name]: true }));
-
-    // Validate field on change (only if validation rules exist for this field)
-    if (validationRules[name]) {
-      const error = validateField(
-        value,
-        validationRules[name],
-        updatedFormData
-      );
-      console.log(`Validation result for ${name}:`, error);
-      setErrors(prev => ({ ...prev, [name]: error }));
-    }
-  };
-
-  const validateAll = () => {
-    console.log('Validating all fields', formData, validationRules);
-    const newErrors = validateForm(formData, validationRules);
-    console.log('Validation results:', newErrors);
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const reset = () => {
-    setFormData(initialData);
-    setErrors({});
-    setTouched({});
-  };
-
-  return {
-    formData,
-    errors,
-    touched,
-    handleChange,
-    validateAll,
-    reset,
-    setFormData,
-  };
 };

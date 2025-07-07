@@ -8,7 +8,7 @@ import { useAlert } from 'contexts/AlertContext';
 import { useWorkplaces } from 'hooks/useWorkplaces';
 import {
   useFormValidation,
-  confirmRegistrationValidationRules,
+  profileValidationRules,
 } from '../../utils/validation';
 import { useErrorMessage } from '../../hooks/useErrorMessage';
 
@@ -43,15 +43,26 @@ export const ConfirmRegistrationPage = () => {
     handleChange,
     validateAll,
     setFormData,
-  } = useFormValidation(initialFormData, confirmRegistrationValidationRules);
+  } = useFormValidation(initialFormData, profileValidationRules);
+
+  useEffect(() => {
+    // Reset loading state once workplaces are loaded
+    if (!workplacesLoading) {
+      setLoading(false);
+    }
+  }, [workplacesLoading]);
 
   const handleInputChange = e => {
     const { name, value, type, files } = e.target;
     if (type === 'file') {
+      // Handle file input separately since it's not a simple value
+      const file = files[0];
       setFormData(prev => ({
         ...prev,
-        [name]: files[0],
+        [name]: file,
       }));
+      // Validate the file if needed
+      handleChange(name, file);
     } else {
       handleChange(name, value);
     }
@@ -61,15 +72,29 @@ export const ConfirmRegistrationPage = () => {
     e.preventDefault();
     setError(null);
     setSuccess(null);
-    if (!validateAll()) return;
+
+    // Validate all fields
+    if (!validateAll()) {
+      setError(t('validation.fixErrors'));
+      return;
+    }
+
     setSubmitting(true);
     try {
       const submitData = new FormData();
+
+      // Add all non-empty values to form data
       Object.entries(formData).forEach(([key, value]) => {
         if (value !== null && value !== undefined && value !== '') {
-          submitData.append(key, value);
+          // Special handling for workplace ID to ensure it's sent as a number
+          if (key === 'workplaceId') {
+            submitData.append(key, Number(value));
+          } else {
+            submitData.append(key, value);
+          }
         }
       });
+
       await authService.confirmUser(confirmationToken, submitData);
       setSuccess(t('auth.confirmSuccess'));
       showAlert({
@@ -79,7 +104,10 @@ export const ConfirmRegistrationPage = () => {
         onConfirm: () => navigate('/login'),
       });
     } catch (err) {
-      setError(err.message || t('auth.confirmFailed'));
+      const errorMessage =
+        err.response?.data?.message || err.message || t('auth.confirmFailed');
+      setError(errorMessage);
+      console.error('Registration confirmation error:', err);
     } finally {
       setSubmitting(false);
     }
