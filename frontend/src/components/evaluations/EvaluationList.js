@@ -58,31 +58,50 @@ export const EvaluationList = ({
           <div className="position-relative h-100">
             {renderCheckbox && (
               <div
-                className="position-absolute"
+                className="position-absolute evaluation-checkbox-container"
                 style={{ top: '-8px', left: '-8px', zIndex: 3 }}
               >
                 <input
                   type="checkbox"
-                  className="form-check-input"
+                  className="form-check-input evaluation-selection-checkbox"
                   checked={selectedEvaluations.includes(evaluation.id)}
                   onChange={e =>
                     onSelectEvaluation(evaluation.id, e.target.checked)
                   }
                   aria-label={t('common.select')}
                   style={{
-                    width: '20px',
-                    height: '20px',
-                    backgroundColor: 'white',
-                    border: '2px solid #dee2e6',
+                    width: '24px',
+                    height: '24px',
+                    backgroundColor: selectedEvaluations.includes(evaluation.id)
+                      ? '#0d6efd'
+                      : 'white',
+                    border: selectedEvaluations.includes(evaluation.id)
+                      ? '2px solid #0d6efd'
+                      : '2px solid #dee2e6',
+                    cursor: 'pointer',
+                    boxShadow: selectedEvaluations.includes(evaluation.id)
+                      ? '0 0 0 2px rgba(13, 110, 253, 0.25)'
+                      : 'none',
                   }}
                 />
               </div>
             )}
-            {evaluation.status === 'CLOSED' ? (
-              <EvaluationCard evaluation={evaluation} />
-            ) : (
-              <EditableEvaluationCard evaluation={evaluation} onEdit={onEdit} />
-            )}
+            <div
+              className={
+                selectedEvaluations.includes(evaluation.id)
+                  ? 'selected-evaluation'
+                  : ''
+              }
+            >
+              {evaluation.status === 'CLOSED' ? (
+                <EvaluationCard evaluation={evaluation} />
+              ) : (
+                <EditableEvaluationCard
+                  evaluation={evaluation}
+                  onEdit={onEdit}
+                />
+              )}
+            </div>
           </div>
         </Col>
       ))}

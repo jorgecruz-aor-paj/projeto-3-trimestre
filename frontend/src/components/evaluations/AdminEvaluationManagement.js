@@ -119,7 +119,7 @@ export const AdminEvaluationManagement = () => {
                 <th width="40">
                   <input
                     type="checkbox"
-                    className="form-check-input"
+                    className="form-check-input evaluation-selection-checkbox"
                     onChange={e => {
                       if (e.target.checked) {
                         setSelectedEvaluations(
@@ -133,6 +133,11 @@ export const AdminEvaluationManagement = () => {
                       selectedEvaluations.length === evaluations.length &&
                       evaluations.length > 0
                     }
+                    style={{
+                      width: '20px',
+                      height: '20px',
+                      cursor: 'pointer',
+                    }}
                   />
                 </th>
               )}
@@ -147,16 +152,36 @@ export const AdminEvaluationManagement = () => {
           </thead>
           <tbody>
             {evaluations.map(evaluation => (
-              <tr key={evaluation.id}>
+              <tr
+                key={evaluation.id}
+                className={
+                  selectedEvaluations.includes(evaluation.id)
+                    ? 'selected-evaluation-row'
+                    : ''
+                }
+              >
                 {viewMode === 'table' && (
                   <td>
                     <input
                       type="checkbox"
-                      className="form-check-input"
+                      className="form-check-input evaluation-selection-checkbox"
                       checked={selectedEvaluations.includes(evaluation.id)}
                       onChange={e =>
                         handleSelectEvaluation(evaluation.id, e.target.checked)
                       }
+                      style={{
+                        width: '20px',
+                        height: '20px',
+                        cursor: 'pointer',
+                        backgroundColor: selectedEvaluations.includes(
+                          evaluation.id
+                        )
+                          ? '#0d6efd'
+                          : 'white',
+                        border: selectedEvaluations.includes(evaluation.id)
+                          ? '2px solid #0d6efd'
+                          : '2px solid #dee2e6',
+                      }}
                     />
                   </td>
                 )}
@@ -407,7 +432,7 @@ export const AdminEvaluationManagement = () => {
               <div className="d-flex align-items-center gap-2">
                 {/* Bulk Actions */}
                 {selectedEvaluations.length > 0 && (
-                  <div className="me-3">
+                  <div className="me-3 bulk-actions">
                     <Button
                       variant="danger"
                       size="sm"
@@ -417,10 +442,11 @@ export const AdminEvaluationManagement = () => {
                       <i className="bi bi-x-circle me-1"></i>
                       {t('evaluations.admin.closeSelected', 'Close Selected')}
                     </Button>
-                    <small className="text-muted">
+                    <Badge bg="primary" className="py-2 px-3">
+                      <i className="bi bi-check-circle me-1"></i>
                       {selectedEvaluations.length}{' '}
                       {t('evaluations.admin.selected', 'selected')}
-                    </small>
+                    </Badge>
                   </div>
                 )}
 
