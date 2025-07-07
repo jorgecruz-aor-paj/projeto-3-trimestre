@@ -5,20 +5,18 @@ import {
   Col,
   Card,
   Button,
-  Table,
   Badge,
   Form,
   Modal,
   Spinner,
   Alert,
-  OverlayTrigger,
-  Tooltip,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { trainingService } from 'services/trainingService';
 import { useAlert } from 'contexts/AlertContext';
 import { TrainingForm } from 'components/forms';
 import { TrainingFilter } from 'components/filters';
+import { TrainingCard } from './TrainingCard';
 
 /**
  * Admin Training Management component
@@ -97,9 +95,15 @@ export const AdminTrainingManagement = () => {
   };
 
   const handleEditTraining = async trainingData => {
+    console.log('Editing training:', trainingData);
     try {
       setFormLoading(true);
-      await trainingService.update(trainingData);
+
+      // Remove id and trainingAreaId from the data before sending
+      const { trainingAreaId, ...trainingToUpdate } = trainingData;
+
+      console.log('Updated training:', trainingToUpdate);
+      await trainingService.update(trainingToUpdate);
       showAlert({
         title: t('trainings.admin.success'),
         message: t('trainings.admin.updateSuccess'),
@@ -167,23 +171,7 @@ export const AdminTrainingManagement = () => {
     }
   };
 
-  const formatDuration = minutes => {
-    if (minutes < 60) return `${minutes}m`;
-    const hours = Math.floor(minutes / 60);
-    const mins = minutes % 60;
-    return mins > 0 ? `${hours}h ${mins}m` : `${hours}h`;
-  };
-
-  const getLanguageBadgeVariant = language => {
-    const variants = {
-      English: 'primary',
-      Portuguese: 'success',
-      Spanish: 'info',
-      French: 'warning',
-      German: 'secondary',
-    };
-    return variants[language] || 'outline-dark';
-  };
+  // Helper functions moved to TrainingCard component
 
   if (loading) {
     return (
@@ -259,8 +247,8 @@ export const AdminTrainingManagement = () => {
         </Row>
       )}
 
-      {/* Trainings Table */}
-      <Row>
+      {/* Trainings Grid */}
+      <Row className="mb-4">
         <Col>
           <Card>
             <Card.Header className="d-flex justify-content-between align-items-center">
@@ -269,7 +257,7 @@ export const AdminTrainingManagement = () => {
                 {trainings.length} {t('trainings.admin.trainingsCount')}
               </Badge>
             </Card.Header>
-            <Card.Body className="p-0">
+            <Card.Body>
               {trainings.length === 0 ? (
                 <div className="text-center py-5">
                   <i className="bi bi-book display-4 text-muted"></i>
@@ -287,123 +275,20 @@ export const AdminTrainingManagement = () => {
                   </Button>
                 </div>
               ) : (
-                <div className="table-responsive">
-                  <Table hover className="mb-0">
-                    <thead className="table-light">
-                      <tr>
-                        <th>{t('trainings.fields.title')}</th>
-                        <th>{t('trainings.fields.area')}</th>
-                        <th>{t('trainings.fields.duration')}</th>
-                        <th>{t('trainings.fields.language')}</th>
-                        <th>{t('trainings.fields.status')}</th>
-                        <th>{t('trainings.fields.created')}</th>
-                        <th className="text-center">{t('common.actions')}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {trainings.map(training => (
-                        <tr key={training.id}>
-                          <td>
-                            <div>
-                              <strong>{training.title}</strong>
-                              {training.description && (
-                                <div
-                                  className="text-muted small text-truncate"
-                                  style={{ maxWidth: '200px' }}
-                                >
-                                  {training.description}
-                                </div>
-                              )}
-                            </div>
-                          </td>
-                          <td>{training.trainingArea?.name}</td>
-                          <td>{formatDuration(training.duration)}</td>
-                          <td>
-                            <Badge
-                              bg={getLanguageBadgeVariant(training.language)}
-                            >
-                              {training.language}
-                            </Badge>
-                          </td>
-                          <td>
-                            <Badge
-                              bg={training.isActive ? 'success' : 'secondary'}
-                            >
-                              {training.isActive
-                                ? t('common.active')
-                                : t('common.inactive')}
-                            </Badge>
-                          </td>
-                          <td className="text-muted small">
-                            {new Date(training.createdAt).toLocaleDateString()}
-                          </td>
-                          <td>
-                            <div className="d-flex justify-content-center gap-1">
-                              <OverlayTrigger
-                                placement="top"
-                                overlay={<Tooltip>{t('common.edit')}</Tooltip>}
-                              >
-                                <Button
-                                  variant="outline-primary"
-                                  size="sm"
-                                  onClick={() => {
-                                    setSelectedTraining(training);
-                                    setShowEditModal(true);
-                                  }}
-                                >
-                                  <i className="bi bi-pencil"></i>
-                                </Button>
-                              </OverlayTrigger>
-
-                              {training.isActive && (
-                                <OverlayTrigger
-                                  placement="top"
-                                  overlay={
-                                    <Tooltip>
-                                      {t('trainings.admin.deactivate')}
-                                    </Tooltip>
-                                  }
-                                >
-                                  <Button
-                                    variant="outline-danger"
-                                    size="sm"
-                                    onClick={() =>
-                                      handleDeactivateTraining(training)
-                                    }
-                                  >
-                                    <i className="bi bi-x-circle"></i>
-                                  </Button>
-                                </OverlayTrigger>
-                              )}
-
-                              {training.link && (
-                                <OverlayTrigger
-                                  placement="top"
-                                  overlay={
-                                    <Tooltip>
-                                      {t('trainings.admin.viewLink')}
-                                    </Tooltip>
-                                  }
-                                >
-                                  <Button
-                                    variant="outline-info"
-                                    size="sm"
-                                    as="a"
-                                    href={training.link}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                  >
-                                    <i className="bi bi-link-45deg"></i>
-                                  </Button>
-                                </OverlayTrigger>
-                              )}
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </Table>
-                </div>
+                <Row xs={1} md={2} lg={3} className="g-4">
+                  {trainings.map(training => (
+                    <Col key={training.id}>
+                      <TrainingCard
+                        training={training}
+                        onEdit={() => {
+                          setSelectedTraining(training);
+                          setShowEditModal(true);
+                        }}
+                        onDeactivate={handleDeactivateTraining}
+                      />
+                    </Col>
+                  ))}
+                </Row>
               )}
             </Card.Body>
           </Card>
