@@ -11,11 +11,14 @@ import { MessageInput } from 'components/messages/MessageInput';
 import { axiosInstance } from 'api/axiosInstance';
 import { API_ENDPOINTS } from 'api/apiConfig';
 import { websocketService } from 'services/websocketService';
+import { useFormValidation, messageValidationRules } from 'utils/validation';
+import { useErrorMessage } from 'hooks/useErrorMessage';
 import 'styles/pages/Messages.css';
 
 export const Messages = () => {
   const { t } = useTranslation();
   const { user } = useAuthStore();
+  const { getErrorMessage } = useErrorMessage();
   const {
     conversations,
     activeConversation,
@@ -36,11 +39,21 @@ export const Messages = () => {
     sendMessage: sendChatbotMessage,
   } = useChatbotStore();
 
+  // Form validation for message input
+  const {
+    formData: messageData,
+    errors: messageErrors,
+    handleChange: handleMessageChange,
+    validateAll: validateMessage,
+    resetForm: resetMessageForm,
+  } = useFormValidation({ content: '' }, messageValidationRules);
+
   const [users, setUsers] = useState([]);
   const [loadingUsers, setLoadingUsers] = useState(false);
   const [showUserList, setShowUserList] = useState(false);
   const [isVirtualAssistantActive, setIsVirtualAssistantActive] =
     useState(false);
+  const [validationError, setValidationError] = useState(null);
 
   // Virtual assistant conversation object
   const virtualAssistant = {
@@ -72,7 +85,7 @@ export const Messages = () => {
     setLoadingUsers(true);
     try {
       const response = await axiosInstance.get(
-        API_ENDPOINTS.users.getMiniUsers.url
+        API_ENDPOINTS.user.getMiniUsers.url
       );
       // Filter out current user
       const filteredUsers = response.filter(u => u.id !== user?.id);
@@ -88,15 +101,51 @@ export const Messages = () => {
     setActiveConversation(selectedUser);
     setIsVirtualAssistantActive(false);
     setShowUserList(false);
+    setValidationError(null);
+    resetMessageForm();
   };
 
   const handleSelectVirtualAssistant = () => {
     setActiveConversation(null);
     setIsVirtualAssistantActive(true);
     setShowUserList(false);
+    setValidationError(null);
+    resetMessageForm();
   };
 
   const handleSendMessage = async content => {
+    // Update the message in the form
+    handleMessageChange('content', content);
+
+    // Validate the message
+    if (!content || content.trim() === '') {
+      setValidationError(t('validation.required', 'This field is required'));
+      return;
+    }
+
+    if (content.length < messageValidationRules.content.minLength) {
+      setValidationError(
+        t('validation.minLength', {
+          min: messageValidationRules.content.minLength,
+          defaultValue: `Message must be at least ${messageValidationRules.content.minLength} characters`,
+        })
+      );
+      return;
+    }
+
+    if (content.length > messageValidationRules.content.maxLength) {
+      setValidationError(
+        t('validation.maxLength', {
+          max: messageValidationRules.content.maxLength,
+          defaultValue: `Message cannot exceed ${messageValidationRules.content.maxLength} characters`,
+        })
+      );
+      return;
+    }
+
+    // Clear validation error if message is valid
+    setValidationError(null);
+
     if (isVirtualAssistantActive) {
       // Send to chatbot
       await sendChatbotMessage(content);
@@ -108,6 +157,9 @@ export const Messages = () => {
         console.error('Failed to send message:', err);
       }
     }
+
+    // Reset form after sending
+    resetMessageForm();
   };
 
   const getCurrentMessages = () => {
@@ -265,14 +317,22 @@ export const Messages = () => {
                         messages={getCurrentMessages()}
                         isLoading={getCurrentLoading()}
                       />
-                      <MessageInput
-                        onSendMessage={handleSendMessage}
-                        disabled={getCurrentLoading()}
-                        placeholder={t(
-                          'chatbot.typePlaceholder',
-                          'Digite sua pergunta...'
+                      <div>
+                        {validationError && (
+                          <div className="text-danger px-3 pt-2 small">
+                            <i className="fas fa-exclamation-circle me-1"></i>
+                            {validationError}
+                          </div>
                         )}
-                      />
+                        <MessageInput
+                          onSendMessage={handleSendMessage}
+                          disabled={getCurrentLoading()}
+                          placeholder={t(
+                            'chatbot.typePlaceholder',
+                            'Digite sua pergunta...'
+                          )}
+                        />
+                      </div>
                     </div>
                   ) : activeConversation ? (
                     <div className="h-100 d-flex flex-column">
@@ -281,10 +341,18 @@ export const Messages = () => {
                         messages={getCurrentMessages()}
                         currentUserId={user?.id}
                       />
-                      <MessageInput
-                        onSendMessage={handleSendMessage}
-                        disabled={getCurrentLoading()}
-                      />
+                      <div>
+                        {validationError && (
+                          <div className="text-danger px-3 pt-2 small">
+                            <i className="fas fa-exclamation-circle me-1"></i>
+                            {validationError}
+                          </div>
+                        )}
+                        <MessageInput
+                          onSendMessage={handleSendMessage}
+                          disabled={getCurrentLoading()}
+                        />
+                      </div>
                     </div>
                   ) : (
                     <div className="h-100 d-flex align-items-center justify-content-center text-muted">

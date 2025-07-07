@@ -320,18 +320,9 @@ export const evaluationValidationRules = {
  * Validation rules for message forms
  */
 export const messageValidationRules = {
-  subject: {
-    required: true,
-    minLength: 3,
-    maxLength: 200,
-  },
   content: {
     required: true,
-    minLength: 10,
     maxLength: 5000,
-  },
-  recipient: {
-    required: true,
   },
 };
 
