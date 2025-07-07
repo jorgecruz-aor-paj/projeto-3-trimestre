@@ -30,7 +30,7 @@ export const TrainingForm = ({
     duration: '',
     language: '',
     link: '',
-    trainingAreaId: '',
+    trainingArea: null,
   });
 
   const [errors, setErrors] = useState({});
@@ -45,7 +45,7 @@ export const TrainingForm = ({
         duration: training.duration || '',
         language: training.language || '',
         link: training.link || '',
-        trainingAreaId: training.trainingArea?.id || '',
+        trainingArea: training.trainingArea || null,
       });
     }
   }, [training]);
@@ -87,8 +87,8 @@ export const TrainingForm = ({
       newErrors.language = t('validation.required');
     }
 
-    if (!formData.trainingAreaId) {
-      newErrors.trainingAreaId = t('validation.required');
+    if (!formData.trainingArea) {
+      newErrors.trainingArea = t('validation.required');
     }
 
     // Validate URL if provided
@@ -114,7 +114,6 @@ export const TrainingForm = ({
     const submitData = {
       ...formData,
       duration: parseInt(formData.duration, 10),
-      trainingAreaId: parseInt(formData.trainingAreaId, 10),
     };
 
     onSubmit(submitData);
@@ -161,10 +160,15 @@ export const TrainingForm = ({
               <span className="text-danger">*</span>
             </Form.Label>
             <Form.Select
-              name="trainingAreaId"
-              value={formData.trainingAreaId}
-              onChange={handleInputChange}
-              isInvalid={!!errors.trainingAreaId}
+              name="trainingArea"
+              value={formData.trainingArea?.id || ''}
+              onChange={e => {
+                const selectedArea = trainingAreas.find(
+                  area => area.id === Number(e.target.value)
+                );
+                setFormData(prev => ({ ...prev, trainingArea: selectedArea }));
+              }}
+              isInvalid={!!errors.trainingArea}
             >
               <option value="">{t('trainings.form.selectArea')}</option>
               {trainingAreas.map(area => (
@@ -174,7 +178,7 @@ export const TrainingForm = ({
               ))}
             </Form.Select>
             <Form.Control.Feedback type="invalid">
-              {errors.trainingAreaId}
+              {errors.trainingArea}
             </Form.Control.Feedback>
           </Form.Group>
         </Col>
