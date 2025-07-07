@@ -4,6 +4,10 @@ import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { FormInput } from './FormInput';
 import { FormDropdownInput } from './FormDropdownInput';
+import {
+  useFormValidation,
+  trainingValidationRules,
+} from '../../utils/validation';
 
 /**
  * Training form component for creating and editing trainings
@@ -26,16 +30,18 @@ export const TrainingForm = ({
 }) => {
   const { t } = useTranslation();
 
-  const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    duration: '',
-    language: '',
-    link: '',
-    trainingArea: null,
-  });
-
-  const [errors, setErrors] = useState({});
+  const { formData, errors, handleChange, validateAll, reset, setFormData } =
+    useFormValidation(
+      {
+        title: '',
+        description: '',
+        duration: '',
+        language: '',
+        link: '',
+        trainingArea: null,
+      },
+      trainingValidationRules
+    );
 
   // Populate form when editing
   useEffect(() => {
@@ -50,66 +56,28 @@ export const TrainingForm = ({
         trainingArea: training.trainingArea || null,
       });
     }
-  }, [training]);
+  }, [training, setFormData]);
+
+  const getErrorMessage = error => {
+    if (!error) return null;
+    if (typeof error === 'string') {
+      return t(error);
+    }
+    if (error.key && error.options) {
+      return t(error.key, error.options);
+    }
+    return t(error);
+  };
 
   const handleInputChange = e => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-
-    // Clear error when user starts typing
-    if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: null }));
-    }
-  };
-
-  const validateForm = () => {
-    const newErrors = {};
-
-    if (!formData.title.trim()) {
-      newErrors.title = t('validation.required');
-    } else if (formData.title.length > 100) {
-      newErrors.title = t('trainings.validation.titleTooLong');
-    }
-
-    if (!formData.description.trim()) {
-      newErrors.description = t('validation.required');
-    } else if (formData.description.length < 10) {
-      newErrors.description = t('trainings.validation.descriptionTooShort');
-    } else if (formData.description.length > 1000) {
-      newErrors.description = t('trainings.validation.descriptionTooLong');
-    }
-
-    if (!formData.duration) {
-      newErrors.duration = t('validation.required');
-    } else if (formData.duration <= 0) {
-      newErrors.duration = t('trainings.validation.durationInvalid');
-    }
-
-    if (!formData.language.trim()) {
-      newErrors.language = t('validation.required');
-    }
-
-    if (!formData.trainingArea) {
-      newErrors.trainingArea = t('validation.required');
-    }
-
-    // Validate URL if provided
-    if (formData.link && formData.link.trim()) {
-      try {
-        new URL(formData.link);
-      } catch {
-        newErrors.link = t('trainings.validation.invalidUrl');
-      }
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    handleChange(name, value);
   };
 
   const handleSubmit = e => {
     e.preventDefault();
 
-    if (!validateForm()) {
+    if (!validateAll()) {
       return;
     }
 
@@ -143,7 +111,7 @@ export const TrainingForm = ({
             value={formData.title}
             onChange={handleInputChange}
             placeholder={t('trainings.form.titlePlaceholder')}
-            error={errors.title}
+            error={getErrorMessage(errors.title)}
           />
         </Col>
 
@@ -156,13 +124,13 @@ export const TrainingForm = ({
               const selectedArea = trainingAreas.find(
                 area => area.id === Number(e.target.value)
               );
-              setFormData(prev => ({ ...prev, trainingArea: selectedArea }));
+              handleChange('trainingArea', selectedArea);
             }}
             options={trainingAreas.map(area => ({
               value: area.id,
               label: area.name,
             }))}
-            error={errors.trainingArea}
+            error={getErrorMessage(errors.trainingArea)}
             placeholder={t('trainings.form.selectArea')}
           />
         </Col>
@@ -177,7 +145,7 @@ export const TrainingForm = ({
             value={formData.duration}
             onChange={handleInputChange}
             placeholder={t('trainings.form.durationPlaceholder')}
-            error={errors.duration}
+            error={getErrorMessage(errors.duration)}
           />
         </Col>
 
@@ -191,7 +159,7 @@ export const TrainingForm = ({
               value: lang,
               label: lang,
             }))}
-            error={errors.language}
+            error={getErrorMessage(errors.language)}
             placeholder={t('trainings.form.selectLanguage')}
           />
         </Col>
@@ -204,11 +172,11 @@ export const TrainingForm = ({
         value={formData.description}
         onChange={handleInputChange}
         placeholder={t('trainings.form.descriptionPlaceholder')}
-        error={errors.description}
+        error={getErrorMessage(errors.description)}
       />
       <Form.Text className="text-muted d-block mb-3">
         {t('trainings.form.descriptionHint')} ({formData.description.length}
-        /1000)
+        /2000)
       </Form.Text>
 
       <FormInput
@@ -218,7 +186,7 @@ export const TrainingForm = ({
         value={formData.link}
         onChange={handleInputChange}
         placeholder={t('trainings.form.linkPlaceholder')}
-        error={errors.link}
+        error={getErrorMessage(errors.link)}
       />
       <Form.Text className="text-muted d-block mb-4">
         {t('trainings.form.linkHint')}
