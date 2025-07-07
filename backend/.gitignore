@@ -46,4 +46,3 @@ logs/app.log
 .out/
 out/
 .env
-!target/jorge-osorio-proj3t.war

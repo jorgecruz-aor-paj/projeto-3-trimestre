@@ -9,7 +9,7 @@ services:
       - "8443:8443"
       - "9990:9990"
     volumes:
-      - ./backend/target/jorge-osorio-proj3t.war:/opt/wildfly/standalone/deployments/jorge-osorio-proj3t.war
+      - ./backend/target/jorge-osorio-proj3t/:/opt/wildfly/standalone/deployments/jorge-osorio-proj3t.war
       - ./backend/.env:/opt/wildfly/bin/.env
       - ./backend/logs:/opt/wildfly/logs
     env_file:

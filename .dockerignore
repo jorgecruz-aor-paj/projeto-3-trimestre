@@ -23,6 +23,7 @@ frontend/.env.production.local
 # Java / Backend
 backend/target/*
 !backend/target/jorge-osorio-proj3t.war
+!backend/target/jorge-osorio-proj3t/
 backend/.classpath
 backend/.project
 backend/.settings
