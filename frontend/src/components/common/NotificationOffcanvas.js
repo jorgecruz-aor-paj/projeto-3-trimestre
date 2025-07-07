@@ -29,10 +29,13 @@ export const NotificationOffcanvas = ({ show, onHide }) => {
     loading,
     error,
     loadNotifications,
+    loadMoreNotifications,
     markAsRead,
     markAllAsRead,
     deleteNotification,
     clearError,
+    hasMore,
+    loadingMore,
   } = useNotificationStore();
 
   // Load notifications when offcanvas is shown
@@ -222,8 +225,7 @@ export const NotificationOffcanvas = ({ show, onHide }) => {
                   key={notification.id}
                   className={`notification-item ${
                     !notification.read ? 'unread' : ''
-                  }`}
-                  action
+                  } cursor-pointer`}
                   onClick={() => handleNotificationClick(notification)}
                 >
                   <div className="d-flex align-items-start">
@@ -269,6 +271,30 @@ export const NotificationOffcanvas = ({ show, onHide }) => {
                 </ListGroup.Item>
               ))}
             </ListGroup>
+          )}
+
+          {/* Load More Button */}
+          {notifications.length > 0 && hasMore && (
+            <div className="text-center p-3 border-top">
+              <Button
+                variant="outline-primary"
+                size="sm"
+                onClick={loadMoreNotifications}
+                disabled={loadingMore}
+              >
+                {loadingMore ? (
+                  <>
+                    <Spinner animation="border" size="sm" className="me-2" />
+                    {t('common.loading', 'A carregar...')}
+                  </>
+                ) : (
+                  <>
+                    <i className="fas fa-chevron-down me-1"></i>
+                    {t('notifications.loadMore', 'Carregar mais')}
+                  </>
+                )}
+              </Button>
+            </div>
           )}
         </div>
       </Offcanvas.Body>

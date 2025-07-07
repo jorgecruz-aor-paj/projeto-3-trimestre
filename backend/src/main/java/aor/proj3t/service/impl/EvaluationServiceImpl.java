@@ -1,14 +1,27 @@
 package aor.proj3t.service.impl;
 
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import aor.proj3t.daos.DAOFactory;
 import aor.proj3t.dto.EvaluationCloseDTO;
 import aor.proj3t.dto.EvaluationDTO;
 import aor.proj3t.dto.ai.SentimentResponseDTO;
 import aor.proj3t.entities.Evaluation;
 import aor.proj3t.entities.EvaluationCycle;
+import aor.proj3t.entities.Notification;
 import aor.proj3t.entities.User;
 import aor.proj3t.enums.EvaluationCycleStatus;
 import aor.proj3t.enums.EvaluationStatus;
+import aor.proj3t.enums.NotificationType;
 import aor.proj3t.enums.Role;
 import aor.proj3t.exceptions.BadRequestException;
 import aor.proj3t.exceptions.ConflictException;
@@ -22,11 +35,6 @@ import aor.proj3t.util.converterutils.ConverterFactory;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.time.Instant;
-import java.util.*;
 
 @ApplicationScoped
 public class EvaluationServiceImpl extends BaseService implements EvaluationService {
@@ -104,6 +112,24 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
         }
 
         daoFactory.forEvaluation().update(evaluation);
+
+        // Send notification to the evaluated user about the evaluation update
+        try {
+            User evaluator = evaluation.getEvaluator();
+            User evaluated = evaluation.getEvaluated();
+            if (evaluation.getStatus() == EvaluationStatus.COMPLETED) {
+                Notification notification = new Notification();
+                notification.setSender(evaluator);
+                notification.setRecipient(evaluated);
+                notification.setType(NotificationType.EVALUATION);
+                notification.setContent("Your evaluation has been completed by " + evaluator.getFirstName() + " "
+                        + evaluator.getLastName());
+                serviceFactory.forNotification().createNotification(notification);
+            }
+        } catch (Exception e) {
+            logger.error("Failed to send notification for updated evaluation {}", evaluation.getId(), e);
+        }
+
         checkAndCompleteEvaluationCycle(evaluation.getEvaluationCycle().getId());
         checkAndCloseEvaluationCycle(evaluation.getEvaluationCycle().getId());
         return converterFactory.forEvaluation().toDTO(evaluation);
@@ -292,7 +318,24 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
         if (daoFactory.forEvaluation().countOngoingEvaluationsByCycle(evaluationCycleId) == 0) {
             daoFactory.forEvaluationCycle().updateStatus(evaluationCycleId, EvaluationCycleStatus.COMPLETED);
             logger.info("Evaluation cycle with id {} has been completed", evaluationCycleId);
-            // TODO maybe sent a notification to admin responsible for cycle
+
+            // Send notification to admin responsible for cycle
+            try {
+                EvaluationCycle cycle = getEntity(daoFactory.forEvaluationCycle().findById(evaluationCycleId),
+                        evaluationCycleId, "EvaluationCycle");
+                User admin = cycle.getCreatedBy();
+                if (admin != null) {
+                    Notification notification = new Notification();
+                    notification.setSender(admin);
+                    notification.setRecipient(admin);
+                    notification.setType(NotificationType.CYCLE);
+                    notification.setContent("Evaluation cycle completed: All evaluations in cycle " + evaluationCycleId
+                            + " have been completed.");
+                    serviceFactory.forNotification().createNotification(notification);
+                }
+            } catch (Exception e) {
+                logger.error("Failed to send notification for completed evaluation cycle {}", evaluationCycleId, e);
+            }
         }
     }
 

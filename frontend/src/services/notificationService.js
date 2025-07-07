@@ -22,6 +22,35 @@ export const notificationService = {
   },
 
   /**
+   * Get paginated notifications for the current user
+   * @param {number} page - Page number (0-based)
+   * @param {number} size - Page size
+   * @returns {Promise<Object>} Paginated notification response
+   */
+  async getUserNotificationsPaginated(page = 0, size = 10) {
+    try {
+      const response = await axiosInstance.get(
+        API_ENDPOINTS.notifications.getUserNotificationsPaginated.url,
+        {
+          params: { page, size },
+        }
+      );
+      return (
+        response || {
+          entities: [],
+          totalCount: 0,
+          currentPage: 0,
+          pageSize: size,
+          totalPages: 0,
+        }
+      );
+    } catch (error) {
+      console.error('Error fetching paginated user notifications:', error);
+      throw new Error('Falha ao carregar notificações');
+    }
+  },
+
+  /**
    * Mark a notification as read
    * @param {number} notificationId - The notification ID
    * @returns {Promise<boolean>} Success status

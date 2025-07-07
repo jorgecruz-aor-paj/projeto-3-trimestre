@@ -1,11 +1,11 @@
 package aor.proj3t.daos.impl;
 
+import java.time.Instant;
+import java.util.List;
+
 import aor.proj3t.daos.interfaces.NotificationDAO;
 import aor.proj3t.entities.Notification;
 import jakarta.ejb.Stateless;
-
-import java.time.Instant;
-import java.util.List;
 
 @Stateless
 public class NotificationDAOimpl extends AbstractDAO<Notification, Long> implements NotificationDAO {
@@ -18,7 +18,9 @@ public class NotificationDAOimpl extends AbstractDAO<Notification, Long> impleme
         @Override
         public List<Notification> findBySenderId(Long senderId) {
 
-                return em.createQuery("SELECT n FROM Notification n WHERE n.sender.id = :senderId", Notification.class)
+                return em.createQuery(
+                                "SELECT n FROM Notification n WHERE n.sender.id = :senderId ORDER BY n.timestampSent DESC",
+                                Notification.class)
                                 .setParameter("senderId", senderId)
                                 .getResultList();
         }
@@ -26,10 +28,30 @@ public class NotificationDAOimpl extends AbstractDAO<Notification, Long> impleme
         @Override
         public List<Notification> findByRecipientId(Long recipientId) {
 
-                return em.createQuery("SELECT n FROM Notification n WHERE n.recipient.id = :recipientId",
+                return em.createQuery(
+                                "SELECT n FROM Notification n WHERE n.recipient.id = :recipientId ORDER BY n.timestampSent DESC",
                                 Notification.class)
                                 .setParameter("recipientId", recipientId)
                                 .getResultList();
+        }
+
+        @Override
+        public List<Notification> findByRecipientIdPaginated(Long recipientId, int offset, int limit) {
+                return em.createQuery(
+                                "SELECT n FROM Notification n WHERE n.recipient.id = :recipientId ORDER BY n.timestampSent DESC",
+                                Notification.class)
+                                .setParameter("recipientId", recipientId)
+                                .setFirstResult(offset)
+                                .setMaxResults(limit)
+                                .getResultList();
+        }
+
+        @Override
+        public Long countByRecipientId(Long recipientId) {
+                return em.createQuery("SELECT COUNT(n) FROM Notification n WHERE n.recipient.id = :recipientId",
+                                Long.class)
+                                .setParameter("recipientId", recipientId)
+                                .getSingleResult();
         }
 
         @Override
@@ -47,7 +69,7 @@ public class NotificationDAOimpl extends AbstractDAO<Notification, Long> impleme
         public List<Notification> findUnreadNotificationsByRecipientId(Long recipientId) {
 
                 return em
-                                .createQuery("SELECT n FROM Notification n WHERE n.recipient.id = :recipientId AND n.isRead = FALSE",
+                                .createQuery("SELECT n FROM Notification n WHERE n.recipient.id = :recipientId AND n.isRead = FALSE ORDER BY n.timestampSent DESC",
                                                 Notification.class)
                                 .setParameter("recipientId", recipientId)
                                 .getResultList();
@@ -63,5 +85,16 @@ public class NotificationDAOimpl extends AbstractDAO<Notification, Long> impleme
                                 .executeUpdate();
 
                 return updatedCount > 0; // True if the update was successful
+        }
+
+        @Override
+        public Integer markAllNotificationsAsRead(Long recipientId) {
+                int updatedCount = em.createQuery(
+                                "UPDATE Notification n SET n.isRead = TRUE, n.timestampRead = :timestamp WHERE n.recipient.id = :recipientId AND n.isRead = FALSE")
+                                .setParameter("timestamp", Instant.now())
+                                .setParameter("recipientId", recipientId)
+                                .executeUpdate();
+
+                return updatedCount; // Number of notifications marked as read
         }
 }

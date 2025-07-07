@@ -1,20 +1,24 @@
 package aor.proj3t.service.impl;
 
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import aor.proj3t.daos.DAOFactory;
 import aor.proj3t.dto.MessageDTO;
 import aor.proj3t.entities.Message;
+import aor.proj3t.entities.Notification;
+import aor.proj3t.enums.NotificationType;
+import aor.proj3t.service.ServiceFactory;
 import aor.proj3t.service.interfaces.MessageService;
 import aor.proj3t.util.converterutils.ConverterFactory;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * Implementation of the MessageService interface
@@ -30,6 +34,9 @@ public class MessageServiceImpl extends BaseService implements MessageService {
     @Inject
     private ConverterFactory converterFactory;
 
+    @Inject
+    private ServiceFactory serviceFactory;
+
     @Override
     @Transactional
     public Message createMessage(Message message) {
@@ -37,6 +44,20 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         message.setRead(false);
         daoFactory.forMessage().create(message);
         logger.info("Message created with ID: {}", message.getId());
+
+        // Send notification to recipient about new message
+        try {
+            Notification notification = new Notification();
+            notification.setSender(message.getSender());
+            notification.setRecipient(message.getRecipient());
+            notification.setType(NotificationType.MESSAGE);
+            notification.setContent(
+                    "New message from " + message.getSender().getFirstName() + " " + message.getSender().getLastName());
+            serviceFactory.forNotification().createNotification(notification);
+        } catch (Exception e) {
+            logger.error("Failed to send notification for new message {}", message.getId(), e);
+        }
+
         return message;
     }
 

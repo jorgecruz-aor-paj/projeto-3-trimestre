@@ -10,32 +10,59 @@ export const useNotificationStore = create((set, get) => ({
   unreadCount: 0,
   loading: false,
   error: null,
+  // Pagination state
+  currentPage: 0,
+  pageSize: 10,
+  totalCount: 0,
+  totalPages: 0,
+  hasMore: false,
+  loadingMore: false,
 
   // Actions
-  loadNotifications: async () => {
-    set({ loading: true, error: null });
-    try {
-      const notifications = await notificationService.getUserNotifications();
+  loadNotifications: async (page = 0, size = 10, append = false) => {
+    const loadingKey = append ? 'loadingMore' : 'loading';
+    set({ [loadingKey]: true, error: null });
 
-      // Sort by timestamp (newest first)
-      const sortedNotifications = notifications.sort(
-        (a, b) => new Date(b.timestampSent) - new Date(a.timestampSent)
+    try {
+      const response = await notificationService.getUserNotificationsPaginated(
+        page,
+        size
       );
 
-      const unreadCount = sortedNotifications.filter(n => !n.read).length;
+      const newNotifications = response.entities || [];
+      const unreadCount = newNotifications.filter(n => !n.read).length;
 
-      set({
-        notifications: sortedNotifications,
-        unreadCount,
-        loading: false,
-      });
+      // Calculate if there are more pages
+      const hasMore = page + 1 < (response.totalPages || 0);
+
+      set(state => ({
+        notifications: append
+          ? [...state.notifications, ...newNotifications]
+          : newNotifications,
+        unreadCount: append ? state.unreadCount + unreadCount : unreadCount,
+        currentPage: page,
+        pageSize: size,
+        totalCount: response.totalCount || 0,
+        totalPages: response.totalPages || 0,
+        hasMore,
+        [loadingKey]: false,
+      }));
     } catch (error) {
       console.error('Error loading notifications:', error);
       set({
         error: error.message || 'Falha ao carregar notificações',
-        loading: false,
+        [loadingKey]: false,
       });
     }
+  },
+
+  // Load more notifications (for infinite scroll or pagination)
+  loadMoreNotifications: async () => {
+    const { currentPage, pageSize, hasMore, loadingMore } = get();
+
+    if (!hasMore || loadingMore) return;
+
+    await get().loadNotifications(currentPage + 1, pageSize, true);
   },
 
   // Mark notification as read
@@ -100,6 +127,7 @@ export const useNotificationStore = create((set, get) => ({
     set({
       notifications,
       unreadCount: notifications.filter(n => !n.read).length,
+      totalCount: get().totalCount + 1,
     });
   },
 
@@ -112,7 +140,15 @@ export const useNotificationStore = create((set, get) => ({
 
   // Clear all notifications
   clearNotifications: () => {
-    set({ notifications: [], unreadCount: 0, error: null });
+    set({
+      notifications: [],
+      unreadCount: 0,
+      error: null,
+      currentPage: 0,
+      totalCount: 0,
+      totalPages: 0,
+      hasMore: false,
+    });
   },
 
   // Clear error

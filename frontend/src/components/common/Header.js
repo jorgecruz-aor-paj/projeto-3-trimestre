@@ -25,11 +25,8 @@ export const Header = () => {
   const { token, user, clearState } = useAuthStore();
   const { unreadCount: messageUnreadCount, loadUnreadCount } =
     useMessageStore();
-  const {
-    unreadCount: notificationUnreadCount,
-    loadNotifications,
-    addNotification,
-  } = useNotificationStore();
+  const { unreadCount: notificationUnreadCount, loadNotifications } =
+    useNotificationStore();
   const navigate = useNavigate();
 
   const isAuthenticated = !!token;
@@ -47,17 +44,7 @@ export const Header = () => {
         loadUnreadCount();
         break;
       case 'new_notification':
-        // Add notification to store for real-time updates
-        addNotification({
-          id: Date.now(), // Temporary ID until real notification is loaded
-          content: notificationData.content,
-          type: notificationData.notificationType,
-          read: false,
-          timestampSent: notificationData.timestamp || new Date().toISOString(),
-          senderId: null,
-          recipientId: user?.id,
-        });
-        // Also refresh the notification list to get the real notification from backend
+        // Refresh the notification list to get notifications from backend
         loadNotifications();
         break;
       case 'message_read':
