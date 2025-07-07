@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Form, Button, Row, Col, Spinner } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
+import { FormInput } from './FormInput';
+import { FormDropdownInput } from './FormDropdownInput';
 
 /**
  * Training form component for creating and editing trainings
@@ -134,148 +136,93 @@ export const TrainingForm = ({
     <Form onSubmit={handleSubmit}>
       <Row>
         <Col md={6}>
-          <Form.Group className="mb-3">
-            <Form.Label>
-              {t('trainings.fields.title')}{' '}
-              <span className="text-danger">*</span>
-            </Form.Label>
-            <Form.Control
-              type="text"
-              name="title"
-              value={formData.title}
-              onChange={handleInputChange}
-              placeholder={t('trainings.form.titlePlaceholder')}
-              isInvalid={!!errors.title}
-            />
-            <Form.Control.Feedback type="invalid">
-              {errors.title}
-            </Form.Control.Feedback>
-          </Form.Group>
+          <FormInput
+            name="title"
+            label={`${t('trainings.fields.title')} *`}
+            type="text"
+            value={formData.title}
+            onChange={handleInputChange}
+            placeholder={t('trainings.form.titlePlaceholder')}
+            error={errors.title}
+          />
         </Col>
 
         <Col md={6}>
-          <Form.Group className="mb-3">
-            <Form.Label>
-              {t('trainings.fields.area')}{' '}
-              <span className="text-danger">*</span>
-            </Form.Label>
-            <Form.Select
-              name="trainingArea"
-              value={formData.trainingArea?.id || ''}
-              onChange={e => {
-                const selectedArea = trainingAreas.find(
-                  area => area.id === Number(e.target.value)
-                );
-                setFormData(prev => ({ ...prev, trainingArea: selectedArea }));
-              }}
-              isInvalid={!!errors.trainingArea}
-            >
-              <option value="">{t('trainings.form.selectArea')}</option>
-              {trainingAreas.map(area => (
-                <option key={area.id} value={area.id}>
-                  {area.name}
-                </option>
-              ))}
-            </Form.Select>
-            <Form.Control.Feedback type="invalid">
-              {errors.trainingArea}
-            </Form.Control.Feedback>
-          </Form.Group>
+          <FormDropdownInput
+            name="trainingArea"
+            label={`${t('trainings.fields.area')} *`}
+            value={formData.trainingArea?.id || ''}
+            onChange={e => {
+              const selectedArea = trainingAreas.find(
+                area => area.id === Number(e.target.value)
+              );
+              setFormData(prev => ({ ...prev, trainingArea: selectedArea }));
+            }}
+            options={trainingAreas.map(area => ({
+              value: area.id,
+              label: area.name,
+            }))}
+            error={errors.trainingArea}
+            placeholder={t('trainings.form.selectArea')}
+          />
         </Col>
       </Row>
 
       <Row>
         <Col md={6}>
-          <Form.Group className="mb-3">
-            <Form.Label>
-              {t('trainings.fields.duration')}{' '}
-              <span className="text-danger">*</span>
-            </Form.Label>
-            <Form.Control
-              type="number"
-              name="duration"
-              value={formData.duration}
-              onChange={handleInputChange}
-              placeholder={t('trainings.form.durationPlaceholder')}
-              min="1"
-              max="1000"
-              isInvalid={!!errors.duration}
-            />
-            <Form.Text className="text-muted">
-              {t('trainings.form.durationHint')}
-            </Form.Text>
-            <Form.Control.Feedback type="invalid">
-              {errors.duration}
-            </Form.Control.Feedback>
-          </Form.Group>
+          <FormInput
+            name="duration"
+            label={`${t('trainings.fields.duration')} *`}
+            type="number"
+            value={formData.duration}
+            onChange={handleInputChange}
+            placeholder={t('trainings.form.durationPlaceholder')}
+            error={errors.duration}
+          />
         </Col>
 
         <Col md={6}>
-          <Form.Group className="mb-3">
-            <Form.Label>
-              {t('trainings.fields.language')}{' '}
-              <span className="text-danger">*</span>
-            </Form.Label>
-            <Form.Select
-              name="language"
-              value={formData.language}
-              onChange={handleInputChange}
-              isInvalid={!!errors.language}
-            >
-              <option value="">{t('trainings.form.selectLanguage')}</option>
-              {commonLanguages.map(lang => (
-                <option key={lang} value={lang}>
-                  {lang}
-                </option>
-              ))}
-            </Form.Select>
-            <Form.Control.Feedback type="invalid">
-              {errors.language}
-            </Form.Control.Feedback>
-          </Form.Group>
+          <FormDropdownInput
+            name="language"
+            label={`${t('trainings.fields.language')} *`}
+            value={formData.language}
+            onChange={handleInputChange}
+            options={commonLanguages.map(lang => ({
+              value: lang,
+              label: lang,
+            }))}
+            error={errors.language}
+            placeholder={t('trainings.form.selectLanguage')}
+          />
         </Col>
       </Row>
 
-      <Form.Group className="mb-3">
-        <Form.Label>
-          {t('trainings.fields.description')}{' '}
-          <span className="text-danger">*</span>
-        </Form.Label>
-        <Form.Control
-          as="textarea"
-          rows={4}
-          name="description"
-          value={formData.description}
-          onChange={handleInputChange}
-          placeholder={t('trainings.form.descriptionPlaceholder')}
-          isInvalid={!!errors.description}
-        />
-        <Form.Text className="text-muted">
-          {t('trainings.form.descriptionHint')} ({formData.description.length}
-          /1000)
-        </Form.Text>
-        <Form.Control.Feedback type="invalid">
-          {errors.description}
-        </Form.Control.Feedback>
-      </Form.Group>
+      <FormInput
+        name="description"
+        label={`${t('trainings.fields.description')} *`}
+        type="textarea"
+        value={formData.description}
+        onChange={handleInputChange}
+        placeholder={t('trainings.form.descriptionPlaceholder')}
+        error={errors.description}
+      />
+      <Form.Text className="text-muted d-block mb-3">
+        {t('trainings.form.descriptionHint')} ({formData.description.length}
+        /1000)
+      </Form.Text>
 
-      <Form.Group className="mb-4">
-        <Form.Label>{t('trainings.fields.link')}</Form.Label>
-        <Form.Control
-          type="url"
-          name="link"
-          value={formData.link}
-          onChange={handleInputChange}
-          placeholder={t('trainings.form.linkPlaceholder')}
-          isInvalid={!!errors.link}
-        />
-        <Form.Text className="text-muted">
-          {t('trainings.form.linkHint')}
-        </Form.Text>
-        <Form.Control.Feedback type="invalid">
-          {errors.link}
-        </Form.Control.Feedback>
-      </Form.Group>
+      <FormInput
+        name="link"
+        label={t('trainings.fields.link')}
+        type="url"
+        value={formData.link}
+        onChange={handleInputChange}
+        placeholder={t('trainings.form.linkPlaceholder')}
+        error={errors.link}
+      />
+      <Form.Text className="text-muted d-block mb-4">
+        {t('trainings.form.linkHint')}
+      </Form.Text>
 
       <div className="d-flex justify-content-end gap-2">
         <Button variant="secondary" onClick={onCancel} disabled={loading}>
