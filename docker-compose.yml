@@ -14,6 +14,7 @@ services:
       - ./backend/logs:/opt/wildfly/logs
     env_file:
       - ./backend/.env
+    restart: unless-stopped
     networks:
       - proj3t-network
     depends_on:
