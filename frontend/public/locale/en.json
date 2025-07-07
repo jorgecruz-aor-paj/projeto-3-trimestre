@@ -97,7 +97,8 @@
     "evaluations": "Evaluations",
     "dashboard": "Dashboard",
     "about": "About",
-    "messages": "Messages"
+    "messages": "Messages",
+    "notifications": "Notifications"
   },
   "auth": {
     "login": "Log In",

@@ -97,7 +97,8 @@
     "evaluations": "Avaliações",
     "dashboard": "Painel",
     "about": "Sobre",
-    "messages": "Mensagens"
+    "messages": "Mensagens",
+    "notifications": "Notificações"
   },
   "auth": {
     "login": "Entrar",
