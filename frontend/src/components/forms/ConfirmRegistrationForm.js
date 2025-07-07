@@ -5,6 +5,8 @@ import { FormInput } from './FormInput';
 import { SubmitButton } from './SubmitButton';
 import { FormDropdownInput } from './FormDropdownInput';
 import { useTranslation } from 'react-i18next';
+import { useErrorMessage } from '../../hooks/useErrorMessage';
+import { profileValidationRules } from '../../utils/validation';
 
 /**
  * Confirm Registration form component (presentational)
@@ -21,58 +23,79 @@ export const ConfirmRegistrationForm = ({
   handleSubmit,
 }) => {
   const { t } = useTranslation();
+  const { getErrorMessage } = useErrorMessage();
+
+  const safeGetErrorMessage = error => {
+    if (!error) return null;
+    if (typeof error === 'string') {
+      return t(error);
+    }
+    if (error.key && error.options) {
+      return t(error.key, error.options);
+    }
+    return t(error);
+  };
 
   return (
     <Form onSubmit={handleSubmit} encType="multipart/form-data">
       <FormInput
         name="firstName"
-        label={t('user.firstName')}
+        label={`${t('user.firstName')} *`}
         value={formData.firstName}
         onChange={handleInputChange}
-        error={validationErrors.firstName}
+        error={safeGetErrorMessage(validationErrors.firstName)}
         disabled={submitting}
+        minLength={profileValidationRules.firstName.minLength}
+        maxLength={profileValidationRules.firstName.maxLength}
         autoFocus
+        placeholder={t('user.firstNamePlaceholder')}
       />
       <FormInput
         name="lastName"
-        label={t('user.lastName')}
+        label={`${t('user.lastName')} *`}
         value={formData.lastName}
         onChange={handleInputChange}
-        error={validationErrors.lastName}
+        error={safeGetErrorMessage(validationErrors.lastName)}
         disabled={submitting}
+        minLength={profileValidationRules.lastName.minLength}
+        maxLength={profileValidationRules.lastName.maxLength}
+        placeholder={t('user.lastNamePlaceholder')}
       />
       <FormInput
         name="address"
-        label={t('user.address')}
+        label={`${t('user.address')} *`}
         value={formData.address}
         onChange={handleInputChange}
-        error={validationErrors.address}
+        error={safeGetErrorMessage(validationErrors.address)}
         disabled={submitting}
+        maxLength={profileValidationRules.address.maxLength}
+        placeholder={t('user.addressPlaceholder')}
       />
       <FormInput
         name="phoneNumber"
-        label={t('user.phoneNumber')}
+        label={`${t('user.phoneNumber')} *`}
         value={formData.phoneNumber}
         onChange={handleInputChange}
-        error={validationErrors.phoneNumber}
+        error={safeGetErrorMessage(validationErrors.phoneNumber)}
         disabled={submitting}
+        placeholder={t('user.phoneNumberPlaceholder')}
       />
       <FormInput
         name="birthdate"
         type="date"
-        label={t('user.birthdate')}
+        label={`${t('user.birthdate')} *`}
         value={formData.birthdate}
         onChange={handleInputChange}
-        error={validationErrors.birthdate}
+        error={safeGetErrorMessage(validationErrors.birthdate)}
         disabled={submitting}
       />
       <FormDropdownInput
         name="workplaceId"
-        label={t('user.workplace')}
+        label={`${t('user.workplace')} *`}
         value={formData.workplaceId}
         onChange={handleInputChange}
         options={workplaces?.map(w => ({ value: w.id, label: w.name })) || []}
-        error={validationErrors.workplaceId}
+        error={safeGetErrorMessage(validationErrors.workplaceId)}
         disabled={submitting || workplacesLoading}
         placeholder={
           workplacesLoading ? t('common.loading') : t('user.selectWorkplace')
@@ -80,24 +103,25 @@ export const ConfirmRegistrationForm = ({
       />
       <FormInput
         name="biography"
-        as="textarea"
+        type="textarea"
         label={t('user.biography')}
         value={formData.biography}
         onChange={handleInputChange}
-        error={validationErrors.biography}
+        error={safeGetErrorMessage(validationErrors.biography)}
         disabled={submitting}
+        maxLength={profileValidationRules.biography.maxLength}
         rows={3}
+        placeholder={t('user.biographyPlaceholder')}
       />
-      <Form.Group className="mb-3">
-        <Form.Label>{t('user.photograph')}</Form.Label>
-        <Form.Control
-          type="file"
-          name="photograph"
-          accept="image/*"
-          onChange={handleInputChange}
-          disabled={submitting}
-        />
-      </Form.Group>
+      <FormInput
+        name="photograph"
+        type="file"
+        label={t('user.photograph')}
+        onChange={handleInputChange}
+        error={safeGetErrorMessage(validationErrors.photograph)}
+        disabled={submitting}
+        accept="image/*"
+      />
       <SubmitButton
         isLoading={submitting}
         label={t('auth.confirmRegistration')}

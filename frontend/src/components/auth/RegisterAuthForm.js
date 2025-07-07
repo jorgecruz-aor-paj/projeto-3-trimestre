@@ -5,54 +5,49 @@ import { authService } from 'services/authService';
 import { RegisterForm } from 'components/forms/RegisterForm';
 import { Alert } from 'react-bootstrap';
 import { useAlert } from 'contexts/AlertContext';
+import {
+  useFormValidation,
+  registerValidationRules,
+} from '../../utils/validation';
+import { useErrorMessage } from '../../hooks/useErrorMessage';
 
 export const RegisterAuthForm = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { showAlert } = useAlert();
+  const { getErrorMessage } = useErrorMessage();
 
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    confirmPassword: '',
-  });
+  const {
+    formData,
+    errors = {},
+    handleChange,
+    validateAll,
+  } = useFormValidation(
+    {
+      email: '',
+      password: '',
+      confirmPassword: '',
+    },
+    registerValidationRules
+  );
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [validationErrors, setValidationErrors] = useState({});
 
   const handleInputChange = e => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-    if (validationErrors[name]) {
-      setValidationErrors(prev => ({ ...prev, [name]: null }));
-    }
+    handleChange(name, value);
   };
 
-  const validateForm = () => {
-    const errors = {};
-    if (!formData.email) {
-      errors.email = t('validation.emailRequired');
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      errors.email = t('validation.emailInvalid');
-    }
-    if (!formData.password) {
-      errors.password = t('validation.passwordRequired');
-    } else if (formData.password.length < 6) {
-      errors.password = t('validation.passwordMinLength');
-    }
-    if (!formData.confirmPassword) {
-      errors.confirmPassword = t('validation.confirmPasswordRequired');
-    } else if (formData.password !== formData.confirmPassword) {
-      errors.confirmPassword = t('validation.passwordsDontMatch');
-    }
-    setValidationErrors(errors);
-    return Object.keys(errors).length === 0;
+  const safeGetErrorMessage = error => {
+    if (!error) return null;
+    return getErrorMessage(error);
   };
 
   const handleSubmit = async e => {
     e.preventDefault();
     setError(null);
-    if (!validateForm()) return;
+    if (!validateAll()) return;
     setLoading(true);
     try {
       await authService.register({
@@ -83,8 +78,9 @@ export const RegisterAuthForm = () => {
         formData={formData}
         onChange={handleInputChange}
         onSubmit={handleSubmit}
-        errors={validationErrors}
+        errors={errors}
         loading={loading}
+        getErrorMessage={safeGetErrorMessage}
       />
     </>
   );

@@ -17,6 +17,9 @@ import { useAlert } from 'contexts/AlertContext';
 import { TrainingForm } from 'components/forms';
 import { TrainingFilter } from 'components/filters';
 import { TrainingCard } from './TrainingCard';
+import { useFormValidation } from 'utils/validation';
+import { trainingAreaValidationRules } from 'utils/validation';
+import { useErrorMessage } from 'hooks/useErrorMessage';
 
 /**
  * Admin Training Management component
@@ -26,6 +29,16 @@ import { TrainingCard } from './TrainingCard';
 export const AdminTrainingManagement = () => {
   const { t } = useTranslation();
   const { showAlert, showConfirm } = useAlert();
+  const { getErrorMessage } = useErrorMessage();
+
+  // Validation hook for training area form
+  const {
+    formData: areaFormData,
+    errors: areaErrors,
+    handleChange: handleAreaChange,
+    validateAll: validateArea,
+    resetForm: resetAreaForm,
+  } = useFormValidation({ name: '' }, trainingAreaValidationRules);
 
   // State management
   const [trainings, setTrainings] = useState([]);
@@ -42,7 +55,6 @@ export const AdminTrainingManagement = () => {
 
   // Form states
   const [formLoading, setFormLoading] = useState(false);
-  const [newAreaName, setNewAreaName] = useState('');
 
   const fetchTrainings = async () => {
     try {
@@ -122,7 +134,10 @@ export const AdminTrainingManagement = () => {
   const handleDeactivateTraining = training => {
     showConfirm({
       title: t('trainings.admin.deactivateTitle'),
-      message: t('trainings.admin.deactivateMessage').replace('{title}', training.title),
+      message: t('trainings.admin.deactivateMessage').replace(
+        '{title}',
+        training.title
+      ),
       onConfirm: async () => {
         try {
           await trainingService.deactivate(training.id);
@@ -143,17 +158,20 @@ export const AdminTrainingManagement = () => {
   };
 
   const handleCreateArea = async () => {
-    if (!newAreaName.trim()) return;
-
     try {
+      // Validate form data
+      if (!validateArea()) {
+        return;
+      }
+
       setFormLoading(true);
-      await trainingService.manageTrainingArea({ name: newAreaName });
+      await trainingService.createArea(areaFormData.name);
       showAlert({
         title: t('trainings.admin.success'),
         message: t('trainings.admin.areaCreateSuccess'),
       });
-      setNewAreaName('');
       setShowAreaModal(false);
+      resetAreaForm();
       fetchTrainingAreas();
     } catch (err) {
       showAlert({
@@ -343,7 +361,7 @@ export const AdminTrainingManagement = () => {
         show={showAreaModal}
         onHide={() => {
           setShowAreaModal(false);
-          setNewAreaName('');
+          resetAreaForm();
         }}
       >
         <Modal.Header closeButton>
@@ -361,10 +379,16 @@ export const AdminTrainingManagement = () => {
               <Form.Control
                 type="text"
                 placeholder={t('trainings.admin.areaNamePlaceholder')}
-                value={newAreaName}
-                onChange={e => setNewAreaName(e.target.value)}
+                value={areaFormData.name}
+                onChange={e => handleAreaChange('name', e.target.value)}
+                isInvalid={!!areaErrors.name}
                 required
               />
+              {areaErrors.name && (
+                <Form.Control.Feedback type="invalid">
+                  {getErrorMessage(areaErrors.name)}
+                </Form.Control.Feedback>
+              )}
             </Form.Group>
           </Form>
         </Modal.Body>
@@ -373,7 +397,7 @@ export const AdminTrainingManagement = () => {
             variant="secondary"
             onClick={() => {
               setShowAreaModal(false);
-              setNewAreaName('');
+              resetAreaForm();
             }}
           >
             {t('common.cancel')}
@@ -381,7 +405,7 @@ export const AdminTrainingManagement = () => {
           <Button
             variant="primary"
             onClick={handleCreateArea}
-            disabled={!newAreaName.trim() || formLoading}
+            disabled={!areaFormData.name.trim() || formLoading}
           >
             {formLoading ? (
               <Spinner animation="border" size="sm" className="me-2" />

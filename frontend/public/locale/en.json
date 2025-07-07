@@ -168,10 +168,14 @@
     "fileTooLarge": "File too large",
     "dragDropFiles": "Drag and drop files here or click to select",
     "charactersRemaining": "characters remaining",
-    "maxCharacters": "maximum characters"
+    "maxCharacters": "maximum characters",
+    "minCharacters": "minimum characters",
+    "characters": "characters"
   },
   "validation": {
-    "emailRequired": "Email is required",
+    "required": "This field is required",
+    "minLength": "Minimum {{min}} characters required",
+    "maxLength": "Maximum {{max}} characters allowed",
     "emailInvalid": "Please enter a valid email address",
     "passwordRequired": "Password is required",
     "passwordMinLength": "Password must be at least 6 characters long",
@@ -187,7 +191,14 @@
     "trainingAreaRequired": "Please select a training area",
     "emailFormat": "Please enter a valid email",
     "passwordMatch": "Passwords do not match",
-    "invalidFormat": "Invalid format"
+    "invalidFormat": "Invalid format",
+    "phoneInvalid": "Please enter a valid phone number",
+    "pleaseFixErrors": "Please fix the validation errors before saving",
+    "trainingAreaRequired": "Training area is required",
+    "trainingAreaNameFormat": "Training area name can only contain letters, numbers, spaces and hyphens",
+    "ratingInvalid": "Please enter a valid rating between 1 and 5",
+    "statusRequired": "Status is required",
+    "error": "Validation Error"
   },
   "errors": {
     "unexpected": "An unexpected error occurred",
@@ -483,13 +494,13 @@
   },
   "profile": {
     "info": "Profile Information",
+    "email": "Email",
     "name": "Name",
     "firstName": "First Name",
     "lastName": "Last Name",
-    "email": "Email",
-    "phone": "Phone",
+    "phone": "Phone Number",
     "address": "Address",
-    "birthdate": "Birthdate",
+    "birthdate": "Date of Birth",
     "workplace": "Workplace",
     "biography": "Biography",
     "role": "Role",

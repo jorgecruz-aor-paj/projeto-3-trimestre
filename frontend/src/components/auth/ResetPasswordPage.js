@@ -1,55 +1,51 @@
 import React, { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Form, Alert, Card, Container, Row, Col } from 'react-bootstrap';
-import { FormInput } from 'components/forms/FormInput';
-import { SubmitButton } from 'components/forms/SubmitButton';
+import { Alert, Card, Container, Row, Col } from 'react-bootstrap';
 import { authService } from 'services/authService';
+import { ResetPasswordForm } from 'components/forms/ResetPasswordForm';
+import {
+  useFormValidation,
+  setNewPasswordValidationRules,
+} from 'utils/validation';
+import { useErrorMessage } from 'hooks/useErrorMessage';
 
 export const ResetPasswordPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const resetPasswordToken = searchParams.get('resetPasswordToken');
+  const { getErrorMessage } = useErrorMessage();
 
-  const [formData, setFormData] = useState({
-    password: '',
-    confirmPassword: '',
-  });
+  const {
+    formData,
+    errors = {},
+    handleChange,
+    validateAll,
+  } = useFormValidation(
+    { password: '', confirmPassword: '' },
+    setNewPasswordValidationRules
+  );
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-  const [validationErrors, setValidationErrors] = useState({});
 
   const handleInputChange = e => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-    if (validationErrors[name]) {
-      setValidationErrors(prev => ({ ...prev, [name]: null }));
-    }
+    handleChange(name, value);
   };
 
-  const validate = () => {
-    const errors = {};
-    if (!formData.password) {
-      errors.password = t('validation.passwordRequired');
-    } else if (formData.password.length < 6) {
-      errors.password = t('validation.passwordMinLength');
-    }
-    if (!formData.confirmPassword) {
-      errors.confirmPassword = t('validation.confirmPasswordRequired');
-    } else if (formData.password !== formData.confirmPassword) {
-      errors.confirmPassword = t('validation.passwordsDontMatch');
-    }
-    setValidationErrors(errors);
-    return Object.keys(errors).length === 0;
+  const safeGetErrorMessage = error => {
+    if (!error) return null;
+    return getErrorMessage(error);
   };
 
   const handleSubmit = async e => {
     e.preventDefault();
     setError(null);
     setSuccess(null);
-    if (!validate()) return;
+    if (!validateAll()) return;
     setLoading(true);
     try {
       await authService.resetPassword(resetPasswordToken, {
@@ -79,34 +75,14 @@ export const ResetPasswordPage = () => {
               </p>
               {success && <Alert variant="success">{success}</Alert>}
               {error && <Alert variant="danger">{error}</Alert>}
-              <Form onSubmit={handleSubmit}>
-                <FormInput
-                  label={t('auth.password')}
-                  type="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  placeholder={t('auth.passwordPlaceholder')}
-                  error={validationErrors.password}
-                  disabled={loading}
-                  autoFocus
-                />
-                <FormInput
-                  label={t('auth.confirmPassword')}
-                  type="password"
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={handleInputChange}
-                  placeholder={t('auth.confirmPasswordPlaceholder')}
-                  error={validationErrors.confirmPassword}
-                  disabled={loading}
-                />
-                <SubmitButton
-                  isLoading={loading}
-                  label={t('auth.setNewPassword')}
-                  className="w-100 py-2 mt-3 mb-4"
-                />
-              </Form>
+              <ResetPasswordForm
+                formData={formData}
+                onChange={handleInputChange}
+                onSubmit={handleSubmit}
+                errors={errors}
+                loading={loading}
+                getErrorMessage={safeGetErrorMessage}
+              />
             </Card.Body>
           </Card>
         </Col>

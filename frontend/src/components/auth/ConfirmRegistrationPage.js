@@ -6,6 +6,11 @@ import { authService } from 'services/authService';
 import { ConfirmRegistrationForm } from 'components/forms/ConfirmRegistrationForm';
 import { useAlert } from 'contexts/AlertContext';
 import { useWorkplaces } from 'hooks/useWorkplaces';
+import {
+  useFormValidation,
+  profileValidationRules,
+} from '../../utils/validation';
+import { useErrorMessage } from '../../hooks/useErrorMessage';
 
 export const ConfirmRegistrationPage = () => {
   const { t } = useTranslation();
@@ -13,15 +18,15 @@ export const ConfirmRegistrationPage = () => {
   const { showAlert } = useAlert();
   const [searchParams] = useSearchParams();
   const confirmationToken = searchParams.get('confirmationToken');
+  const { getErrorMessage } = useErrorMessage();
 
   const { workplaces, workplacesLoading } = useWorkplaces();
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-  const [validationErrors, setValidationErrors] = useState({});
 
-  const [formData, setFormData] = useState({
+  const initialFormData = {
     firstName: '',
     lastName: '',
     address: '',
@@ -30,46 +35,66 @@ export const ConfirmRegistrationPage = () => {
     workplaceId: '',
     biography: '',
     photograph: null,
-  });
+  };
+
+  const {
+    formData,
+    errors = {},
+    handleChange,
+    validateAll,
+    setFormData,
+  } = useFormValidation(initialFormData, profileValidationRules);
+
+  useEffect(() => {
+    // Reset loading state once workplaces are loaded
+    if (!workplacesLoading) {
+      setLoading(false);
+    }
+  }, [workplacesLoading]);
 
   const handleInputChange = e => {
     const { name, value, type, files } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'file' ? files[0] : value,
-    }));
-    if (validationErrors[name]) {
-      setValidationErrors(prev => ({ ...prev, [name]: null }));
+    if (type === 'file') {
+      // Handle file input separately since it's not a simple value
+      const file = files[0];
+      setFormData(prev => ({
+        ...prev,
+        [name]: file,
+      }));
+      // Validate the file if needed
+      handleChange(name, file);
+    } else {
+      handleChange(name, value);
     }
-  };
-
-  const validateForm = () => {
-    const errors = {};
-    if (!formData.firstName) errors.firstName = t('validation.fieldRequired');
-    if (!formData.lastName) errors.lastName = t('validation.fieldRequired');
-    if (!formData.address) errors.address = t('validation.fieldRequired');
-    if (!formData.phoneNumber)
-      errors.phoneNumber = t('validation.fieldRequired');
-    if (!formData.birthdate) errors.birthdate = t('validation.fieldRequired');
-    if (!formData.workplaceId)
-      errors.workplaceId = t('validation.fieldRequired');
-    setValidationErrors(errors);
-    return Object.keys(errors).length === 0;
   };
 
   const handleSubmit = async e => {
     e.preventDefault();
     setError(null);
     setSuccess(null);
-    if (!validateForm()) return;
+
+    // Validate all fields
+    if (!validateAll()) {
+      setError(t('validation.fixErrors'));
+      return;
+    }
+
     setSubmitting(true);
     try {
       const submitData = new FormData();
+
+      // Add all non-empty values to form data
       Object.entries(formData).forEach(([key, value]) => {
         if (value !== null && value !== undefined && value !== '') {
-          submitData.append(key, value);
+          // Special handling for workplace ID to ensure it's sent as a number
+          if (key === 'workplaceId') {
+            submitData.append(key, Number(value));
+          } else {
+            submitData.append(key, value);
+          }
         }
       });
+
       await authService.confirmUser(confirmationToken, submitData);
       setSuccess(t('auth.confirmSuccess'));
       showAlert({
@@ -79,7 +104,10 @@ export const ConfirmRegistrationPage = () => {
         onConfirm: () => navigate('/login'),
       });
     } catch (err) {
-      setError(err.message || t('auth.confirmFailed'));
+      const errorMessage =
+        err.response?.data?.message || err.message || t('auth.confirmFailed');
+      setError(errorMessage);
+      console.error('Registration confirmation error:', err);
     } finally {
       setSubmitting(false);
     }
@@ -100,7 +128,7 @@ export const ConfirmRegistrationPage = () => {
               {error && <Alert variant="danger">{error}</Alert>}
               <ConfirmRegistrationForm
                 formData={formData}
-                validationErrors={validationErrors}
+                validationErrors={errors}
                 workplacesLoading={workplacesLoading}
                 workplaces={workplaces}
                 loading={loading}

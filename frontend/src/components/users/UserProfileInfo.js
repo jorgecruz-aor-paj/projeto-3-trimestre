@@ -5,14 +5,24 @@ import { ProfilePicture } from 'components/common/ProfilePicture';
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from 'contexts/LanguageContext';
 import { FormInput } from '../forms/FormInput';
+import { FormDropdownInput } from '../forms/FormDropdownInput';
 import { useAuthStore } from '../../stores/AuthStore';
 import { userService } from 'services';
 import { useUserList } from '../../hooks/useUserList';
+import { useWorkplaces } from '../../hooks/useWorkplaces';
+import {
+  useFormValidation,
+  profileValidationRules,
+} from '../../utils/validation';
+import { useErrorMessage } from '../../hooks/useErrorMessage';
+import { useAlert } from 'contexts/AlertContext';
 
 export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
   const { t } = useTranslation();
   const { formatDate } = useLanguage();
   const loggedUser = useAuthStore(state => state.user);
+  const { getErrorMessage } = useErrorMessage();
+  const { showAlert } = useAlert();
   const [user, setUser] = useState(initialUser);
   const isSelf = loggedUser?.id === user.id;
   const isAdmin = loggedUser?.role === 'ADMIN';
@@ -22,6 +32,9 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
     loading: userListLoading,
     error: userListError,
   } = useUserList();
+
+  // Get workplace list
+  const { workplaces, workplacesLoading } = useWorkplaces();
 
   // Filtered manager list (exclude current user)
   const [filteredManagerList, setFilteredManagerList] = useState([]);
@@ -36,18 +49,30 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
   }, [userList, user]);
 
   const [editMode, setEditMode] = useState(false);
-  const [formData, setFormData] = useState({
+
+  // Initialize form validation with user data
+  const initialFormData = {
     firstName: user.firstName || '',
     lastName: user.lastName || '',
     phoneNumber: user.phoneNumber || '',
     address: user.address || '',
     birthdate: user.birthdate || '',
-    workplace: user.workplace?.name || '',
+    workplace: user.workplace?.id || '',
     biography: user.biography || '',
     role: user.role || '',
     managerId: user.manager?.id || '',
-  });
-  const [errors, setErrors] = useState({});
+  };
+
+  const {
+    formData,
+    errors,
+    handleChange: handleValidationChange,
+    validateAll,
+    setFormData,
+  } = useFormValidation(initialFormData, profileValidationRules);
+
+  // Track which fields have been touched
+  const [touched, setTouched] = useState({});
 
   // Sync user state when initialUser prop changes
   useEffect(() => {
@@ -56,46 +81,94 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
 
   // Sync formData when user changes
   useEffect(() => {
-    setFormData({
+    const newFormData = {
       firstName: user.firstName || '',
       lastName: user.lastName || '',
       phoneNumber: user.phoneNumber || '',
       address: user.address || '',
       birthdate: user.birthdate || '',
-      workplace: user.workplace?.name || '',
+      workplace: user.workplace?.id || '',
       biography: user.biography || '',
       role: user.role || '',
       managerId: user.manager?.id || '',
-    });
-  }, [user]);
+    };
+    setFormData(newFormData);
+  }, [user, setFormData]);
 
   const handleChange = e => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    // Extract name and value from the event object
+    if (e && e.target) {
+      const { name, value } = e.target;
+      console.log(`Field changed: ${name} = ${value}`);
+
+      // Mark the field as touched when it changes
+      setTouched(prev => ({
+        ...prev,
+        [name]: true,
+      }));
+
+      // Update the field value and validate it
+      handleValidationChange(name, value);
+    } else {
+      console.error('Invalid event object passed to handleChange:', e);
+    }
   };
 
   const handleManagerSelect = id => {
-    setFormData(prev => ({ ...prev, managerId: id }));
+    console.log(`Manager selected: ${id}`);
+
+    // Mark the field as touched
+    setTouched(prev => ({
+      ...prev,
+      managerId: true,
+    }));
+
+    // Update the field value and validate it
+    handleValidationChange('managerId', id);
   };
 
   const handleCancel = () => {
-    setFormData({
+    // Reset form data to original user data
+    const originalFormData = {
       firstName: user.firstName || '',
       lastName: user.lastName || '',
       phoneNumber: user.phoneNumber || '',
       address: user.address || '',
       birthdate: user.birthdate || '',
-      workplace: user.workplace?.name || '',
+      workplace: user.workplace?.id || '',
       biography: user.biography || '',
       role: user.role || '',
       managerId: user.manager?.id || '',
-    });
+    };
+    setFormData(originalFormData);
+    setTouched({}); // Reset touched state
     setEditMode(false);
-    setErrors({});
   };
 
   const handleSave = async () => {
-    // Only call assignManager if manager changed (admin only)
+    // Mark all fields as touched for validation feedback
+    const allFieldsTouched = Object.keys(formData).reduce((acc, field) => {
+      acc[field] = true;
+      return acc;
+    }, {});
+    setTouched(allFieldsTouched);
+
+    // Validate all fields before saving
+    console.log('Attempting to save with data:', formData);
+    const isValid = validateAll();
+    if (!isValid) {
+      console.error('Validation failed with errors:', errors);
+
+      // Use AlertContext to show validation errors
+      showAlert({
+        title: t('validation.error'),
+        message: t('validation.pleaseFixErrors'),
+        variant: 'danger',
+      });
+
+      return; // Don't save if validation fails
+    }
+    // Call assignManager if manager changed (for all users in development)
     let newManager = user.manager;
     if (
       isAdmin &&
@@ -115,13 +188,22 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
         );
         console.log('Manager assigned successfully:', response);
       } catch (err) {
-        // Optionally handle error, e.g., show notification
         console.error('Failed to assign manager:', err);
+        showAlert({
+          title: t('profile.error'),
+          message: t('profile.managerAssignError', 'Failed to assign manager'),
+          variant: 'danger',
+        });
       }
     }
 
     // Always update user with new data
     try {
+      // Find the selected workplace from the workplaces list
+      const selectedWorkplace =
+        workplaces.find(w => String(w.id) === String(formData.workplace)) ||
+        user.workplace;
+
       const updatePayload = {
         ...user,
         firstName: formData.firstName,
@@ -129,11 +211,12 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
         phoneNumber: formData.phoneNumber,
         address: formData.address,
         birthdate: formData.birthdate,
-        workplace: { ...user.workplace, name: formData.workplace },
+        workplace: selectedWorkplace,
         biography: formData.biography,
         role: formData.role,
         manager: newManager,
       };
+      console.log('Updating user with payload:', updatePayload);
       const response = await userService.update(updatePayload);
       console.log('User updated successfully:', response);
 
@@ -143,18 +226,36 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
       if (isSelf) {
         // Update logged user in auth store if it's the self profile
         useAuthStore.setState({ user: response });
+        console.log('Updated auth store with new user data');
       }
 
       // Call the parent's update callback if provided
       if (onUserUpdate) {
         onUserUpdate(response);
+        console.log('Called onUserUpdate with response');
       }
+
+      // Show success message
+      showAlert({
+        title: t('profile.success'),
+        message: t('profile.updateSuccess', 'Profile updated successfully'),
+        variant: 'success',
+      });
+
+      setEditMode(false);
     } catch (err) {
-      // Optionally handle error, e.g., show notification
       console.error('Failed to update user:', err);
+      showAlert({
+        title: t('profile.error'),
+        message:
+          err.message ||
+          t('profile.updateError', 'Failed to update user profile'),
+        variant: 'danger',
+      });
+      return; // Don't close edit mode if there was an error
     }
 
-    setEditMode(false);
+    // Edit mode is closed in the success case
   };
 
   return (
@@ -208,7 +309,11 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
                       type="text"
                       value={formData.firstName}
                       onChange={handleChange}
-                      error={errors.firstName}
+                      error={
+                        touched.firstName && errors.firstName
+                          ? getErrorMessage(errors.firstName)
+                          : null
+                      }
                     />
                     <FormInput
                       name="lastName"
@@ -216,7 +321,11 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
                       type="text"
                       value={formData.lastName}
                       onChange={handleChange}
-                      error={errors.lastName}
+                      error={
+                        touched.lastName && errors.lastName
+                          ? getErrorMessage(errors.lastName)
+                          : null
+                      }
                     />
                   </>
                 ) : (
@@ -233,7 +342,11 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
                     type="text"
                     value={formData.phoneNumber}
                     onChange={handleChange}
-                    error={errors.phoneNumber}
+                    error={
+                      touched.phoneNumber && errors.phoneNumber
+                        ? getErrorMessage(errors.phoneNumber)
+                        : null
+                    }
                   />
                 ) : (
                   user.phoneNumber
@@ -249,7 +362,11 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
                     type="text"
                     value={formData.address}
                     onChange={handleChange}
-                    error={errors.address}
+                    error={
+                      touched.address && errors.address
+                        ? getErrorMessage(errors.address)
+                        : null
+                    }
                   />
                 ) : (
                   user.address
@@ -265,7 +382,11 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
                     type="date"
                     value={formData.birthdate}
                     onChange={handleChange}
-                    error={errors.birthdate}
+                    error={
+                      touched.birthdate && errors.birthdate
+                        ? getErrorMessage(errors.birthdate)
+                        : null
+                    }
                   />
                 ) : (
                   formatDate(user.birthdate, {
@@ -279,13 +400,22 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
               <ListGroup.Item>
                 <strong>{t('profile.workplace')}:</strong>{' '}
                 {editMode ? (
-                  <FormInput
+                  <FormDropdownInput
                     name="workplace"
                     label={t('profile.workplace')}
-                    type="text"
                     value={formData.workplace}
                     onChange={handleChange}
-                    error={errors.workplace}
+                    options={workplaces.map(w => ({
+                      value: w.id,
+                      label: w.name,
+                    }))}
+                    placeholder={t('profile.selectWorkplace')}
+                    error={
+                      touched.workplace && errors.workplace
+                        ? getErrorMessage(errors.workplace)
+                        : null
+                    }
+                    disabled={workplacesLoading}
                   />
                 ) : (
                   user.workplace?.name
@@ -301,13 +431,17 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
                     type="text"
                     value={formData.biography}
                     onChange={handleChange}
-                    error={errors.biography}
+                    error={
+                      touched.biography && errors.biography
+                        ? getErrorMessage(errors.biography)
+                        : null
+                    }
                   />
                 ) : (
                   user.biography
                 )}
               </ListGroup.Item>
-              {/* Manager (always display, only admin can edit) */}
+              {/* Manager (always display, always editable for development) */}
               <ListGroup.Item>
                 <strong>{t('profile.manager')}:</strong>{' '}
                 {editMode && isAdmin ? (
@@ -352,6 +486,11 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
                   }${user.manager.lastName ? user.manager.lastName : ''}`.trim()
                 ) : (
                   t('profile.noManager')
+                )}
+                {touched.managerId && errors.managerId && (
+                  <div className="text-danger mt-1">
+                    {getErrorMessage(errors.managerId)}
+                  </div>
                 )}
               </ListGroup.Item>
             </ListGroup>

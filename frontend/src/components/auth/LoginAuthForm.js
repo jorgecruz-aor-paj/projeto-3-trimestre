@@ -6,43 +6,42 @@ import { userService } from 'services/userService';
 import { useAuthStore } from 'stores/AuthStore';
 import { LoginForm } from 'components/forms/LoginForm';
 import { Alert } from 'react-bootstrap';
+import {
+  useFormValidation,
+  loginValidationRules,
+} from '../../utils/validation';
+import { useErrorMessage } from '../../hooks/useErrorMessage';
 
 export const LoginAuthForm = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { setToken, setUserInfo } = useAuthStore();
+  const { getErrorMessage } = useErrorMessage();
 
-  const [formData, setFormData] = useState({ email: '', password: '' });
+  const {
+    formData,
+    errors = {},
+    handleChange,
+    validateAll,
+  } = useFormValidation({ email: '', password: '' }, loginValidationRules);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [validationErrors, setValidationErrors] = useState({});
 
   const handleInputChange = e => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-    if (validationErrors[name]) {
-      setValidationErrors(prev => ({ ...prev, [name]: null }));
-    }
+    handleChange(name, value);
   };
 
-  const validateForm = () => {
-    const errors = {};
-    if (!formData.email) {
-      errors.email = t('validation.emailRequired');
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      errors.email = t('validation.emailInvalid');
-    }
-    if (!formData.password) {
-      errors.password = t('validation.passwordRequired');
-    }
-    setValidationErrors(errors);
-    return Object.keys(errors).length === 0;
+  const safeGetErrorMessage = error => {
+    if (!error) return null;
+    return getErrorMessage(error);
   };
 
   const handleSubmit = async e => {
     e.preventDefault();
     setError(null);
-    if (!validateForm()) return;
+    if (!validateAll()) return;
     setLoading(true);
     try {
       const response = await authService.login(formData);
@@ -70,8 +69,9 @@ export const LoginAuthForm = () => {
         formData={formData}
         onChange={handleInputChange}
         onSubmit={handleSubmit}
-        errors={validationErrors}
+        errors={errors}
         loading={loading}
+        getErrorMessage={safeGetErrorMessage}
       />
     </>
   );
