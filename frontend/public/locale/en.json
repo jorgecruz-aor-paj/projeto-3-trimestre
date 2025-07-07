@@ -167,26 +167,20 @@
     "fileTooLarge": "File too large",
     "dragDropFiles": "Drag and drop files here or click to select",
     "charactersRemaining": "characters remaining",
-    "maxCharacters": "maximum characters"
+    "maxCharacters": "maximum characters",
+    "minCharacters": "minimum characters",
+    "characters": "characters"
   },
   "validation": {
-    "emailRequired": "Email is required",
-    "emailInvalid": "Please enter a valid email address",
-    "passwordRequired": "Password is required",
-    "passwordMinLength": "Password must be at least 6 characters long",
-    "confirmPasswordRequired": "Please confirm your password",
-    "passwordsDontMatch": "Passwords do not match",
-    "fieldRequired": "This field is required",
     "required": "This field is required",
-    "minLength": "This field must have at least {{min}} characters",
-    "maxLength": "This field cannot have more than {{max}} characters",
-    "pattern": "The entered value is not valid",
-    "url": "Please enter a valid URL",
-    "numberOnly": "Please enter numbers only",
-    "trainingAreaRequired": "Please select a training area",
-    "emailFormat": "Please enter a valid email",
-    "passwordMatch": "Passwords do not match",
-    "invalidFormat": "Invalid format"
+    "minLength": "Minimum {{min}} characters required",
+    "maxLength": "Maximum {{max}} characters allowed",
+    "emailInvalid": "Please enter a valid email address",
+    "passwordInvalid": "Password must contain at least 8 characters, including uppercase, lowercase, number and special character",
+    "passwordsDontMatch": "Passwords do not match",
+    "birthdateInvalid": "Please enter a valid birthdate (age must be between 13 and 120 years)",
+    "workplaceRequired": "Please select a workplace",
+    "phoneInvalid": "Please enter a valid phone number"
   },
   "errors": {
     "unexpected": "An unexpected error occurred",

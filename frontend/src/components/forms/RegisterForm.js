@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { FormInput } from './FormInput';
 import { SubmitButton } from './SubmitButton';
+import { registerValidationRules } from '../../utils/validation';
 
 /**
  * RegisterForm component for user registration
@@ -20,6 +21,7 @@ export const RegisterForm = ({
   onSubmit,
   errors,
   loading,
+  getErrorMessage,
 }) => {
   const { t } = useTranslation();
   return (
@@ -31,8 +33,9 @@ export const RegisterForm = ({
         value={formData.email}
         onChange={onChange}
         placeholder={t('auth.emailPlaceholder')}
-        error={errors.email}
+        error={getErrorMessage(errors.email)}
         disabled={loading}
+        maxLength={registerValidationRules.email.maxLength}
         autoFocus
       />
       <FormInput
@@ -42,8 +45,9 @@ export const RegisterForm = ({
         value={formData.password}
         onChange={onChange}
         placeholder={t('auth.passwordPlaceholder')}
-        error={errors.password}
+        error={getErrorMessage(errors.password)}
         disabled={loading}
+        minLength={registerValidationRules.password.minLength}
       />
       <FormInput
         label={t('auth.confirmPassword')}
@@ -52,15 +56,15 @@ export const RegisterForm = ({
         value={formData.confirmPassword}
         onChange={onChange}
         placeholder={t('auth.confirmPasswordPlaceholder')}
-        error={errors.confirmPassword}
+        error={getErrorMessage(errors.confirmPassword)}
         disabled={loading}
+        minLength={registerValidationRules.confirmPassword.minLength}
       />
       <SubmitButton
         isLoading={loading}
         label={t('auth.register')}
         loadingText={t('auth.registering')}
         className="w-100 py-2 mt-3 mb-4"
-
       />
       <div className="text-center">
         <p className="mb-0">

@@ -6,6 +6,11 @@ import { authService } from 'services/authService';
 import { ConfirmRegistrationForm } from 'components/forms/ConfirmRegistrationForm';
 import { useAlert } from 'contexts/AlertContext';
 import { useWorkplaces } from 'hooks/useWorkplaces';
+import {
+  useFormValidation,
+  confirmRegistrationValidationRules,
+} from '../../utils/validation';
+import { useErrorMessage } from '../../hooks/useErrorMessage';
 
 export const ConfirmRegistrationPage = () => {
   const { t } = useTranslation();
@@ -13,15 +18,15 @@ export const ConfirmRegistrationPage = () => {
   const { showAlert } = useAlert();
   const [searchParams] = useSearchParams();
   const confirmationToken = searchParams.get('confirmationToken');
+  const { getErrorMessage } = useErrorMessage();
 
   const { workplaces, workplacesLoading } = useWorkplaces();
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-  const [validationErrors, setValidationErrors] = useState({});
 
-  const [formData, setFormData] = useState({
+  const initialFormData = {
     firstName: '',
     lastName: '',
     address: '',
@@ -30,38 +35,33 @@ export const ConfirmRegistrationPage = () => {
     workplaceId: '',
     biography: '',
     photograph: null,
-  });
+  };
+
+  const {
+    formData,
+    errors = {},
+    handleChange,
+    validateAll,
+    setFormData,
+  } = useFormValidation(initialFormData, confirmRegistrationValidationRules);
 
   const handleInputChange = e => {
     const { name, value, type, files } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'file' ? files[0] : value,
-    }));
-    if (validationErrors[name]) {
-      setValidationErrors(prev => ({ ...prev, [name]: null }));
+    if (type === 'file') {
+      setFormData(prev => ({
+        ...prev,
+        [name]: files[0],
+      }));
+    } else {
+      handleChange(name, value);
     }
-  };
-
-  const validateForm = () => {
-    const errors = {};
-    if (!formData.firstName) errors.firstName = t('validation.fieldRequired');
-    if (!formData.lastName) errors.lastName = t('validation.fieldRequired');
-    if (!formData.address) errors.address = t('validation.fieldRequired');
-    if (!formData.phoneNumber)
-      errors.phoneNumber = t('validation.fieldRequired');
-    if (!formData.birthdate) errors.birthdate = t('validation.fieldRequired');
-    if (!formData.workplaceId)
-      errors.workplaceId = t('validation.fieldRequired');
-    setValidationErrors(errors);
-    return Object.keys(errors).length === 0;
   };
 
   const handleSubmit = async e => {
     e.preventDefault();
     setError(null);
     setSuccess(null);
-    if (!validateForm()) return;
+    if (!validateAll()) return;
     setSubmitting(true);
     try {
       const submitData = new FormData();
@@ -100,7 +100,7 @@ export const ConfirmRegistrationPage = () => {
               {error && <Alert variant="danger">{error}</Alert>}
               <ConfirmRegistrationForm
                 formData={formData}
-                validationErrors={validationErrors}
+                validationErrors={errors}
                 workplacesLoading={workplacesLoading}
                 workplaces={workplaces}
                 loading={loading}

@@ -5,6 +5,8 @@ import { FormInput } from './FormInput';
 import { SubmitButton } from './SubmitButton';
 import { FormDropdownInput } from './FormDropdownInput';
 import { useTranslation } from 'react-i18next';
+import { useErrorMessage } from '../../hooks/useErrorMessage';
+import { confirmRegistrationValidationRules } from '../../utils/validation';
 
 /**
  * Confirm Registration form component (presentational)
@@ -21,6 +23,12 @@ export const ConfirmRegistrationForm = ({
   handleSubmit,
 }) => {
   const { t } = useTranslation();
+  const { getErrorMessage } = useErrorMessage();
+
+  const safeGetErrorMessage = error => {
+    if (!error) return null;
+    return getErrorMessage(error);
+  };
 
   return (
     <Form onSubmit={handleSubmit} encType="multipart/form-data">
@@ -29,8 +37,10 @@ export const ConfirmRegistrationForm = ({
         label={t('user.firstName')}
         value={formData.firstName}
         onChange={handleInputChange}
-        error={validationErrors.firstName}
+        error={safeGetErrorMessage(validationErrors.firstName)}
         disabled={submitting}
+        minLength={confirmRegistrationValidationRules.firstName.minLength}
+        maxLength={confirmRegistrationValidationRules.firstName.maxLength}
         autoFocus
       />
       <FormInput
@@ -38,23 +48,27 @@ export const ConfirmRegistrationForm = ({
         label={t('user.lastName')}
         value={formData.lastName}
         onChange={handleInputChange}
-        error={validationErrors.lastName}
+        error={safeGetErrorMessage(validationErrors.lastName)}
         disabled={submitting}
+        minLength={confirmRegistrationValidationRules.lastName.minLength}
+        maxLength={confirmRegistrationValidationRules.lastName.maxLength}
       />
       <FormInput
         name="address"
         label={t('user.address')}
         value={formData.address}
         onChange={handleInputChange}
-        error={validationErrors.address}
+        error={safeGetErrorMessage(validationErrors.address)}
         disabled={submitting}
+        minLength={confirmRegistrationValidationRules.address.minLength}
+        maxLength={confirmRegistrationValidationRules.address.maxLength}
       />
       <FormInput
         name="phoneNumber"
         label={t('user.phoneNumber')}
         value={formData.phoneNumber}
         onChange={handleInputChange}
-        error={validationErrors.phoneNumber}
+        error={safeGetErrorMessage(validationErrors.phoneNumber)}
         disabled={submitting}
       />
       <FormInput
@@ -63,7 +77,7 @@ export const ConfirmRegistrationForm = ({
         label={t('user.birthdate')}
         value={formData.birthdate}
         onChange={handleInputChange}
-        error={validationErrors.birthdate}
+        error={safeGetErrorMessage(validationErrors.birthdate)}
         disabled={submitting}
       />
       <FormDropdownInput
@@ -72,7 +86,7 @@ export const ConfirmRegistrationForm = ({
         value={formData.workplaceId}
         onChange={handleInputChange}
         options={workplaces?.map(w => ({ value: w.id, label: w.name })) || []}
-        error={validationErrors.workplaceId}
+        error={safeGetErrorMessage(validationErrors.workplaceId)}
         disabled={submitting || workplacesLoading}
         placeholder={
           workplacesLoading ? t('common.loading') : t('user.selectWorkplace')
@@ -80,24 +94,23 @@ export const ConfirmRegistrationForm = ({
       />
       <FormInput
         name="biography"
-        as="textarea"
+        type="textarea"
         label={t('user.biography')}
         value={formData.biography}
         onChange={handleInputChange}
-        error={validationErrors.biography}
+        error={safeGetErrorMessage(validationErrors.biography)}
         disabled={submitting}
+        maxLength={confirmRegistrationValidationRules.biography.maxLength}
         rows={3}
       />
-      <Form.Group className="mb-3">
-        <Form.Label>{t('user.photograph')}</Form.Label>
-        <Form.Control
-          type="file"
-          name="photograph"
-          accept="image/*"
-          onChange={handleInputChange}
-          disabled={submitting}
-        />
-      </Form.Group>
+      <FormInput
+        name="photograph"
+        type="file"
+        label={t('user.photograph')}
+        onChange={handleInputChange}
+        disabled={submitting}
+        accept="image/*"
+      />
       <SubmitButton
         isLoading={submitting}
         label={t('auth.confirmRegistration')}

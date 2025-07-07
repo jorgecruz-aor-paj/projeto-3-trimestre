@@ -5,6 +5,7 @@ import { Form } from 'react-bootstrap';
 import { FormInput } from './FormInput';
 import { SubmitButton } from './SubmitButton';
 import { useTranslation } from 'react-i18next';
+import { loginValidationRules } from '../../utils/validation';
 
 /**
  * Login form component (presentational)
@@ -16,6 +17,7 @@ export const LoginForm = ({
   onSubmit,
   errors,
   loading,
+  getErrorMessage,
 }) => {
   const { t } = useTranslation();
   return (
@@ -26,9 +28,10 @@ export const LoginForm = ({
         label={t('auth.email')}
         value={formData.email}
         onChange={onChange}
-        error={errors.email}
+        error={getErrorMessage(errors.email)}
         placeholder={t('auth.emailPlaceholder')}
         disabled={loading}
+        maxLength={loginValidationRules.email.maxLength}
       />
 
       <FormInput
@@ -37,9 +40,10 @@ export const LoginForm = ({
         label={t('auth.password')}
         value={formData.password}
         onChange={onChange}
-        error={errors.password}
+        error={getErrorMessage(errors.password)}
         placeholder={t('auth.passwordPlaceholder')}
         disabled={loading}
+        minLength={loginValidationRules.password.minLength}
       />
 
       <div className="d-flex justify-content-end mb-3">
