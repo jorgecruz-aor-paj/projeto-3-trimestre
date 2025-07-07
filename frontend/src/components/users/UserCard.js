@@ -2,10 +2,22 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Card, Badge } from 'react-bootstrap';
 import { API_ENDPOINTS } from 'api/apiConfig';
+import { useNavigate } from 'react-router-dom';
+import 'styles/components/UserCard.css';
 
 export const UserCard = ({ user }) => {
+  const navigate = useNavigate();
+
+  const handleCardClick = () => {
+    navigate(`/profile?userId=${user.id}`);
+  };
+
   return (
-    <Card className="mb-3 shadow-sm">
+    <Card
+      className="mb-3 shadow-sm user-card"
+      onClick={handleCardClick}
+      style={{ cursor: 'pointer' }}
+    >
       <Card.Body>
         <div className="d-flex align-items-center">
           {user.photograph && user.id && (
@@ -25,6 +37,10 @@ export const UserCard = ({ user }) => {
             <div className="text-muted small">{user.phoneNumber}</div>
             <div className="text-muted small">{user.address}</div>
             <div className="text-muted small">{user.biography}</div>
+            <small className="text-primary mt-2">
+              <i className="fas fa-user me-1"></i>
+              View profile
+            </small>
           </div>
         </div>
       </Card.Body>
