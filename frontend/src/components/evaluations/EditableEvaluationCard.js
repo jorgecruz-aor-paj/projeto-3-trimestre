@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ProfilePicture } from 'components/common/ProfilePicture';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,12 +11,43 @@ import { FormDropdownInput } from 'components/forms/FormDropdownInput';
 import { evaluationService } from 'services/evaluationService';
 import { formatDateToDDMMYYYY } from 'utils/dateUtils';
 import { translateEvaluationScale } from 'utils/evaluationScaleTranslations';
+import { useFormValidation, evaluationValidationRules } from 'utils/validation';
+import { useErrorMessage } from 'hooks/useErrorMessage';
+import { useEvaluationStore } from 'stores/EvaluationStore';
 
 export const EditableEvaluationCard = ({ evaluation, onEdit }) => {
   const { t, i18n } = useTranslation();
   const { showAlert } = useAlert();
-  const [form, setForm] = useState({ ...evaluation });
   const [editing, setEditing] = useState(false);
+  const { getErrorMessage } = useErrorMessage();
+  const evaluationStore = useEvaluationStore();
+
+  // Initialize form validation
+  const {
+    formData: form,
+    errors,
+    handleChange: handleValidationChange,
+    validateAll,
+    resetForm,
+    setFormData: setForm,
+  } = useFormValidation({ ...evaluation }, evaluationValidationRules);
+
+  // Track which fields have been touched
+  const [touched, setTouched] = useState({});
+
+  // When the evaluation prop changes, update the form data
+  useEffect(() => {
+    // Find the current evaluation in the store to ensure we're using the latest data
+    const currentEvaluation =
+      evaluationStore.evaluations.find(
+        storeEvaluation => storeEvaluation.id === evaluation.id
+      ) || evaluation;
+
+    // Only update if not currently editing to avoid overwriting user changes
+    if (!editing) {
+      setForm(currentEvaluation);
+    }
+  }, [evaluation, evaluationStore.evaluations, editing, setForm]);
 
   const scaleNumberMap = {
     LOW_CONTRIBUTION: 1,
@@ -27,15 +58,62 @@ export const EditableEvaluationCard = ({ evaluation, onEdit }) => {
 
   const handleChange = e => {
     const { name, value } = e.target;
-    setForm(prev => ({ ...prev, [name]: value }));
+
+    // Mark the field as touched when it changes
+    setTouched(prev => ({
+      ...prev,
+      [name]: true,
+    }));
+
+    // Update the field value and validate it
+    handleValidationChange(name, value);
   };
 
   const handleSave = async () => {
+    // Mark all fields as touched for validation feedback
+    const allFieldsTouched = Object.keys(form).reduce((acc, field) => {
+      acc[field] = true;
+      return acc;
+    }, {});
+    setTouched(allFieldsTouched);
+
+    // Validate all fields before saving
+    const isValid = validateAll();
+    if (!isValid) {
+      console.error('Validation failed with errors:', errors);
+      showAlert({
+        title: t('validation.error', 'Validation Error'),
+        message: t(
+          'validation.pleaseFixErrors',
+          'Please fix the validation errors before saving'
+        ),
+        variant: 'danger',
+      });
+      return; // Don't save if validation fails
+    }
+
     try {
       // Send updated evaluation to backend
-      await evaluationService.update(form);
+      const updatedEvaluation = await evaluationService.update(form);
+
+      // Update the local form data with the response from the server
+      setForm(updatedEvaluation);
+
+      // Update the evaluation in the store
+      if (evaluationStore.evaluations.length > 0) {
+        const updatedEvaluations = evaluationStore.evaluations.map(evaluation =>
+          evaluation.id === updatedEvaluation.id
+            ? updatedEvaluation
+            : evaluation
+        );
+        evaluationStore.setEvaluations(updatedEvaluations);
+      }
+
       setEditing(false);
-      if (onEdit) onEdit(form);
+
+      // Pass the updated evaluation to the parent component
+      if (onEdit) onEdit(updatedEvaluation);
+
       showAlert({
         title: t('common.success', 'Success'),
         message: t('evaluations.saveSuccess', 'Evaluation saved successfully.'),
@@ -51,6 +129,20 @@ export const EditableEvaluationCard = ({ evaluation, onEdit }) => {
         variant: 'danger',
       });
     }
+  };
+
+  const handleCancel = () => {
+    // Find the current evaluation in the store to ensure we're using the latest data
+    const currentEvaluation =
+      evaluationStore.evaluations.find(
+        storeEvaluation => storeEvaluation.id === evaluation.id
+      ) || evaluation;
+
+    // Reset form to the latest evaluation from the store
+    setForm(currentEvaluation);
+    resetForm(currentEvaluation);
+    setTouched({});
+    setEditing(false);
   };
 
   const handleDownload = () => {
@@ -206,6 +298,11 @@ export const EditableEvaluationCard = ({ evaluation, onEdit }) => {
                     )}`,
                   },
                 ]}
+                error={
+                  touched.scale && errors.scale
+                    ? getErrorMessage(errors.scale)
+                    : null
+                }
               />
               <FormDropdownInput
                 name="status"
@@ -220,6 +317,11 @@ export const EditableEvaluationCard = ({ evaluation, onEdit }) => {
                   },
                   { value: 'CLOSED', label: t('evaluationStatus.CLOSED') },
                 ]}
+                error={
+                  touched.status && errors.status
+                    ? getErrorMessage(errors.status)
+                    : null
+                }
               />
               <FormInput
                 name="feedback"
@@ -227,6 +329,11 @@ export const EditableEvaluationCard = ({ evaluation, onEdit }) => {
                 type="text"
                 value={form.feedback || ''}
                 onChange={handleChange}
+                error={
+                  touched.feedback && errors.feedback
+                    ? getErrorMessage(errors.feedback)
+                    : null
+                }
               />
             </div>
           ) : (
@@ -272,10 +379,7 @@ export const EditableEvaluationCard = ({ evaluation, onEdit }) => {
             >
               {t('common.save')}
             </button>
-            <button
-              className="btn btn-secondary btn-sm"
-              onClick={() => setEditing(false)}
-            >
+            <button className="btn btn-secondary btn-sm" onClick={handleCancel}>
               {t('common.cancel')}
             </button>
           </div>

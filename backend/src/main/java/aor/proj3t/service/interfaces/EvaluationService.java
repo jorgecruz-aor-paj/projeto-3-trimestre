@@ -34,7 +34,7 @@ public interface EvaluationService {
      * @param requesterId The ID of requester
      * @param evaluationDTO The evaluationDto to update the DataBase
      */
-    void updateEvaluation(Long requesterId, EvaluationDTO evaluationDTO);
+    EvaluationDTO updateEvaluation(Long requesterId, EvaluationDTO evaluationDTO);
 
     /**
      * Find evaluations for a specific evaluator.

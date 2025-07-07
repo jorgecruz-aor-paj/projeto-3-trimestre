@@ -75,7 +75,7 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
     }
 
     @Override
-    public void updateEvaluation(Long requesterId, EvaluationDTO evaluationDTO) {
+    public EvaluationDTO updateEvaluation(Long requesterId, EvaluationDTO evaluationDTO) {
         Evaluation evaluation = getEntity(daoFactory.forEvaluation().findById(evaluationDTO.getId()),
                 evaluationDTO.getId(),
                 "Evaluation");
@@ -106,6 +106,7 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
         daoFactory.forEvaluation().update(evaluation);
         checkAndCompleteEvaluationCycle(evaluation.getEvaluationCycle().getId());
         checkAndCloseEvaluationCycle(evaluation.getEvaluationCycle().getId());
+        return converterFactory.forEvaluation().toDTO(evaluation);
     }
 
     @Override

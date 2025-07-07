@@ -172,6 +172,13 @@
     "characters": "caracteres"
   },
   "validation": {
+    "emailRequired": "O email é obrigatório",
+    "emailInvalid": "Por favor, introduza um endereço de email válido",
+    "passwordRequired": "A palavra-passe é obrigatória",
+    "passwordMinLength": "A palavra-passe deve ter pelo menos 6 caracteres",
+    "confirmPasswordRequired": "Por favor, confirme a sua palavra-passe",
+    "passwordsDontMatch": "As palavras-passe não coincidem",
+    "fieldRequired": "Este campo é obrigatório",
     "required": "Este campo é obrigatório",
     "minLength": "Mínimo de {{min}} caracteres necessários",
     "maxLength": "Máximo de {{max}} caracteres permitidos",
@@ -181,8 +188,12 @@
     "birthdateInvalid": "Por favor, insira uma data de nascimento válida (idade deve estar entre 13 e 120 anos)",
     "workplaceRequired": "Por favor, selecione um local de trabalho",
     "phoneInvalid": "Por favor, insira um número de telefone válido",
+    "pleaseFixErrors": "Por favor, corrija os erros de validação antes de salvar",
     "trainingAreaRequired": "A área de formação é obrigatória",
-    "trainingAreaNameFormat": "O nome da área de formação só pode conter letras, números, espaços e hífens"
+    "trainingAreaNameFormat": "O nome da área de formação só pode conter letras, números, espaços e hífens",
+    "ratingInvalid": "Por favor, insira uma classificação válida entre 1 e 5",
+    "statusRequired": "O estado é obrigatório",
+    "error": "Erro de Validação"
   },
   "errors": {
     "unexpected": "Ocorreu um erro inesperado",
@@ -477,15 +488,15 @@
     "error": "Falha ao carregar utilizadores."
   },
   "profile": {
-    "info": "Informação do Perfil",
-    "name": "Nome",
-    "firstName": "Nome próprio",
-    "lastName": "Apelido",
+    "info": "Informações do Perfil",
     "email": "Email",
-    "phone": "Telemóvel",
-    "address": "Morada",
-    "birthdate": "Data de nascimento",
-    "workplace": "Local de trabalho",
+    "name": "Nome",
+    "firstName": "Primeiro Nome",
+    "lastName": "Sobrenome",
+    "phone": "Número de Telefone",
+    "address": "Endereço",
+    "birthdate": "Data de Nascimento",
+    "workplace": "Local de Trabalho",
     "biography": "Biografia",
     "role": "Função",
     "manager": "Gestor",

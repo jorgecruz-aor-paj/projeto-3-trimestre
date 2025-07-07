@@ -303,24 +303,16 @@ export const evaluationValidationRules = {
     minLength: 5,
     maxLength: 150,
   },
-  description: {
+  feedback: {
     required: true,
-    minLength: 10,
-    maxLength: 1000,
-  },
-  rating: {
-    required: true,
-    custom: value => {
-      const numValue = Number(value);
-      if (!numValue || numValue < 1 || numValue > 5) {
-        return 'validation.ratingInvalid';
-      }
-      return null;
-    },
-  },
-  comments: {
-    required: false,
+    minLength: 3,
     maxLength: 2000,
+  },
+  status: {
+    required: true,
+  },
+  scale: {
+    required: true,
   },
 };
 

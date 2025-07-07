@@ -60,8 +60,8 @@ public class EvaluationResource {
             EvaluationDTO evaluationDTO) {
         validator.validateEvaluationDTO(evaluationDTO);
         Long requesterId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
-        serviceFactory.forEvaluation().updateEvaluation(requesterId, evaluationDTO);
-        return Response.ok(new APIResponseDTO("Evaluation updated successfully")).build();
+        EvaluationDTO evaluation = serviceFactory.forEvaluation().updateEvaluation(requesterId, evaluationDTO);
+        return Response.ok(evaluation).build();
     }
 
     @PATCH
