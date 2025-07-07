@@ -177,7 +177,16 @@
     "confirmPasswordRequired": "Por favor, confirme a sua palavra-passe",
     "passwordsDontMatch": "As palavras-passe não coincidem",
     "fieldRequired": "Este campo é obrigatório",
-    "required": "Este campo é obrigatório"
+    "required": "Este campo é obrigatório",
+    "minLength": "Este campo deve ter pelo menos {{min}} caracteres",
+    "maxLength": "Este campo não pode ter mais de {{max}} caracteres",
+    "pattern": "O valor inserido não é válido",
+    "url": "Por favor, insira um URL válido",
+    "numberOnly": "Por favor, insira apenas números",
+    "trainingAreaRequired": "Por favor, selecione uma área de formação",
+    "emailFormat": "Por favor, insira um email válido",
+    "passwordMatch": "As senhas não coincidem",
+    "invalidFormat": "Formato inválido"
   },
   "errors": {
     "unexpected": "Ocorreu um erro inesperado",

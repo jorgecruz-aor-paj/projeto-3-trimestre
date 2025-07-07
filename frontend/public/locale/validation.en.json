@@ -1,0 +1,14 @@
+{
+  "validation": {
+    "required": "This field is required",
+    "minLength": "This field must have at least {min} characters",
+    "maxLength": "This field cannot have more than {max} characters",
+    "pattern": "The entered value is not valid",
+    "url": "Please enter a valid URL",
+    "numberOnly": "Please enter numbers only",
+    "trainingAreaRequired": "Please select a training area",
+    "emailFormat": "Please enter a valid email",
+    "passwordMatch": "Passwords do not match",
+    "invalidFormat": "Invalid format"
+  }
+}

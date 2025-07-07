@@ -2,6 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Form, Button, Row, Col, Spinner } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
+import { FormInput } from './FormInput';
+import { FormDropdownInput } from './FormDropdownInput';
+import {
+  useFormValidation,
+  trainingValidationRules,
+} from '../../utils/validation';
 
 /**
  * Training form component for creating and editing trainings
@@ -24,16 +30,18 @@ export const TrainingForm = ({
 }) => {
   const { t } = useTranslation();
 
-  const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    duration: '',
-    language: '',
-    link: '',
-    trainingArea: null,
-  });
-
-  const [errors, setErrors] = useState({});
+  const { formData, errors, handleChange, validateAll, reset, setFormData } =
+    useFormValidation(
+      {
+        title: '',
+        description: '',
+        duration: '',
+        language: '',
+        link: '',
+        trainingArea: null,
+      },
+      trainingValidationRules
+    );
 
   // Populate form when editing
   useEffect(() => {
@@ -48,66 +56,28 @@ export const TrainingForm = ({
         trainingArea: training.trainingArea || null,
       });
     }
-  }, [training]);
+  }, [training, setFormData]);
+
+  const getErrorMessage = error => {
+    if (!error) return null;
+    if (typeof error === 'string') {
+      return t(error);
+    }
+    if (error.key && error.options) {
+      return t(error.key, error.options);
+    }
+    return t(error);
+  };
 
   const handleInputChange = e => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-
-    // Clear error when user starts typing
-    if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: null }));
-    }
-  };
-
-  const validateForm = () => {
-    const newErrors = {};
-
-    if (!formData.title.trim()) {
-      newErrors.title = t('validation.required');
-    } else if (formData.title.length > 100) {
-      newErrors.title = t('trainings.validation.titleTooLong');
-    }
-
-    if (!formData.description.trim()) {
-      newErrors.description = t('validation.required');
-    } else if (formData.description.length < 10) {
-      newErrors.description = t('trainings.validation.descriptionTooShort');
-    } else if (formData.description.length > 1000) {
-      newErrors.description = t('trainings.validation.descriptionTooLong');
-    }
-
-    if (!formData.duration) {
-      newErrors.duration = t('validation.required');
-    } else if (formData.duration <= 0) {
-      newErrors.duration = t('trainings.validation.durationInvalid');
-    }
-
-    if (!formData.language.trim()) {
-      newErrors.language = t('validation.required');
-    }
-
-    if (!formData.trainingArea) {
-      newErrors.trainingArea = t('validation.required');
-    }
-
-    // Validate URL if provided
-    if (formData.link && formData.link.trim()) {
-      try {
-        new URL(formData.link);
-      } catch {
-        newErrors.link = t('trainings.validation.invalidUrl');
-      }
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    handleChange(name, value);
   };
 
   const handleSubmit = e => {
     e.preventDefault();
 
-    if (!validateForm()) {
+    if (!validateAll()) {
       return;
     }
 
@@ -134,148 +104,93 @@ export const TrainingForm = ({
     <Form onSubmit={handleSubmit}>
       <Row>
         <Col md={6}>
-          <Form.Group className="mb-3">
-            <Form.Label>
-              {t('trainings.fields.title')}{' '}
-              <span className="text-danger">*</span>
-            </Form.Label>
-            <Form.Control
-              type="text"
-              name="title"
-              value={formData.title}
-              onChange={handleInputChange}
-              placeholder={t('trainings.form.titlePlaceholder')}
-              isInvalid={!!errors.title}
-            />
-            <Form.Control.Feedback type="invalid">
-              {errors.title}
-            </Form.Control.Feedback>
-          </Form.Group>
+          <FormInput
+            name="title"
+            label={`${t('trainings.fields.title')} *`}
+            type="text"
+            value={formData.title}
+            onChange={handleInputChange}
+            placeholder={t('trainings.form.titlePlaceholder')}
+            error={getErrorMessage(errors.title)}
+          />
         </Col>
 
         <Col md={6}>
-          <Form.Group className="mb-3">
-            <Form.Label>
-              {t('trainings.fields.area')}{' '}
-              <span className="text-danger">*</span>
-            </Form.Label>
-            <Form.Select
-              name="trainingArea"
-              value={formData.trainingArea?.id || ''}
-              onChange={e => {
-                const selectedArea = trainingAreas.find(
-                  area => area.id === Number(e.target.value)
-                );
-                setFormData(prev => ({ ...prev, trainingArea: selectedArea }));
-              }}
-              isInvalid={!!errors.trainingArea}
-            >
-              <option value="">{t('trainings.form.selectArea')}</option>
-              {trainingAreas.map(area => (
-                <option key={area.id} value={area.id}>
-                  {area.name}
-                </option>
-              ))}
-            </Form.Select>
-            <Form.Control.Feedback type="invalid">
-              {errors.trainingArea}
-            </Form.Control.Feedback>
-          </Form.Group>
+          <FormDropdownInput
+            name="trainingArea"
+            label={`${t('trainings.fields.area')} *`}
+            value={formData.trainingArea?.id || ''}
+            onChange={e => {
+              const selectedArea = trainingAreas.find(
+                area => area.id === Number(e.target.value)
+              );
+              handleChange('trainingArea', selectedArea);
+            }}
+            options={trainingAreas.map(area => ({
+              value: area.id,
+              label: area.name,
+            }))}
+            error={getErrorMessage(errors.trainingArea)}
+            placeholder={t('trainings.form.selectArea')}
+          />
         </Col>
       </Row>
 
       <Row>
         <Col md={6}>
-          <Form.Group className="mb-3">
-            <Form.Label>
-              {t('trainings.fields.duration')}{' '}
-              <span className="text-danger">*</span>
-            </Form.Label>
-            <Form.Control
-              type="number"
-              name="duration"
-              value={formData.duration}
-              onChange={handleInputChange}
-              placeholder={t('trainings.form.durationPlaceholder')}
-              min="1"
-              max="1000"
-              isInvalid={!!errors.duration}
-            />
-            <Form.Text className="text-muted">
-              {t('trainings.form.durationHint')}
-            </Form.Text>
-            <Form.Control.Feedback type="invalid">
-              {errors.duration}
-            </Form.Control.Feedback>
-          </Form.Group>
+          <FormInput
+            name="duration"
+            label={`${t('trainings.fields.duration')} *`}
+            type="number"
+            value={formData.duration}
+            onChange={handleInputChange}
+            placeholder={t('trainings.form.durationPlaceholder')}
+            error={getErrorMessage(errors.duration)}
+          />
         </Col>
 
         <Col md={6}>
-          <Form.Group className="mb-3">
-            <Form.Label>
-              {t('trainings.fields.language')}{' '}
-              <span className="text-danger">*</span>
-            </Form.Label>
-            <Form.Select
-              name="language"
-              value={formData.language}
-              onChange={handleInputChange}
-              isInvalid={!!errors.language}
-            >
-              <option value="">{t('trainings.form.selectLanguage')}</option>
-              {commonLanguages.map(lang => (
-                <option key={lang} value={lang}>
-                  {lang}
-                </option>
-              ))}
-            </Form.Select>
-            <Form.Control.Feedback type="invalid">
-              {errors.language}
-            </Form.Control.Feedback>
-          </Form.Group>
+          <FormDropdownInput
+            name="language"
+            label={`${t('trainings.fields.language')} *`}
+            value={formData.language}
+            onChange={handleInputChange}
+            options={commonLanguages.map(lang => ({
+              value: lang,
+              label: lang,
+            }))}
+            error={getErrorMessage(errors.language)}
+            placeholder={t('trainings.form.selectLanguage')}
+          />
         </Col>
       </Row>
 
-      <Form.Group className="mb-3">
-        <Form.Label>
-          {t('trainings.fields.description')}{' '}
-          <span className="text-danger">*</span>
-        </Form.Label>
-        <Form.Control
-          as="textarea"
-          rows={4}
-          name="description"
-          value={formData.description}
-          onChange={handleInputChange}
-          placeholder={t('trainings.form.descriptionPlaceholder')}
-          isInvalid={!!errors.description}
-        />
-        <Form.Text className="text-muted">
-          {t('trainings.form.descriptionHint')} ({formData.description.length}
-          /1000)
-        </Form.Text>
-        <Form.Control.Feedback type="invalid">
-          {errors.description}
-        </Form.Control.Feedback>
-      </Form.Group>
+      <FormInput
+        name="description"
+        label={`${t('trainings.fields.description')} *`}
+        type="textarea"
+        value={formData.description}
+        onChange={handleInputChange}
+        placeholder={t('trainings.form.descriptionPlaceholder')}
+        error={getErrorMessage(errors.description)}
+      />
+      <Form.Text className="text-muted d-block mb-3">
+        {t('trainings.form.descriptionHint')} ({formData.description.length}
+        /2000)
+      </Form.Text>
 
-      <Form.Group className="mb-4">
-        <Form.Label>{t('trainings.fields.link')}</Form.Label>
-        <Form.Control
-          type="url"
-          name="link"
-          value={formData.link}
-          onChange={handleInputChange}
-          placeholder={t('trainings.form.linkPlaceholder')}
-          isInvalid={!!errors.link}
-        />
-        <Form.Text className="text-muted">
-          {t('trainings.form.linkHint')}
-        </Form.Text>
-        <Form.Control.Feedback type="invalid">
-          {errors.link}
-        </Form.Control.Feedback>
-      </Form.Group>
+      <FormInput
+        name="link"
+        label={t('trainings.fields.link')}
+        type="url"
+        value={formData.link}
+        onChange={handleInputChange}
+        placeholder={t('trainings.form.linkPlaceholder')}
+        error={getErrorMessage(errors.link)}
+      />
+      <Form.Text className="text-muted d-block mb-4">
+        {t('trainings.form.linkHint')}
+      </Form.Text>
 
       <div className="d-flex justify-content-end gap-2">
         <Button variant="secondary" onClick={onCancel} disabled={loading}>

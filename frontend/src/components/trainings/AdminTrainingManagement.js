@@ -95,14 +95,11 @@ export const AdminTrainingManagement = () => {
   };
 
   const handleEditTraining = async trainingData => {
-    console.log('Editing training:', trainingData);
     try {
       setFormLoading(true);
 
       // Remove id and trainingAreaId from the data before sending
       const { trainingAreaId, ...trainingToUpdate } = trainingData;
-
-      console.log('Updated training:', trainingToUpdate);
       await trainingService.update(trainingToUpdate);
       showAlert({
         title: t('trainings.admin.success'),
@@ -125,9 +122,7 @@ export const AdminTrainingManagement = () => {
   const handleDeactivateTraining = training => {
     showConfirm({
       title: t('trainings.admin.deactivateTitle'),
-      message: t('trainings.admin.deactivateMessage', {
-        title: training.title,
-      }),
+      message: t('trainings.admin.deactivateMessage').replace('{title}', training.title),
       onConfirm: async () => {
         try {
           await trainingService.deactivate(training.id);
