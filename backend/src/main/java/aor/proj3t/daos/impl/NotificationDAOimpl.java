@@ -86,4 +86,15 @@ public class NotificationDAOimpl extends AbstractDAO<Notification, Long> impleme
 
                 return updatedCount > 0; // True if the update was successful
         }
+
+        @Override
+        public Integer markAllNotificationsAsRead(Long recipientId) {
+                int updatedCount = em.createQuery(
+                                "UPDATE Notification n SET n.isRead = TRUE, n.timestampRead = :timestamp WHERE n.recipient.id = :recipientId AND n.isRead = FALSE")
+                                .setParameter("timestamp", Instant.now())
+                                .setParameter("recipientId", recipientId)
+                                .executeUpdate();
+
+                return updatedCount; // Number of notifications marked as read
+        }
 }

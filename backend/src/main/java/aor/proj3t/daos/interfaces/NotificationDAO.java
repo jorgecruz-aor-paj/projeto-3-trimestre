@@ -64,4 +64,11 @@ public interface NotificationDAO extends BasicDAO<Notification, Long> {
      */
     Boolean markNotificationAsRead(Long notificationId);
 
+    /**
+     * Marks all notifications as read for a specific user.
+     *
+     * @param recipientId The ID of the user.
+     * @return The number of notifications marked as read.
+     */
+    Integer markAllNotificationsAsRead(Long recipientId);
 }

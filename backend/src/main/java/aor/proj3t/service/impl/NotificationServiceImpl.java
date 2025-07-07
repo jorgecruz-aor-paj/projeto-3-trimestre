@@ -16,6 +16,7 @@ import aor.proj3t.entities.Notification;
 import aor.proj3t.enums.NotificationType;
 import aor.proj3t.service.interfaces.NotificationService;
 import aor.proj3t.util.converterutils.ConverterFactory;
+import aor.proj3t.websocket.AppWebSocket;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -34,6 +35,9 @@ public class NotificationServiceImpl extends BaseService implements Notification
     @Inject
     private ConverterFactory converterFactory;
 
+    @Inject
+    private AppWebSocket webSocketService;
+
     @Override
     @Transactional
     public Notification createNotification(Notification notification) {
@@ -41,6 +45,17 @@ public class NotificationServiceImpl extends BaseService implements Notification
         notification.setRead(false);
         daoFactory.forNotification().create(notification);
         logger.info("Notification created with ID: {}", notification.getId());
+
+        // Send WebSocket notification to recipient
+        try {
+            webSocketService.notifyNewNotification(
+                    notification.getRecipient().getId(),
+                    notification.getType().toString(),
+                    notification.getContent());
+        } catch (Exception e) {
+            logger.error("Failed to send WebSocket notification", e);
+        }
+
         return notification;
     }
 
@@ -123,18 +138,7 @@ public class NotificationServiceImpl extends BaseService implements Notification
     @Override
     @Transactional
     public Integer markAllAsRead(Long userId) {
-        List<Notification> unreadNotifications = daoFactory.forNotification().findByRecipientId(userId).stream()
-                .filter(n -> !n.isRead())
-                .collect(Collectors.toList());
-
-        int count = 0;
-        for (Notification notification : unreadNotifications) {
-            notification.setRead(true);
-            notification.setTimestampRead(Instant.now());
-            daoFactory.forNotification().update(notification);
-            count++;
-        }
-
+        Integer count = daoFactory.forNotification().markAllNotificationsAsRead(userId);
         logger.info("{} notifications marked as read for user ID: {}", count, userId);
         return count;
     }
