@@ -23,7 +23,6 @@ frontend/.env.production.local
 # Java / Backend
 backend/target/*
 !backend/target/jorge-osorio-proj3t.war
-!backend/target/jorge-osorio-proj3t/
 backend/.classpath
 backend/.project
 backend/.settings
@@ -56,10 +55,9 @@ wildfly/domain/data/
 wildfly/standalone/deployments/*
 !wildfly/standalone/deployments/README.txt
 
-# Docker files
-**/Dockerfile
-**/.dockerignore
-**/docker-compose*.yml
+# **/Dockerfile
+# **/.dockerignore
+# **/docker-compose*.yml
 
 # Editors and IDEs
 **/.idea/
