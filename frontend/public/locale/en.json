@@ -59,7 +59,8 @@
     "descending": "Descending",
     "minutes": "minutes",
     "noResults": "No results found",
-    "noData": "No data available"
+    "noData": "No data available",
+    "invalidDate": "Invalid date"
   },
   "roles": {
     "admin": "Administrator",
@@ -835,12 +836,14 @@
     "weeksAgo": "weeks ago",
     "monthsAgo": "months ago",
     "yearsAgo": "years ago",
-    "year": "Year"
+    "year": "Year",
+    "justNow": "Just now"
   },
   "notifications": {
     "title": "Notifications",
     "markAsRead": "Mark as read",
     "markAllAsRead": "Mark all as read",
+    "markAllRead": "Mark all as read",
     "noNotifications": "No notifications",
     "empty": "No notifications",
     "newNotification": "New notification",
@@ -857,7 +860,8 @@
       "markReadFailed": "Failed to mark as read",
       "markAllReadFailed": "Failed to mark all as read",
       "deleteFailed": "Failed to delete notification"
-    }
+    },
+    "loadMore": "Load more"
   },
   "filters": {
     "title": "Filters",

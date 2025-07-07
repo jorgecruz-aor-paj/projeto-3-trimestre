@@ -59,7 +59,8 @@
     "descending": "Descendente",
     "minutes": "minutos",
     "noResults": "Nenhum resultado encontrado",
-    "noData": "Nenhum dado disponível"
+    "noData": "Nenhum dado disponível",
+    "invalidDate": "Data inválida"
   },
   "roles": {
     "admin": "Administrador",
@@ -831,12 +832,14 @@
     "weeksAgo": "há semanas",
     "monthsAgo": "há meses",
     "yearsAgo": "há anos",
-    "year": "Ano"
+    "year": "Ano",
+    "justNow": "Agora mesmo"
   },
   "notifications": {
     "title": "Notificações",
     "markAsRead": "Marcar como lida",
     "markAllAsRead": "Marcar todas como lidas",
+    "markAllRead": "Marcar todas como lidas",
     "noNotifications": "Nenhuma notificação",
     "empty": "Sem notificações",
     "newNotification": "Nova notificação",
@@ -853,7 +856,8 @@
       "markReadFailed": "Falha ao marcar como lida",
       "markAllReadFailed": "Falha ao marcar todas como lidas",
       "deleteFailed": "Falha ao eliminar notificação"
-    }
+    },
+    "loadMore": "Carregar mais"
   },
   "filters": {
     "title": "Filtros",
