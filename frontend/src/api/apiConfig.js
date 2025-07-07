@@ -295,6 +295,10 @@ const API_ENDPOINTS = {
       url: `${NOTIFICATIONS_ENDPOINT}/user`,
       requiresAuth: true,
     },
+    getUserNotificationsPaginated: {
+      url: `${NOTIFICATIONS_ENDPOINT}/user/paginated`,
+      requiresAuth: true,
+    },
     markAsRead: {
       url: notificationId => `${NOTIFICATIONS_ENDPOINT}/${notificationId}/read`,
       requiresAuth: true,

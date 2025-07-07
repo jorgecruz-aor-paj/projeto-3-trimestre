@@ -1,7 +1,17 @@
 package aor.proj3t.service.impl;
 
+import java.time.Instant;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import aor.proj3t.daos.DAOFactory;
 import aor.proj3t.dto.NotificationDTO;
+import aor.proj3t.dto.paginated.NotificationPaginationDTO;
+import aor.proj3t.dto.paginated.SortInfo;
 import aor.proj3t.entities.Notification;
 import aor.proj3t.enums.NotificationType;
 import aor.proj3t.service.interfaces.NotificationService;
@@ -9,13 +19,6 @@ import aor.proj3t.util.converterutils.ConverterFactory;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Implementation of the NotificationService interface
@@ -69,6 +72,22 @@ public class NotificationServiceImpl extends BaseService implements Notification
     public List<NotificationDTO> getUserNotifications(Long userId) {
         List<Notification> notifications = daoFactory.forNotification().findByRecipientId(userId);
         return converterFactory.forNotification().toDTOList(notifications);
+    }
+
+    @Override
+    public NotificationPaginationDTO getUserNotificationsPaginated(Long userId, int page, int size) {
+        int offset = page * size;
+        List<Notification> notifications = daoFactory.forNotification().findByRecipientIdPaginated(userId, offset,
+                size);
+        Long totalCount = daoFactory.forNotification().countByRecipientId(userId);
+
+        List<NotificationDTO> notificationDTOs = converterFactory.forNotification().toDTOList(notifications);
+        SortInfo sortInfo = new SortInfo("timestampSent", false); // false for descending order
+
+        logger.info("Retrieved {} notifications for user ID: {} (page {}, size {})",
+                notificationDTOs.size(), userId, page, size);
+
+        return new NotificationPaginationDTO(notificationDTOs, totalCount, size, page, sortInfo);
     }
 
     @Override

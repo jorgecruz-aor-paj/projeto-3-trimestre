@@ -7,18 +7,21 @@ import org.apache.logging.log4j.Logger;
 
 import aor.proj3t.dto.APIResponseDTO;
 import aor.proj3t.dto.NotificationDTO;
+import aor.proj3t.dto.paginated.NotificationPaginationDTO;
 import aor.proj3t.service.ServiceFactory;
 import aor.proj3t.util.authutils.Secured;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.HeaderParam;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -61,6 +64,40 @@ public class NotificationResource {
 
         } catch (Exception e) {
             logger.error("Error retrieving user notifications", e);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(new APIResponseDTO("Error retrieving notifications: " + e.getMessage()))
+                    .build();
+        }
+    }
+
+    /**
+     * Get notifications for the authenticated user with pagination
+     * 
+     * @param authHeader The authorization header containing the JWT token
+     * @param page       The page number (0-based)
+     * @param size       The page size
+     * @return Response containing the paginated list of user notifications
+     */
+    @GET
+    @Path("/user/paginated")
+    @Secured
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUserNotificationsPaginated(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader,
+            @DefaultValue("0") @QueryParam("page") int page,
+            @DefaultValue("10") @QueryParam("size") int size) {
+        logger.info("Received request to get user notifications paginated (page: {}, size: {})", page, size);
+
+        try {
+            Long userId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
+            NotificationPaginationDTO paginatedNotifications = serviceFactory.forNotification()
+                    .getUserNotificationsPaginated(userId, page, size);
+
+            logger.info("Retrieved {} notifications for user {} (page {}, size {})",
+                    paginatedNotifications.getEntities().size(), userId, page, size);
+            return Response.ok(paginatedNotifications).build();
+
+        } catch (Exception e) {
+            logger.error("Error retrieving user notifications paginated", e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(new APIResponseDTO("Error retrieving notifications: " + e.getMessage()))
                     .build();
