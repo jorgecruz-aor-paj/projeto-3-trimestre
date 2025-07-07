@@ -47,6 +47,7 @@ class WebSocketService {
 
             case 'new_message':
             case 'message_read':
+            case 'new_notification':
               // Just pass notifications to handlers
               this.notificationHandlers.forEach(handler => handler(data));
               break;

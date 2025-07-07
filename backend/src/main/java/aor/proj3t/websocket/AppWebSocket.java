@@ -1,5 +1,11 @@
 package aor.proj3t.websocket;
 
+import java.io.IOException;
+import java.util.Map;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import aor.proj3t.dto.MessageDTO;
 import aor.proj3t.service.ServiceFactory;
 import jakarta.annotation.PreDestroy;
@@ -8,14 +14,14 @@ import jakarta.inject.Inject;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.json.bind.JsonbException;
-import jakarta.websocket.*;
+import jakarta.websocket.CloseReason;
+import jakarta.websocket.OnClose;
+import jakarta.websocket.OnError;
+import jakarta.websocket.OnMessage;
+import jakarta.websocket.OnOpen;
+import jakarta.websocket.Session;
 import jakarta.websocket.server.PathParam;
 import jakarta.websocket.server.ServerEndpoint;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.io.IOException;
-import java.util.Map;
 
 /**
  * Simple WebSocket endpoint for real-time messaging between users.
@@ -156,6 +162,21 @@ public class AppWebSocket {
         sendToUser(senderId, readStatus);
     }
 
+    /**
+     * Public method to notify of new notifications
+     */
+    public void notifyNewNotification(Long recipientId, String notificationType, String content) {
+        logger.info("Notifying new notification to user {}: {}", recipientId, content);
+
+        Map<String, Object> notification = Map.of(
+                "type", "new_notification",
+                "notificationType", notificationType,
+                "content", content,
+                "timestamp", java.time.Instant.now().toString());
+
+        sendToUser(recipientId, notification);
+    }
+
     private void handleMarkAsRead(Long messageId) {
         try {
             Boolean success = serviceFactory.forMessage().markAsRead(messageId);
@@ -179,7 +200,7 @@ public class AppWebSocket {
                 logger.debug("User {} is not connected", userId);
                 WebSocketSessionManager.removeSession(userId);
             }
-        } catch (Exception e) {
+        } catch (JsonbException e) {
             logger.error("Error sending message to user {}", userId, e);
             WebSocketSessionManager.removeSession(userId);
         }

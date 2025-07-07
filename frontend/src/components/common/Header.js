@@ -5,8 +5,10 @@ import { Container, Navbar, Nav, Button, Dropdown } from 'react-bootstrap';
 
 import { LanguageSelector } from 'components/LanguageSelector';
 import { ProfilePicture } from 'components/common/ProfilePicture';
+import { NotificationOffcanvas } from 'components/common/NotificationOffcanvas';
 import { useAuthStore } from 'stores/AuthStore';
 import { useMessageStore } from 'stores/MessageStore';
+import { useNotificationStore } from 'stores/NotificationStore';
 import { authService } from 'services/authService';
 import { websocketService } from 'services/websocketService';
 import 'styles/components/Header.css';
@@ -17,21 +19,52 @@ import 'styles/components/Header.css';
  */
 export const Header = () => {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
   const { t } = useTranslation();
   const location = useLocation();
   const { token, user, clearState } = useAuthStore();
-  const { unreadCount, loadUnreadCount } = useMessageStore();
+  const { unreadCount: messageUnreadCount, loadUnreadCount } =
+    useMessageStore();
+  const {
+    unreadCount: notificationUnreadCount,
+    loadNotifications,
+    addNotification,
+  } = useNotificationStore();
   const navigate = useNavigate();
 
   const isAuthenticated = !!token;
 
-  // Handle WebSocket notifications in the Header (for unread count updates)
+  // Combined unread count for both messages and notifications
+  const totalUnreadCount = messageUnreadCount + notificationUnreadCount;
+
+  // Handle WebSocket notifications in the Header
   const handleHeaderNotification = notificationData => {
     console.log('Header received notification:', notificationData);
 
-    if (notificationData.type === 'new_message') {
-      // Update unread count when new message arrives
-      loadUnreadCount();
+    switch (notificationData.type) {
+      case 'new_message':
+        // Update unread count when new message arrives
+        loadUnreadCount();
+        break;
+      case 'new_notification':
+        // Add notification to store for real-time updates
+        addNotification({
+          id: Date.now(), // Temporary ID until real notification is loaded
+          content: notificationData.content,
+          type: notificationData.notificationType,
+          read: false,
+          timestampSent: notificationData.timestamp || new Date().toISOString(),
+          senderId: null,
+          recipientId: user?.id,
+        });
+        // Also refresh the notification list to get the real notification from backend
+        loadNotifications();
+        break;
+      case 'message_read':
+        // Handle message read status updates
+        break;
+      default:
+        console.warn('Unknown notification type:', notificationData.type);
     }
   };
 
@@ -41,12 +74,21 @@ export const Header = () => {
   // Toggle mobile menu
   const toggleMobileMenu = () => setShowMobileMenu(!showMobileMenu);
 
+  // Toggle notifications offcanvas
+  const toggleNotifications = () => {
+    setShowNotifications(!showNotifications);
+    if (!showNotifications) {
+      // Load latest notifications when opening
+      loadNotifications();
+    }
+  };
+
   // Close mobile menu when route changes
   useEffect(() => {
     setShowMobileMenu(false);
   }, [location.pathname]);
 
-  // Initialize WebSocket when user is authenticated
+  // Initialize WebSocket and load notifications when user is authenticated
   useEffect(() => {
     if (isAuthenticated && user?.id) {
       websocketService.connect();
@@ -54,6 +96,7 @@ export const Header = () => {
         handleHeaderNotification
       );
       loadUnreadCount();
+      loadNotifications();
 
       return () => {
         unsubscribe();
@@ -61,7 +104,7 @@ export const Header = () => {
     } else {
       websocketService.disconnect();
     }
-  }, [isAuthenticated, user?.id, loadUnreadCount]);
+  }, [isAuthenticated, user?.id, loadUnreadCount, loadNotifications]);
 
   // Handle logout
   const handleLogout = async () => {
@@ -101,16 +144,16 @@ export const Header = () => {
                   <Button
                     variant="link"
                     className="p-0 text-white notification-bell"
-                    as={Link}
-                    to="/messages"
-                    style={{ textDecoration: 'none' }}
-                    title={t('nav.messages', 'Messages')}
+                    onClick={toggleNotifications}
+                    title={t('nav.notifications', 'Notifications')}
                   >
                     <i className="fas fa-bell" aria-hidden="true"></i>
-                    {unreadCount > 0 && (
+                    {totalUnreadCount > 0 && (
                       <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill">
-                        {unreadCount > 99 ? '99+' : unreadCount}
-                        <span className="visually-hidden">unread messages</span>
+                        {totalUnreadCount > 99 ? '99+' : totalUnreadCount}
+                        <span className="visually-hidden">
+                          unread notifications
+                        </span>
                       </span>
                     )}
                   </Button>
@@ -210,9 +253,9 @@ export const Header = () => {
                     className={isActive('/messages') ? 'active' : ''}
                   >
                     {t('nav.messages', 'Messages')}
-                    {unreadCount > 0 && (
+                    {messageUnreadCount > 0 && (
                       <span className="badge ms-1 fs-6">
-                        {unreadCount > 9 ? '9+' : unreadCount}
+                        {messageUnreadCount > 9 ? '9+' : messageUnreadCount}
                       </span>
                     )}
                   </Nav.Link>
@@ -233,6 +276,12 @@ export const Header = () => {
           </Navbar.Collapse>
         </Navbar>
       </Container>
+
+      {/* Notification Offcanvas */}
+      <NotificationOffcanvas
+        show={showNotifications}
+        onHide={() => setShowNotifications(false)}
+      />
     </header>
   );
 };

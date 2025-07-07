@@ -31,6 +31,7 @@ const STATS_ENDPOINT = `${API_BASE_URL}/stats`;
 const TEST_ENDPOINT = `${API_BASE_URL}/test`;
 const WORKPLACES_ENDPOINT = `${API_BASE_URL}/workplaces`;
 const MESSAGES_ENDPOINT = `${API_BASE_URL}/messages`;
+const NOTIFICATIONS_ENDPOINT = `${API_BASE_URL}/notifications`;
 
 /**
  * API Endpoints configuration
@@ -289,6 +290,24 @@ const API_ENDPOINTS = {
       adminOnly: true,
     },
   },
+  notifications: {
+    getUserNotifications: {
+      url: `${NOTIFICATIONS_ENDPOINT}/user`,
+      requiresAuth: true,
+    },
+    markAsRead: {
+      url: notificationId => `${NOTIFICATIONS_ENDPOINT}/${notificationId}/read`,
+      requiresAuth: true,
+    },
+    markAllAsRead: {
+      url: `${NOTIFICATIONS_ENDPOINT}/read-all`,
+      requiresAuth: true,
+    },
+    delete: {
+      url: notificationId => `${NOTIFICATIONS_ENDPOINT}/${notificationId}`,
+      requiresAuth: true,
+    },
+  },
 };
 
 export {
@@ -299,10 +318,12 @@ export {
   USER_ENDPOINT,
   TRAININGS_ENDPOINT,
   EVALUATIONS_ENDPOINT,
+  CYCLES_ENDPOINT,
   AI_ENDPOINT,
   EXPORT_ENDPOINT,
   STATS_ENDPOINT,
   TEST_ENDPOINT,
   WORKPLACES_ENDPOINT,
   MESSAGES_ENDPOINT,
+  NOTIFICATIONS_ENDPOINT,
 };
