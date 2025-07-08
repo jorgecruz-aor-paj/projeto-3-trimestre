@@ -380,10 +380,9 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
                 ) : (
                   <ProfilePicture
                     userId={user.id}
-                    size="lg"
                     alt={`${user.firstName} ${user.lastName}`}
-                    className="mb-3"
-                    useContainer={true}
+                    className="rounded-circle mb-3"
+                    style={{ width: 120, height: 120, objectFit: 'cover' }}
                   />
                 )}
                 {uploadingProfilePicture && (
@@ -408,7 +407,7 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
                   <Form.Group controlId="profilePictureUpload">
                     <Form.Label className="btn btn-outline-primary btn-sm">
                       <i className="bi bi-camera me-1"></i>
-                      {t('profile.changePicture', 'Change Picture')}
+                      {t('profile.changePicture', 'Alterar Fotografia')}
                       <Form.Control
                         ref={fileInputRef}
                         type="file"
@@ -429,10 +428,9 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
             ) : (
               <ProfilePicture
                 userId={user.id}
-                size="lg"
                 alt={`${user.firstName} ${user.lastName}`}
-                className="mb-3"
-                useContainer={true}
+                className="rounded-circle mb-3"
+                style={{ width: 280, height: 280, objectFit: 'cover' }}
               />
             )}
             <div className="mt-3">

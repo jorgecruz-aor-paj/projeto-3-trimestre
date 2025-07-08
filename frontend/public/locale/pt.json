@@ -105,9 +105,9 @@
     "home": "Início",
     "trainings": "Formações",
     "evaluations": "Avaliações",
-    "dashboard": "Painel",
+    "users": "Utilizadores",
+    "cycles": "Ciclos de Avaliação",
     "about": "Sobre",
-    "messages": "Mensagens",
     "notifications": "Notificações"
   },
   "auth": {
@@ -154,6 +154,8 @@
   "user": {
     "profile": "Perfil",
     "settings": "Definições",
+    "dashboard": "Painel",
+    "messages": "Mensagens",
     "logout": "Terminar sessão",
     "account": "Minha conta",
     "firstName": "Nome próprio",
@@ -498,6 +500,7 @@
   },
   "profile": {
     "info": "Informações do Perfil",
+    "changePicture": "Alterar Fotografia",
     "email": "Email",
     "name": "Nome",
     "firstName": "Primeiro Nome",
@@ -545,7 +548,16 @@
       "status": "Estado",
       "date": "Data",
       "scale": "Escala"
-    }
+    },
+    "error": "Erro",
+    "invalidFileType": "Por favor, selecione um ficheiro de imagem válido",
+    "fileTooLarge": "O ficheiro deve ter menos de 5MB",
+    "success": "Sucesso",
+    "pictureUpdateSuccess": "Fotografia de perfil atualizada com sucesso",
+    "pictureUpdateError": "Falha ao atualizar a fotografia de perfil",
+    "managerAssignError": "Falha ao atribuir gestor",
+    "updateSuccess": "Perfil atualizado com sucesso",
+    "updateError": "Falha ao atualizar o perfil do utilizador"
   },
   "messages": {
     "title": "Mensagens",
