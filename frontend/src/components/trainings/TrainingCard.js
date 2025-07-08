@@ -20,11 +20,13 @@ export const TrainingCard = ({
 
   const getLanguageBadgeVariant = language => {
     const variants = {
-      English: 'primary',
-      Portuguese: 'success',
-      Spanish: 'info',
-      French: 'warning',
-      German: 'secondary',
+      ENGLISH: 'primary',
+      PORTUGUESE: 'success',
+      SPANISH: 'info',
+      FRENCH: 'warning',
+      GERMAN: 'secondary',
+      ITALIAN: 'danger',
+      DUTCH: 'dark',
     };
     return variants[language] || 'outline-dark';
   };
@@ -40,7 +42,7 @@ export const TrainingCard = ({
             {training.active ? t('common.active') : t('common.inactive')}
           </Badge>
           <Badge bg={getLanguageBadgeVariant(training.language)}>
-            {training.language}
+            {t(`languages.${training.language}`)}
           </Badge>
         </div>
 

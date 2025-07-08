@@ -94,6 +94,8 @@ export const UserTrainingView = () => {
       SPANISH: 'info',
       FRENCH: 'warning',
       GERMAN: 'secondary',
+      ITALIAN: 'danger',
+      DUTCH: 'dark',
     };
     return variants[language] || 'outline-dark';
   };
