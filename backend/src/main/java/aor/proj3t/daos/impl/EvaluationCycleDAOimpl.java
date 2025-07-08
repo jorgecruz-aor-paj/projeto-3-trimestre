@@ -3,13 +3,9 @@ package aor.proj3t.daos.impl;
 import aor.proj3t.daos.interfaces.EvaluationCycleDAO;
 import aor.proj3t.entities.EvaluationCycle;
 import aor.proj3t.enums.EvaluationCycleStatus;
-import aor.proj3t.enums.EvaluationStatus;
 import jakarta.ejb.Stateless;
-import jakarta.persistence.NoResultException;
-import jakarta.persistence.TypedQuery;
 import org.hibernate.Hibernate;
 
-import java.util.Collections;
 import java.util.List;
 
 /**

@@ -1,11 +1,10 @@
 package aor.proj3t.service.interfaces;
 
-import java.util.List;
-
 import aor.proj3t.dto.NotificationDTO;
 import aor.proj3t.dto.paginated.NotificationPaginationDTO;
 import aor.proj3t.entities.Notification;
-import aor.proj3t.enums.NotificationType;
+
+import java.util.List;
 
 /**
  * Service interface for Notification operations

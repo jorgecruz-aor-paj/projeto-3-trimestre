@@ -12,7 +12,6 @@ import jakarta.persistence.criteria.Root;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Stateless
 public class TrainingDAOimpl extends AbstractDAO<Training, Long> implements TrainingDAO {

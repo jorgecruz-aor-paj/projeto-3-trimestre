@@ -16,7 +16,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.time.Instant;
-import java.util.List;
 
 /**
  * Implementation of the AuthService interface.

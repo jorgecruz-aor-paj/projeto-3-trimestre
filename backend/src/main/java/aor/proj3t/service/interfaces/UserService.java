@@ -1,7 +1,6 @@
 package aor.proj3t.service.interfaces;
 
 import aor.proj3t.dto.*;
-import aor.proj3t.dto.paginated.UserPaginationDTO;
 import aor.proj3t.filters.UserFilter;
 
 import java.util.List;

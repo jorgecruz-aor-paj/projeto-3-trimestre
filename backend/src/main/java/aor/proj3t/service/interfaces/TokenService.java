@@ -2,7 +2,6 @@ package aor.proj3t.service.interfaces;
 
 import aor.proj3t.entities.Session;
 import aor.proj3t.enums.Role;
-import io.jsonwebtoken.Claims;
 
 public interface TokenService {
 

@@ -5,7 +5,6 @@ import aor.proj3t.dto.EvaluationCycleDTO;
 import aor.proj3t.entities.Evaluation;
 import aor.proj3t.entities.EvaluationCycle;
 import aor.proj3t.entities.User;
-import aor.proj3t.enums.EvaluationCycleStatus;
 import aor.proj3t.enums.Role;
 import aor.proj3t.exceptions.ConflictException;
 import aor.proj3t.exceptions.InvalidDataException;
@@ -22,7 +21,6 @@ import org.apache.logging.log4j.Logger;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @ApplicationScoped
 public class EvaluationCycleServiceImpl extends BaseService implements EvaluationCycleService {

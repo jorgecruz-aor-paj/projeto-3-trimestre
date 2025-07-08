@@ -2,7 +2,6 @@ package aor.proj3t.daos.interfaces;
 
 import aor.proj3t.entities.EvaluationCycle;
 import aor.proj3t.enums.EvaluationCycleStatus;
-import aor.proj3t.enums.EvaluationStatus;
 
 import java.util.List;
 

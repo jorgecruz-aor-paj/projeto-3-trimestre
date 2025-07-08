@@ -2,14 +2,12 @@ package aor.proj3t.util.validatorutils.forfilters;
 
 import aor.proj3t.enums.TrainingLanguage;
 import aor.proj3t.enums.TrainingSortField;
-import aor.proj3t.exceptions.InvalidDataException;
 import aor.proj3t.filters.TrainingFilter;
 import jakarta.enterprise.context.ApplicationScoped;
 
 import java.time.Instant;
 import java.time.format.DateTimeParseException;
 import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  * Validator for TrainingFilter objects.

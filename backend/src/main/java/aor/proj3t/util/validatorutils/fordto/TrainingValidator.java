@@ -3,7 +3,6 @@ package aor.proj3t.util.validatorutils.fordto;
 import aor.proj3t.dto.NewTrainingDTO;
 import aor.proj3t.dto.TrainingAreaDTO;
 import aor.proj3t.dto.TrainingDTO;
-import aor.proj3t.enums.EvaluationStatus;
 import aor.proj3t.enums.TrainingLanguage;
 import aor.proj3t.exceptions.InvalidDataException;
 import jakarta.enterprise.context.ApplicationScoped;
