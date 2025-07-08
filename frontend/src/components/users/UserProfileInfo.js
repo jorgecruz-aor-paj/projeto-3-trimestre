@@ -1,6 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Card, Row, Col, ListGroup, Button, Dropdown } from 'react-bootstrap';
+import {
+  Card,
+  Row,
+  Col,
+  ListGroup,
+  Button,
+  Dropdown,
+  Spinner,
+  Form,
+} from 'react-bootstrap';
 import { ProfilePicture } from 'components/common/ProfilePicture';
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from 'contexts/LanguageContext';
@@ -26,6 +35,10 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
   const [user, setUser] = useState(initialUser);
   const isSelf = loggedUser?.id === user.id;
   const isAdmin = loggedUser?.role === 'ADMIN';
+  const fileInputRef = useRef(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [uploadingProfilePicture, setUploadingProfilePicture] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState(null);
 
   const {
     userList,
@@ -127,6 +140,41 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
     handleValidationChange('managerId', id);
   };
 
+  const handleProfilePictureChange = e => {
+    const file = e.target.files[0];
+    if (file) {
+      // Check file type
+      if (!file.type.match('image.*')) {
+        showAlert({
+          title: t('profile.error'),
+          message: t('profile.invalidFileType', 'Please select an image file'),
+          variant: 'danger',
+        });
+        return;
+      }
+
+      // Check file size (max 5MB)
+      const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+      if (file.size > maxSize) {
+        showAlert({
+          title: t('profile.error'),
+          message: t('profile.fileTooLarge', 'File size must be less than 5MB'),
+          variant: 'danger',
+        });
+        return;
+      }
+
+      setSelectedFile(file);
+
+      // Create a preview URL
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewUrl(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleCancel = () => {
     // Reset form data to original user data
     const originalFormData = {
@@ -143,6 +191,11 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
     setFormData(originalFormData);
     setTouched({}); // Reset touched state
     setEditMode(false);
+    setSelectedFile(null);
+    setPreviewUrl(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
   };
 
   const handleSave = async () => {
@@ -168,6 +221,46 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
 
       return; // Don't save if validation fails
     }
+
+    // Upload profile picture if selected
+    if (selectedFile && user.id) {
+      try {
+        setUploadingProfilePicture(true);
+        await userService.uploadProfilePicture(user.id, selectedFile);
+        // Clear profile picture cache to force reload
+        if (window.profilePictureCache) {
+          window.profilePictureCache.clearUser(user.id);
+        }
+        setSelectedFile(null);
+        setPreviewUrl(null);
+        if (fileInputRef.current) {
+          fileInputRef.current.value = '';
+        }
+
+        showAlert({
+          title: t('profile.success'),
+          message: t(
+            'profile.pictureUpdateSuccess',
+            'Profile picture updated successfully'
+          ),
+          variant: 'success',
+        });
+      } catch (err) {
+        console.error('Failed to upload profile picture:', err);
+        showAlert({
+          title: t('profile.error'),
+          message: t(
+            'profile.pictureUpdateError',
+            'Failed to update profile picture'
+          ),
+          variant: 'danger',
+        });
+        setUploadingProfilePicture(false);
+        return; // Don't continue if profile picture upload fails
+      }
+      setUploadingProfilePicture(false);
+    }
+
     // Call assignManager if manager changed (for all users in development)
     let newManager = user.manager;
     if (
@@ -264,12 +357,71 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
       <Card.Body>
         <Row>
           <Col md={4} className="text-center">
-            <ProfilePicture
-              userId={user.id}
-              alt={`${user.firstName} ${user.lastName}`}
-              className="rounded-circle mb-3"
-              style={{ width: 120, height: 120, objectFit: 'cover' }}
-            />
+            {editMode ? (
+              <div className="position-relative">
+                {previewUrl ? (
+                  <img
+                    src={previewUrl}
+                    alt={`${user.firstName} ${user.lastName} (Preview)`}
+                    className="rounded-circle mb-3"
+                    style={{ width: 120, height: 120, objectFit: 'cover' }}
+                  />
+                ) : (
+                  <ProfilePicture
+                    userId={user.id}
+                    alt={`${user.firstName} ${user.lastName}`}
+                    className="rounded-circle mb-3"
+                    style={{ width: 120, height: 120, objectFit: 'cover' }}
+                  />
+                )}
+                {uploadingProfilePicture && (
+                  <div
+                    className="position-absolute"
+                    style={{
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                      borderRadius: '50%',
+                    }}
+                  >
+                    <Spinner animation="border" variant="primary" />
+                  </div>
+                )}
+                <div className="mt-2 mb-3">
+                  <Form.Group controlId="profilePictureUpload">
+                    <Form.Label className="btn btn-outline-primary btn-sm">
+                      <i className="bi bi-camera me-1"></i>
+                      {t('profile.changePicture', 'Change Picture')}
+                      <Form.Control
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/*"
+                        onChange={handleProfilePictureChange}
+                        style={{ display: 'none' }}
+                      />
+                    </Form.Label>
+                    {selectedFile && (
+                      <div className="mt-1 small text-muted">
+                        {selectedFile.name} (
+                        {Math.round(selectedFile.size / 1024)} KB)
+                      </div>
+                    )}
+                  </Form.Group>
+                </div>
+              </div>
+            ) : (
+              <ProfilePicture
+                userId={user.id}
+                alt={`${user.firstName} ${user.lastName}`}
+                className="rounded-circle mb-3"
+                style={{ width: 120, height: 120, objectFit: 'cover' }}
+              />
+            )}
             <div className="mt-3">
               {(isSelf || isAdmin) &&
                 (!editMode ? (
@@ -282,10 +434,29 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
                       variant="success"
                       className="me-2"
                       onClick={handleSave}
+                      disabled={uploadingProfilePicture}
                     >
-                      {t('common.save')}
+                      {uploadingProfilePicture ? (
+                        <>
+                          <Spinner
+                            as="span"
+                            animation="border"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                            className="me-1"
+                          />
+                          {t('common.saving', 'Saving...')}
+                        </>
+                      ) : (
+                        t('common.save')
+                      )}
                     </Button>
-                    <Button variant="secondary" onClick={handleCancel}>
+                    <Button
+                      variant="secondary"
+                      onClick={handleCancel}
+                      disabled={uploadingProfilePicture}
+                    >
                       {t('common.cancel')}
                     </Button>
                   </>

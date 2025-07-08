@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Card, Badge } from 'react-bootstrap';
-import { API_ENDPOINTS } from 'api/apiConfig';
 import { useNavigate } from 'react-router-dom';
+import { ProfilePicture } from 'components/common/ProfilePicture';
 import 'styles/components/UserCard.css';
 
 export const UserCard = ({ user }) => {
@@ -20,14 +20,12 @@ export const UserCard = ({ user }) => {
     >
       <Card.Body>
         <div className="d-flex align-items-center">
-          {user.photograph && user.id && (
-            <img
-              src={API_ENDPOINTS.user.profilePicture(user.id).url}
-              alt={user.firstName + ' ' + user.lastName}
-              className="rounded-circle me-3"
-              style={{ width: 64, height: 64, objectFit: 'cover' }}
-            />
-          )}
+          <ProfilePicture
+            userId={user.id}
+            alt={`${user.firstName} ${user.lastName}`}
+            className="rounded-circle me-3"
+            style={{ width: 64, height: 64, objectFit: 'cover' }}
+          />
           <div>
             <h5 className="mb-1">
               {user.firstName} {user.lastName}{' '}

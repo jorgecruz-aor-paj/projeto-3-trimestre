@@ -45,8 +45,12 @@ export const ProfilePicture = ({
       return imageCache.get(cacheKey);
     }
 
-    // Backend will serve either user's picture or default-profile-picture.png
-    const url = API_ENDPOINTS.user.profilePicture(userId).url;
+    // Just use the path directly without any replacement
+    // This ensures we're not making a cross-origin request
+    const url = `${
+      API_ENDPOINTS.user.profilePicture(userId).fullUrl
+    }?_t=${Date.now()}`;
+
     imageCache.set(cacheKey, url);
     return url;
   }, [userId, fallbackSrc]);
@@ -75,7 +79,7 @@ export const ProfilePicture = ({
         // Force reload with timestamp to bypass browser cache
         const timestamp = Date.now();
         const newSrc = `${
-          API_ENDPOINTS.user.profilePicture(userId).url
+          API_ENDPOINTS.user.profilePicture(userId).fullUrl
         }?_t=${timestamp}`;
 
         // Update our app cache with the new timestamped URL
@@ -104,12 +108,9 @@ export const ProfilePicture = ({
   // Handle image load error - only use frontend fallback if backend completely fails
   const handleError = e => {
     setIsLoading(false);
-    // This should rarely happen since backend serves default-profile-picture.png
-    // Only use frontend fallback if backend is completely down
+
+    // Set image src to fallback image if not already set
     if (e.target.src !== fallbackSrc) {
-      console.warn(
-        `Failed to load profile picture from backend for user ${userId}, falling back to frontend default`
-      );
       e.target.src = fallbackSrc;
     }
 
@@ -137,6 +138,7 @@ export const ProfilePicture = ({
       style={style}
       onError={handleError}
       onLoad={handleLoad}
+      crossOrigin="anonymous"
       {...props}
     />
   ) : null;

@@ -4,6 +4,7 @@ import aor.proj3t.dto.APIResponseDTO;
 import aor.proj3t.dto.FileUploadDTO;
 import aor.proj3t.service.ServiceFactory;
 import aor.proj3t.util.FileStorageUtil;
+import aor.proj3t.util.authutils.Secured;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
@@ -38,7 +39,7 @@ public class ImageUploadResource {
     @Path("/picture")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed({ "USER", "ADMIN" })
+    @Secured
     public Response uploadProfilePicture(@PathParam("userId") Long userId,
             MultipartFormDataInput input) {
         try {
@@ -138,7 +139,7 @@ public class ImageUploadResource {
     @DELETE
     @Path("/picture")
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed({ "USER", "ADMIN" })
+    @Secured
     public Response resetProfilePicture(@PathParam("userId") Long userId, @Context SecurityContext securityContext) {
         try {
             // Security check

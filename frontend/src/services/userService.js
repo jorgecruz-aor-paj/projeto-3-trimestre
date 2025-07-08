@@ -40,7 +40,7 @@ export const userService = {
    * @returns {Promise} - List of unmanaged users
    */
   getUnmanagedUsers: () => {
-    return apiService.getAll(API_ENDPOINTS.user.getAll, { noManager: true});
+    return apiService.getAll(API_ENDPOINTS.user.getAll, { noManager: true });
   },
 
   /**
@@ -83,24 +83,32 @@ export const userService = {
     const formData = new FormData();
     formData.append('file', file);
 
-    const result = await apiRequest(API_ENDPOINTS.user.profilePicture(userId), {
-      method: 'POST',
-      data: formData,
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-
-    // Trigger profile picture update event for cache refresh
-    if (result.success) {
-      window.dispatchEvent(
-        new CustomEvent('profilePictureUpdated', {
-          detail: { userId: parseInt(userId) },
-        })
+    try {
+      const result = await apiRequest(
+        API_ENDPOINTS.user.profilePicture(userId),
+        {
+          method: 'POST',
+          data: formData,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
       );
-    }
 
-    return result;
+      // Trigger profile picture update event for cache refresh
+      if (result.success) {
+        window.dispatchEvent(
+          new CustomEvent('profilePictureUpdated', {
+            detail: { userId: parseInt(userId) },
+          })
+        );
+      }
+
+      return result;
+    } catch (error) {
+      console.error('Error uploading profile picture:', error);
+      throw error;
+    }
   },
 
   /**
