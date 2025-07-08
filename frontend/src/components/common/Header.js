@@ -165,6 +165,12 @@ export const Header = () => {
                     <Dropdown.Item as={Link} to="/profile">
                       {t('user.profile')}
                     </Dropdown.Item>
+                    <Dropdown.Item as={Link} to="/dashboard">
+                      {t('user.dashboard')}
+                    </Dropdown.Item>
+                    <Dropdown.Item as={Link} to="/messages">
+                      {t('user.messages')}
+                    </Dropdown.Item>
                     <Dropdown.Item as={Link} to="/settings">
                       {t('user.settings')}
                     </Dropdown.Item>
@@ -229,32 +235,24 @@ export const Header = () => {
                 <>
                   <Nav.Link
                     as={Link}
-                    to="/dashboard"
-                    className={isActive('/dashboard') ? 'active' : ''}
+                    to="/users"
+                    className={isActive('/users') ? 'active' : ''}
                   >
-                    {t('nav.dashboard')}
-                  </Nav.Link>
-                  <Nav.Link
-                    as={Link}
-                    to="/messages"
-                    className={isActive('/messages') ? 'active' : ''}
-                  >
-                    {t('nav.messages', 'Messages')}
-                    {messageUnreadCount > 0 && (
-                      <span className="badge ms-1 fs-6">
-                        {messageUnreadCount > 9 ? '9+' : messageUnreadCount}
-                      </span>
-                    )}
+                    {t('nav.users')}
                   </Nav.Link>
                 </>
               )}
-              <Nav.Link
-                as={Link}
-                to="/about"
-                className={isActive('/about') ? 'active' : ''}
-              >
-                {t('nav.about')}
-              </Nav.Link>
+              {isAuthenticated && user.role === 'ADMIN' && (
+                <>
+                  <Nav.Link
+                    as={Link}
+                    to="/evaluation-cycles"
+                    className={isActive('/evaluation-cycles') ? 'active' : ''}
+                  >
+                    {t('nav.cycles')}
+                  </Nav.Link>
+                </>
+              )}
             </Nav>
 
             <div className="d-block d-md-none mt-3">

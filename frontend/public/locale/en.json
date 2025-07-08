@@ -94,12 +94,12 @@
   },
   "nav": {
     "home": "Home",
+    "users": "Users",
     "trainings": "Trainings",
     "evaluations": "Evaluations",
-    "dashboard": "Dashboard",
     "about": "About",
-    "messages": "Messages",
-    "notifications": "Notifications"
+    "notifications": "Notifications",
+    "cycles": "Evaluation Cycles"
   },
   "auth": {
     "login": "Log In",
@@ -144,6 +144,8 @@
   },
   "user": {
     "profile": "Profile",
+    "messages": "Messages",
+    "dashboard": "Dashboard",
     "settings": "Settings",
     "logout": "Log Out",
     "account": "My Account",

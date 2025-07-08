@@ -96,9 +96,9 @@
     "home": "Início",
     "trainings": "Formações",
     "evaluations": "Avaliações",
-    "dashboard": "Painel",
+    "users": "Utilizadores",
+    "cycles": "Ciclos de Avaliação",
     "about": "Sobre",
-    "messages": "Mensagens",
     "notifications": "Notificações"
   },
   "auth": {
@@ -145,6 +145,8 @@
   "user": {
     "profile": "Perfil",
     "settings": "Definições",
+    "dashboard": "Painel",
+    "messages": "Mensagens",
     "logout": "Terminar sessão",
     "account": "Minha conta",
     "firstName": "Nome próprio",

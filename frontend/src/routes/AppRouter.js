@@ -46,21 +46,26 @@ export const AppRouter = () => {
     <Routes>
       {/* Main Layout with Header and Footer */}
       <Route element={<MainLayout />}>
-        {/* Routes */}
+        {/* General Routes */}
         <Route path="/" element={<Home />} />
         <Route path="/trainings" element={<TrainingsPage />} />
-        <Route path="/evaluations" element={<EvaluationsPage />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/messages" element={<Messages />} />
+
+        {/* Authentication Routes */}
         <Route path="/auth" element={<AuthTogglePage />} />
         <Route path="/login" element={<AuthTogglePage />} />
         <Route path="/register" element={<AuthTogglePage />} />
         <Route path="/reset-password" element={<ResetPasswordRequestPage />} />
         <Route path="/reset-password/confirm" element={<ResetPasswordPage />} />
         <Route path="/register/confirm" element={<ConfirmRegistrationPage />} />
-        <Route path="/users" element={<UsersPage />} />
-        <Route path="/messages" element={<Messages />} />
 
+        {/* User Routes */}
+        <Route path="/users" element={<UsersPage />} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+
+        {/* Evaluation Cycles Routes */}
+        <Route path="/evaluations" element={<EvaluationsPage />} />
         <Route path="/evaluation-cycles" element={<EvaluationCyclesPage />} />
 
         {/* Error Routes */}
