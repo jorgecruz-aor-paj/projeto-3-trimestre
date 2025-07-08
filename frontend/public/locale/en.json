@@ -497,6 +497,7 @@
   },
   "profile": {
     "info": "Profile Information",
+    "changePicture": "Update Profile Picture",
     "email": "Email",
     "name": "Name",
     "firstName": "First Name",
@@ -543,7 +544,16 @@
       "status": "Status",
       "date": "Date",
       "scale": "Scale"
-    }
+    },
+    "error": "Error",
+    "invalidFileType": "Please select a valid image file",
+    "fileTooLarge": "File size must be less than 5MB",
+    "success": "Success",
+    "pictureUpdateSuccess": "Profile picture updated successfully",
+    "pictureUpdateError": "Failed to update profile picture",
+    "managerAssignError": "Failed to assign manager",
+    "updateSuccess": "Profile updated successfully",
+    "updateError": "Failed to update user profile"
   },
   "messages": {
     "title": "Messages",
