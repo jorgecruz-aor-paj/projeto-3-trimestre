@@ -41,8 +41,8 @@ public class TrainingCsvDTO {
     @CsvDate(value = "yyyy-MM-dd HH:mm:ss")
     private Instant editedAt;
 
-    @CsvBindByName(column = "Training Area ID")
-    private Long trainingAreaId;
+    @CsvBindByName(column = "Training Area")
+    private String trainingArea;
 
     // Default constructor required by OpenCSV
     public TrainingCsvDTO() {
@@ -59,7 +59,7 @@ public class TrainingCsvDTO {
         this.isActive = trainingDTO.isActive();
         this.createdAt = trainingDTO.getCreatedAt();
         this.editedAt = trainingDTO.getEditedAt();
-        this.trainingAreaId = trainingDTO.getTrainingArea().getId();
+        this.trainingArea = trainingDTO.getTrainingArea().getName();
     }
 
     // Getters and setters
@@ -135,11 +135,11 @@ public class TrainingCsvDTO {
         this.editedAt = editedAt;
     }
 
-    public Long getTrainingAreaId() {
-        return trainingAreaId;
+    public String getTrainingAreaId() {
+        return trainingArea;
     }
 
-    public void setTrainingAreaId(Long trainingAreaId) {
-        this.trainingAreaId = trainingAreaId;
+    public void setTrainingAreaId(String trainingArea) {
+        this.trainingArea= trainingArea;
     }
 }

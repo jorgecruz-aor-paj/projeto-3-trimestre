@@ -39,8 +39,11 @@ public class UserCsvDTO {
     @CsvBindByName(column = "Manager ID")
     private Long managerId;
 
+    @CsvBindByName (column = "manager")
+    private String manager;
+
     @CsvBindByName(column = "Workplace")
-    private WorkplaceDTO workplace;
+    private String workplace;
 
     // Default constructor required by OpenCSV
     public UserCsvDTO() {
@@ -56,8 +59,14 @@ public class UserCsvDTO {
         this.address = userDTO.getAddress();
         this.birthdate = userDTO.getBirthdate();
         this.role = userDTO.getRole() != null ? userDTO.getRole().toString() : null;
-        this.managerId = userDTO.getManager().getId();
-        this.workplace = userDTO.getWorkplace();
+        if(userDTO.getManager() != null) {
+            this.managerId = userDTO.getManager().getId();
+            this.manager = userDTO.getManager().getFirstName() + " " + userDTO.getManager().getLastName();
+        }else{
+            this.managerId = null;
+            this.manager = null;
+        }
+        this.workplace = userDTO.getWorkplace().getName();
     }
 
     // Getters and setters
@@ -109,14 +118,6 @@ public class UserCsvDTO {
         this.address = address;
     }
 
-    public LocalDate getbirthdate() {
-        return birthdate;
-    }
-
-    public void setbirthdate(LocalDate birthdate) {
-        this.birthdate = birthdate;
-    }
-
     public String getRole() {
         return role;
     }
@@ -133,11 +134,27 @@ public class UserCsvDTO {
         this.managerId = managerId;
     }
 
-    public WorkplaceDTO getWorkplace() {
+    public String getWorkplace() {
         return workplace;
     }
 
-    public void setWorkplace(WorkplaceDTO workplace) {
+    public void setWorkplace(String workplace) {
         this.workplace = workplace;
+    }
+
+    public LocalDate getBirthdate() {
+        return birthdate;
+    }
+
+    public void setBirthdate(LocalDate birthdate) {
+        this.birthdate = birthdate;
+    }
+
+    public String getManager() {
+        return manager;
+    }
+
+    public void setManager(String manager) {
+        this.manager = manager;
     }
 }
