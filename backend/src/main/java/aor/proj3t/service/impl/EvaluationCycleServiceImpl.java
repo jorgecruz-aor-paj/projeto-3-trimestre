@@ -139,4 +139,26 @@ public class EvaluationCycleServiceImpl extends BaseService implements Evaluatio
         }
     }
 
+    public void sendCycleClosureEmail(EvaluationCycle cycle) {
+        List<User> userList = daoFactory.forUser().findAll();
+        DateTimeFormatter formatter = DateTimeFormatter
+                .ofPattern("dd MMMM yyyy")
+                .withZone(ZoneId.systemDefault());
+        String formattedClosure = formatter.format(cycle.getClosureDate());
+
+        for (User user : userList) {
+            String subject = "Evaluation Cycle Closed";
+            String body =
+                    "<h1>Evaluation Cycle Completed</h1>" +
+                            "<p>Dear " + user.getFirstName() + ",</p>" +
+                            "<p>The most recent evaluation cycle has officially closed on <strong>" + formattedClosure + "</strong>.</p>" +
+                            "<p>You can now view your performance evaluation on your profile page.</p>" +
+                            "<p>We encourage you to review the feedback and use it as a guide for your continued growth and development.</p>" +
+                            "<br>" +
+                            "<p>Thank you for your dedication and hard work.</p>";
+
+            emailUtil.sendEmail(user.getEmail(), subject, body);
+        }
+    }
+
 }

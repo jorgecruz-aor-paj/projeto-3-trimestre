@@ -14,11 +14,17 @@ import { translateEvaluationScale } from 'utils/evaluationScaleTranslations';
 import { useFormValidation, evaluationValidationRules } from 'utils/validation';
 import { useErrorMessage } from 'hooks/useErrorMessage';
 import { useEvaluationStore } from 'stores/EvaluationStore';
+import { Spinner } from 'react-bootstrap';
 
-export const EditableEvaluationCard = ({ evaluation, onEdit }) => {
+export const EditableEvaluationCard = ({
+  evaluation,
+  onEdit,
+  loading = false,
+}) => {
   const { t, i18n } = useTranslation();
   const { showAlert } = useAlert();
   const [editing, setEditing] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { getErrorMessage } = useErrorMessage();
   const evaluationStore = useEvaluationStore();
 
@@ -93,6 +99,7 @@ export const EditableEvaluationCard = ({ evaluation, onEdit }) => {
     }
 
     try {
+      setIsSubmitting(true);
       // Send updated evaluation to backend
       const updatedEvaluation = await evaluationService.update(form);
 
@@ -128,6 +135,8 @@ export const EditableEvaluationCard = ({ evaluation, onEdit }) => {
           t('evaluations.saveError', 'Failed to save evaluation.'),
         variant: 'danger',
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -376,10 +385,29 @@ export const EditableEvaluationCard = ({ evaluation, onEdit }) => {
             <button
               className="btn btn-primary btn-sm me-2"
               onClick={handleSave}
+              disabled={isSubmitting}
             >
-              {t('common.save')}
+              {isSubmitting ? (
+                <>
+                  <Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                    className="me-1"
+                  />
+                  {t('common.saving', 'Saving...')}
+                </>
+              ) : (
+                t('common.save')
+              )}
             </button>
-            <button className="btn btn-secondary btn-sm" onClick={handleCancel}>
+            <button
+              className="btn btn-secondary btn-sm"
+              onClick={handleCancel}
+              disabled={isSubmitting}
+            >
               {t('common.cancel')}
             </button>
           </div>
@@ -387,6 +415,7 @@ export const EditableEvaluationCard = ({ evaluation, onEdit }) => {
           <button
             className="btn btn-outline-primary btn-sm"
             onClick={() => setEditing(true)}
+            disabled={isSubmitting}
           >
             <i className="bi bi-pencil me-1"></i>
             {t('common.edit')}
@@ -424,4 +453,5 @@ EditableEvaluationCard.propTypes = {
     feedback: PropTypes.string,
   }).isRequired,
   onEdit: PropTypes.func,
+  loading: PropTypes.bool,
 };

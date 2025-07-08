@@ -1,6 +1,8 @@
 package aor.proj3t.service.impl;
 
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -48,6 +50,7 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
 
     @Inject
     ServiceFactory serviceFactory;
+
 
     @Override
     public Boolean createEvaluation(Long evaluatedUserId, Long evaluatorUserId, Long evaluationCycleId) {
@@ -304,39 +307,43 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
     }
 
     private void checkAndCloseEvaluationCycle(Long evaluationCycleId) {
-        if (daoFactory.forEvaluation().countUnclosedEvaluationsByCycleId(evaluationCycleId) == 0) {
-            EvaluationCycle cycle = getEntity(daoFactory.forEvaluationCycle().findById(evaluationCycleId),
-                    evaluationCycleId, "EvaluationCycle");
-            cycle.setStatus(EvaluationCycleStatus.CLOSED);
-            cycle.setClosureDate(Instant.now());
-            daoFactory.forEvaluationCycle().update(cycle);
-            logger.info("Evaluation cycle with id {} has been closed", evaluationCycleId);
+        if (daoFactory.forEvaluation().countUnclosedEvaluationsByCycleId(evaluationCycleId) > 0) {
+            return;
         }
+        EvaluationCycle cycle = getEntity(daoFactory.forEvaluationCycle().findById(evaluationCycleId),
+                evaluationCycleId, "EvaluationCycle");
+        cycle.setStatus(EvaluationCycleStatus.CLOSED);
+        cycle.setClosureDate(Instant.now());
+        daoFactory.forEvaluationCycle().update(cycle);
+        logger.info("Evaluation cycle with id {} has been closed", evaluationCycleId);
+        serviceFactory.forEvaluationCycle().sendCycleClosureEmail(cycle);
     }
 
     private void checkAndCompleteEvaluationCycle(Long evaluationCycleId) {
-        if (daoFactory.forEvaluation().countOngoingEvaluationsByCycle(evaluationCycleId) == 0) {
-            daoFactory.forEvaluationCycle().updateStatus(evaluationCycleId, EvaluationCycleStatus.COMPLETED);
-            logger.info("Evaluation cycle with id {} has been completed", evaluationCycleId);
-
-            // Send notification to admin responsible for cycle
-            try {
-                EvaluationCycle cycle = getEntity(daoFactory.forEvaluationCycle().findById(evaluationCycleId),
-                        evaluationCycleId, "EvaluationCycle");
-                User admin = cycle.getCreatedBy();
-                if (admin != null) {
-                    Notification notification = new Notification();
-                    notification.setSender(admin);
-                    notification.setRecipient(admin);
-                    notification.setType(NotificationType.CYCLE);
-                    notification.setContent("Evaluation cycle completed: All evaluations in cycle " + evaluationCycleId
-                            + " have been completed.");
-                    serviceFactory.forNotification().createNotification(notification);
-                }
-            } catch (Exception e) {
-                logger.error("Failed to send notification for completed evaluation cycle {}", evaluationCycleId, e);
-            }
+        if (daoFactory.forEvaluation().countOngoingEvaluationsByCycle(evaluationCycleId) > 0) {
+            return;
         }
+        daoFactory.forEvaluationCycle().updateStatus(evaluationCycleId, EvaluationCycleStatus.COMPLETED);
+        logger.info("Evaluation cycle with id {} has been completed", evaluationCycleId);
+
+        // Send notification to admin responsible for cycle
+        try {
+            EvaluationCycle cycle = getEntity(daoFactory.forEvaluationCycle().findById(evaluationCycleId),
+                    evaluationCycleId, "EvaluationCycle");
+            User admin = cycle.getCreatedBy();
+            if (admin != null) {
+                Notification notification = new Notification();
+                notification.setSender(admin);
+                notification.setRecipient(admin);
+                notification.setType(NotificationType.CYCLE);
+                notification.setContent("Evaluation cycle completed: All evaluations in cycle " + evaluationCycleId
+                        + " have been completed.");
+                serviceFactory.forNotification().createNotification(notification);
+            }
+        } catch (Exception e) {
+            logger.error("Failed to send notification for completed evaluation cycle {}", evaluationCycleId, e);
+        }
+        
     }
 
     @Override
@@ -360,4 +367,6 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
         return stats;
     }
 
+
 }
+
