@@ -20,21 +20,6 @@ public interface UserDAO extends BasicDAO<User, Long> {
     Optional<User> findByEmail(String email);
 
     /**
-     * Find all Users managed by a specific manager.
-     *
-     * @param managerId The ID of the manager
-     * @return A list of users managed by the specified manager
-     */
-    List<User> findByManager(Long managerId);
-
-    /**
-     * Check if all users have a manager assigned.
-     *
-     * @return true if all users have a manager, false otherwise
-     */
-    boolean allUsersHaveManager();
-
-    /**
      * Get the count of all users.
      *
      * @return The number of users in the system
@@ -42,8 +27,6 @@ public interface UserDAO extends BasicDAO<User, Long> {
     Long countAllUsers();
 
     Long countUsersWithoutManager();
-
-    Long countUsersWithManager();
 
     List<User> getManagers();
 

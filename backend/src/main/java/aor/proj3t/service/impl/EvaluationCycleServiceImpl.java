@@ -5,7 +5,6 @@ import aor.proj3t.dto.EvaluationCycleDTO;
 import aor.proj3t.entities.Evaluation;
 import aor.proj3t.entities.EvaluationCycle;
 import aor.proj3t.entities.User;
-import aor.proj3t.enums.EvaluationCycleStatus;
 import aor.proj3t.enums.Role;
 import aor.proj3t.exceptions.ConflictException;
 import aor.proj3t.exceptions.InvalidDataException;
@@ -22,7 +21,6 @@ import org.apache.logging.log4j.Logger;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @ApplicationScoped
 public class EvaluationCycleServiceImpl extends BaseService implements EvaluationCycleService {
@@ -33,6 +31,7 @@ public class EvaluationCycleServiceImpl extends BaseService implements Evaluatio
 
     @Inject
     private ConverterFactory converterFactory;
+
     @Inject
     private EmailUtil emailUtil;
 
@@ -88,22 +87,6 @@ public class EvaluationCycleServiceImpl extends BaseService implements Evaluatio
         return converterFactory.forEvaluationCycle().toDTOList(cycles);
     }
 
-    @Override
-    public Boolean updateCycleStatus(Long cycleId, EvaluationCycleStatus status) {
-        try {
-            EvaluationCycle cycle = getEntity(daoFactory.forEvaluationCycle().findById(cycleId), cycleId, "User");
-            cycle.setStatus(status);
-            daoFactory.forEvaluationCycle().update(cycle);
-            return null;
-        } catch (NoSuchElementException e) {
-            logger.error("No active evaluation cycle found with id {}", cycleId);
-            return false;
-        } catch (Exception e) {
-            logger.error("Error while updating evaluation cycle status with id {}", cycleId, e);
-            return false;
-        }
-    }
-
     private void createNewEvaluations(EvaluationCycle evaluationCycle) {
         List<User> users = daoFactory.forUser().findAll();
         for (User user : users) {
@@ -139,6 +122,7 @@ public class EvaluationCycleServiceImpl extends BaseService implements Evaluatio
         }
     }
 
+    @Override
     public void sendCycleClosureEmail(EvaluationCycle cycle) {
         List<User> userList = daoFactory.forUser().findAll();
         DateTimeFormatter formatter = DateTimeFormatter

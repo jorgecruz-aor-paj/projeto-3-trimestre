@@ -5,7 +5,6 @@ import aor.proj3t.dto.FileUploadDTO;
 import aor.proj3t.service.ServiceFactory;
 import aor.proj3t.util.FileStorageUtil;
 import aor.proj3t.util.authutils.Secured;
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;

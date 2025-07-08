@@ -3,6 +3,7 @@ package aor.proj3t.daos.impl;
 import aor.proj3t.daos.interfaces.EvaluationDAO;
 import aor.proj3t.entities.Evaluation;
 import aor.proj3t.entities.EvaluationCycle;
+import aor.proj3t.entities.User;
 import aor.proj3t.enums.EvaluationCycleStatus;
 import aor.proj3t.enums.EvaluationStatus;
 import aor.proj3t.filters.EvaluationFilter;
@@ -27,14 +28,6 @@ public class EvaluationDAOimpl extends AbstractDAO<Evaluation, Long> implements 
     }
 
     @Override
-    public List<Evaluation> findByEvaluated(Long evaluatedId) {
-        TypedQuery<Evaluation> query = em.createQuery(
-                "SELECT e FROM Evaluation e WHERE e.evaluated.id = :evaluatedId", Evaluation.class);
-        query.setParameter("evaluatedId", evaluatedId);
-        return query.getResultList();
-    }
-
-    @Override
     public List<Evaluation> findByEvaluator(Long evaluatorId) {
         TypedQuery<Evaluation> query = em.createQuery(
                 "SELECT e FROM Evaluation e WHERE e.evaluator.id = :evaluatorId", Evaluation.class);
@@ -48,11 +41,6 @@ public class EvaluationDAOimpl extends AbstractDAO<Evaluation, Long> implements 
                 "SELECT e FROM Evaluation e WHERE e.evaluationCycle.id = :cycleId", Evaluation.class);
         query.setParameter("cycleId", cycleId);
         return query.getResultList();
-    }
-
-    @Override
-    public List<Evaluation> findCompletedEvaluations() {
-        return executeNamedQuery("Evaluation.findCompleted", Evaluation.class);
     }
 
     @Override
@@ -153,6 +141,20 @@ public class EvaluationDAOimpl extends AbstractDAO<Evaluation, Long> implements 
                 )
                 .setParameter("cycleId", cycleId)
                 .getSingleResult();
+    }
+
+    @Override
+    public List<Evaluation> findByEvaluatedAndStatusIn(User evaluated, List<EvaluationStatus> statuses) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Evaluation> query = cb.createQuery(Evaluation.class);
+        Root<Evaluation> root = query.from(Evaluation.class);
+
+        Predicate byUser = cb.equal(root.get("evaluated"), evaluated);
+        Predicate byStatus = root.get("status").in(statuses);
+
+        query.where(cb.and(byUser, byStatus));
+
+        return em.createQuery(query).getResultList();
     }
 
 

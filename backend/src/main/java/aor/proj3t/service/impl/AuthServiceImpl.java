@@ -16,7 +16,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.time.Instant;
-import java.util.List;
 
 /**
  * Implementation of the AuthService interface.
@@ -71,30 +70,5 @@ public class AuthServiceImpl extends BaseService implements AuthService {
         session.setActive(false);
         daoFactory.forSession().update(session);
     }
-
-    @Override
-    public int logoutAll(Long userId) {
-        logger.info("Logout all sessions for user ID: {}", userId);
-        // Implement logout all logic
-        return 0;
-    }
-
-    @Override
-    public List<Session> getActiveSessions(Long userId) {
-        // Implement get active sessions logic
-        return List.of();
-    }
-
-    @Override
-    public int cleanupExpiredSessions() {
-        logger.info("Cleaning up expired sessions");
-        // Implement cleanup logic
-        return 0;
-    }
-
-
-
-
-
 
 }

@@ -1,13 +1,5 @@
 package aor.proj3t.service.impl;
 
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import aor.proj3t.daos.DAOFactory;
 import aor.proj3t.dto.MessageDTO;
 import aor.proj3t.entities.Message;
@@ -19,6 +11,13 @@ import aor.proj3t.util.converterutils.ConverterFactory;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Implementation of the MessageService interface
@@ -100,24 +99,6 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         allMessages.addAll(receivedMessages);
 
         return converterFactory.forMessage().toDTOList(allMessages);
-    }
-
-    @Override
-    @Transactional
-    public Boolean deleteMessage(Long messageId) {
-        Optional<Message> messageOpt = daoFactory.forMessage().findById(messageId);
-        if (!messageOpt.isPresent()) {
-            logger.warn("Message with ID: {} not found for deletion", messageId);
-            return false;
-        }
-
-        boolean success = daoFactory.forMessage().deleteById(messageId);
-        if (success) {
-            logger.info("Message with ID: {} deleted", messageId);
-        } else {
-            logger.error("Failed to delete message with ID: {}", messageId);
-        }
-        return success;
     }
 
     @Override

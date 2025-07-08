@@ -7,8 +7,6 @@ import java.util.List;
 
 public interface TrainingDAO extends BasicDAO<Training, Long> {
 
-    Boolean setAsInactive(Long trainingId);
-
     List<Training> getTrainingsByFilters(TrainingFilter filters);
 
     List<Training> findTrainingsNotParticipatedByUser(Long userId);

@@ -1,18 +1,5 @@
 package aor.proj3t.service.impl;
 
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import aor.proj3t.daos.DAOFactory;
 import aor.proj3t.dto.EvaluationCloseDTO;
 import aor.proj3t.dto.EvaluationDTO;
@@ -37,6 +24,11 @@ import aor.proj3t.util.converterutils.ConverterFactory;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.time.Instant;
+import java.util.*;
 
 @ApplicationScoped
 public class EvaluationServiceImpl extends BaseService implements EvaluationService {
@@ -50,40 +42,6 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
 
     @Inject
     ServiceFactory serviceFactory;
-
-
-    @Override
-    public Boolean createEvaluation(Long evaluatedUserId, Long evaluatorUserId, Long evaluationCycleId) {
-        try {
-            User evaluated = getEntity(daoFactory.forUser().findById(evaluatedUserId), evaluatedUserId, "User");
-            User evaluator = getEntity(daoFactory.forUser().findById(evaluatorUserId), evaluatorUserId, "User");
-            EvaluationCycle cycle = getEntity(daoFactory.forEvaluationCycle().findById(evaluationCycleId),
-                    evaluationCycleId, "Evaluation cycle");
-            Evaluation evaluation = new Evaluation(cycle, evaluated, evaluator);
-            daoFactory.forEvaluation().create(evaluation);
-            return true;
-        } catch (NoSuchElementException e) {
-            logger.error("Users with id {} or {} not found", evaluatedUserId, evaluatorUserId, e);
-            return false;
-        } catch (Exception e) {
-            logger.error("Error while creating evaluation", e);
-            return false;
-        }
-    }
-
-    @Override
-    public EvaluationDTO getEvaluationById(Long evaluationId) {
-        try {
-            return converterFactory.forEvaluation()
-                    .toDTO(getEntity(daoFactory.forEvaluation().findById(evaluationId), evaluationId, "Evaluation"));
-        } catch (NoSuchElementException e) {
-            logger.error("Evaluation with id {} not found", evaluationId);
-            return null;
-        } catch (Exception e) {
-            logger.error("Error while getting evaluation with id {}", evaluationId, e);
-            return null;
-        }
-    }
 
     @Override
     public EvaluationDTO updateEvaluation(Long requesterId, EvaluationDTO evaluationDTO) {
@@ -139,80 +97,6 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
     }
 
     @Override
-    public List<EvaluationDTO> findEvaluationsByEvaluator(Long evaluatorId) {
-        try {
-            return converterFactory.forEvaluation().toDTOList(daoFactory.forEvaluation().findByEvaluator(evaluatorId));
-        } catch (Exception e) {
-            logger.error("Error while finding evaluations by evaluator {}", evaluatorId, e);
-            return null;
-        }
-    }
-
-    @Override
-    public List<EvaluationDTO> findEvaluationsByEvaluated(Long evaluatedId) {
-        try {
-            return converterFactory.forEvaluation().toDTOList(daoFactory.forEvaluation().findByEvaluator(evaluatedId));
-        } catch (Exception e) {
-            logger.error("Error while finding evaluations by evaluated {}", evaluatedId, e);
-            return null;
-        }
-    }
-
-    @Override
-    public List<EvaluationDTO> findEvaluationsByCycle(Long cycleId) {
-        try {
-            return converterFactory.forEvaluation().toDTOList(daoFactory.forEvaluation().findByCycleId(cycleId));
-        } catch (Exception e) {
-            logger.error("Error while finding evaluations by evaluation cycle {}", cycleId, e);
-            return null;
-        }
-    }
-
-    @Override
-    public List<EvaluationDTO> findEvaluationsByDateRange(Instant startDate, Instant endDate) {
-        try {
-            return converterFactory.forEvaluation()
-                    .toDTOList(daoFactory.forEvaluation().findByDateRange(startDate, endDate));
-        } catch (Exception e) {
-            logger.error("Error while finding evaluations between dates {} and {}", startDate, endDate, e);
-            return null;
-        }
-    }
-
-    @Override
-    public Boolean completeEvaluation(Long evaluationId) {
-        try {
-            Evaluation evaluation = getEntity(daoFactory.forEvaluation().findById(evaluationId), evaluationId,
-                    "Evaluation");
-            evaluation.setStatus(EvaluationStatus.COMPLETED);
-            return true;
-        } catch (NoSuchElementException e) {
-            logger.error("Evaluation with id {} not found", evaluationId);
-            return false;
-        } catch (Exception e) {
-            logger.error("Error while marking evaluations with id {} as completed", evaluationId, e);
-            return false;
-        }
-    }
-
-    @Override
-    public Boolean closeEvaluation(Long evaluationId) {
-        try {
-            Evaluation evaluation = getEntity(daoFactory.forEvaluation().findById(evaluationId), evaluationId,
-                    "Evaluation");
-            evaluation.setStatus(EvaluationStatus.CLOSED);
-            checkAndCloseEvaluationCycle(evaluation.getEvaluationCycle().getId());
-            return true;
-        } catch (NoSuchElementException e) {
-            logger.error("Evaluation with id {} not found", evaluationId);
-            return false;
-        } catch (Exception e) {
-            logger.error("Error while marking evaluations with id {} as closed", evaluationId, e);
-            return false;
-        }
-    }
-
-    @Override
     @Transactional // Rollback if any RuntimeException occurs
     public void closeEvaluationsBulk(Long requesterId, EvaluationCloseDTO dto) {
         User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
@@ -253,17 +137,6 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
             daoFactory.forEvaluation().update(eval);
         }
         checkAndCloseEvaluationCycle(dto.getCycleId());
-    }
-
-    @Override
-    public Integer closeAllCompletedEvaluations() {
-        try {
-            Integer closedEvaluations = daoFactory.forEvaluation().closeAllCompletedEvaluations();
-            return closedEvaluations;
-        } catch (Exception e) {
-            logger.error("Error while closing all complete evaluations", e);
-            return -1;
-        }
     }
 
     @Override
@@ -343,7 +216,7 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
         } catch (Exception e) {
             logger.error("Failed to send notification for completed evaluation cycle {}", evaluationCycleId, e);
         }
-        
+
     }
 
     @Override
@@ -366,7 +239,6 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
         stats.put("ongoing", ongoing);
         return stats;
     }
-
 
 }
 

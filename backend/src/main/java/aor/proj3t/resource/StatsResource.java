@@ -7,7 +7,6 @@ import aor.proj3t.util.authutils.Secured;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -23,9 +22,6 @@ import java.util.Map;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class StatsResource {
-
-    @Context
-    private HttpHeaders headers;
 
     @Inject
     ServiceFactory serviceFactory;

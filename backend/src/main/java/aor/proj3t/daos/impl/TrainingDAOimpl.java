@@ -12,7 +12,6 @@ import jakarta.persistence.criteria.Root;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Stateless
 public class TrainingDAOimpl extends AbstractDAO<Training, Long> implements TrainingDAO {
@@ -20,19 +19,6 @@ public class TrainingDAOimpl extends AbstractDAO<Training, Long> implements Trai
     @Override
     protected Class<Training> getEntityClass() {
         return Training.class;
-    }
-
-    @Override
-    public Boolean setAsInactive(Long trainingId) {
-        Optional<Training> trainingOpt = findById(trainingId);
-        if (trainingOpt.isPresent()) {
-            Training training = trainingOpt.get();
-            training.setActive(false);
-            training.setEditedAt(Instant.now());
-            update(training);
-            return true;
-        }
-        return false;
     }
 
     @Override

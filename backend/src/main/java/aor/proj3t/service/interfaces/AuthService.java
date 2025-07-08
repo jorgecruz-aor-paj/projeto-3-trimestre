@@ -1,38 +1,12 @@
 package aor.proj3t.service.interfaces;
 
 import aor.proj3t.dto.LoginDTO;
-import aor.proj3t.entities.Session;
-
-import java.util.List;
 
 public interface AuthService {
 
     String login(LoginDTO loginDto, String ipAddress, String userAgent);
 
     void logout(Long userId, String token);
-
-    /**
-     * Logout a user from all devices.
-     * 
-     * @param userId The ID of the user
-     * @return The number of sessions that were invalidated
-     */
-    int logoutAll(Long userId);
-
-    /**
-     * Get all active sessions for a user.
-     * 
-     * @param userId The ID of the user
-     * @return A list of active sessions for the user
-     */
-    List<Session> getActiveSessions(Long userId);
-
-    /**
-     * Clean up expired sessions.
-     * 
-     * @return The number of sessions that were cleaned up
-     */
-    int cleanupExpiredSessions();
 
 
 }

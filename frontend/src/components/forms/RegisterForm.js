@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { FormInput } from './FormInput';
 import { SubmitButton } from './SubmitButton';
 import { registerValidationRules } from '../../utils/validation';
+import { PasswordStrengthMeter } from './PasswordStrengthMeter';
 
 /**
  * RegisterForm component for user registration
@@ -49,6 +50,10 @@ export const RegisterForm = ({
         disabled={loading}
         minLength={registerValidationRules.password.minLength}
       />
+
+      {/* Password Strength Indicator */}
+      <PasswordStrengthMeter password={formData.password} />
+
       <FormInput
         label={t('auth.confirmPassword')}
         type="password"

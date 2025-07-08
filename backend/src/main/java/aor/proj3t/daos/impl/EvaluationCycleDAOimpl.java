@@ -3,13 +3,9 @@ package aor.proj3t.daos.impl;
 import aor.proj3t.daos.interfaces.EvaluationCycleDAO;
 import aor.proj3t.entities.EvaluationCycle;
 import aor.proj3t.enums.EvaluationCycleStatus;
-import aor.proj3t.enums.EvaluationStatus;
 import jakarta.ejb.Stateless;
-import jakarta.persistence.NoResultException;
-import jakarta.persistence.TypedQuery;
 import org.hibernate.Hibernate;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -51,28 +47,6 @@ public class EvaluationCycleDAOimpl extends AbstractDAO<EvaluationCycle, Long> i
             }
         }
         return cycles;
-    }
-
-
-    @Override
-    public List<EvaluationCycle> findByStatus(EvaluationStatus status) {
-        try {
-            TypedQuery<EvaluationCycle> query = em.createQuery(
-                    "SELECT ec FROM EvaluationCycle ec WHERE ec.status = :status", EvaluationCycle.class);
-            query.setParameter("status", status);
-            return query.getResultList();
-        } catch (NoResultException e) {
-            return Collections.emptyList();
-        }
-    }
-
-    @Override
-    public List<EvaluationCycle> findByStatus(EvaluationStatus status, int page, int size) {
-        TypedQuery<EvaluationCycle> query = em.createNamedQuery("EvaluationCycle.findActive", EvaluationCycle.class);
-        query.setFirstResult(page * size);
-        query.setMaxResults(size);
-
-        return query.getResultList();
     }
 
     @Override

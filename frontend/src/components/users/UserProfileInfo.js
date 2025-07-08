@@ -272,11 +272,12 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
       setUploadingProfilePicture(false);
     }
 
-    // Call assignManager if manager changed (for all users in development)
+    // Call assignManager if manager changed (for non-admin users only)
     let newManager = user.manager;
     if (
       isAdmin &&
       user.id &&
+      user.role !== 'ADMIN' &&
       String(formData.managerId) !== String(user.manager?.id) &&
       formData.managerId
     ) {
@@ -623,58 +624,63 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
                   user.biography
                 )}
               </ListGroup.Item>
-              {/* Manager (always display, always editable for development) */}
-              <ListGroup.Item>
-                <strong>{t('profile.manager')}:</strong>{' '}
-                {editMode && isAdmin ? (
-                  <Dropdown onSelect={handleManagerSelect}>
-                    <Dropdown.Toggle
-                      variant="outline-secondary"
-                      id="manager-dropdown"
-                    >
-                      {(() => {
-                        if (!filteredManagerList)
-                          return t('profile.selectManager');
-                        const selected = filteredManagerList.find(
-                          u => String(u.id) === String(formData.managerId)
-                        );
-                        return selected
-                          ? `${selected.firstName} ${selected.lastName}`
-                          : t('profile.selectManager');
-                      })()}
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                      {filteredManagerList && filteredManagerList.length > 0 ? (
-                        filteredManagerList.map(u => (
-                          <Dropdown.Item
-                            key={u.id}
-                            eventKey={u.id}
-                            active={formData.managerId === u.id}
-                          >
-                            {u.firstName} {u.lastName}
+              {/* Manager (display for non-admin users only) */}
+              {user.role !== 'ADMIN' && (
+                <ListGroup.Item>
+                  <strong>{t('profile.manager')}:</strong>{' '}
+                  {editMode && isAdmin ? (
+                    <Dropdown onSelect={handleManagerSelect}>
+                      <Dropdown.Toggle
+                        variant="outline-secondary"
+                        id="manager-dropdown"
+                      >
+                        {(() => {
+                          if (!filteredManagerList)
+                            return t('profile.selectManager');
+                          const selected = filteredManagerList.find(
+                            u => String(u.id) === String(formData.managerId)
+                          );
+                          return selected
+                            ? `${selected.firstName} ${selected.lastName}`
+                            : t('profile.selectManager');
+                        })()}
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu>
+                        {filteredManagerList &&
+                        filteredManagerList.length > 0 ? (
+                          filteredManagerList.map(u => (
+                            <Dropdown.Item
+                              key={u.id}
+                              eventKey={u.id}
+                              active={formData.managerId === u.id}
+                            >
+                              {u.firstName} {u.lastName}
+                            </Dropdown.Item>
+                          ))
+                        ) : (
+                          <Dropdown.Item disabled>
+                            {t('profile.noManager')}
                           </Dropdown.Item>
-                        ))
-                      ) : (
-                        <Dropdown.Item disabled>
-                          {t('profile.noManager')}
-                        </Dropdown.Item>
-                      )}
-                    </Dropdown.Menu>
-                  </Dropdown>
-                ) : user.manager &&
-                  (user.manager.firstName || user.manager.lastName) ? (
-                  `${user.manager.firstName ? user.manager.firstName : ''}${
-                    user.manager.firstName && user.manager.lastName ? ' ' : ''
-                  }${user.manager.lastName ? user.manager.lastName : ''}`.trim()
-                ) : (
-                  t('profile.noManager')
-                )}
-                {touched.managerId && errors.managerId && (
-                  <div className="text-danger mt-1">
-                    {getErrorMessage(errors.managerId)}
-                  </div>
-                )}
-              </ListGroup.Item>
+                        )}
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  ) : user.manager &&
+                    (user.manager.firstName || user.manager.lastName) ? (
+                    `${user.manager.firstName ? user.manager.firstName : ''}${
+                      user.manager.firstName && user.manager.lastName ? ' ' : ''
+                    }${
+                      user.manager.lastName ? user.manager.lastName : ''
+                    }`.trim()
+                  ) : (
+                    t('profile.noManager')
+                  )}
+                  {touched.managerId && errors.managerId && (
+                    <div className="text-danger mt-1">
+                      {getErrorMessage(errors.managerId)}
+                    </div>
+                  )}
+                </ListGroup.Item>
+              )}
             </ListGroup>
           </Col>
         </Row>

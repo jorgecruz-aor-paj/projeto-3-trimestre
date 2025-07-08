@@ -1,6 +1,6 @@
 package aor.proj3t.service;
 
-import aor.proj3t.service.impl.TokenService;
+import aor.proj3t.service.impl.TokenServiceImpl;
 import aor.proj3t.service.interfaces.*;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -53,7 +53,7 @@ public class ServiceFactory {
     private EvaluationCycleService evaluationCycleService;
 
     @Inject
-    private TokenService tokenService;
+    private TokenServiceImpl tokenServiceImpl;
 
     @Inject
     private MessageService messageService;
@@ -134,8 +134,8 @@ public class ServiceFactory {
      * 
      * @return The TokenService instance
      */
-    public TokenService forToken() {
-        return tokenService;
+    public TokenServiceImpl forToken() {
+        return tokenServiceImpl;
     }
 
     /**

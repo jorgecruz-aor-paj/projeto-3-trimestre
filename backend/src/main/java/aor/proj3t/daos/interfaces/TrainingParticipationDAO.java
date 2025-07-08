@@ -7,11 +7,7 @@ import java.util.List;
 
 public interface TrainingParticipationDAO extends BasicDAO<TrainingParticipation, Long> {
 
-    List<TrainingParticipation> findByTrainingId(Long trainingId);
-
     List<TrainingParticipation> findByParticipantId(Long participantId);
-
-    List<TrainingParticipation> findByManagerId(Long managerId);
 
     LinkedHashMap<Integer,Long> trainingTimeByYearByParticipantId(Long participationId);
 

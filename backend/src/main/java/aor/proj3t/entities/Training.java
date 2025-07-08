@@ -1,10 +1,10 @@
 package aor.proj3t.entities;
 
+import aor.proj3t.converters.TrainingLanguageConverter;
+import aor.proj3t.enums.TrainingLanguage;
 import jakarta.persistence.*;
 
 import java.time.Instant;
-import aor.proj3t.enums.TrainingLanguage;
-import aor.proj3t.converters.TrainingLanguageConverter;
 
 @Entity
 @Table(name = "trainings")

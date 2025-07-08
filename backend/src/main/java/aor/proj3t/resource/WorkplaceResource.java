@@ -2,13 +2,12 @@ package aor.proj3t.resource;
 
 import aor.proj3t.dto.WorkplaceDTO;
 import aor.proj3t.service.ServiceFactory;
-import aor.proj3t.util.authutils.JwtUtil;
-import aor.proj3t.util.validatorutils.fordto.UserValidator;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.Context;
-import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
@@ -20,20 +19,12 @@ import java.util.List;
 @Consumes(MediaType.APPLICATION_JSON)
 public class WorkplaceResource {
 
-    @Context
-    private HttpHeaders headers;
     @Inject
     ServiceFactory serviceFactory;
 
-    @Inject
-    UserValidator validator;
-
-    @Inject
-    JwtUtil jwtUtil;
-
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getWorkplaces(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader) {
+    public Response getWorkplaces() {
         List<WorkplaceDTO> list = serviceFactory.forWorkplace().getAllWorkplaces();
         return Response.ok(list).build();
     }
