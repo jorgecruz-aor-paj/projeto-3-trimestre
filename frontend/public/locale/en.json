@@ -3,6 +3,15 @@
     "title": "Performance Management System",
     "subtitle": "Monitor your team's performance"
   },
+  "languages": {
+    "ENGLISH": "English",
+    "PORTUGUESE": "Portuguese",
+    "SPANISH": "Spanish",
+    "FRENCH": "French",
+    "GERMAN": "German",
+    "ITALIAN": "Italian",
+    "DUTCH": "Dutch"
+  },
   "common": {
     "alert": "Alert",
     "ok": "OK",
@@ -183,9 +192,6 @@
     "confirmPasswordRequired": "Please confirm your password",
     "passwordsDontMatch": "Passwords do not match",
     "fieldRequired": "This field is required",
-    "required": "This field is required",
-    "minLength": "This field must have at least {{min}} characters",
-    "maxLength": "This field cannot have more than {{max}} characters",
     "pattern": "The entered value is not valid",
     "url": "Please enter a valid URL",
     "numberOnly": "Please enter numbers only",
@@ -195,7 +201,6 @@
     "invalidFormat": "Invalid format",
     "phoneInvalid": "Please enter a valid phone number",
     "pleaseFixErrors": "Please fix the validation errors before saving",
-    "trainingAreaRequired": "Training area is required",
     "trainingAreaNameFormat": "Training area name can only contain letters, numbers, spaces and hyphens",
     "ratingInvalid": "Please enter a valid rating between 1 and 5",
     "statusRequired": "Status is required",

@@ -40,13 +40,13 @@ export const TrainingFilter = ({
   };
 
   const commonLanguages = [
-    'English',
-    'Portuguese',
-    'Spanish',
-    'French',
-    'German',
-    'Italian',
-    'Dutch',
+    'ENGLISH',
+    'PORTUGUESE',
+    'SPANISH',
+    'FRENCH',
+    'GERMAN',
+    'ITALIAN',
+    'DUTCH',
   ];
 
   const sortOptions = [
@@ -134,7 +134,7 @@ export const TrainingFilter = ({
               <option value="">{t('common.all')}</option>
               {commonLanguages.map(lang => (
                 <option key={lang} value={lang}>
-                  {lang}
+                  {t(`languages.${lang}`)}
                 </option>
               ))}
             </Form.Select>
@@ -252,6 +252,9 @@ export const TrainingFilter = ({
                 displayValue = value
                   ? t('common.active')
                   : t('common.inactive');
+              } else if (key === 'language') {
+                // Use translation for language display
+                displayValue = t(`languages.${value}`);
               }
 
               return (

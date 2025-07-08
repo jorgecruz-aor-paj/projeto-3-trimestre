@@ -89,23 +89,23 @@ export const UserTrainingView = () => {
 
   const getLanguageBadgeVariant = language => {
     const variants = {
-      English: 'primary',
-      Portuguese: 'success',
-      Spanish: 'info',
-      French: 'warning',
-      German: 'secondary',
+      ENGLISH: 'primary',
+      PORTUGUESE: 'success',
+      SPANISH: 'info',
+      FRENCH: 'warning',
+      GERMAN: 'secondary',
     };
     return variants[language] || 'outline-dark';
   };
 
   const commonLanguages = [
-    'English',
-    'Portuguese',
-    'Spanish',
-    'French',
-    'German',
-    'Italian',
-    'Dutch',
+    'ENGLISH',
+    'PORTUGUESE',
+    'SPANISH',
+    'FRENCH',
+    'GERMAN',
+    'ITALIAN',
+    'DUTCH',
   ];
 
   const clearFilters = () => {
@@ -200,7 +200,7 @@ export const UserTrainingView = () => {
                       <option value="">{t('common.all')}</option>
                       {commonLanguages.map(lang => (
                         <option key={lang} value={lang}>
-                          {lang}
+                          {t(`languages.${lang}`)}
                         </option>
                       ))}
                     </Form.Select>
@@ -281,7 +281,7 @@ export const UserTrainingView = () => {
                     <div className="d-flex justify-content-between align-items-start mb-2">
                       <h5 className="card-title mb-0">{training.title}</h5>
                       <Badge bg={getLanguageBadgeVariant(training.language)}>
-                        {training.language}
+                        {t(`languages.${training.language}`)}
                       </Badge>
                     </div>
 

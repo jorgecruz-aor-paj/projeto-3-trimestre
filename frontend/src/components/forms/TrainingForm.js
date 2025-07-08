@@ -73,6 +73,10 @@ export const TrainingForm = ({
     const submitData = {
       ...formData,
       duration: parseInt(formData.duration, 10),
+      // Convert trainingArea object to trainingAreaId for API compatibility
+      trainingAreaId: formData.trainingArea?.id,
+      // Remove the trainingArea object as the API doesn't expect it
+      trainingArea: undefined,
     };
 
     onSubmit(submitData);
@@ -145,7 +149,7 @@ export const TrainingForm = ({
             onChange={handleInputChange}
             options={commonLanguages.map(lang => ({
               value: lang,
-              label: lang.charAt(0) + lang.slice(1).toLowerCase(),
+              label: t(`languages.${lang}`),
             }))}
             error={getErrorMessage(errors.language)}
             placeholder={t('trainings.form.selectLanguage')}

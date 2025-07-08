@@ -3,6 +3,15 @@
     "title": "Sistema de Gestão de Desempenho",
     "subtitle": "Monitorize o desempenho da sua equipa"
   },
+  "languages": {
+    "ENGLISH": "Inglês",
+    "PORTUGUESE": "Português",
+    "SPANISH": "Espanhol",
+    "FRENCH": "Francês",
+    "GERMAN": "Alemão",
+    "ITALIAN": "Italiano",
+    "DUTCH": "Holandês"
+  },
   "common": {
     "alert": "Alerta",
     "ok": "OK",
@@ -184,9 +193,7 @@
     "required": "Este campo é obrigatório",
     "minLength": "Mínimo de {{min}} caracteres necessários",
     "maxLength": "Máximo de {{max}} caracteres permitidos",
-    "emailInvalid": "Por favor, insira um endereço de email válido",
     "passwordInvalid": "A senha deve conter pelo menos 8 caracteres, incluindo maiúsculas, minúsculas, números e caracteres especiais",
-    "passwordsDontMatch": "As senhas não coincidem",
     "birthdateInvalid": "Por favor, insira uma data de nascimento válida (idade deve estar entre 13 e 120 anos)",
     "workplaceRequired": "Por favor, selecione um local de trabalho",
     "phoneInvalid": "Por favor, insira um número de telefone válido",

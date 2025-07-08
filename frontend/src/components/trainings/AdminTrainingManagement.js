@@ -165,7 +165,7 @@ export const AdminTrainingManagement = () => {
       }
 
       setFormLoading(true);
-      await trainingService.createArea(areaFormData.name);
+      await trainingService.manageTrainingArea({ name: areaFormData.name });
       showAlert({
         title: t('trainings.admin.success'),
         message: t('trainings.admin.areaCreateSuccess'),
