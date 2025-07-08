@@ -94,7 +94,9 @@ const API_ENDPOINTS = {
     profilePicture: userId => ({
       url: `${USER_ENDPOINT}/${userId}/profile/picture`,
       requiresAuth: true,
+      /*
       fullUrl: `https://${window.location.hostname}:8443/jorgeosorio-proj3t/api/users/${userId}/profile/picture`,
+      */
     }),
     getAllManagers: {
       url: `${USER_ENDPOINT}/managers`,

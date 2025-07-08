@@ -22,12 +22,14 @@ export const UserCard = ({ user }) => {
     >
       <Card.Body>
         <div className="d-flex align-items-center">
-          <ProfilePicture
-            userId={user.id}
-            alt={`${user.firstName} ${user.lastName}`}
-            className="rounded-circle me-3"
-            style={{ width: 64, height: 64, objectFit: 'cover' }}
-          />
+          {user.photograph && user?.id && (
+            <ProfilePicture
+              userId={user.id}
+              alt={`${user.firstName} ${user.lastName}`}
+              className="rounded-circle me-3"
+              style={{ width: 64, height: 64, objectFit: 'cover' }}
+            />
+          )}
           <div>
             <h5 className="mb-1">
               {user.firstName} {user.lastName}{' '}
