@@ -18,28 +18,11 @@ public class PendingRegistrationDAOimpl extends AbstractDAO<PendingRegistration,
     }
 
     @Override
-    public Optional<PendingRegistration> findByToken(String token) {
-        TypedQuery<PendingRegistration> query = em.createQuery(
-                "SELECT p FROM PendingRegistration p WHERE p.confirmationToken = :token", PendingRegistration.class);
-        query.setParameter("token", token);
-        return query.getResultList().stream().findFirst();
-    }
-
-    @Override
     public Optional<PendingRegistration> findByEmail(String email) {
         TypedQuery<PendingRegistration> query = em.createQuery(
                 "SELECT p FROM PendingRegistration p WHERE p.email = :email", PendingRegistration.class);
         query.setParameter("email", email);
         return query.getResultList().stream().findFirst();
-    }
-
-    @Override
-    public Boolean isValidToken(String token) {
-        TypedQuery<Long> query = em.createQuery(
-                "SELECT COUNT(p) FROM PendingRegistration p WHERE p.confirmationToken = :token AND p.expirationDate > CURRENT_TIMESTAMP",
-                Long.class);
-        query.setParameter("token", token);
-        return query.getSingleResult() > 0;
     }
 
     @Override

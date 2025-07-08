@@ -16,16 +16,6 @@ public class NotificationDAOimpl extends AbstractDAO<Notification, Long> impleme
         }
 
         @Override
-        public List<Notification> findBySenderId(Long senderId) {
-
-                return em.createQuery(
-                                "SELECT n FROM Notification n WHERE n.sender.id = :senderId ORDER BY n.timestampSent DESC",
-                                Notification.class)
-                                .setParameter("senderId", senderId)
-                                .getResultList();
-        }
-
-        @Override
         public List<Notification> findByRecipientId(Long recipientId) {
 
                 return em.createQuery(
@@ -52,39 +42,6 @@ public class NotificationDAOimpl extends AbstractDAO<Notification, Long> impleme
                                 Long.class)
                                 .setParameter("recipientId", recipientId)
                                 .getSingleResult();
-        }
-
-        @Override
-        public Long countUnreadNotificationsByRecipientId(Long recipientId) {
-
-                return em
-                                .createQuery(
-                                                "SELECT COUNT(n) FROM Notification n WHERE n.recipient.id = :recipientId AND n.isRead = FALSE",
-                                                Long.class)
-                                .setParameter("recipientId", recipientId)
-                                .getSingleResult();
-        }
-
-        @Override
-        public List<Notification> findUnreadNotificationsByRecipientId(Long recipientId) {
-
-                return em
-                                .createQuery("SELECT n FROM Notification n WHERE n.recipient.id = :recipientId AND n.isRead = FALSE ORDER BY n.timestampSent DESC",
-                                                Notification.class)
-                                .setParameter("recipientId", recipientId)
-                                .getResultList();
-        }
-
-        @Override
-        public Boolean markNotificationAsRead(Long notificationId) {
-
-                int updatedCount = em.createQuery(
-                                "UPDATE Notification n  SET n.isRead = TRUE, n.timestampRead = :timestamp WHERE n.id = :notificationId")
-                                .setParameter("timestamp", Instant.now())
-                                .setParameter("notificationId", notificationId)
-                                .executeUpdate();
-
-                return updatedCount > 0; // True if the update was successful
         }
 
         @Override

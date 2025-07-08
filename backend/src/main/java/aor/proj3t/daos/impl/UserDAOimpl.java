@@ -72,29 +72,6 @@ public class UserDAOimpl extends AbstractDAO<User, Long> implements UserDAO {
     }
 
     /**
-     * Find all users managed by a specific manager.
-     *
-     * @param managerId The ID of the manager
-     * @return A list of users who report to the specified manager
-     */
-    @Override
-    public List<User> findByManager(Long managerId) {
-        return findByRelatedProperty("manager", "id", managerId);
-    }
-
-    /**
-     * Check if all users in the system have a manager assigned.
-     *
-     * @return true if all users have a manager assigned, false if any users have
-     * null manager
-     */
-    @Override
-    public boolean allUsersHaveManager() {
-        Long count = executeCountQuery("manager", null, true);
-        return count == 0;
-    }
-
-    /**
      * Count the total number of users in the system.
      *
      * @return The total number of users
@@ -116,15 +93,6 @@ public class UserDAOimpl extends AbstractDAO<User, Long> implements UserDAO {
                 .getSingleResult();
     }
 
-    /**
-     * Count the number of users that have a manager assigned.
-     *
-     * @return The count of users with a non-null manager
-     */
-    @Override
-    public Long countUsersWithManager() {
-        return executeCountQueryNotNull("manager");
-    }
 
     /**
      * Get users based on multiple filter criteria.
@@ -192,20 +160,14 @@ public class UserDAOimpl extends AbstractDAO<User, Long> implements UserDAO {
         return em.createQuery(query).getResultList();
     }
 
-
     @Override
     public List<User> getManagers() {
         return executeNamedQuery("User.findAllManagers", User.class, "role", Role.MANAGER);
     }
 
+    @Override
     public List<User> findManagersWithoutUsers() {
         return executeNamedQuery("User.findManagersWithoutUsers", User.class, "role", Role.MANAGER);
-    }
-
-    public Long countNonAdmins() {
-        return em.createNamedQuery("User.countNonAdmins", Long.class)
-                .setParameter("adminRole", Role.ADMIN)
-                .getSingleResult();
     }
 
 

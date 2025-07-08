@@ -8,10 +8,4 @@ import java.util.Optional;
 public interface SessionDAO extends BasicDAO<Session, Long> {
 
     Optional<Session> findByToken(String token);
-
-    Boolean isValidToken(String token);
-
-    List<Session> findSessionsByUserId(Long userId);
-
-    Integer deleteSessionsByUserId(Long userId);
 }

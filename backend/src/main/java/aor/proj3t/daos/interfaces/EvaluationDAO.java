@@ -13,13 +13,6 @@ import java.util.List;
  */
 public interface EvaluationDAO extends BasicDAO<Evaluation, Long> {
 
-    /**
-     * Find evaluations for a specific evaluated user.
-     *
-     * @param evaluatedId The ID of the evaluated user
-     * @return A list of evaluations for the specified user
-     */
-    List<Evaluation> findByEvaluated(Long evaluatedId);
 
     /**
      * Find evaluations performed by a specific evaluator.
@@ -37,12 +30,6 @@ public interface EvaluationDAO extends BasicDAO<Evaluation, Long> {
      */
     List<Evaluation> findByCycleId(Long cycleId);
 
-    /**
-     * Find all evaluations with "Completed" status.
-     *
-     * @return A list of completed evaluations
-     */
-    List<Evaluation> findCompletedEvaluations();
 
     /**
      * Find evaluations within a specific date range.

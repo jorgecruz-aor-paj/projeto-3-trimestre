@@ -28,14 +28,6 @@ public class EvaluationDAOimpl extends AbstractDAO<Evaluation, Long> implements 
     }
 
     @Override
-    public List<Evaluation> findByEvaluated(Long evaluatedId) {
-        TypedQuery<Evaluation> query = em.createQuery(
-                "SELECT e FROM Evaluation e WHERE e.evaluated.id = :evaluatedId", Evaluation.class);
-        query.setParameter("evaluatedId", evaluatedId);
-        return query.getResultList();
-    }
-
-    @Override
     public List<Evaluation> findByEvaluator(Long evaluatorId) {
         TypedQuery<Evaluation> query = em.createQuery(
                 "SELECT e FROM Evaluation e WHERE e.evaluator.id = :evaluatorId", Evaluation.class);
@@ -49,11 +41,6 @@ public class EvaluationDAOimpl extends AbstractDAO<Evaluation, Long> implements 
                 "SELECT e FROM Evaluation e WHERE e.evaluationCycle.id = :cycleId", Evaluation.class);
         query.setParameter("cycleId", cycleId);
         return query.getResultList();
-    }
-
-    @Override
-    public List<Evaluation> findCompletedEvaluations() {
-        return executeNamedQuery("Evaluation.findCompleted", Evaluation.class);
     }
 
     @Override

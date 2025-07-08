@@ -23,19 +23,6 @@ public class TrainingDAOimpl extends AbstractDAO<Training, Long> implements Trai
     }
 
     @Override
-    public Boolean setAsInactive(Long trainingId) {
-        Optional<Training> trainingOpt = findById(trainingId);
-        if (trainingOpt.isPresent()) {
-            Training training = trainingOpt.get();
-            training.setActive(false);
-            training.setEditedAt(Instant.now());
-            update(training);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
     public List<Training> findTrainingsNotParticipatedByUser(Long userId) {
         String query = """
                     SELECT t FROM Training t WHERE t.id NOT IN (

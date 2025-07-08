@@ -73,16 +73,6 @@ public class MessageDAOimpl extends AbstractDAO<Message, Long> implements Messag
         }
 
         @Override
-        public List<Message> findUnreadMessagesByRecipientId(Long recipientId) {
-
-                return em
-                                .createQuery("SELECT m FROM Message m WHERE m.recipient.id = :recipientId AND m.isRead = FALSE",
-                                                Message.class)
-                                .setParameter("recipientId", recipientId)
-                                .getResultList();
-        }
-
-        @Override
         public Boolean markMessageAsRead(Long messageId) {
 
                 int updatedCount = em

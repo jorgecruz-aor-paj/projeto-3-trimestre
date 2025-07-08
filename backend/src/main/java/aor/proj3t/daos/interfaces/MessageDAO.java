@@ -49,14 +49,6 @@ public interface MessageDAO extends BasicDAO<Message, Long> {
     Integer findCountUnreadMessagesByRecipientId(Long recipientId);
 
     /**
-     * Finds all messages that a given user has still not read.
-     *
-     * @param recipientId The ID of the user.
-     * @return A list of unique messages unread by the user.
-     */
-    List<Message> findUnreadMessagesByRecipientId(Long recipientId);
-
-    /**
      * Marks a message has read.
      *
      * @param messageId The ID of the message.

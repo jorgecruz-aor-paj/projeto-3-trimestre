@@ -25,32 +25,6 @@ public class SessionDAOimpl extends AbstractDAO<Session, Long> implements Sessio
         return query.getResultList().stream().findFirst();
     }
 
-    @Override
-    public Boolean isValidToken(String token) {
-        TypedQuery<Long> query = em.createQuery(
-                "SELECT COUNT(s) FROM Session s WHERE s.sessionToken = :token AND s.expirationDate > CURRENT_TIMESTAMP",
-                Long.class);
-        query.setParameter("token", token);
-        return query.getSingleResult() > 0;
-    }
-
-    @Override
-    public List<Session> findSessionsByUserId(Long userId) {
-        TypedQuery<Session> query = em.createQuery(
-                "SELECT s FROM Session s WHERE s.user.id = :userId", Session.class);
-        query.setParameter("userId", userId);
-
-        return query.getResultList();
-    }
-
-    @Override
-    public Integer deleteSessionsByUserId(Long userId) {
-        Query query = em.createQuery(
-                "DELETE FROM Session s WHERE s.user.id = :userId"
-        );
-        query.setParameter("userId", userId);
-        return query.executeUpdate();
-    }
 
 
 }
