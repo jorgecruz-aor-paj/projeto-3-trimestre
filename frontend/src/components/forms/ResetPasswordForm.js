@@ -4,6 +4,7 @@ import { FormInput } from 'components/forms/FormInput';
 import { SubmitButton } from 'components/forms/SubmitButton';
 import { useTranslation } from 'react-i18next';
 import { setNewPasswordValidationRules } from 'utils/validation';
+import { PasswordStrengthMeter } from 'components/forms/PasswordStrengthMeter';
 
 /**
  * Set New Password form component (presentational)
@@ -33,6 +34,9 @@ export const ResetPasswordForm = ({
         maxLength={setNewPasswordValidationRules.password.maxLength}
         autoFocus
       />
+
+      {/* Password Strength Indicator */}
+      <PasswordStrengthMeter password={formData.password} />
 
       <FormInput
         name="confirmPassword"

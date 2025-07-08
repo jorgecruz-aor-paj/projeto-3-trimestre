@@ -206,7 +206,21 @@
     "trainingAreaNameFormat": "Training area name can only contain letters, numbers, spaces and hyphens",
     "ratingInvalid": "Please enter a valid rating between 1 and 5",
     "statusRequired": "Status is required",
-    "error": "Validation Error"
+    "error": "Validation Error",
+    "passwordInvalid": "Password must contain at least 8 characters, including uppercase, lowercase, number and special character",
+    "passwordStrength": {
+      "title": "Password Strength",
+      "weak": "Weak",
+      "medium": "Medium",
+      "strong": "Strong",
+      "veryStrong": "Very Strong",
+      "requirements": "Password must include:",
+      "minLength": "At least 8 characters",
+      "uppercase": "Uppercase letter",
+      "lowercase": "Lowercase letter",
+      "number": "Number",
+      "special": "Special character"
+    }
   },
   "errors": {
     "unexpected": "An unexpected error occurred",
