@@ -17,6 +17,20 @@ axiosInstance.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+
+    // Log file uploads for debugging
+    if (
+      config.data instanceof FormData &&
+      config.url.includes('/profile/picture')
+    ) {
+      console.log('Sending profile picture upload request:', {
+        url: config.url,
+        method: config.method,
+        headers: config.headers,
+        hasFile: config.data.has('file'),
+      });
+    }
+
     return config;
   },
   error => Promise.reject(error)
@@ -25,9 +39,29 @@ axiosInstance.interceptors.request.use(
 let isHandling401 = false;
 
 axiosInstance.interceptors.response.use(
-  response => response.data,
+  response => {
+    // Log profile picture responses
+    if (response.config.url.includes('/profile/picture')) {
+      console.log('Profile picture request completed:', {
+        url: response.config.url,
+        status: response.status,
+        statusText: response.statusText,
+        headers: response.headers,
+      });
+    }
+    return response.data;
+  },
   error => {
-    const { response } = error;
+    const { response, config } = error;
+
+    // Log profile picture errors
+    if (config && config.url && config.url.includes('/profile/picture')) {
+      console.error('Profile picture request failed:', {
+        url: config.url,
+        method: config.method,
+        response: response,
+      });
+    }
 
     // Handle network errors
     if (!response) {

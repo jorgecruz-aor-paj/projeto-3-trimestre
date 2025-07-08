@@ -226,11 +226,22 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
     if (selectedFile && user.id) {
       try {
         setUploadingProfilePicture(true);
-        await userService.uploadProfilePicture(user.id, selectedFile);
+        console.log(
+          `Uploading profile picture for user ${user.id}:`,
+          selectedFile
+        );
+        const result = await userService.uploadProfilePicture(
+          user.id,
+          selectedFile
+        );
+        console.log('Profile picture upload result:', result);
+
         // Clear profile picture cache to force reload
         if (window.profilePictureCache) {
+          console.log(`Clearing profile picture cache for user ${user.id}`);
           window.profilePictureCache.clearUser(user.id);
         }
+
         setSelectedFile(null);
         setPreviewUrl(null);
         if (fileInputRef.current) {
@@ -369,9 +380,10 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
                 ) : (
                   <ProfilePicture
                     userId={user.id}
+                    size="lg"
                     alt={`${user.firstName} ${user.lastName}`}
-                    className="rounded-circle mb-3"
-                    style={{ width: 120, height: 120, objectFit: 'cover' }}
+                    className="mb-3"
+                    useContainer={true}
                   />
                 )}
                 {uploadingProfilePicture && (
@@ -417,9 +429,10 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
             ) : (
               <ProfilePicture
                 userId={user.id}
+                size="lg"
                 alt={`${user.firstName} ${user.lastName}`}
-                className="rounded-circle mb-3"
-                style={{ width: 120, height: 120, objectFit: 'cover' }}
+                className="mb-3"
+                useContainer={true}
               />
             )}
             <div className="mt-3">

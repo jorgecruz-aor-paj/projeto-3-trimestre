@@ -71,7 +71,9 @@ export const ProfilePicture = ({
   // Listen for profile picture updates
   useEffect(() => {
     const handleProfilePictureUpdate = event => {
+      console.log('Profile picture update event received:', event.detail);
       if (event.detail?.userId === userId) {
+        console.log(`Updating profile picture for user ${userId}`);
         // Clear cache for this user
         const cacheKey = `profile_${userId}`;
         imageCache.delete(cacheKey);
@@ -81,6 +83,8 @@ export const ProfilePicture = ({
         const newSrc = `${
           API_ENDPOINTS.user.profilePicture(userId).fullUrl
         }?_t=${timestamp}`;
+
+        console.log(`New profile picture URL: ${newSrc}`);
 
         // Update our app cache with the new timestamped URL
         imageCache.set(cacheKey, newSrc);
@@ -107,10 +111,12 @@ export const ProfilePicture = ({
 
   // Handle image load error - only use frontend fallback if backend completely fails
   const handleError = e => {
+    console.warn(`Profile picture load error for user ${userId}:`, e);
     setIsLoading(false);
 
     // Set image src to fallback image if not already set
     if (e.target.src !== fallbackSrc) {
+      console.log(`Falling back to default image for user ${userId}`);
       e.target.src = fallbackSrc;
     }
 

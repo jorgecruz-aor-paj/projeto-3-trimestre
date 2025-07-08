@@ -90,19 +90,17 @@ export const userService = {
           method: 'POST',
           data: formData,
           headers: {
-            'Content-Type': 'multipart/form-data',
+            'Content-Type': undefined, // Let axios set the correct boundary
           },
         }
       );
 
       // Trigger profile picture update event for cache refresh
-      if (result.success) {
-        window.dispatchEvent(
-          new CustomEvent('profilePictureUpdated', {
-            detail: { userId: parseInt(userId) },
-          })
-        );
-      }
+      window.dispatchEvent(
+        new CustomEvent('profilePictureUpdated', {
+          detail: { userId: parseInt(userId) },
+        })
+      );
 
       return result;
     } catch (error) {
@@ -122,13 +120,11 @@ export const userService = {
     });
 
     // Trigger profile picture update event for cache refresh
-    if (result.success) {
-      window.dispatchEvent(
-        new CustomEvent('profilePictureUpdated', {
-          detail: { userId: parseInt(userId) },
-        })
-      );
-    }
+    window.dispatchEvent(
+      new CustomEvent('profilePictureUpdated', {
+        detail: { userId: parseInt(userId) },
+      })
+    );
 
     return result;
   },
