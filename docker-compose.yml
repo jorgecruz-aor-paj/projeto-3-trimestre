@@ -12,6 +12,7 @@ services:
       - ./backend/target/jorge-osorio-proj3t/:/opt/wildfly/standalone/deployments/jorge-osorio-proj3t.war
       - ./backend/.env:/opt/wildfly/bin/.env
       - ./backend/logs:/opt/wildfly/logs
+      - profile_pictures_data:/opt/wildfly/standalone/data/profile-pictures
     env_file:
       - ./backend/.env
     restart: unless-stopped
@@ -87,4 +88,6 @@ volumes:
   pgadmin_data:
     driver: local
   ai_model_cache:
+    driver: local
+  profile_pictures_data:
     driver: local
