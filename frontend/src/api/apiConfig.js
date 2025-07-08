@@ -3,6 +3,8 @@
  * Centralized configuration for all API endpoints
  */
 
+// const VPS_URL = 'proj3taor.vps.webdock.cloud';
+
 // Function to get the base URL for the API
 const getApiBaseUrl = () => {
   const url = `https://${window.location.hostname}:8443/jorgeosorio-proj3t/api`;
