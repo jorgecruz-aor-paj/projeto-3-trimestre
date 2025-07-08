@@ -18,8 +18,15 @@ export const LoginForm = ({
   errors,
   loading,
   getErrorMessage,
+  isSubmitted,
 }) => {
   const { t } = useTranslation();
+
+  // Only show errors if the form has been submitted
+  const showError = error => {
+    return isSubmitted ? getErrorMessage(error) : null;
+  };
+
   return (
     <Form onSubmit={onSubmit}>
       <FormInput
@@ -28,7 +35,7 @@ export const LoginForm = ({
         label={t('auth.email')}
         value={formData.email}
         onChange={onChange}
-        error={getErrorMessage(errors.email)}
+        error={showError(errors.email)}
         placeholder={t('auth.emailPlaceholder')}
         disabled={loading}
         maxLength={loginValidationRules.email.maxLength}
@@ -40,7 +47,7 @@ export const LoginForm = ({
         label={t('auth.password')}
         value={formData.password}
         onChange={onChange}
-        error={getErrorMessage(errors.password)}
+        error={showError(errors.password)}
         placeholder={t('auth.passwordPlaceholder')}
         disabled={loading}
         minLength={loginValidationRules.password.minLength}

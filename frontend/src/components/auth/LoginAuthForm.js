@@ -23,35 +23,46 @@ export const LoginAuthForm = () => {
     errors = {},
     handleChange,
     validateAll,
+    setErrors,
   } = useFormValidation({ email: '', password: '' }, loginValidationRules);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleInputChange = e => {
     const { name, value } = e.target;
+    // Only update the form data without validation
     handleChange(name, value);
+
+    // If the form has been submitted once, we validate again to provide feedback
+    if (isSubmitted) {
+      validateAll();
+    }
   };
 
   const safeGetErrorMessage = error => {
-    if (!error) return null;
+    // Only show errors if the form has been submitted
+    if (!isSubmitted || !error) return null;
     return getErrorMessage(error);
   };
 
   const handleSubmit = async e => {
     e.preventDefault();
     setError(null);
-    if (!validateAll()) return;
+    setIsSubmitted(true);
+
+    // Validate all fields
+    const isValid = validateAll();
+    if (!isValid) return;
+
     setLoading(true);
     try {
       const response = await authService.login(formData);
       setToken(response);
-      try {
-        const userResponse = await userService.getMe();
-        setUserInfo(userResponse);
-      } catch {
-        /* empty */
-      }
+      const userResponse = await userService.getMe();
+      setUserInfo(userResponse);
+
       navigate('/dashboard');
     } catch (err) {
       setError(err.message || t('auth.loginFailed'));
@@ -72,6 +83,7 @@ export const LoginAuthForm = () => {
         errors={errors}
         loading={loading}
         getErrorMessage={safeGetErrorMessage}
+        isSubmitted={isSubmitted}
       />
     </>
   );
