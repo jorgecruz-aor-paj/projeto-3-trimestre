@@ -56,10 +56,9 @@ wildfly/domain/data/
 wildfly/standalone/deployments/*
 !wildfly/standalone/deployments/README.txt
 
-# Docker files
-**/Dockerfile
-**/.dockerignore
-**/docker-compose*.yml
+# **/Dockerfile
+# **/.dockerignore
+# **/docker-compose*.yml
 
 # Editors and IDEs
 **/.idea/
