@@ -5,14 +5,17 @@ import aor.proj3t.config.SettingsProvider;
 import aor.proj3t.daos.DAOFactory;
 import aor.proj3t.dto.*;
 import aor.proj3t.dto.paginated.UserPaginationDTO;
+import aor.proj3t.entities.Evaluation;
 import aor.proj3t.entities.PendingRegistration;
 import aor.proj3t.entities.User;
 import aor.proj3t.entities.Workplace;
+import aor.proj3t.enums.EvaluationStatus;
 import aor.proj3t.enums.Role;
 import aor.proj3t.exceptions.ConflictException;
 import aor.proj3t.exceptions.ForbiddenException;
 import aor.proj3t.exceptions.NotFoundException;
 import aor.proj3t.filters.UserFilter;
+import aor.proj3t.service.ServiceFactory;
 import aor.proj3t.service.interfaces.UserService;
 import aor.proj3t.util.EmailUtil;
 import aor.proj3t.util.FileStorageUtil;
@@ -34,6 +37,8 @@ import java.util.*;
 public class UserServiceImpl extends BaseService implements UserService {
     private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
 
+@Inject
+    ServiceFactory serviceFactory;
 
     @Inject
     JwtUtil jwtUtil;
@@ -147,6 +152,7 @@ public class UserServiceImpl extends BaseService implements UserService {
         for (User user : users) {
             user.setManager(manager);
             daoFactory.forUser().update(user);
+            reassignEvaluatorForUser(user,manager);
         }
         if (manager.getRole().equals(Role.USER)) {
             manager.setRole(Role.MANAGER);
@@ -393,5 +399,14 @@ public class UserServiceImpl extends BaseService implements UserService {
         emailUtil.sendEmail(managerEmail, subject, emailBody);
     }
 
+    private void reassignEvaluatorForUser(User evaluatedUser, User newEvaluator) {
+        List<Evaluation> evaluations = daoFactory.forEvaluation()
+                .findByEvaluatedAndStatusIn(evaluatedUser, List.of(EvaluationStatus.ONGOING, EvaluationStatus.COMPLETED));
+
+        for (Evaluation evaluation : evaluations) {
+            evaluation.setEvaluator(newEvaluator);
+            daoFactory.forEvaluation().update(evaluation);
+        }
+    }
 
 }

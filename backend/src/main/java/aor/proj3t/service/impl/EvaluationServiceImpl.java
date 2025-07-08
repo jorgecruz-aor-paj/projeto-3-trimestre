@@ -343,7 +343,7 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
         } catch (Exception e) {
             logger.error("Failed to send notification for completed evaluation cycle {}", evaluationCycleId, e);
         }
-        
+
     }
 
     @Override
@@ -367,6 +367,16 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
         return stats;
     }
 
+
+    private void reassignEvaluatorForUser(User evaluatedUser, User newEvaluator) {
+        List<Evaluation> evaluations = daoFactory.forEvaluation()
+                .findByEvaluatedAndStatusIn(evaluatedUser, List.of(EvaluationStatus.ONGOING, EvaluationStatus.COMPLETED));
+
+        for (Evaluation evaluation : evaluations) {
+            evaluation.setEvaluator(newEvaluator);
+            daoFactory.forEvaluation().update(evaluation);
+        }
+    }
 
 }
 

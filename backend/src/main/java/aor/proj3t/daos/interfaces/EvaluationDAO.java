@@ -1,6 +1,8 @@
 package aor.proj3t.daos.interfaces;
 
 import aor.proj3t.entities.Evaluation;
+import aor.proj3t.entities.User;
+import aor.proj3t.enums.EvaluationStatus;
 import aor.proj3t.filters.EvaluationFilter;
 
 import java.time.Instant;
@@ -66,6 +68,6 @@ public interface EvaluationDAO extends BasicDAO<Evaluation, Long> {
 
     Long countByCycleId(Long cycleId);
 
-
+    List<Evaluation> findByEvaluatedAndStatusIn(User evaluated, List<EvaluationStatus> statuses);
 
 }
