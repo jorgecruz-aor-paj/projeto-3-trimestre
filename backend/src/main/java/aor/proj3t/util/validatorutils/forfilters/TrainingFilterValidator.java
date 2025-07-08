@@ -17,8 +17,6 @@ import java.util.List;
 public class TrainingFilterValidator extends BaseFilterValidator<TrainingFilter> {
 
     private static final int MAX_SEARCH_TEXT_LENGTH = 255;
-    private static final int MIN_LANGUAGE_LENGTH = 2;
-    private static final int MAX_LANGUAGE_LENGTH = 50;
     private static final int MIN_DURATION = 1;
     private static final int MAX_DURATION = 1000;
 
