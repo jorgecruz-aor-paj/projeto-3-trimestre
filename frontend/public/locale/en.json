@@ -512,6 +512,7 @@
     "role": "Role",
     "manager": "Manager",
     "noManager": "No manager",
+    "noManagerAssigned": "No manager assigned",
     "selectManager": "Select manager",
     "evaluations": "Evaluations",
     "trainings": "Trainings",

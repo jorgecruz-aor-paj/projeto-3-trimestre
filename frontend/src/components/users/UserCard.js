@@ -3,10 +3,12 @@ import PropTypes from 'prop-types';
 import { Card, Badge } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { ProfilePicture } from 'components/common/ProfilePicture';
+import { useTranslation } from 'react-i18next';
 import 'styles/components/UserCard.css';
 
 export const UserCard = ({ user }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleCardClick = () => {
     navigate(`/profile?userId=${user.id}`);
@@ -31,10 +33,30 @@ export const UserCard = ({ user }) => {
               {user.firstName} {user.lastName}{' '}
               <Badge bg="secondary">{user.role}</Badge>
             </h5>
-            <div className="text-muted small">{user.email}</div>
-            <div className="text-muted small">{user.phoneNumber}</div>
-            <div className="text-muted small">{user.address}</div>
-            <div className="text-muted small">{user.biography}</div>
+            <div className="text-muted small mb-1">
+              <i className="bi bi-envelope-fill me-1"></i>
+              <span>{user.email}</span>
+            </div>
+            {user.phoneNumber && (
+              <div className="text-muted small mb-1">
+                <i className="bi bi-telephone-fill me-1"></i>
+                <span>{user.phoneNumber}</span>
+              </div>
+            )}
+            {user.workplace && (
+              <div className="text-muted small">
+                <i className="bi bi-building me-1"></i>
+                {user.workplace.name}
+              </div>
+            )}
+            <div className="text-muted small">
+              <i className="bi bi-person-badge me-1"></i>
+              {user.manager
+                ? `${t('profile.manager')}: ${user.manager.firstName} ${
+                    user.manager.lastName
+                  }`
+                : t('profile.noManagerAssigned')}
+            </div>
             <small className="text-primary mt-2">
               <i className="fas fa-user me-1"></i>
               View profile
@@ -57,5 +79,16 @@ UserCard.propTypes = {
     address: PropTypes.string,
     biography: PropTypes.string,
     photograph: PropTypes.bool,
+    workplace: PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      name: PropTypes.string,
+    }),
+    manager: PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      firstName: PropTypes.string,
+      lastName: PropTypes.string,
+      email: PropTypes.string,
+      photograph: PropTypes.string,
+    }),
   }).isRequired,
 };

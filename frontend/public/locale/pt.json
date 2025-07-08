@@ -510,6 +510,7 @@
     "role": "Função",
     "manager": "Gestor",
     "noManager": "Sem gestor",
+    "noManagerAssigned": "Nenhum gestor atribuído",
     "selectManager": "Selecionar gestor",
     "evaluations": "Avaliações",
     "trainings": "Formações",
