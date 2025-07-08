@@ -33,10 +33,6 @@ public interface TrainingService {
      */
     Boolean deactivateTraining(Long trainingId);
 
-    List<TrainingDTO> getAllTrainings();
-
-    TrainingDTO getTrainingById(Long trainingId);
-
     List<TrainingAreaDTO> getAllTrainingAreas();
 
     TrainingAreaDTO addTrainingArea(TrainingAreaDTO trainingAreaDTO);

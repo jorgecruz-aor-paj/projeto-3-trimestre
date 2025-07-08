@@ -55,15 +55,6 @@ public interface NotificationService {
     NotificationPaginationDTO getUserNotificationsPaginated(Long userId, int page, int size);
 
     /**
-     * Retrieves all notifications of a specific type for a user
-     * 
-     * @param userId The user ID
-     * @param type   The notification type
-     * @return List of notification DTOs
-     */
-    List<NotificationDTO> getUserNotificationsByType(Long userId, NotificationType type);
-
-    /**
      * Deletes a notification
      * 
      * @param notificationId The ID of the notification to delete

@@ -51,13 +51,6 @@ public interface MessageService {
      */
     List<MessageDTO> getUserMessages(Long userId);
 
-    /**
-     * Deletes a message
-     * 
-     * @param messageId The ID of the message to delete
-     * @return true if successful, false otherwise
-     */
-    Boolean deleteMessage(Long messageId);
 
     /**
      * Gets all users that have exchanged messages with the specified user

@@ -7,6 +7,7 @@ import aor.proj3t.enums.Role;
 import aor.proj3t.exceptions.NotFoundException;
 import aor.proj3t.exceptions.UnauthorizedException;
 import aor.proj3t.service.ServiceFactory;
+import aor.proj3t.service.interfaces.TokenService;
 import aor.proj3t.util.authutils.JwtUtil;
 import aor.proj3t.util.authutils.TokenUtil;
 import io.jsonwebtoken.Claims;
@@ -17,8 +18,8 @@ import org.apache.logging.log4j.Logger;
 
 
 @ApplicationScoped
-public class TokenService {
-    private static final Logger logger = LogManager.getLogger(TokenService.class);
+public class TokenServiceImpl extends BaseService implements TokenService {
+    private static final Logger logger = LogManager.getLogger(TokenServiceImpl.class);
 
     @Inject
     JwtUtil jwtUtil;
@@ -29,15 +30,18 @@ public class TokenService {
     @Inject
     DAOFactory daoFactory;
 
+    @Override
     public Long getUserIdFromToken(String token) {
         return extractUserId(getValidClaims(token));
     }
 
+    @Override
     public Long getUserIdFromAuthHeader(String authHeader) {
         String token = TokenUtil.extractToken(authHeader);  // Reuse your utility
         return extractUserId(getValidClaims(token));
     }
 
+    @Override
     public Role getRoleFromAuthHeader(String authHeader) {
         String token = TokenUtil.extractToken(authHeader);
         return extractRole(getValidClaims(token));
@@ -55,6 +59,7 @@ public class TokenService {
         }
     }
 
+    @Override
     public boolean isTokenActive(String token) {
         try {
             Session session = getSessionByToken(token);
@@ -65,6 +70,7 @@ public class TokenService {
         }
     }
 
+    @Override
     public Session getSessionByToken(String token) {
         return daoFactory.forSession()
                 .findByToken(token)
@@ -103,7 +109,6 @@ public class TokenService {
         }
         return claims;
     }
-
 
 }
 

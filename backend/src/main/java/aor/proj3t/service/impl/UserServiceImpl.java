@@ -37,9 +37,6 @@ import java.util.*;
 public class UserServiceImpl extends BaseService implements UserService {
     private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
 
-@Inject
-    ServiceFactory serviceFactory;
-
     @Inject
     JwtUtil jwtUtil;
 
@@ -102,28 +99,6 @@ public class UserServiceImpl extends BaseService implements UserService {
         User user = getEntity(daoFactory.forUser().findById(userId), userId, "User");
         user.setPassword(passwordUtil.hashPassword(newRawPassword));
         daoFactory.forUser().update(user);
-    }
-
-    @Override
-    public Boolean assignManager(Long userId, Long managerId) {
-        try {
-            User user = getEntity(daoFactory.forUser().findById(userId), userId, "User");
-            User manager = getEntity(daoFactory.forUser().findById(managerId), managerId, "User");
-            user.setManager(manager);
-            daoFactory.forUser().update(user);
-            if (!manager.getRole().equals(Role.MANAGER)) {
-                manager.setRole(Role.MANAGER);
-                daoFactory.forUser().update(manager);
-            }
-            return true;
-        } catch (NoSuchElementException e) {
-            logger.error("Invalid user ID {} or manager ID {} while assigning manager. ", userId, managerId, e);
-            return false;
-
-        } catch (Exception e) {
-            logger.error("Error assigning manager. ", e);
-            return false;
-        }
     }
 
     @Override
@@ -364,15 +339,6 @@ public class UserServiceImpl extends BaseService implements UserService {
             logger.error("Error resetting profile picture for user ID: {}", userId, e);
             return false;
         }
-    }
-
-    /**
-     * Get users with pagination and sorting
-     */
-    @Override
-    public UserPaginationDTO getPaginatedUsers(UserFilter filter, int page, int size, String sortString) {
-        // TODO implement pagination and sorting logic
-        return new UserPaginationDTO();
     }
 
     @Override

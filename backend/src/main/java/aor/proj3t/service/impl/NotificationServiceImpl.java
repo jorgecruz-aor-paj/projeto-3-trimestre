@@ -106,18 +106,6 @@ public class NotificationServiceImpl extends BaseService implements Notification
     }
 
     @Override
-    public List<NotificationDTO> getUserNotificationsByType(Long userId, NotificationType type) {
-        List<Notification> notifications = daoFactory.forNotification().findByRecipientId(userId);
-
-        // Filter by type
-        List<Notification> filteredNotifications = notifications.stream()
-                .filter(n -> n.getType() == type)
-                .collect(Collectors.toList());
-
-        return converterFactory.forNotification().toDTOList(filteredNotifications);
-    }
-
-    @Override
     @Transactional
     public Boolean deleteNotification(Long notificationId) {
         Optional<Notification> notificationOpt = daoFactory.forNotification().findById(notificationId);

@@ -16,7 +16,5 @@ public interface EvaluationCycleService {
 
     List<EvaluationCycleDTO> getAllCycles(Long requesterId, boolean active);
 
-    Boolean updateCycleStatus(Long cycleId, EvaluationCycleStatus status);
-
     void sendCycleClosureEmail(EvaluationCycle cycle);
 }

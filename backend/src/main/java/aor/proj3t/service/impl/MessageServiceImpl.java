@@ -103,24 +103,6 @@ public class MessageServiceImpl extends BaseService implements MessageService {
     }
 
     @Override
-    @Transactional
-    public Boolean deleteMessage(Long messageId) {
-        Optional<Message> messageOpt = daoFactory.forMessage().findById(messageId);
-        if (!messageOpt.isPresent()) {
-            logger.warn("Message with ID: {} not found for deletion", messageId);
-            return false;
-        }
-
-        boolean success = daoFactory.forMessage().deleteById(messageId);
-        if (success) {
-            logger.info("Message with ID: {} deleted", messageId);
-        } else {
-            logger.error("Failed to delete message with ID: {}", messageId);
-        }
-        return success;
-    }
-
-    @Override
     public List<aor.proj3t.entities.User> getMessagedUsers(Long userId) {
         return daoFactory.forMessage().findMessagedUsers(userId);
     }

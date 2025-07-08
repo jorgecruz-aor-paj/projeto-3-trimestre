@@ -20,20 +20,12 @@ import java.util.List;
 @Consumes(MediaType.APPLICATION_JSON)
 public class WorkplaceResource {
 
-    @Context
-    private HttpHeaders headers;
     @Inject
     ServiceFactory serviceFactory;
 
-    @Inject
-    UserValidator validator;
-
-    @Inject
-    JwtUtil jwtUtil;
-
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getWorkplaces(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader) {
+    public Response getWorkplaces() {
         List<WorkplaceDTO> list = serviceFactory.forWorkplace().getAllWorkplaces();
         return Response.ok(list).build();
     }

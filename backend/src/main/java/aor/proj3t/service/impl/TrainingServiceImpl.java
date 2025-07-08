@@ -111,23 +111,6 @@ public class TrainingServiceImpl extends BaseService implements TrainingService 
     }
 
     @Override
-    public List<TrainingDTO> getAllTrainings() {
-        try {
-            List<Training> trainingList = daoFactory.forTraining().findAll();
-            return converterFactory.forTraining().toDTOList(trainingList);
-        } catch (Exception e) {
-            logger.error("Error finding all trainings", e);
-            return new ArrayList<>();
-        }
-    }
-
-    @Override
-    public TrainingDTO getTrainingById(Long trainingId) {
-        Training training = getEntity(daoFactory.forTraining().findById(trainingId), trainingId, "Training");
-        return converterFactory.forTraining().toDTO(training);
-    }
-
-    @Override
     public List<TrainingAreaDTO> getAllTrainingAreas() {
         return converterFactory.forTrainingArea().toDTOList(daoFactory.forTrainingArea().findAll());
     }

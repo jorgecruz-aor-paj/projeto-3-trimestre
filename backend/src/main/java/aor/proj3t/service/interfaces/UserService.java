@@ -17,8 +17,6 @@ public interface UserService {
 
     void changePassword(Long userId, String newPassword);
 
-    Boolean assignManager(Long userId, Long managerId);
-
     void assignManagerBulk(Long userId, ManagerAssignDTO managerAssignDto);
 
     void updateUser(Long userId, UserDTO userDto);
@@ -32,8 +30,6 @@ public interface UserService {
     Boolean resetProfilePicture(Long userId);
 
     List<UserDTO> getAllManagers(Long requesterId);
-
-    UserPaginationDTO getPaginatedUsers(UserFilter userFilter, int page, int size, String sortString);
 
     Map<String, Long> getTotalVSUnmanagedUsers(Long requesterId);
 
