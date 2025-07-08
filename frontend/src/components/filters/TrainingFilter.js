@@ -2,6 +2,7 @@ import React from 'react';
 import { Form, Row, Col, Button, InputGroup } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
+import { exportService } from 'services/exportService';
 
 /**
  * Training filter component for filtering training list
@@ -39,6 +40,38 @@ export const TrainingFilter = ({
     onFiltersChange({});
   };
 
+  // Download trainings as CSV
+  const handleDownloadCSV = async () => {
+    try {
+      const response = await exportService.trainingsToCSVFiltered(filters);
+      let filename = 'trainings.csv';
+      if (response?.headers?.['content-disposition']) {
+        const match = response.headers['content-disposition'].match(
+          /filename="?([^";]+)"?/
+        );
+        if (match && match[1]) filename = match[1];
+      }
+      const blob = response.data instanceof Blob ? response.data : response;
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      a.setAttribute('download', filename);
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => {
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      }, 200);
+    } catch (error) {
+      console.error('Error downloading trainings CSV:', error);
+      if (typeof window !== 'undefined' && window.alert) {
+        // eslint-disable-next-line no-alert
+        window.alert('Failed to download trainings CSV.');
+      }
+    }
+  };
+
   const commonLanguages = [
     'ENGLISH',
     'PORTUGUESE',
@@ -61,6 +94,19 @@ export const TrainingFilter = ({
 
   return (
     <div>
+      {/* Export buttons */}
+      <div className="d-flex justify-content-end gap-2 mb-3">
+        <Button
+          variant="outline-primary"
+          size="sm"
+          onClick={handleDownloadCSV}
+          title={t('trainings.title') + ' CSV'}
+        >
+          <i className="fas fa-file-csv me-1" />
+          CSV
+        </Button>
+      </div>
+
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h6 className="mb-0">
           <i className="bi bi-funnel me-2"></i>
