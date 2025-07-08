@@ -47,7 +47,6 @@ export const TrainingFilter = ({
     'German',
     'Italian',
     'Dutch',
-    'Other',
   ];
 
   const sortOptions = [

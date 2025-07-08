@@ -3,6 +3,8 @@ package aor.proj3t.util.validatorutils.fordto;
 import aor.proj3t.dto.NewTrainingDTO;
 import aor.proj3t.dto.TrainingAreaDTO;
 import aor.proj3t.dto.TrainingDTO;
+import aor.proj3t.enums.EvaluationStatus;
+import aor.proj3t.enums.TrainingLanguage;
 import aor.proj3t.exceptions.InvalidDataException;
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -54,14 +56,21 @@ public class TrainingValidator {
         }
     }
 
-    public void validateTrainingLanguage(String language) {
-        if (language == null || language.trim().isEmpty()) {
-            throw new InvalidDataException("Language is required");
+    public void validateTrainingLanguage(TrainingLanguage language) {
+        if (language == null) {
+            throw new InvalidDataException("Training language must be provided");
         }
+        // No need to validate the enum value itself, as it's already guaranteed to be valid if it's not null
     }
 
-
-
+    private String[] getLanguageNames() {
+        TrainingLanguage[] languages = TrainingLanguage.values();
+        String[] names = new String[languages.length];
+        for (int i = 0; i < languages.length; i++) {
+            names[i] = languages[i].name();
+        }
+        return names;
+    }
 
 
     public void validateNewTrainingDTO(NewTrainingDTO newTrainingDto) {

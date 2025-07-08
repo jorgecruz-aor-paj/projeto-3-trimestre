@@ -106,7 +106,6 @@ export const UserTrainingView = () => {
     'German',
     'Italian',
     'Dutch',
-    'Other',
   ];
 
   const clearFilters = () => {

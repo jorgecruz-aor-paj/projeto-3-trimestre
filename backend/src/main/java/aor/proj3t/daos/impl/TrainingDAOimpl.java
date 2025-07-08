@@ -62,7 +62,9 @@ public class TrainingDAOimpl extends AbstractDAO<Training, Long> implements Trai
             predicates.add(cb.equal(root.get("trainingArea").get("id"), filters.getTrainingAreaId()));
         }
         if (filters.getLanguage() != null) {
-            predicates.add(cb.equal(root.get("language"), filters.getLanguage()));
+            // Special handling for language enum
+            predicates.add(cb.equal(cb.upper(root.get("language").as(String.class)), 
+                                    filters.getLanguage().name()));
         }
         if (filters.getDuration() != null) {
             predicates.add(cb.equal(root.get("duration"), filters.getDuration()));

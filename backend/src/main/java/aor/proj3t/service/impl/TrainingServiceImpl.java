@@ -15,6 +15,7 @@ import aor.proj3t.entities.Notification;
 import aor.proj3t.entities.Training;
 import aor.proj3t.entities.TrainingArea;
 import aor.proj3t.entities.User;
+import aor.proj3t.enums.TrainingLanguage;
 import aor.proj3t.enums.NotificationType;
 import aor.proj3t.enums.Role;
 import aor.proj3t.exceptions.ConflictException;

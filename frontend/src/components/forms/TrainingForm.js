@@ -79,14 +79,13 @@ export const TrainingForm = ({
   };
 
   const commonLanguages = [
-    'English',
-    'Portuguese',
-    'Spanish',
-    'French',
-    'German',
-    'Italian',
-    'Dutch',
-    'Other',
+    'ENGLISH',
+    'PORTUGUESE',
+    'SPANISH',
+    'FRENCH',
+    'GERMAN',
+    'ITALIAN',
+    'DUTCH',
   ];
 
   return (
@@ -146,7 +145,7 @@ export const TrainingForm = ({
             onChange={handleInputChange}
             options={commonLanguages.map(lang => ({
               value: lang,
-              label: lang,
+              label: lang.charAt(0) + lang.slice(1).toLowerCase(),
             }))}
             error={getErrorMessage(errors.language)}
             placeholder={t('trainings.form.selectLanguage')}

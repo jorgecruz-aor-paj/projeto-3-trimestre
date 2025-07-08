@@ -1,5 +1,6 @@
 package aor.proj3t.dto;
 
+import aor.proj3t.enums.TrainingLanguage;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
@@ -24,7 +25,7 @@ public class TrainingDTO {
     @XmlElement(name = "link")
     private String link;
     @XmlElement(name = "language")
-    private String language;
+    private TrainingLanguage language;
     @XmlElement(name = "active")
     private boolean isActive;
     @XmlElement(name = "createdAt")
@@ -37,7 +38,7 @@ public class TrainingDTO {
     public TrainingDTO() {
     }
 
-    public TrainingDTO(Long id, String title, Integer duration, String description, String link, String language,
+    public TrainingDTO(Long id, String title, Integer duration, String description, String link, TrainingLanguage language,
             boolean isActive, Instant createdAt, Instant editedAt, TrainingAreaDTO trainingArea) {
         this.id = id;
         this.title = title;
@@ -91,11 +92,11 @@ public class TrainingDTO {
         this.link = link;
     }
 
-    public String getLanguage() {
+    public TrainingLanguage getLanguage() {
         return language;
     }
 
-    public void setLanguage(String language) {
+    public void setLanguage(TrainingLanguage language) {
         this.language = language;
     }
 

@@ -1,5 +1,6 @@
 package aor.proj3t.filters;
 
+import aor.proj3t.enums.TrainingLanguage;
 import aor.proj3t.enums.TrainingSortField;
 import aor.proj3t.exceptions.BadRequestException;
 import jakarta.ws.rs.QueryParam;
@@ -15,7 +16,7 @@ public class TrainingFilter {
     private Long trainingAreaId;
 
     @QueryParam("language")
-    private String language;
+    private TrainingLanguage language;
 
     @QueryParam("duration")
     private Integer duration;
@@ -57,11 +58,11 @@ public class TrainingFilter {
         this.trainingAreaId = trainingAreaId;
     }
 
-    public String getLanguage() {
+    public TrainingLanguage getLanguage() {
         return language;
     }
 
-    public void setLanguage(String language) {
+    public void setLanguage(TrainingLanguage language) {
         this.language = language;
     }
 

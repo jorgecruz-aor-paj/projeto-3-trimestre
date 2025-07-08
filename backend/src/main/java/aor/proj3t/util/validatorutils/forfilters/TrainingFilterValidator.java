@@ -1,6 +1,8 @@
 package aor.proj3t.util.validatorutils.forfilters;
 
+import aor.proj3t.enums.TrainingLanguage;
 import aor.proj3t.enums.TrainingSortField;
+import aor.proj3t.exceptions.InvalidDataException;
 import aor.proj3t.filters.TrainingFilter;
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -16,7 +18,6 @@ import java.util.regex.Pattern;
 @ApplicationScoped
 public class TrainingFilterValidator extends BaseFilterValidator<TrainingFilter> {
 
-    private static final Pattern LANGUAGE_PATTERN = Pattern.compile("^[a-zA-Z ]+$");
     private static final int MAX_SEARCH_TEXT_LENGTH = 255;
     private static final int MIN_LANGUAGE_LENGTH = 2;
     private static final int MAX_LANGUAGE_LENGTH = 50;
@@ -48,16 +49,14 @@ public class TrainingFilterValidator extends BaseFilterValidator<TrainingFilter>
     }
 
     private void validateLanguage(TrainingFilter filter, List<String> validationErrors) {
-        String language = filter.getLanguage();
-        if (language != null) {
-            if (language.length() < MIN_LANGUAGE_LENGTH || language.length() > MAX_LANGUAGE_LENGTH) {
-                validationErrors.add("Language must be between 2 and 50 characters");
-            }
+        TrainingLanguage language = filter.getLanguage();
 
-            if (!LANGUAGE_PATTERN.matcher(language).matches()) {
-                validationErrors.add("Language can only contain letters and spaces");
-            }
+        // No need to validate language if it's null as it's an optional filter
+        if (language == null) {
+            return;
         }
+        
+        // The language is already guaranteed to be a valid enum value if it's not null
     }
 
     private void validateDuration(TrainingFilter filter, List<String> validationErrors) {

@@ -3,6 +3,7 @@ package aor.proj3t.util.converterutils;
 import aor.proj3t.dto.TrainingDTO;
 import aor.proj3t.entities.Training;
 import aor.proj3t.entities.TrainingArea;
+import aor.proj3t.enums.TrainingLanguage;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
@@ -53,7 +54,7 @@ public class TrainingConverter extends AbstractConverter<Training, TrainingDTO, 
         dto.setDuration(training.getDuration());
         dto.setDescription(training.getDescription());
         dto.setLink(training.getLink());
-        dto.setLanguage(training.getLanguage());
+        dto.setLanguage(training.getLanguage() != null ? training.getLanguage() : null);
         dto.setActive(training.isActive());
         dto.setCreatedAt(training.getCreatedAt());
         dto.setEditedAt(training.getEditedAt());

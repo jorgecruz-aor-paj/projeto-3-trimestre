@@ -3,6 +3,8 @@ package aor.proj3t.entities;
 import jakarta.persistence.*;
 
 import java.time.Instant;
+import aor.proj3t.enums.TrainingLanguage;
+import aor.proj3t.converters.TrainingLanguageConverter;
 
 @Entity
 @Table(name = "trainings")
@@ -25,7 +27,9 @@ public class Training {
     private String link;
 
     @Column(name = "language", nullable = false)
-    private String language;
+    @Enumerated(EnumType.STRING)
+    @Convert(converter = TrainingLanguageConverter.class)
+    private TrainingLanguage language;
 
     @Column(name = "is_active", nullable = false)
     private boolean isActive = true;
@@ -52,7 +56,7 @@ public class Training {
 
     public Training(){}
 
-    public Training (String title, Integer duration, String description, String link, String language, TrainingArea trainingArea) {
+    public Training (String title, Integer duration, String description, String link, TrainingLanguage language, TrainingArea trainingArea) {
         this.title = title;
         this.duration = duration;
         this.description = description;
@@ -102,11 +106,11 @@ public class Training {
         this.link = link;
     }
 
-    public String getLanguage() {
+    public TrainingLanguage getLanguage() {
         return language;
     }
 
-    public void setLanguage(String language) {
+    public void setLanguage(TrainingLanguage language) {
         this.language = language;
     }
 

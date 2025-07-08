@@ -1,5 +1,6 @@
 package aor.proj3t.dto;
 
+import aor.proj3t.enums.TrainingLanguage;
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvDate;
 
@@ -27,7 +28,7 @@ public class TrainingCsvDTO {
     private String link;
 
     @CsvBindByName(column = "Language")
-    private String language;
+    private TrainingLanguage language;
 
     @CsvBindByName(column = "Active")
     private boolean isActive;
@@ -102,11 +103,11 @@ public class TrainingCsvDTO {
         this.link = link;
     }
 
-    public String getLanguage() {
+    public TrainingLanguage getLanguage() {
         return language;
     }
 
-    public void setLanguage(String language) {
+    public void setLanguage(TrainingLanguage language) {
         this.language = language;
     }
 
