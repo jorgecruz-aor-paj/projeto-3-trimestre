@@ -70,6 +70,9 @@ public class ServiceFactory {
     @Inject
     private WorkplaceService workplaceService;
 
+    @Inject
+    private TokenService tokenService;
+
     /**
      * Get the service for User operations This method provides access to the
      * service responsible
@@ -134,8 +137,8 @@ public class ServiceFactory {
      * 
      * @return The TokenService instance
      */
-    public TokenServiceImpl forToken() {
-        return tokenServiceImpl;
+    public TokenService forToken() {
+        return tokenService;
     }
 
     /**
