@@ -507,21 +507,25 @@
   },
   "usersPage": {
     "title": "Utilizadores",
+    "subtitle": "Gerir e visualizar perfis de utilizadores",
+    "users": "Utilizadores",
+    "usersCount": "utilizadores",
+    "loading": "A carregar utilizadores...",
+    "error": "Falha ao carregar utilizadores.",
+    "noResults": "Nenhum utilizador encontrado",
+    "noResultsDesc": "Tente ajustar os seus filtros para encontrar utilizadores",
     "filters": {
-      "search": "Pesquisar...",
-      "searchPlaceholder": "Pesquisar utilizadores...",
-      "workplace": "Todos os Locais de Trabalho",
-      "manager": "Todos os Gestores",
-      "sortBy": "Ordenar por",
+      "search": "Pesquisar utilizadores...",
+      "workplace": "Local de trabalho",
+      "manager": "Gestor",
+      "sortBy": "Ordenar Por",
       "noManager": "Sem Gestor",
+      "options": "Opções",
+      "createdAt": "Data de Criação",
       "ascending": "Ascendente",
       "descending": "Descendente",
-      "createdAt": "Criado em",
       "role": "Função"
-    },
-    "noResults": "Nenhum utilizador encontrado.",
-    "loading": "A carregar utilizadores...",
-    "error": "Falha ao carregar utilizadores."
+    }
   },
   "profile": {
     "info": "Informações do Perfil",
