@@ -34,7 +34,6 @@ export const ConfirmRegistrationPage = () => {
     birthdate: '',
     workplaceId: '',
     biography: '',
-    photograph: null,
   };
 
   const {
@@ -42,7 +41,6 @@ export const ConfirmRegistrationPage = () => {
     errors = {},
     handleChange,
     validateAll,
-    setFormData,
   } = useFormValidation(initialFormData, profileValidationRules);
 
   useEffect(() => {
@@ -53,19 +51,8 @@ export const ConfirmRegistrationPage = () => {
   }, [workplacesLoading]);
 
   const handleInputChange = e => {
-    const { name, value, type, files } = e.target;
-    if (type === 'file') {
-      // Handle file input separately since it's not a simple value
-      const file = files[0];
-      setFormData(prev => ({
-        ...prev,
-        [name]: file,
-      }));
-      // Validate the file if needed
-      handleChange(name, file);
-    } else {
-      handleChange(name, value);
-    }
+    const { name, value } = e.target;
+    handleChange(name, value);
   };
 
   const handleSubmit = async e => {
@@ -81,19 +68,16 @@ export const ConfirmRegistrationPage = () => {
 
     setSubmitting(true);
     try {
-      const submitData = new FormData();
-
-      // Add all non-empty values to form data
-      Object.entries(formData).forEach(([key, value]) => {
-        if (value !== null && value !== undefined && value !== '') {
-          // Special handling for workplace ID to ensure it's sent as a number
-          if (key === 'workplaceId') {
-            submitData.append(key, Number(value));
-          } else {
-            submitData.append(key, value);
-          }
-        }
-      });
+      // Prepare JSON data (excluding photograph - will be handled separately)
+      const submitData = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        address: formData.address,
+        phoneNumber: formData.phoneNumber,
+        birthdate: formData.birthdate,
+        workplaceId: Number(formData.workplaceId),
+        biography: formData.biography,
+      };
 
       await authService.confirmUser(confirmationToken, submitData);
       setSuccess(t('auth.confirmSuccess'));

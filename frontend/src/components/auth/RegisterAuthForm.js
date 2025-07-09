@@ -39,9 +39,9 @@ export const RegisterAuthForm = () => {
     handleChange(name, value);
   };
 
-  const safeGetErrorMessage = error => {
-    if (!error) return null;
-    return getErrorMessage(error);
+  const safeGetErrorMessage = err => {
+    if (!err) return null;
+    return getErrorMessage(err);
   };
 
   const handleSubmit = async e => {

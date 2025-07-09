@@ -113,15 +113,6 @@ export const ConfirmRegistrationForm = ({
         rows={3}
         placeholder={t('user.biographyPlaceholder')}
       />
-      <FormInput
-        name="photograph"
-        type="file"
-        label={t('user.photograph')}
-        onChange={handleInputChange}
-        error={safeGetErrorMessage(validationErrors.photograph)}
-        disabled={submitting}
-        accept="image/*"
-      />
       <SubmitButton
         isLoading={submitting}
         label={t('auth.confirmRegistration')}
@@ -141,7 +132,6 @@ ConfirmRegistrationForm.propTypes = {
     birthdate: PropTypes.string,
     workplaceId: PropTypes.string,
     biography: PropTypes.string,
-    photograph: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
   }).isRequired,
   validationErrors: PropTypes.shape({
     firstName: PropTypes.string,

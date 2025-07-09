@@ -162,13 +162,18 @@
     "logout": "Log Out",
     "account": "My Account",
     "firstName": "First Name",
+    "firstNamePlaceholder": "Enter your first name",
     "lastName": "Last Name",
+    "lastNamePlaceholder": "Enter your last name",
     "address": "Address",
+    "addressPlaceholder": "Enter your address",
     "phoneNumber": "Phone Number",
+    "phoneNumberPlaceholder": "Enter your phone number",
     "birthdate": "Birthdate",
     "workplace": "Workplace",
     "selectWorkplace": "Select a workplace",
     "biography": "Biography",
+    "biographyPlaceholder": "Tell us about yourself",
     "photograph": "Photograph"
   },
   "forms": {
