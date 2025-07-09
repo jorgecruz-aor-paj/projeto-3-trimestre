@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Projeto Maven com coordenadas, propriedades de configuração, dependências, plugins e gerenciamento de dependências -->
+<!-- Projeto Maven com coordenadas, propriedades de configuração, dependências, plugins e
+gerenciamento de dependências -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <!-- Coordenadas do projeto -->
@@ -65,6 +67,13 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+        <!-- JUnit 5 Parameterized Tests -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
 
         <!-- Dependência do Hamcrest para asserts avançados em testes -->
         <dependency>
@@ -77,6 +86,13 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Dependência para integrar Mockito com JUnit 5 -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
             <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
@@ -146,7 +162,8 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Dependência do dotenv-java para carregar variáveis de ambiente a partir de um arquivo .env -->
+        <!-- Dependência do dotenv-java para carregar variáveis de ambiente a partir de um arquivo
+        .env -->
         <dependency>
             <groupId>io.github.cdimascio</groupId>
             <artifactId>dotenv-java</artifactId>
@@ -246,7 +263,7 @@
                 <version>${maven-surefire.plugin.version}</version>
                 <configuration>
                     <argLine>
-            -javaagent:"${settings.localRepository}/org/mockito/mockito-core/${mockito.version}/mockito-core-${mockito.version}.jar"
+                        -javaagent:"${settings.localRepository}/org/mockito/mockito-core/${mockito.version}/mockito-core-${mockito.version}.jar"
                     </argLine>
                 </configuration>
             </plugin>

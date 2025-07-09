@@ -71,7 +71,7 @@ public class AuthResourceTest {
         }
         
         // Only configure the common mock behavior needed by all tests
-        when(serviceFactory.forAuth()).thenReturn(authService);
+        lenient().when(serviceFactory.forAuth()).thenReturn(authService);
     }
 
     /**
