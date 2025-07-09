@@ -69,7 +69,8 @@
     "minutes": "minutes",
     "noResults": "No results found",
     "noData": "No data available",
-    "invalidDate": "Invalid date"
+    "invalidDate": "Invalid date",
+    "saving": "Saving"
   },
   "roles": {
     "admin": "Administrator",
@@ -506,21 +507,25 @@
   },
   "usersPage": {
     "title": "Users",
+    "subtitle": "Manage and view user profiles",
+    "users": "Users",
+    "usersCount": "users",
+    "loading": "Loading users...",
+    "error": "Failed to load users.",
+    "noResults": "No users found",
+    "noResultsDesc": "Try adjusting your filters to find users",
     "filters": {
-      "search": "Search...",
-      "searchPlaceholder": "Search users...",
-      "workplace": "All Workplaces",
-      "manager": "All Managers",
+      "search": "Search users...",
+      "workplace": "Workplace",
+      "manager": "Manager",
       "sortBy": "Sort By",
       "noManager": "No Manager",
+      "options": "Options",
+      "createdAt": "Created Date",
       "ascending": "Ascending",
       "descending": "Descending",
-      "createdAt": "Created At",
       "role": "Role"
-    },
-    "noResults": "No users found.",
-    "loading": "Loading users...",
-    "error": "Failed to load users."
+    }
   },
   "profile": {
     "info": "Profile Information",
