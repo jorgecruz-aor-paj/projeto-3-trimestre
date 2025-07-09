@@ -69,7 +69,8 @@
     "minutes": "minutes",
     "noResults": "No results found",
     "noData": "No data available",
-    "invalidDate": "Invalid date"
+    "invalidDate": "Invalid date",
+    "saving": "Saving"
   },
   "roles": {
     "admin": "Administrator",
