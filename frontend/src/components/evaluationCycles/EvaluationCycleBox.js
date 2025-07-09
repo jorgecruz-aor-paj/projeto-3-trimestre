@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { EditableEvaluationCard } from '../evaluations/EditableEvaluationCard';
 import { EvaluationCard } from '../evaluations/EvaluationCard';
 import { formatDateToDDMMYYYY } from 'utils/dateUtils';
 import { useLanguage } from 'contexts/LanguageContext';
@@ -63,19 +62,9 @@ export const EvaluationCycleBox = ({
       {expanded && (
         <div className="p-3">
           {cycle.evaluations && cycle.evaluations.length > 0 ? (
-            cycle.evaluations.map(ev => {
-              const isClosedEval =
-                ev.status && ev.status.toUpperCase() === 'CLOSED';
-              return isClosed || isClosedEval ? (
-                <EvaluationCard key={ev.id} evaluation={ev} />
-              ) : (
-                <EditableEvaluationCard
-                  key={ev.id}
-                  evaluation={ev}
-                  onEdit={onEvaluationEdit}
-                />
-              );
-            })
+            cycle.evaluations.map(ev => (
+              <EvaluationCard key={ev.id} evaluation={ev} />
+            ))
           ) : (
             <div>No evaluations in this cycle.</div>
           )}
