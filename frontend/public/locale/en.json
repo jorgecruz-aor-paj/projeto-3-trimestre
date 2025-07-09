@@ -127,6 +127,7 @@
     "confirmPasswordPlaceholder": "Re-enter your password",
     "loggingIn": "Logging in...",
     "loginFailed": "Login failed. Please check your credentials.",
+    "loginErrorTitle": "Login Error",
     "noAccount": "Don't have an account?",
     "signUp": "Sign up here",
     "rememberMe": "Remember me",

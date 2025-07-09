@@ -6,11 +6,8 @@ import { userService } from 'services/userService';
 import { useAuthStore } from 'stores/AuthStore';
 import { LoginForm } from 'components/forms/LoginForm';
 import { Alert } from 'react-bootstrap';
-import {
-  useFormValidation,
-  loginValidationRules,
-} from '../../utils/validation';
-import { useErrorMessage } from '../../hooks/useErrorMessage';
+import { useFormValidation, loginValidationRules } from 'utils/validation';
+import { useErrorMessage } from 'hooks/useErrorMessage';
 import { useAlert } from 'contexts/AlertContext';
 
 export const LoginAuthForm = () => {
@@ -22,7 +19,6 @@ export const LoginAuthForm = () => {
 
   // Check for expired session message
   useEffect(() => {
-
     const sessionExpired = sessionStorage.getItem('sessionExpired');
     if (sessionExpired === 'true') {
       // Small delay to ensure the AlertContext is fully initialized
@@ -72,10 +68,10 @@ export const LoginAuthForm = () => {
     }
   };
 
-  const safeGetErrorMessage = error => {
+  const safeGetErrorMessage = errorMessage => {
     // Only show errors if the form has been submitted
-    if (!isSubmitted || !error) return null;
-    return getErrorMessage(error);
+    if (!isSubmitted || !errorMessage) return null;
+    return getErrorMessage(errorMessage);
   };
 
   const handleSubmit = async e => {
@@ -96,7 +92,13 @@ export const LoginAuthForm = () => {
 
       navigate('/dashboard');
     } catch (err) {
-      setError(err.message || t('auth.loginFailed'));
+      console.error('Login error:', err);
+      setError(t('auth.loginFailed'));
+      showAlert({
+        title: t('auth.loginErrorTitle'),
+        message: t('auth.loginFailed'),
+        variant: 'danger',
+      });
     } finally {
       setLoading(false);
     }

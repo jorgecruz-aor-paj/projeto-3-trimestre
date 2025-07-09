@@ -126,6 +126,7 @@
     "confirmPassword": "Confirmar Palavra-passe",
     "confirmPasswordPlaceholder": "Introduza novamente a sua palavra-passe",
     "loggingIn": "A entrar. Aguarde...",
+    "loginErrorTitle": "Erro de Início de Sessão",
     "loginFailed": "Falha no início de sessão. Verifique as suas credenciais.",
     "noAccount": "Não tem uma conta?",
     "signUp": "Registe-se aqui",
