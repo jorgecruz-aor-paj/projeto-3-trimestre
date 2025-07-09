@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
@@ -81,6 +81,24 @@ export function AlertProvider({ children }) {
       alertConfig.onCancel();
     }
   };
+
+  // Make showAlert available globally for non-React contexts (like axios interceptors)
+  useEffect(() => {
+    // Add the function to the window object for global access
+    window.showGlobalAlert = config => {
+      // Allow simple string message as input
+      if (typeof config === 'string') {
+        config = { message: config };
+      }
+
+      showAlert(config);
+    };
+
+    return () => {
+      // Clean up on unmount
+      delete window.showGlobalAlert;
+    };
+  }, []);
 
   return (
     <AlertContext.Provider value={{ showAlert, showConfirm }}>

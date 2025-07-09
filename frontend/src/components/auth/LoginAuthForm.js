@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { authService } from 'services/authService';
@@ -11,12 +11,43 @@ import {
   loginValidationRules,
 } from '../../utils/validation';
 import { useErrorMessage } from '../../hooks/useErrorMessage';
+import { useAlert } from 'contexts/AlertContext';
 
 export const LoginAuthForm = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { setToken, setUserInfo } = useAuthStore();
   const { getErrorMessage } = useErrorMessage();
+  const { showAlert } = useAlert();
+
+  // Check for expired session message
+  useEffect(() => {
+
+    const sessionExpired = sessionStorage.getItem('sessionExpired');
+    if (sessionExpired === 'true') {
+      // Small delay to ensure the AlertContext is fully initialized
+      setTimeout(() => {
+        // Get the translated strings
+        const title = t('auth.sessionExpired');
+        const message = t('auth.sessionExpiredMessage');
+
+        console.log('Showing session expired alert with translations:', {
+          title,
+          message,
+        });
+
+        // Show alert to user explaining why they were redirected
+        showAlert({
+          title,
+          message,
+          variant: 'warning',
+        });
+
+        // Clear the flag
+        sessionStorage.removeItem('sessionExpired');
+      }, 300); // Increased delay for better reliability
+    }
+  }, [showAlert, t]);
 
   const {
     formData,

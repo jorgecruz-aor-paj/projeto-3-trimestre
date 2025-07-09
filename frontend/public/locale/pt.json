@@ -117,6 +117,8 @@
     "forgotPassword": "Esqueceu a palavra-passe?",
     "loginTitle": "Bem-vindo de Volta",
     "loginSubtitle": "Entre para aceder ao seu painel",
+    "sessionExpired": "Sessão Expirada",
+    "sessionExpiredMessage": "A sua sessão expirou. Por favor, entre novamente para continuar.",
     "email": "Endereço de Email",
     "emailPlaceholder": "Introduza o seu email",
     "password": "Palavra-passe",
