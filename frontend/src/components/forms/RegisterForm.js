@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -81,4 +82,27 @@ export const RegisterForm = ({
       </div>
     </Form>
   );
+};
+
+RegisterForm.propTypes = {
+  /** Form data object containing email, password, and confirmPassword */
+  formData: PropTypes.shape({
+    email: PropTypes.string.isRequired,
+    password: PropTypes.string.isRequired,
+    confirmPassword: PropTypes.string.isRequired,
+  }).isRequired,
+  /** Function to handle input changes */
+  onChange: PropTypes.func.isRequired,
+  /** Function to handle form submission */
+  onSubmit: PropTypes.func.isRequired,
+  /** Object containing validation errors for each field */
+  errors: PropTypes.shape({
+    email: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+    password: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+    confirmPassword: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+  }).isRequired,
+  /** Loading state indicator */
+  loading: PropTypes.bool.isRequired,
+  /** Function to format error messages */
+  getErrorMessage: PropTypes.func.isRequired,
 };

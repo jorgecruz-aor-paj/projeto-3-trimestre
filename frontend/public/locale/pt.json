@@ -162,13 +162,18 @@
     "logout": "Terminar sessão",
     "account": "Minha conta",
     "firstName": "Nome próprio",
+    "firstNamePlaceholder": "Introduza o seu nome próprio",
     "lastName": "Apelido",
+    "lastNamePlaceholder": "Introduza o seu apelido",
     "address": "Morada",
+    "addressPlaceholder": "Introduza a sua morada",
     "phoneNumber": "Telemóvel",
+    "phoneNumberPlaceholder": "Introduza o seu número de telemóvel",
     "birthdate": "Data de nascimento",
     "workplace": "Local de trabalho",
     "selectWorkplace": "Selecione um local de trabalho",
     "biography": "Biografia",
+    "biographyPlaceholder": "Fale-nos sobre si",
     "photograph": "Fotografia"
   },
   "forms": {
