@@ -1,6 +1,6 @@
 import React from 'react';
 import { ProgressBar } from 'react-bootstrap';
-import './PasswordStrengthMeter.css';
+import 'styles/components/PasswordStrengthMeter.css';
 
 /**
  * A component that displays password strength as the user types
