@@ -69,14 +69,11 @@ export const TrainingForm = ({
     if (!validateAll()) {
       return;
     }
-
     const submitData = {
       ...formData,
       duration: parseInt(formData.duration, 10),
-      // Convert trainingArea object to trainingAreaId for API compatibility
+      // Add trainingAreaId for API compatibility, but keep the original trainingArea object too
       trainingAreaId: formData.trainingArea?.id,
-      // Remove the trainingArea object as the API doesn't expect it
-      trainingArea: undefined,
     };
 
     onSubmit(submitData);
