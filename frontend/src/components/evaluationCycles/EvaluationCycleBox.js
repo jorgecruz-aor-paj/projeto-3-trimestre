@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { EvaluationCard } from '../evaluations/EvaluationCard';
 import { formatDateToDDMMYYYY } from 'utils/dateUtils';
 import { useLanguage } from 'contexts/LanguageContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * Collapsible box for displaying an evaluation cycle (current or closed)
@@ -49,15 +51,15 @@ export const EvaluationCycleBox = ({
             Status: {cycle.status}
           </span>
         </div>
-        <span
+        <FontAwesomeIcon
+          icon={faChevronRight}
           style={{
-            fontSize: 24,
+            fontSize: '1.2rem',
             transition: 'transform 0.2s',
             transform: expanded ? 'rotate(90deg)' : 'rotate(0deg)',
+            color: '#6c757d',
           }}
-        >
-          ▶
-        </span>
+        />
       </div>
       {expanded && (
         <div className="p-3">
