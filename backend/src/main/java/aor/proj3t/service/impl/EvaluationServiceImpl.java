@@ -45,9 +45,35 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
 
     @Override
     public EvaluationDTO updateEvaluation(Long requesterId, EvaluationDTO evaluationDTO) {
+        User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
         Evaluation evaluation = getEntity(daoFactory.forEvaluation().findById(evaluationDTO.getId()),
                 evaluationDTO.getId(),
                 "Evaluation");
+        
+        // Validate status change permissions based on user role
+        EvaluationStatus currentStatus = evaluation.getStatus();
+        EvaluationStatus newStatus = evaluationDTO.getStatus();
+        
+        if (currentStatus != newStatus) {
+            if (requester.getRole() == Role.MANAGER) {
+                // Managers can only change status from ONGOING to COMPLETED
+                if (currentStatus != EvaluationStatus.ONGOING || newStatus != EvaluationStatus.COMPLETED) {
+                    throw new ForbiddenException(
+                        "Status change not allowed",
+                        "Manager with id " + requesterId + " attempted to change evaluation status from " 
+                        + currentStatus + " to " + newStatus + ". Managers can only change from ONGOING to COMPLETED."
+                    );
+                }
+            } else if (requester.getRole() == Role.USER) {
+                // Regular users cannot change status at all
+                throw new ForbiddenException(
+                    "Status change not allowed",
+                    "User with id " + requesterId + " attempted to change evaluation status. Only admins and managers can change evaluation status."
+                );
+            }
+            // Admins (Role.ADMIN) can change status to any value - no restrictions
+        }
+        
         evaluation.setScale(evaluationDTO.getScale());
         evaluation.setFeedback(evaluationDTO.getFeedback());
         evaluation.setStatus(evaluationDTO.getStatus());

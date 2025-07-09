@@ -14,6 +14,7 @@ import { translateEvaluationScale } from 'utils/evaluationScaleTranslations';
 import { useFormValidation, evaluationValidationRules } from 'utils/validation';
 import { useErrorMessage } from 'hooks/useErrorMessage';
 import { useEvaluationStore } from 'stores/EvaluationStore';
+import { useAuthStore } from 'stores/AuthStore';
 import { Spinner } from 'react-bootstrap';
 
 export const EditableEvaluationCard = ({
@@ -22,11 +23,16 @@ export const EditableEvaluationCard = ({
   loading = false,
 }) => {
   const { t, i18n } = useTranslation();
-  const { showAlert } = useAlert();
+  const { showAlert, showConfirm } = useAlert();
   const [editing, setEditing] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { getErrorMessage } = useErrorMessage();
   const evaluationStore = useEvaluationStore();
+  const user = useAuthStore(state => state.user);
+
+  // Check if user is admin or manager
+  const isAdmin = user?.role === 'ADMIN';
+  const isManager = user?.role === 'MANAGER';
 
   // Initialize form validation
   const {
@@ -140,6 +146,158 @@ export const EditableEvaluationCard = ({
     }
   };
 
+  const handleSubmitEvaluation = async () => {
+    // Mark all fields as touched for validation feedback
+    const allFieldsTouched = Object.keys(form).reduce((acc, field) => {
+      acc[field] = true;
+      return acc;
+    }, {});
+    setTouched(allFieldsTouched);
+
+    // Validate all fields before saving
+    const isValid = validateAll();
+    if (!isValid) {
+      console.error('Validation failed with errors:', errors);
+      showAlert({
+        title: t('validation.error', 'Validation Error'),
+        message: t(
+          'validation.pleaseFixErrors',
+          'Please fix the validation errors before saving'
+        ),
+        variant: 'danger',
+      });
+      return;
+    }
+
+    // Show confirmation dialog before submitting
+    showConfirm({
+      title: t('evaluations.confirmSubmit', 'Confirm Submission'),
+      message: t(
+        'evaluations.confirmSubmitMessage',
+        'Are you sure you want to submit this evaluation? Once submitted, it will be marked as completed and cannot be edited further.'
+      ),
+      confirmLabel: t('common.submit', 'Submit'),
+      variant: 'primary',
+      onConfirm: async () => {
+        try {
+          setIsSubmitting(true);
+          // Send updated evaluation to backend with COMPLETED status
+          const updatedEvaluation = await evaluationService.update({
+            ...form,
+            status: 'COMPLETED',
+          });
+
+          // Update the local form data with the response from the server
+          setForm(updatedEvaluation);
+
+          // Update the evaluation in the store
+          if (evaluationStore.evaluations.length > 0) {
+            const updatedEvaluations = evaluationStore.evaluations.map(
+              evaluation =>
+                evaluation.id === updatedEvaluation.id
+                  ? updatedEvaluation
+                  : evaluation
+            );
+            evaluationStore.setEvaluations(updatedEvaluations);
+          }
+
+          setEditing(false);
+
+          // Pass the updated evaluation to the parent component
+          if (onEdit) onEdit(updatedEvaluation);
+
+          showAlert({
+            title: t('common.success', 'Success'),
+            message: t(
+              'evaluations.submitSuccess',
+              'Evaluation submitted successfully.'
+            ),
+            variant: 'success',
+          });
+        } catch (error) {
+          setEditing(false);
+          showAlert({
+            title: t('common.error', 'Error'),
+            message:
+              error?.message ||
+              t('evaluations.submitError', 'Failed to submit evaluation.'),
+            variant: 'danger',
+          });
+        } finally {
+          setIsSubmitting(false);
+        }
+      },
+    });
+  };
+
+  const handleSaveAsDraft = async () => {
+    // Mark all fields as touched for validation feedback
+    const allFieldsTouched = Object.keys(form).reduce((acc, field) => {
+      acc[field] = true;
+      return acc;
+    }, {});
+    setTouched(allFieldsTouched);
+
+    // Validate all fields before saving
+    const isValid = validateAll();
+    if (!isValid) {
+      console.error('Validation failed with errors:', errors);
+      showAlert({
+        title: t('validation.error', 'Validation Error'),
+        message: t(
+          'validation.pleaseFixErrors',
+          'Please fix the validation errors before saving'
+        ),
+        variant: 'danger',
+      });
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+      // Send updated evaluation to backend with ONGOING status
+      const updatedEvaluation = await evaluationService.update({
+        ...form,
+        status: 'ONGOING',
+      });
+
+      // Update the local form data with the response from the server
+      setForm(updatedEvaluation);
+
+      // Update the evaluation in the store
+      if (evaluationStore.evaluations.length > 0) {
+        const updatedEvaluations = evaluationStore.evaluations.map(evaluation =>
+          evaluation.id === updatedEvaluation.id
+            ? updatedEvaluation
+            : evaluation
+        );
+        evaluationStore.setEvaluations(updatedEvaluations);
+      }
+
+      setEditing(false);
+
+      // Pass the updated evaluation to the parent component
+      if (onEdit) onEdit(updatedEvaluation);
+
+      showAlert({
+        title: t('common.success', 'Success'),
+        message: t('evaluations.draftSaved', 'Draft saved successfully.'),
+        variant: 'success',
+      });
+    } catch (error) {
+      setEditing(false);
+      showAlert({
+        title: t('common.error', 'Error'),
+        message:
+          error?.message ||
+          t('evaluations.draftSaveError', 'Failed to save draft.'),
+        variant: 'danger',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const handleCancel = () => {
     // Find the current evaluation in the store to ensure we're using the latest data
     const currentEvaluation =
@@ -244,6 +402,7 @@ export const EditableEvaluationCard = ({
         {/* Status and Scale badges */}
         {!editing && (
           <div className="d-flex gap-2 mb-3">
+            {/* Show status badge for all users */}
             <span
               className={`badge ${
                 form.status === 'COMPLETED'
@@ -313,25 +472,28 @@ export const EditableEvaluationCard = ({
                     : null
                 }
               />
-              <FormDropdownInput
-                name="status"
-                label={t('profile.status')}
-                value={form.status || ''}
-                onChange={handleChange}
-                options={[
-                  { value: 'ONGOING', label: t('evaluationStatus.ONGOING') },
-                  {
-                    value: 'COMPLETED',
-                    label: t('evaluationStatus.COMPLETED'),
-                  },
-                  { value: 'CLOSED', label: t('evaluationStatus.CLOSED') },
-                ]}
-                error={
-                  touched.status && errors.status
-                    ? getErrorMessage(errors.status)
-                    : null
-                }
-              />
+              {/* Only show status field for admins */}
+              {isAdmin && (
+                <FormDropdownInput
+                  name="status"
+                  label={t('profile.status')}
+                  value={form.status || ''}
+                  onChange={handleChange}
+                  options={[
+                    { value: 'ONGOING', label: t('evaluationStatus.ONGOING') },
+                    {
+                      value: 'COMPLETED',
+                      label: t('evaluationStatus.COMPLETED'),
+                    },
+                    { value: 'CLOSED', label: t('evaluationStatus.CLOSED') },
+                  ]}
+                  error={
+                    touched.status && errors.status
+                      ? getErrorMessage(errors.status)
+                      : null
+                  }
+                />
+              )}
               <FormInput
                 name="feedback"
                 label={t('evaluations.feedback')}
@@ -382,34 +544,92 @@ export const EditableEvaluationCard = ({
         </small>
         {editing ? (
           <div>
-            <button
-              className="btn btn-primary btn-sm me-2"
-              onClick={handleSave}
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? (
-                <>
-                  <Spinner
-                    as="span"
-                    animation="border"
-                    size="sm"
-                    role="status"
-                    aria-hidden="true"
-                    className="me-1"
-                  />
-                  {t('common.saving', 'Saving...')}
-                </>
-              ) : (
-                t('common.save')
-              )}
-            </button>
-            <button
-              className="btn btn-secondary btn-sm"
-              onClick={handleCancel}
-              disabled={isSubmitting}
-            >
-              {t('common.cancel')}
-            </button>
+            {isAdmin ? (
+              // Admin buttons - single save button
+              <>
+                <button
+                  className="btn btn-primary btn-sm me-2"
+                  onClick={handleSave}
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Spinner
+                        as="span"
+                        animation="border"
+                        size="sm"
+                        role="status"
+                        aria-hidden="true"
+                        className="me-1"
+                      />
+                      {t('common.saving', 'Saving...')}
+                    </>
+                  ) : (
+                    t('common.save')
+                  )}
+                </button>
+                <button
+                  className="btn btn-secondary btn-sm"
+                  onClick={handleCancel}
+                  disabled={isSubmitting}
+                >
+                  {t('common.cancel')}
+                </button>
+              </>
+            ) : (
+              // Manager buttons - submit, save as draft, and cancel
+              <>
+                <button
+                  className="btn btn-success btn-sm me-2"
+                  onClick={handleSubmitEvaluation}
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Spinner
+                        as="span"
+                        animation="border"
+                        size="sm"
+                        role="status"
+                        aria-hidden="true"
+                        className="me-1"
+                      />
+                      {t('evaluations.submitting', 'Submitting...')}
+                    </>
+                  ) : (
+                    t('evaluations.submit', 'Submit')
+                  )}
+                </button>
+                <button
+                  className="btn btn-outline-primary btn-sm me-2"
+                  onClick={handleSaveAsDraft}
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Spinner
+                        as="span"
+                        animation="border"
+                        size="sm"
+                        role="status"
+                        aria-hidden="true"
+                        className="me-1"
+                      />
+                      {t('evaluations.savingDraft', 'Saving Draft...')}
+                    </>
+                  ) : (
+                    t('evaluations.saveAsDraft', 'Save as Draft')
+                  )}
+                </button>
+                <button
+                  className="btn btn-secondary btn-sm"
+                  onClick={handleCancel}
+                  disabled={isSubmitting}
+                >
+                  {t('common.cancel')}
+                </button>
+              </>
+            )}
           </div>
         ) : (
           <button

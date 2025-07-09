@@ -165,7 +165,8 @@ class EvaluationServiceImplTest {
     @DisplayName("updateEvaluation should update evaluation and notify user when status is completed")
     void updateEvaluation_WhenStatusCompleted_ShouldUpdateAndNotify() {
         // Given
-        evaluationDTO.setStatus(EvaluationStatus.CLOSED);
+        evaluationDTO.setStatus(EvaluationStatus.COMPLETED);
+        when(userDAO.findById(TEST_EVALUATOR_ID)).thenReturn(Optional.of(evaluator));
         when(evaluationDAO.findById(TEST_EVALUATION_ID)).thenReturn(Optional.of(evaluation));
         when(evaluationConverter.toDTO(any(Evaluation.class))).thenReturn(evaluationDTO);
 
@@ -181,7 +182,7 @@ class EvaluationServiceImplTest {
         // Then
         assertNotNull(result);
         assertEquals(TEST_EVALUATION_ID, result.getId());
-        assertEquals(EvaluationStatus.CLOSED, result.getStatus());
+        assertEquals(EvaluationStatus.COMPLETED, result.getStatus());
 
         // Verify all interactions in order
         InOrder inOrder = inOrder(evaluationDAO, evaluationCycleDAO, notificationService, aiService);
@@ -199,6 +200,7 @@ class EvaluationServiceImplTest {
     void updateEvaluation_WhenSentimentAnalysisFails_ShouldStillUpdate() {
         // Given
         evaluationDTO.setStatus(EvaluationStatus.COMPLETED);
+        when(userDAO.findById(TEST_EVALUATOR_ID)).thenReturn(Optional.of(evaluator));
         when(evaluationDAO.findById(TEST_EVALUATION_ID)).thenReturn(Optional.of(evaluation));
         when(evaluationConverter.toDTO(any(Evaluation.class))).thenReturn(evaluationDTO);
         when(aiService.analyzeSentiment(anyString())).thenThrow(new RuntimeException("API Error"));
@@ -220,6 +222,7 @@ class EvaluationServiceImplTest {
     @DisplayName("updateEvaluation should throw NotFoundException when evaluation doesn't exist")
     void updateEvaluation_WhenEvaluationNotFound_ShouldThrowNotFoundException() {
         // Given
+        when(userDAO.findById(TEST_EVALUATOR_ID)).thenReturn(Optional.of(evaluator));
         when(evaluationDAO.findById(TEST_EVALUATION_ID)).thenReturn(Optional.empty());
 
         // When/Then
@@ -425,5 +428,217 @@ class EvaluationServiceImplTest {
         
         verifyNoInteractions(evaluationConverter);
         verify(evaluationDAO, never()).getEvaluationsByFilters(any());
+    }
+
+    @Test
+    @DisplayName("updateEvaluation should allow manager to change status from ONGOING to COMPLETED")
+    void updateEvaluation_WhenManagerChangesOngoingToCompleted_ShouldSucceed() {
+        // Given
+        evaluation.setStatus(EvaluationStatus.ONGOING);
+        evaluationDTO.setStatus(EvaluationStatus.COMPLETED);
+        
+        when(userDAO.findById(TEST_EVALUATOR_ID)).thenReturn(Optional.of(evaluator)); // evaluator is MANAGER role
+        when(evaluationDAO.findById(TEST_EVALUATION_ID)).thenReturn(Optional.of(evaluation));
+        when(evaluationConverter.toDTO(any(Evaluation.class))).thenReturn(evaluationDTO);
+        
+        // Mock sentiment analysis
+        SentimentResponseDTO sentimentResponse = new SentimentResponseDTO();
+        sentimentResponse.setSentiment("POSITIVE");
+        sentimentResponse.setPolarity(0.8f);
+        when(aiService.analyzeSentiment(TEST_FEEDBACK)).thenReturn(sentimentResponse);
+
+        // When
+        EvaluationDTO result = evaluationService.updateEvaluation(TEST_EVALUATOR_ID, evaluationDTO);
+
+        // Then
+        assertNotNull(result);
+        assertEquals(EvaluationStatus.COMPLETED, result.getStatus());
+        verify(evaluationDAO).update(any(Evaluation.class));
+        verify(notificationService).createNotification(any(Notification.class));
+    }
+
+    @Test
+    @DisplayName("updateEvaluation should throw ForbiddenException when manager tries to change status from COMPLETED to ONGOING")
+    void updateEvaluation_WhenManagerChangesCompletedToOngoing_ShouldThrowForbiddenException() {
+        // Given
+        evaluation.setStatus(EvaluationStatus.COMPLETED);
+        evaluationDTO.setStatus(EvaluationStatus.ONGOING);
+        
+        when(userDAO.findById(TEST_EVALUATOR_ID)).thenReturn(Optional.of(evaluator)); // evaluator is MANAGER role
+        when(evaluationDAO.findById(TEST_EVALUATION_ID)).thenReturn(Optional.of(evaluation));
+
+        // When/Then
+        ForbiddenException exception = assertThrows(ForbiddenException.class,
+                () -> evaluationService.updateEvaluation(TEST_EVALUATOR_ID, evaluationDTO));
+        
+        assertEquals("Status change not allowed", exception.getUserMessage());
+        assertTrue(exception.getMessage().contains("Managers can only change from ONGOING to COMPLETED"));
+        verify(evaluationDAO, never()).update(any(Evaluation.class));
+        verifyNoInteractions(notificationService);
+    }
+
+    @Test
+    @DisplayName("updateEvaluation should throw ForbiddenException when manager tries to change status from ONGOING to CLOSED")
+    void updateEvaluation_WhenManagerChangesOngoingToClosed_ShouldThrowForbiddenException() {
+        // Given
+        evaluation.setStatus(EvaluationStatus.ONGOING);
+        evaluationDTO.setStatus(EvaluationStatus.CLOSED);
+        
+        when(userDAO.findById(TEST_EVALUATOR_ID)).thenReturn(Optional.of(evaluator)); // evaluator is MANAGER role
+        when(evaluationDAO.findById(TEST_EVALUATION_ID)).thenReturn(Optional.of(evaluation));
+
+        // When/Then
+        ForbiddenException exception = assertThrows(ForbiddenException.class,
+                () -> evaluationService.updateEvaluation(TEST_EVALUATOR_ID, evaluationDTO));
+        
+        assertEquals("Status change not allowed", exception.getUserMessage());
+        assertTrue(exception.getMessage().contains("Managers can only change from ONGOING to COMPLETED"));
+        verify(evaluationDAO, never()).update(any(Evaluation.class));
+        verifyNoInteractions(notificationService);
+    }
+
+    @Test
+    @DisplayName("updateEvaluation should throw ForbiddenException when regular user tries to change status")
+    void updateEvaluation_WhenUserChangesStatus_ShouldThrowForbiddenException() {
+        // Given
+        evaluation.setStatus(EvaluationStatus.ONGOING);
+        evaluationDTO.setStatus(EvaluationStatus.COMPLETED);
+        
+        when(userDAO.findById(TEST_EVALUATED_ID)).thenReturn(Optional.of(evaluated)); // evaluated is USER role
+        when(evaluationDAO.findById(TEST_EVALUATION_ID)).thenReturn(Optional.of(evaluation));
+
+        // When/Then
+        ForbiddenException exception = assertThrows(ForbiddenException.class,
+                () -> evaluationService.updateEvaluation(TEST_EVALUATED_ID, evaluationDTO));
+        
+        assertEquals("Status change not allowed", exception.getUserMessage());
+        assertTrue(exception.getMessage().contains("Only admins and managers can change evaluation status"));
+        verify(evaluationDAO, never()).update(any(Evaluation.class));
+        verifyNoInteractions(notificationService);
+    }
+
+    @Test
+    @DisplayName("updateEvaluation should allow admin to change status to any value")
+    void updateEvaluation_WhenAdminChangesStatus_ShouldSucceed() {
+        // Given
+        User admin = new User();
+        admin.setId(3L);
+        admin.setRole(Role.ADMIN);
+        admin.setFirstName("Admin");
+        admin.setLastName("User");
+        
+        evaluation.setStatus(EvaluationStatus.COMPLETED);
+        evaluationDTO.setStatus(EvaluationStatus.ONGOING);
+        
+        when(userDAO.findById(admin.getId())).thenReturn(Optional.of(admin));
+        when(evaluationDAO.findById(TEST_EVALUATION_ID)).thenReturn(Optional.of(evaluation));
+        when(evaluationConverter.toDTO(any(Evaluation.class))).thenReturn(evaluationDTO);
+        
+        // Mock sentiment analysis
+        SentimentResponseDTO sentimentResponse = new SentimentResponseDTO();
+        sentimentResponse.setSentiment("NEUTRAL");
+        sentimentResponse.setPolarity(0.1f);
+        when(aiService.analyzeSentiment(TEST_FEEDBACK)).thenReturn(sentimentResponse);
+
+        // When
+        EvaluationDTO result = evaluationService.updateEvaluation(admin.getId(), evaluationDTO);
+
+        // Then
+        assertNotNull(result);
+        assertEquals(EvaluationStatus.ONGOING, result.getStatus());
+        verify(evaluationDAO).update(any(Evaluation.class));
+        // No notification should be sent since status changed to ONGOING, not COMPLETED
+        verify(notificationService, never()).createNotification(any(Notification.class));
+    }
+
+    @Test
+    @DisplayName("updateEvaluation should allow admin to change status from CLOSED to COMPLETED")
+    void updateEvaluation_WhenAdminChangesClosedToCompleted_ShouldSucceed() {
+        // Given
+        User admin = new User();
+        admin.setId(3L);
+        admin.setRole(Role.ADMIN);
+        admin.setFirstName("Admin");
+        admin.setLastName("User");
+        
+        evaluation.setStatus(EvaluationStatus.CLOSED);
+        evaluationDTO.setStatus(EvaluationStatus.COMPLETED);
+        
+        when(userDAO.findById(admin.getId())).thenReturn(Optional.of(admin));
+        when(evaluationDAO.findById(TEST_EVALUATION_ID)).thenReturn(Optional.of(evaluation));
+        when(evaluationConverter.toDTO(any(Evaluation.class))).thenReturn(evaluationDTO);
+        
+        // Mock sentiment analysis
+        SentimentResponseDTO sentimentResponse = new SentimentResponseDTO();
+        sentimentResponse.setSentiment("POSITIVE");
+        sentimentResponse.setPolarity(0.7f);
+        when(aiService.analyzeSentiment(TEST_FEEDBACK)).thenReturn(sentimentResponse);
+
+        // When
+        EvaluationDTO result = evaluationService.updateEvaluation(admin.getId(), evaluationDTO);
+
+        // Then
+        assertNotNull(result);
+        assertEquals(EvaluationStatus.COMPLETED, result.getStatus());
+        verify(evaluationDAO).update(any(Evaluation.class));
+        verify(notificationService).createNotification(any(Notification.class));
+    }
+
+    @Test
+    @DisplayName("updateEvaluation should allow manager to update without changing status")
+    void updateEvaluation_WhenManagerUpdatesWithoutStatusChange_ShouldSucceed() {
+        // Given
+        evaluation.setStatus(EvaluationStatus.ONGOING);
+        evaluationDTO.setStatus(EvaluationStatus.ONGOING); // Same status - no change
+        evaluationDTO.setFeedback("Updated feedback");
+        evaluationDTO.setScale(EvaluationScale.EXPECTED_CONTRIBUTION);
+        
+        when(userDAO.findById(TEST_EVALUATOR_ID)).thenReturn(Optional.of(evaluator)); // evaluator is MANAGER role
+        when(evaluationDAO.findById(TEST_EVALUATION_ID)).thenReturn(Optional.of(evaluation));
+        when(evaluationConverter.toDTO(any(Evaluation.class))).thenReturn(evaluationDTO);
+        
+        // Mock sentiment analysis
+        SentimentResponseDTO sentimentResponse = new SentimentResponseDTO();
+        sentimentResponse.setSentiment("NEUTRAL");
+        sentimentResponse.setPolarity(0.2f);
+        when(aiService.analyzeSentiment("Updated feedback")).thenReturn(sentimentResponse);
+
+        // When
+        EvaluationDTO result = evaluationService.updateEvaluation(TEST_EVALUATOR_ID, evaluationDTO);
+
+        // Then
+        assertNotNull(result);
+        assertEquals(EvaluationStatus.ONGOING, result.getStatus());
+        verify(evaluationDAO).update(any(Evaluation.class));
+        // No notification should be sent since status didn't change to COMPLETED
+        verify(notificationService, never()).createNotification(any(Notification.class));
+    }
+
+    @Test
+    @DisplayName("updateEvaluation should allow regular user to update without changing status")
+    void updateEvaluation_WhenUserUpdatesWithoutStatusChange_ShouldSucceed() {
+        // Given
+        evaluation.setStatus(EvaluationStatus.ONGOING);
+        evaluationDTO.setStatus(EvaluationStatus.ONGOING); // Same status - no change
+        evaluationDTO.setFeedback("User updated feedback");
+        
+        when(userDAO.findById(TEST_EVALUATED_ID)).thenReturn(Optional.of(evaluated)); // evaluated is USER role
+        when(evaluationDAO.findById(TEST_EVALUATION_ID)).thenReturn(Optional.of(evaluation));
+        when(evaluationConverter.toDTO(any(Evaluation.class))).thenReturn(evaluationDTO);
+        
+        // Mock sentiment analysis
+        SentimentResponseDTO sentimentResponse = new SentimentResponseDTO();
+        sentimentResponse.setSentiment("POSITIVE");
+        sentimentResponse.setPolarity(0.6f);
+        when(aiService.analyzeSentiment("User updated feedback")).thenReturn(sentimentResponse);
+
+        // When
+        EvaluationDTO result = evaluationService.updateEvaluation(TEST_EVALUATED_ID, evaluationDTO);
+
+        // Then
+        assertNotNull(result);
+        assertEquals(EvaluationStatus.ONGOING, result.getStatus());
+        verify(evaluationDAO).update(any(Evaluation.class));
+        verify(notificationService, never()).createNotification(any(Notification.class));
     }
 }

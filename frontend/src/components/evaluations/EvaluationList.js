@@ -93,7 +93,7 @@ export const EvaluationList = ({
                   : ''
               }
             >
-              {evaluation.status === 'CLOSED' ? (
+              {evaluation.status === 'CLOSED' || evaluation.status === 'COMPLETED' ? (
                 <EvaluationCard evaluation={evaluation} />
               ) : (
                 <EditableEvaluationCard
