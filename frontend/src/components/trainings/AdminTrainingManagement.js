@@ -110,8 +110,34 @@ export const AdminTrainingManagement = () => {
     try {
       setFormLoading(true);
 
-      // Remove id and trainingAreaId from the data before sending
-      const { trainingAreaId, ...trainingToUpdate } = trainingData;
+      // Find the original training object to get all fields
+      const originalTraining = trainings.find(t => t.id === trainingData.id);
+
+      // Find the trainingArea object based on trainingAreaId that came from the form
+      const trainingAreaObj = trainingAreas.find(
+        area => area.id === trainingData.trainingAreaId
+      );
+
+      // Format the training object for the backend
+      // Reconstruct the complete object with all required fields
+      const trainingToUpdate = {
+        id: trainingData.id,
+        title: trainingData.title,
+        duration: trainingData.duration,
+        description: trainingData.description,
+        link: trainingData.link,
+        language: trainingData.language,
+        // Preserve original fields or use defaults
+        createdAt: originalTraining?.createdAt || new Date().toISOString(),
+        editedAt: new Date().toISOString(),
+        // Use the trainingArea object, not just the ID
+        trainingArea: trainingAreaObj || originalTraining?.trainingArea,
+        active:
+          originalTraining?.active !== undefined
+            ? originalTraining.active
+            : true,
+      };
+
       await trainingService.update(trainingToUpdate);
       showAlert({
         title: t('trainings.admin.success'),

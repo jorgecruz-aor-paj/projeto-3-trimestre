@@ -18,12 +18,15 @@ public class Settings {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    //in minutes
     @Column(name = "confirmation_expiration_time", nullable = false)
     private Integer confirmationExpirationTime;
 
+    //in minutes
     @Column(name = "session_expiration_time", nullable = false)
     private Integer sessionExpirationTime;
 
+    //in minutes
     @Column(name = "reset_password_expiration_time", nullable = false)
     private Integer resetPasswordExpirationTime;
 
