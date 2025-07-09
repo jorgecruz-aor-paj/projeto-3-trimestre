@@ -22,6 +22,10 @@ INSERT INTO "public"."evaluation_cycles" ("id", "closure_date", "created_at", "e
 -- Evaluations
 INSERT INTO "public"."evaluations" ("id", "created_at", "edited_at", "feedback", "scale", "status", "evaluated_id", "evaluation_cycle_id", "evaluator_id") VALUES ('3', '2025-06-17 10:32:24.818631+00', '2025-06-17 14:05:38.69108+00', 'Not great, not terrible', 'PARCIAL_CONTRIBUTION', 'CLOSED', '14', '6', '13'), ('4', '2025-06-17 14:17:15.054809+00', '2025-06-17 15:07:04.329148+00', 'Not great, not terrible', 'PARCIAL_CONTRIBUTION', 'CLOSED', '14', '7', '13'), ('5', '2025-06-18 09:39:58.09961+00', '2025-06-18 14:51:26.355866+00', 'something something', 'EXCEED_CONTRIBUTION', 'CLOSED', '14', '8', '13'), ('8', '2025-06-18 14:59:18.45737+00', '2025-06-30 16:09:26.265036+00', 'Very nice', 'EXCEED_CONTRIBUTION', 'CLOSED', '14', '11', '13'), ('9', '2025-06-30 16:10:13.767524+00', '2025-06-30 16:13:07.631451+00', 'MEH', 'PARCIAL_CONTRIBUTION', 'CLOSED', '14', '12', '13'), ('10', '2025-06-30 16:10:13.966843+00', '2025-06-30 16:13:07.631784+00', 'Tterrible', 'LOW_CONTRIBUTION', 'CLOSED', '15', '12', '14'), ('11', '2025-07-03 08:14:05.842094+00', '2025-07-03 10:55:18.317619+00', 'Just right', 'EXPECTED_CONTRIBUTION', 'CLOSED', '15', '13', '14'), ('12', '2025-07-03 08:14:06.008979+00', null, null, null, 'ONGOING', '14', '13', '13'), ('13', '2025-07-03 08:14:06.168837+00', '2025-07-03 10:55:18.317478+00', 'Lazy!', 'LOW_CONTRIBUTION', 'CLOSED', '18', '13', '14');
 
+--Settings
+INSERT INTO settings ( id, confirmation_expiration_time, created_at, reset_password_expiration_time, session_expiration_time, created_by ) VALUES (1,3600,NOW(),7200,86400,13);
+
+
 -- Adjust sequences for all tables to ensure they match the current maximum IDs
 -- Adjust sequence for 'workplace'
 SELECT setval(pg_get_serial_sequence('public.workplace', 'id'), (SELECT MAX(id) FROM public.workplace));
