@@ -1,9 +1,26 @@
 package aor.proj3t.service.impl;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import aor.proj3t.config.AppConstants;
 import aor.proj3t.config.SettingsProvider;
 import aor.proj3t.daos.DAOFactory;
-import aor.proj3t.dto.*;
+import aor.proj3t.dto.FileUploadDTO;
+import aor.proj3t.dto.LoginDTO;
+import aor.proj3t.dto.ManagerAssignDTO;
+import aor.proj3t.dto.MiniUserDTO;
+import aor.proj3t.dto.UserDTO;
+import aor.proj3t.dto.UserRegistrationDTO;
 import aor.proj3t.entities.Evaluation;
 import aor.proj3t.entities.PendingRegistration;
 import aor.proj3t.entities.User;
@@ -24,12 +41,6 @@ import aor.proj3t.util.converterutils.MiniUserConverter;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.*;
 
 @ApplicationScoped
 public class UserServiceImpl extends BaseService implements UserService {
@@ -125,7 +136,7 @@ public class UserServiceImpl extends BaseService implements UserService {
         for (User user : users) {
             user.setManager(manager);
             daoFactory.forUser().update(user);
-            reassignEvaluatorForUser(user,manager);
+            reassignEvaluatorForUser(user, manager);
         }
         if (manager.getRole().equals(Role.USER)) {
             manager.setRole(Role.MANAGER);
@@ -145,14 +156,15 @@ public class UserServiceImpl extends BaseService implements UserService {
         }
         updateUserFields(targetUser, userDto);
         daoFactory.forUser().update(targetUser);
-        if(targetUser.getManager() != null) {
+        if (targetUser.getManager() != null) {
             sendProfileUpdateEmail(targetUser);
         }
     }
 
     @Override
     public List<UserDTO> getUsersByFilters(Long requesterId, UserFilter filters) {
-        //User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
+        // User requester = getEntity(daoFactory.forUser().findById(requesterId),
+        // requesterId, "User");
         // TODO remove if no filter limits are needed for users
         // if (requester.getRole() == Role.USER && filters.getManager() != null) {
         // throw new ForbiddenException(
@@ -235,9 +247,13 @@ public class UserServiceImpl extends BaseService implements UserService {
         user.setRole(userDto.getRole());
         user.setBiography(userDto.getBiography());
         user.setBirthdate(userDto.getBirthdate());
-        user.setPhotograph(userDto.getPhotograph());
+        // NOTE: Photograph field is intentionally excluded here
+        // Profile pictures should only be updated through the dedicated upload endpoint
+        // to prevent accidental overwrites during regular user updates
+        // If photograph field is provided and not null, we ignore it for safety
 
-        Workplace workplace = getEntity(daoFactory.forWorkplace().findById(userDto.getWorkplace().getId()), userDto.getWorkplace().getId(), "Workplace");
+        Workplace workplace = getEntity(daoFactory.forWorkplace().findById(userDto.getWorkplace().getId()),
+                userDto.getWorkplace().getId(), "Workplace");
         user.setWorkplace(workplace);
     }
 
@@ -284,56 +300,82 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     @Override
-    public Boolean uploadProfilePicture(Long userId, FileUploadDTO fileUploadDTO) {
+    @Transactional
+    public Boolean uploadProfilePicture(Long requesterId, Long userId, FileUploadDTO fileUploadDTO) {
+        logger.info("Starting profile picture upload service for user ID: {} by requester ID: {}", userId, requesterId);
+
         try {
-            User user = getEntity(daoFactory.forUser().findById(userId), userId, "User");
-            if (user == null) {
-                logger.warn("User not found with ID: {} for profile picture upload", userId);
-                return false;
+            // Authorization check
+            User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "Requester");
+            User targetUser = getEntity(daoFactory.forUser().findById(userId), userId, "User");
+
+            if (!requesterId.equals(userId) && !requester.getRole().equals(Role.ADMIN)) {
+                logger.warn("Unauthorized attempt to upload profile picture - requester ID: {}, target user ID: {}",
+                        requesterId, userId);
+                throw new ForbiddenException(
+                        "Permission denied",
+                        "User with ID " + requesterId + " cannot upload profile picture for user with ID " + userId);
             }
 
+            logger.debug("Found user: {} {} (ID: {}) for profile picture upload",
+                    targetUser.getFirstName(), targetUser.getLastName(), userId);
+
             // Delete old profile picture ONLY if it's not the default one
-            String oldPicture = user.getPhotograph();
+            String oldPicture = targetUser.getPhotograph();
             if (oldPicture != null && !oldPicture.equals(fileStorageUtil.getDefaultProfilePicture())) {
+                logger.debug("Deleting old profile picture: {} for user ID: {}", oldPicture, userId);
                 fileStorageUtil.deleteFile(oldPicture);
-            } // Store the new picture with resizing
+            }
+
+            // Store the new picture with resizing
             String fileName = fileStorageUtil.storeProfilePicture(fileUploadDTO.getFileContent(),
                     fileUploadDTO.getFileName(), fileUploadDTO.getFileExtension(), fileUploadDTO.getFileMimeType());
+            logger.debug("New profile picture stored with filename: {} for user ID: {}", fileName, userId);
 
             // Update user entity
-            user.setPhotograph(fileName);
-            daoFactory.forUser().update(user);
+            targetUser.setPhotograph(fileName);
+            daoFactory.forUser().update(targetUser);
+            logger.debug("User entity updated with new photograph filename: {} for user ID: {}", fileName, userId);
 
-            logger.info("Profile picture updated for user ID: {}", userId);
+            logger.info("Profile picture updated successfully for user ID: {}, new filename: {}", userId, fileName);
             return true;
-        } catch (Exception e) {
+        } catch (ForbiddenException e) {
             logger.error("Error uploading profile picture for user ID: {}", userId, e);
             return false;
         }
     }
 
     @Override
-    public Boolean resetProfilePicture(Long userId) {
+    public Boolean resetProfilePicture(Long requesterId, Long userId) {
+        logger.info("Starting profile picture reset for user ID: {} by requester ID: {}", userId, requesterId);
+
         try {
-            User user = getEntity(daoFactory.forUser().findById(userId), userId, "User");
-            if (user == null) {
-                logger.warn("User not found with ID: {} for profile picture reset", userId);
-                return false;
+            // Authorization check
+            User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "Requester");
+            User targetUser = getEntity(daoFactory.forUser().findById(userId), userId, "User");
+
+            if (!requesterId.equals(userId) && !requester.getRole().equals(Role.ADMIN)) {
+                logger.warn("Unauthorized attempt to reset profile picture - requester ID: {}, target user ID: {}",
+                        requesterId, userId);
+                throw new ForbiddenException(
+                        "Permission denied",
+                        "User with ID " + requesterId + " cannot reset profile picture for user with ID " + userId);
             }
 
             // Delete old profile picture if it's not the default one
-            String oldPicture = user.getPhotograph();
+            String oldPicture = targetUser.getPhotograph();
             if (oldPicture != null && !oldPicture.equals(fileStorageUtil.getDefaultProfilePicture())) {
+                logger.debug("Deleting old profile picture: {} for user ID: {}", oldPicture, userId);
                 fileStorageUtil.deleteFile(oldPicture);
             }
 
             // Set default picture
-            user.setPhotograph(fileStorageUtil.getDefaultProfilePicture());
-            daoFactory.forUser().update(user);
+            targetUser.setPhotograph(fileStorageUtil.getDefaultProfilePicture());
+            daoFactory.forUser().update(targetUser);
 
-            logger.info("Profile picture reset to default for user ID: {}", userId);
+            logger.info("Profile picture reset to default for user ID: {} by requester ID: {}", userId, requesterId);
             return true;
-        } catch (Exception e) {
+        } catch (ForbiddenException e) {
             logger.error("Error resetting profile picture for user ID: {}", userId, e);
             return false;
         }
@@ -350,7 +392,7 @@ public class UserServiceImpl extends BaseService implements UserService {
 
         String managerEmail = user.getManager().getEmail();
         String userFullName = user.getFirstName() + " " + user.getLastName();
-        String profileUrl =  AppConstants.Email.EMAIL_BASE_URL +  "/profile?id=" + user.getId();
+        String profileUrl = AppConstants.Email.EMAIL_BASE_URL + "/profile?id=" + user.getId();
 
         String title = "Team Member Profile Updated";
         String message = "Your team member <strong>" + userFullName + "</strong> has updated their profile.";
@@ -365,7 +407,8 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     private void reassignEvaluatorForUser(User evaluatedUser, User newEvaluator) {
         List<Evaluation> evaluations = daoFactory.forEvaluation()
-                .findByEvaluatedAndStatusIn(evaluatedUser, List.of(EvaluationStatus.ONGOING, EvaluationStatus.COMPLETED));
+                .findByEvaluatedAndStatusIn(evaluatedUser,
+                        List.of(EvaluationStatus.ONGOING, EvaluationStatus.COMPLETED));
 
         for (Evaluation evaluation : evaluations) {
             evaluation.setEvaluator(newEvaluator);

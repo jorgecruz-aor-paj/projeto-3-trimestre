@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { API_BASE_URL } from './apiConfig';
-import { useAuthStore } from 'stores/useAuthStore';
+import { useAuthStore } from 'stores/AuthStore';
 
 // Global flag to prevent multiple simultaneous logout processes
 let isHandling401 = false;

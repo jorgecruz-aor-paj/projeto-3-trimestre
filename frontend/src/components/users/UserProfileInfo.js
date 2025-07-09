@@ -13,17 +13,14 @@ import {
 import { ProfilePicture } from 'components/common/ProfilePicture';
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from 'contexts/LanguageContext';
-import { FormInput } from '../forms/FormInput';
-import { FormDropdownInput } from '../forms/FormDropdownInput';
-import { useAuthStore } from '../../stores/AuthStore';
+import { FormInput } from 'components/forms/FormInput';
+import { FormDropdownInput } from 'components/forms/FormDropdownInput';
+import { useAuthStore } from 'stores/AuthStore';
 import { userService } from 'services';
-import { useUserList } from '../../hooks/useUserList';
-import { useWorkplaces } from '../../hooks/useWorkplaces';
-import {
-  useFormValidation,
-  profileValidationRules,
-} from '../../utils/validation';
-import { useErrorMessage } from '../../hooks/useErrorMessage';
+import { useUserList } from 'hooks/useUserList';
+import { useWorkplaces } from 'hooks/useWorkplaces';
+import { useFormValidation, profileValidationRules } from 'utils/validation';
+import { useErrorMessage } from 'hooks/useErrorMessage';
 import { useAlert } from 'contexts/AlertContext';
 
 export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
@@ -227,9 +224,14 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
       try {
         setUploadingProfilePicture(true);
         console.log(
-          `Uploading profile picture for user ${user.id}:`,
+          `Admin ${loggedUser?.id} uploading profile picture for user ${user.id} (${user.firstName} ${user.lastName}):`,
           selectedFile
         );
+        console.log('Current logged user:', loggedUser);
+        console.log('Target user:', user);
+        console.log('Is admin:', isAdmin);
+        console.log('Is self:', isSelf);
+
         const result = await userService.uploadProfilePicture(
           user.id,
           selectedFile
@@ -241,6 +243,18 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
           console.log(`Clearing profile picture cache for user ${user.id}`);
           window.profilePictureCache.clearUser(user.id);
         }
+
+        // Dispatch cache busting event with a delay to ensure DB transaction is committed
+        setTimeout(() => {
+          console.log(
+            `Dispatching profilePictureUpdated event for user ${user.id}`
+          );
+          window.dispatchEvent(
+            new CustomEvent('profilePictureUpdated', {
+              detail: { userId: user.id },
+            })
+          );
+        }, 500);
 
         setSelectedFile(null);
         setPreviewUrl(null);
@@ -320,6 +334,7 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
         biography: formData.biography,
         role: formData.role,
         manager: newManager,
+        photograph: null, // Explicitly set to null - profile pictures are handled separately
       };
       console.log('Updating user with payload:', updatePayload);
       const response = await userService.update(updatePayload);

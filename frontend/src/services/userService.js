@@ -1,10 +1,11 @@
+import { fileUploadInstance } from 'api/fileUploadInstance';
+import { apiService, apiRequest } from './apiService';
+import { API_ENDPOINTS } from 'api/apiConfig';
+
 /**
  * User Service
  * Handles user-related API calls
  */
-import { apiService, apiRequest } from './apiService';
-import { API_ENDPOINTS } from 'api/apiConfig';
-
 export const userService = {
   /**
    * Get the current user's profile
@@ -84,7 +85,12 @@ export const userService = {
     formData.append('file', file);
 
     try {
-      const result = await apiRequest(
+      const result = await fileUploadInstance.post(
+        API_ENDPOINTS.user.profilePicture(userId).url,
+        formData
+      );
+      /*
+      await apiRequest(
         API_ENDPOINTS.user.profilePicture(userId),
         {
           method: 'POST',
@@ -94,13 +100,17 @@ export const userService = {
           },
         }
       );
+      */
 
       // Trigger profile picture update event for cache refresh
-      window.dispatchEvent(
-        new CustomEvent('profilePictureUpdated', {
-          detail: { userId: parseInt(userId) },
-        })
-      );
+      // Add a small delay to ensure database transaction is committed
+      setTimeout(() => {
+        window.dispatchEvent(
+          new CustomEvent('profilePictureUpdated', {
+            detail: { userId: parseInt(userId) },
+          })
+        );
+      }, 500); // 500ms delay
 
       return result;
     } catch (error) {
@@ -120,11 +130,14 @@ export const userService = {
     });
 
     // Trigger profile picture update event for cache refresh
-    window.dispatchEvent(
-      new CustomEvent('profilePictureUpdated', {
-        detail: { userId: parseInt(userId) },
-      })
-    );
+    // Add a small delay to ensure database transaction is committed
+    setTimeout(() => {
+      window.dispatchEvent(
+        new CustomEvent('profilePictureUpdated', {
+          detail: { userId: parseInt(userId) },
+        })
+      );
+    }, 500); // 500ms delay
 
     return result;
   },
