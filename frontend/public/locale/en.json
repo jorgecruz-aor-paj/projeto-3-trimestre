@@ -61,6 +61,7 @@
     "listView": "List View",
     "tableView": "Table View",
     "list": "List",
+    "cards": "Cards",
     "table": "Table",
     "activeFilters": "Active Filters",
     "sortBy": "Sort By",
@@ -778,6 +779,9 @@
     "draftSaveError": "Failed to save draft",
     "confirmSubmit": "Confirm Submission",
     "confirmSubmitMessage": "Are you sure you want to submit this evaluation? Once submitted, it cannot be edited further.",
+    "confirmCloseTitle": "Confirm Close Evaluation",
+    "confirmCloseMessage": "Are you sure you want to close this evaluation? This action cannot be undone.",
+    "confirmCloseButton": "Close Evaluation",
     "submit": "Submit",
     "saveAsDraft": "Save as Draft",
     "submitting": "Submitting...",
@@ -855,7 +859,13 @@
         "closeSelected": "Close Selected Evaluations",
         "selectAll": "Select All",
         "selectNone": "Select None"
-      }
+      },
+      "confirmCloseTitle": "Confirm Close Evaluations",
+      "confirmCloseMessage": "Are you sure you want to close the selected evaluation(s)? This action cannot be undone.",
+      "confirmCloseButton": "Close Evaluations",
+      "closeSuccess": "Selected evaluations closed successfully.",
+      "closeError": "Failed to close evaluations.",
+      "noCycleError": "Could not determine evaluation cycle."
     },
     "user": {
       "title": "My Evaluations",

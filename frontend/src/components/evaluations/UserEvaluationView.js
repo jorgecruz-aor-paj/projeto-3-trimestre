@@ -62,6 +62,7 @@ export const UserEvaluationView = () => {
               loading={loading}
               error={error}
               renderCheckbox={false}
+              userRole={user?.role}
             />
           </Col>
         </Row>

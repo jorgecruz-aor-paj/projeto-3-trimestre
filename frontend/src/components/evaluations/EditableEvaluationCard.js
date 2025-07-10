@@ -104,6 +104,29 @@ export const EditableEvaluationCard = ({
       return; // Don't save if validation fails
     }
 
+    // Check if status is being changed to CLOSED and show confirmation
+    const isClosingEvaluation =
+      form.status === 'CLOSED' && evaluation.status !== 'CLOSED';
+
+    if (isClosingEvaluation) {
+      showConfirm({
+        title: t('evaluations.confirmCloseTitle', 'Confirm Close Evaluation'),
+        message: t(
+          'evaluations.confirmCloseMessage',
+          'Are you sure you want to close this evaluation? This action cannot be undone.'
+        ),
+        confirmLabel: t('evaluations.confirmCloseButton', 'Close Evaluation'),
+        variant: 'danger',
+        onConfirm: () => performSave(),
+      });
+      return;
+    }
+
+    // If not closing, save directly
+    performSave();
+  };
+
+  const performSave = async () => {
     try {
       setIsSubmitting(true);
       // Send updated evaluation to backend

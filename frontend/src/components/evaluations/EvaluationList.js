@@ -17,9 +17,38 @@ export const EvaluationList = ({
   renderCheckbox = false,
   selectedEvaluations = [],
   onSelectEvaluation,
+  userRole,
   ...props
 }) => {
   const { t } = useTranslation();
+
+  /**
+   * Determines if an evaluation should be editable based on user role and evaluation status
+   * @param {Object} evaluation - The evaluation object
+   * @param {string} userRole - The current user's role ('ADMIN' or 'MANAGER')
+   * @returns {boolean} Whether the evaluation should be editable
+   */
+  const isEvaluationEditable = (evaluation, userRole) => {
+    // If no user role is provided, fall back to original logic
+    if (!userRole) {
+      return (
+        evaluation.status !== 'CLOSED' && evaluation.status !== 'COMPLETED'
+      );
+    }
+
+    // Admin can edit evaluations if status is not CLOSED
+    if (userRole === 'ADMIN') {
+      return evaluation.status !== 'CLOSED';
+    }
+
+    // Manager can edit evaluations only if status is ONGOING
+    if (userRole === 'MANAGER') {
+      return evaluation.status === 'ONGOING';
+    }
+
+    // Default to non-editable for other roles
+    return false;
+  };
 
   if (loading)
     return (
@@ -93,13 +122,13 @@ export const EvaluationList = ({
                   : ''
               }
             >
-              {evaluation.status === 'CLOSED' || evaluation.status === 'COMPLETED' ? (
-                <EvaluationCard evaluation={evaluation} />
-              ) : (
+              {isEvaluationEditable(evaluation, userRole) ? (
                 <EditableEvaluationCard
                   evaluation={evaluation}
                   onEdit={onEdit}
                 />
+              ) : (
+                <EvaluationCard evaluation={evaluation} />
               )}
             </div>
           </div>
@@ -117,6 +146,7 @@ EvaluationList.propTypes = {
   renderCheckbox: PropTypes.bool,
   selectedEvaluations: PropTypes.array,
   onSelectEvaluation: PropTypes.func,
+  userRole: PropTypes.string,
 };
 
 EvaluationList.defaultProps = {

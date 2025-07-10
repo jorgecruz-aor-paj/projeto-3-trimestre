@@ -31,11 +31,11 @@ export const AdminEvaluationManagement = () => {
   const { t, i18n } = useTranslation();
   const [filters, setFilters] = useState({});
   const [selectedEvaluations, setSelectedEvaluations] = useState([]); // array of evaluation ids
-  const [viewMode, setViewMode] = useState('list'); // 'list' or 'table'
+  const [viewMode, setViewMode] = useState('cards'); // 'table' or 'cards'
   const user = useAuthStore(state => state.user);
   const { evaluations, fetchEvaluations, loading, error } =
     useEvaluationStore();
-  const { showAlert } = useAlert();
+  const { showAlert, showConfirm } = useAlert();
 
   useEffect(() => {
     fetchEvaluations(filters);
@@ -51,36 +51,63 @@ export const AdminEvaluationManagement = () => {
   // Handler for closing selected evaluations
   const handleCloseSelected = async () => {
     if (!selectedEvaluations.length) return;
-    // Find the cycleId from the first selected evaluation (assuming all are from the same cycle)
-    const selected = evaluations.find(e => e.id === selectedEvaluations[0]);
-    const cycleId = selected?.evaluationCycle?.id;
-    if (!cycleId) {
-      showAlert({
-        title: 'Error',
-        message: 'Could not determine evaluation cycle.',
-        variant: 'danger',
-      });
-      return;
-    }
-    try {
-      await evaluationService.closeEvaluation({
-        cycleId,
-        evaluationIds: selectedEvaluations,
-      });
-      showAlert({
-        title: 'Success',
-        message: 'Selected evaluations closed successfully.',
-        variant: 'success',
-      });
-      setSelectedEvaluations([]);
-      fetchEvaluations(filters);
-    } catch (err) {
-      showAlert({
-        title: 'Error',
-        message: err?.message || 'Failed to close evaluations.',
-        variant: 'danger',
-      });
-    }
+
+    // Show confirmation dialog
+    showConfirm({
+      title: t(
+        'evaluations.admin.confirmCloseTitle',
+        'Confirm Close Evaluations'
+      ),
+      message: t(
+        'evaluations.admin.confirmCloseMessage',
+        `Are you sure you want to close ${selectedEvaluations.length} selected evaluation(s)? This action cannot be undone.`
+      ),
+      confirmLabel: t(
+        'evaluations.admin.confirmCloseButton',
+        'Close Evaluations'
+      ),
+      variant: 'danger',
+      onConfirm: async () => {
+        // Find the cycleId from the first selected evaluation (assuming all are from the same cycle)
+        const selected = evaluations.find(e => e.id === selectedEvaluations[0]);
+        const cycleId = selected?.evaluationCycle?.id;
+        if (!cycleId) {
+          showAlert({
+            title: t('common.error', 'Error'),
+            message: t(
+              'evaluations.admin.noCycleError',
+              'Could not determine evaluation cycle.'
+            ),
+            variant: 'danger',
+          });
+          return;
+        }
+        try {
+          await evaluationService.closeEvaluation({
+            cycleId,
+            evaluationIds: selectedEvaluations,
+          });
+          showAlert({
+            title: t('common.success', 'Success'),
+            message: t(
+              'evaluations.admin.closeSuccess',
+              'Selected evaluations closed successfully.'
+            ),
+            variant: 'success',
+          });
+          setSelectedEvaluations([]);
+          fetchEvaluations(filters);
+        } catch (err) {
+          showAlert({
+            title: t('common.error', 'Error'),
+            message:
+              err?.message ||
+              t('evaluations.admin.closeError', 'Failed to close evaluations.'),
+            variant: 'danger',
+          });
+        }
+      },
+    });
   };
 
   const renderEvaluationTable = () => {
@@ -454,23 +481,23 @@ export const AdminEvaluationManagement = () => {
                 <div className="btn-group" role="group">
                   <Button
                     variant={
-                      viewMode === 'list' ? 'primary' : 'outline-secondary'
+                      viewMode === 'table' ? 'primary' : 'outline-secondary'
                     }
                     size="sm"
-                    onClick={() => setViewMode('list')}
+                    onClick={() => setViewMode('table')}
                     title={t('common.list', 'List View')}
                   >
                     <i className="bi bi-list"></i>
                   </Button>
                   <Button
                     variant={
-                      viewMode === 'table' ? 'primary' : 'outline-secondary'
+                      viewMode === 'cards' ? 'primary' : 'outline-secondary'
                     }
                     size="sm"
-                    onClick={() => setViewMode('table')}
-                    title={t('common.table', 'Table View')}
+                    onClick={() => setViewMode('cards')}
+                    title={t('common.cards', 'Card View')}
                   >
-                    <i className="bi bi-table"></i>
+                    <i className="bi bi-grid-3x3-gap"></i>
                   </Button>
                 </div>
               </div>
@@ -487,6 +514,7 @@ export const AdminEvaluationManagement = () => {
                     renderCheckbox={true}
                     selectedEvaluations={selectedEvaluations}
                     onSelectEvaluation={handleSelectEvaluation}
+                    userRole={user?.role}
                   />
                 </div>
               )}

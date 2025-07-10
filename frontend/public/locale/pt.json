@@ -61,6 +61,7 @@
     "listView": "Vista de Lista",
     "tableView": "Vista de Tabela",
     "list": "Lista",
+    "cards": "Cartões",
     "table": "Tabela",
     "activeFilters": "Filtros Ativos",
     "sortBy": "Ordenar Por",
@@ -778,6 +779,9 @@
     "draftSaveError": "Falha ao guardar rascunho",
     "confirmSubmit": "Confirmar Submissão",
     "confirmSubmitMessage": "Tem a certeza de que deseja submeter esta avaliação? Uma vez submetida não poderá ser editada.",
+    "confirmCloseTitle": "Confirmar Encerramento da Avaliação",
+    "confirmCloseMessage": "Tem a certeza de que deseja encerrar esta avaliação? Esta ação não pode ser desfeita.",
+    "confirmCloseButton": "Encerrar Avaliação",
     "submit": "Submeter",
     "saveAsDraft": "Guardar como Rascunho",
     "submitting": "A submeter...",
@@ -855,7 +859,13 @@
         "closeSelected": "Fechar Avaliações Selecionadas",
         "selectAll": "Selecionar Todas",
         "selectNone": "Selecionar Nenhuma"
-      }
+      },
+      "confirmCloseTitle": "Confirmar Encerramento de Avaliações",
+      "confirmCloseMessage": "Tem a certeza de que deseja encerrar as avaliações selecionadas? Esta ação não pode ser desfeita.",
+      "confirmCloseButton": "Encerrar Avaliações",
+      "closeSuccess": "Avaliações selecionadas encerradas com sucesso.",
+      "closeError": "Falha ao encerrar avaliações.",
+      "noCycleError": "Não foi possível determinar o ciclo de avaliação."
     },
     "user": {
       "title": "As Minhas Avaliações",
