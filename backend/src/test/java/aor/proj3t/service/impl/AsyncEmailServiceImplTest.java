@@ -44,6 +44,8 @@ class AsyncEmailServiceImplTest {
         testCycle = new EvaluationCycle();
         testCycle.setId(1L);
         testCycle.setClosureDate(Instant.now());
+        testCycle.setStartDate(Instant.now().minus(30, java.time.temporal.ChronoUnit.DAYS));
+        testCycle.setEndDate(Instant.now().plus(30, java.time.temporal.ChronoUnit.DAYS));
 
         testUsers = new ArrayList<>();
         User user1 = new User();
@@ -90,6 +92,42 @@ class AsyncEmailServiceImplTest {
 
         // Act
         asyncEmailService.sendCycleClosureEmailAsync(1L);
+
+        // Assert
+        verify(emailUtil, never()).sendEmail(anyString(), anyString(), anyString());
+    }
+
+    @Test
+    void testSendCycleStartEmailAsync_Success() {
+        // Arrange
+        when(daoFactory.forEvaluationCycle()).thenReturn(mock(aor.proj3t.daos.interfaces.EvaluationCycleDAO.class));
+        when(daoFactory.forEvaluationCycle().findById(1L)).thenReturn(Optional.of(testCycle));
+        when(daoFactory.forUser()).thenReturn(mock(aor.proj3t.daos.interfaces.UserDAO.class));
+        when(daoFactory.forUser().getManagers()).thenReturn(testUsers);
+
+        // Mock the createEmailTemplate method to return a non-null value
+        when(emailUtil.createEmailTemplate(anyString(), anyString(), anyString(), anyString(), anyString()))
+                .thenReturn("<html>Mock email body</html>");
+
+        // Act
+        asyncEmailService.sendCycleStartEmailAsync(1L);
+
+        // Assert
+        verify(emailUtil, times(2)).sendEmail(anyString(), eq("Evaluation Cycle Started"), anyString());
+        verify(emailUtil).sendEmail(eq("user1@example.com"), eq("Evaluation Cycle Started"), anyString());
+        verify(emailUtil).sendEmail(eq("user2@example.com"), eq("Evaluation Cycle Started"), anyString());
+        verify(emailUtil, times(2)).createEmailTemplate(anyString(), anyString(), anyString(), anyString(),
+                anyString());
+    }
+
+    @Test
+    void testSendCycleStartEmailAsync_CycleNotFound() {
+        // Arrange
+        when(daoFactory.forEvaluationCycle()).thenReturn(mock(aor.proj3t.daos.interfaces.EvaluationCycleDAO.class));
+        when(daoFactory.forEvaluationCycle().findById(1L)).thenReturn(Optional.empty());
+
+        // Act
+        asyncEmailService.sendCycleStartEmailAsync(1L);
 
         // Assert
         verify(emailUtil, never()).sendEmail(anyString(), anyString(), anyString());

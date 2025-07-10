@@ -83,4 +83,61 @@ public class AsyncEmailServiceImpl implements AsyncEmailService {
             logger.error("Failed to send cycle closure emails for cycle: {}", cycleId, e);
         }
     }
+
+    @Asynchronous
+    @Override
+    public void sendCycleStartEmailAsync(Long cycleId) {
+        try {
+            EvaluationCycle cycle = daoFactory.forEvaluationCycle().findById(cycleId).orElse(null);
+            if (cycle == null) {
+                logger.error("Evaluation cycle not found with id: {}", cycleId);
+                return;
+            }
+
+            logger.info("Starting to send cycle start emails for cycle: {}", cycleId);
+
+            List<User> userList = daoFactory.forUser().getManagers();
+            DateTimeFormatter formatter = DateTimeFormatter
+                    .ofPattern("dd MMMM yyyy")
+                    .withZone(ZoneId.systemDefault());
+            String formattedStart = formatter.format(cycle.getStartDate());
+            String formattedEnd = formatter.format(cycle.getEndDate());
+
+            int emailsSent = 0;
+            for (User user : userList) {
+                try {
+                    String subject = "Evaluation Cycle Started";
+
+                    // Use EmailUtil's template system for consistent email formatting
+                    String mainMessage = "Dear " + user.getFirstName() + ",\n\n" +
+                            "The new evaluation cycle has officially started.\n\n" +
+                            "Start Date: " + formattedStart + "\n" +
+                            "End Date: " + formattedEnd + "\n\n" +
+                            "Managers should complete performance evaluations for their managed users within this time frame.";
+
+                    String footerText = "Thank you for your collaboration.\n\n" +
+                            "If you have any questions about the evaluation process, please contact your manager or HR department.";
+
+                    // Create a dummy URL for the button (could link to evaluation dashboard)
+                    String evaluationUrl = "#"; // This could be made configurable or link to actual evaluation page
+
+                    String body = emailUtil.createEmailTemplate(
+                            "Evaluation Cycle Now Active",
+                            mainMessage,
+                            "Go to Evaluations",
+                            evaluationUrl,
+                            footerText);
+
+                    emailUtil.sendEmail(user.getEmail(), subject, body);
+                    emailsSent++;
+                } catch (Exception e) {
+                    logger.error("Failed to send cycle start email to user: {} ({})", user.getEmail(), user.getId(), e);
+                }
+            }
+
+            logger.info("Successfully sent {} cycle start emails for cycle: {}", emailsSent, cycleId);
+        } catch (Exception e) {
+            logger.error("Failed to send cycle start emails for cycle: {}", cycleId, e);
+        }
+    }
 }

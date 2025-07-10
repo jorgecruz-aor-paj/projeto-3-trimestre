@@ -16,6 +16,7 @@ import aor.proj3t.enums.Role;
 import aor.proj3t.exceptions.ConflictException;
 import aor.proj3t.exceptions.InvalidDataException;
 import aor.proj3t.filters.DateRange;
+import aor.proj3t.service.ServiceFactory;
 import aor.proj3t.service.interfaces.EvaluationCycleService;
 import aor.proj3t.util.EmailUtil;
 import aor.proj3t.util.converterutils.ConverterFactory;
@@ -36,6 +37,9 @@ public class EvaluationCycleServiceImpl extends BaseService implements Evaluatio
     @Inject
     private EmailUtil emailUtil;
 
+    @Inject
+    private ServiceFactory serviceFactory;
+
     @Override
     public void startCycle(Long requesterId, DateRange dateRange) {
         User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
@@ -52,12 +56,14 @@ public class EvaluationCycleServiceImpl extends BaseService implements Evaluatio
         }
         EvaluationCycle evaluationCycle = new EvaluationCycle(dateRange.getStartDate(), dateRange.getEndDate(),
                 requester);
-        daoFactory.forEvaluationCycle().create(evaluationCycle);
+        evaluationCycle = daoFactory.forEvaluationCycle().create(evaluationCycle);
         logger.info("Created evaluation cycle with id {}", evaluationCycle.getId());
         createNewEvaluations(evaluationCycle);
         logger.info("Created evaluations for evaluation cycle with id {}", evaluationCycle.getId());
-        sendCycleStartEmail(evaluationCycle);
-        logger.info("Sent evaluation start email to managers for evaluation cycle with id {}", evaluationCycle.getId());
+
+        // Send cycle start emails asynchronously to avoid transaction timeout
+        serviceFactory.forAsyncEmail().sendCycleStartEmailAsync(evaluationCycle.getId());
+        logger.info("Initiated async cycle start emails for evaluation cycle with id {}", evaluationCycle.getId());
     }
 
     @Override
@@ -98,42 +104,6 @@ public class EvaluationCycleServiceImpl extends BaseService implements Evaluatio
         logger.info(" {} evaluations created in evaluation cycle with id {}", users.size(),
                 evaluationCycle.getId());
 
-    }
-
-    private void sendCycleStartEmail(EvaluationCycle cycle) {
-        List<User> userList = daoFactory.forUser().getManagers();
-        DateTimeFormatter formatter = DateTimeFormatter
-                .ofPattern("dd MMMM yyyy")
-                .withZone(ZoneId.systemDefault());
-        String formattedStart = formatter.format(cycle.getStartDate());
-        String formattedEnd = formatter.format(cycle.getEndDate());
-        for (User user : userList) {
-            String subject = "Evaluation Cycle Started";
-
-            // Use EmailUtil's template system for consistent email formatting
-            String mainMessage = "Dear " + user.getFirstName() + ",\n\n" +
-                    "The new evaluation cycle has officially started.\n\n" +
-                    "Start Date: " + formattedStart + "\n" +
-                    "End Date: " + formattedEnd + "\n\n" +
-                    "Managers should complete performance evaluations for their managed users within this time frame.";
-
-            String footerText = """
-                    Thank you for your collaboration.
-
-                    If you have any questions about the evaluation process, please contact your manager or HR department.""";
-
-            // Create a dummy URL for the button (could link to evaluation dashboard)
-            String evaluationUrl = "#"; // This could be made configurable or link to actual evaluation page
-
-            String body = emailUtil.createEmailTemplate(
-                    "Evaluation Cycle Now Active",
-                    mainMessage,
-                    "Go to Evaluations",
-                    evaluationUrl,
-                    footerText);
-
-            emailUtil.sendEmail(user.getEmail(), subject, body);
-        }
     }
 
     @Override
