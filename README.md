@@ -4,6 +4,8 @@
 2. Exportar para .xlsx;
 3. Página de settings;
 4. Alterar a password, por vontade do user;
+5. Forma de enviar mensagens para outro user.
+6. Sinal visual de nova mensagem por ler no user que enviou mensagem. (Está branco e não se vê);
 
 - Integração do LLM nas restantes funcionalidades de geração de relatórios e sugestões de melhoria;
 
@@ -24,6 +26,8 @@
 ### Notificações:
 
 1. Notificações de eventos como fechos de ciclo ou conclusão de avaliações devolvem excepção!
+
+2. Enviar do backend um placeholder para a tradução do New Message from;
 
 ### Responsividade:
 
