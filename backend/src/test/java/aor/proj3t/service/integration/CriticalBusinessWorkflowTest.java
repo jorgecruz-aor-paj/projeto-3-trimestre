@@ -68,6 +68,7 @@ class CriticalBusinessWorkflowTest {
     @Mock private AIService aiService;
     @Mock private AuthorizationService authorizationService;
     @Mock private EvaluationCycleService mockEvaluationCycleService;
+    @Mock private AsyncEmailService asyncEmailService;
 
     // Services under test
     @InjectMocks
@@ -102,6 +103,9 @@ class CriticalBusinessWorkflowTest {
         lenient().when(serviceFactory.forAI()).thenReturn(aiService);
         lenient().when(serviceFactory.forAuthorization()).thenReturn(authorizationService);
         lenient().when(serviceFactory.forEvaluationCycle()).thenReturn(mockEvaluationCycleService);
+        lenient().when(serviceFactory.forAsyncEmail()).thenReturn(asyncEmailService);
+
+
 
         // Set up test users
         admin = createTestUser(ADMIN_ID, "admin@test.com", Role.ADMIN, "Admin", "User", null);
@@ -193,6 +197,7 @@ class CriticalBusinessWorkflowTest {
 
         // Execute evaluation update
         EvaluationDTO result = evaluationService.updateEvaluation(MANAGER_ID, evaluationDTO);
+        doNothing().when(asyncEmailService).sendCycleClosureEmailAsync(anyLong());
 
         // Verify evaluation was updated and notification sent
         assertNotNull(result);
