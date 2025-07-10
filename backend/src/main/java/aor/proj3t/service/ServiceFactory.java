@@ -1,6 +1,5 @@
 package aor.proj3t.service;
 
-import aor.proj3t.service.impl.TokenServiceImpl;
 import aor.proj3t.service.interfaces.AIService;
 import aor.proj3t.service.interfaces.AsyncEmailService;
 import aor.proj3t.service.interfaces.AuthService;
@@ -64,9 +63,6 @@ public class ServiceFactory {
 
     @Inject
     private EvaluationCycleService evaluationCycleService;
-
-    @Inject
-    private TokenServiceImpl tokenServiceImpl;
 
     @Inject
     private MessageService messageService;
