@@ -273,9 +273,6 @@ class EvaluationServiceImplTest {
         when(daoFactory.forEvaluationCycle().findById(activeCycle.getId())).thenReturn(Optional.of(activeCycle));
         when(evaluationDAO.countUnclosedEvaluationsByCycleId(activeCycle.getId())).thenReturn(0);
 
-        // Mock authorization
-        AuthorizationService authService = mock(AuthorizationService.class);
-
         // When
         evaluationService.closeEvaluationsBulk(admin.getId(), closeDto);
 

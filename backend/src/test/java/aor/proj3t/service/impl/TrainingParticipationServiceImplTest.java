@@ -12,7 +12,6 @@ import aor.proj3t.entities.User;
 import aor.proj3t.entities.Notification;
 import aor.proj3t.enums.Role;
 import aor.proj3t.exceptions.ForbiddenException;
-import aor.proj3t.exceptions.NotFoundException;
 import aor.proj3t.service.ServiceFactory;
 import aor.proj3t.service.interfaces.NotificationService;
 import aor.proj3t.util.converterutils.ConverterFactory;

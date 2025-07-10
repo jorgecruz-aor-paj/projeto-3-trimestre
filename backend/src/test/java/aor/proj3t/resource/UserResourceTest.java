@@ -10,7 +10,6 @@ import aor.proj3t.service.interfaces.TokenService;
 import aor.proj3t.service.interfaces.UserService;
 import aor.proj3t.util.validatorutils.fordto.UserValidator;
 import aor.proj3t.util.validatorutils.forfilters.FilterValidatorFactory;
-import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
