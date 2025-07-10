@@ -48,13 +48,7 @@ export const ProfilePicture = ({
     // Backend will serve either user's picture or default-profile-picture.png
     const url = API_ENDPOINTS.user.profilePicture(userId).url;
 
-    /* TODO delete if not needed
-    // Just use the path directly without any replacement
-    // This ensures we're not making a cross-origin request
-    const url = `${
-      API_ENDPOINTS.user.profilePicture(userId).fullUrl
-    }?_t=${Date.now()}`;
-    */
+
 
     imageCache.set(cacheKey, url);
     return url;
@@ -88,8 +82,7 @@ export const ProfilePicture = ({
         const newSrc = `${
           API_ENDPOINTS.user.profilePicture(userId).url
         }?_t=${timestamp}`;
-        // TODO delete if not needed
-        //API_ENDPOINTS.user.profilePicture(userId).fullUrl
+       
 
         console.log(`New profile picture URL: ${newSrc}`);
 

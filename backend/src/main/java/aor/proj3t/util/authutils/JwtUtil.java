@@ -46,7 +46,6 @@ public class JwtUtil {
         logger.info("Initializing JWT utility service");
         try {
             // Dotenv configuration
-            // TODO remover coment para commit
             logger.debug("Loading environment variables for JWT configuration");
             Dotenv dotenv = Dotenv
                     .configure()

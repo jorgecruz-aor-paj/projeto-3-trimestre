@@ -19,13 +19,3 @@ export const App = () => {
   );
 };
 
-// TODO Ler e definir se é boa escolha para o design pattern da aplicação
-/* Application design pattern!
-┌────────────────┐     ┌────────────────┐     ┌────────────────┐
-│  API Utilities │     │     Service    │     │  Data Store    │
-│                │     │                │     │                │
-│ • Fetch        │     │ • Orchestrate  │     │ • Manage state │
-│ • Parse        │ ──► │ • Format data  │ ──► │ • Update UI    │
-│ • Handle errors│     │ • Add context  │     │ • Handle logic │
-└────────────────┘     └────────────────┘     └────────────────┘
-*/

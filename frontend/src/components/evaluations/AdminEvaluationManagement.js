@@ -317,24 +317,6 @@ export const AdminEvaluationManagement = () => {
               </p>
             </div>
             <div className="d-flex gap-2">
-              <Button
-                variant="outline-primary"
-                onClick={() => {
-                  /* TODO: Open settings modal */
-                }}
-              >
-                <i className="bi bi-gear me-2"></i>
-                {t('evaluations.admin.settings', 'Settings')}
-              </Button>
-              <Button
-                variant="primary"
-                onClick={() => {
-                  /* TODO: Open create cycle modal */
-                }}
-              >
-                <i className="bi bi-plus-circle me-2"></i>
-                {t('evaluations.admin.createCycle', 'Create Evaluation Cycle')}
-              </Button>
             </div>
           </div>
         </Col>

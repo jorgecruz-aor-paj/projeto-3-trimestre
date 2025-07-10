@@ -168,7 +168,7 @@ public class EmailUtil {
     public boolean sendConfirmationEmail(String toEmail, String token, String baseUrl) {
         String subject = AppConstants.Email.DEFAULT_CONFIRMATION_SUBJECT;
         String confirmationLink = baseUrl + "/register/confirm?confirmationToken=" + token;
-        logger.info("Generated confirmation link: {}", confirmationLink);
+        logger.info("Generated confirmation link: {}", confirmationLink); //TODO delete after utility expires
 
         String body = createEmailTemplate(
                 "Account Confirmation",
@@ -193,7 +193,7 @@ public class EmailUtil {
     public boolean sendPasswordResetEmail(String toEmail, String token, String baseUrl) {
         String subject = AppConstants.Email.DEFAULT_PASSWORD_RESET_SUBJECT;
         String resetLink = baseUrl + "/reset-password/confirm?resetPasswordToken=" + token;
-        logger.info("Generated reset password link: {}", resetLink);
+        logger.info("Generated reset password link: {}", resetLink); //TODO delete after utility expires
 
         String body = createEmailTemplate(
                 "Password Reset Request",

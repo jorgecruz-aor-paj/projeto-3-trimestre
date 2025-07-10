@@ -29,10 +29,6 @@ public class UserRegistrationDTO {
     @XmlElement(name = "biography")
     private String biography;
 
-    @XmlElement(name = "photograph")
-    private String photograph;
-    //todo check if it is necessary and adjust validation logic
-
     @XmlElement(name = "workplaceId")
     private Long workplaceId;
 
@@ -85,14 +81,6 @@ public class UserRegistrationDTO {
 
     public void setBiography(String biography) {
         this.biography = biography;
-    }
-
-    public String getPhotograph() {
-        return photograph;
-    }
-
-    public void setPhotograph(String photograph) {
-        this.photograph = photograph;
     }
 
     public Long getWorkplaceId() {

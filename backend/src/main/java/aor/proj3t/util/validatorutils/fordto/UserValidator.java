@@ -76,13 +76,8 @@ public class UserValidator {
     }
 
     public void validatePhotograph(String photograph) {
-        if (photograph != null && !photograph.isEmpty()) {
-            // Optional: add base64 format check if needed
-            // String base64Regex = "^[A-Za-z0-9+/=]+$";
-            // if (!photograph.matches(base64Regex)) {
-            // throw new InvalidDataException("Invalid base64 format for photograph");
-            // }
-            // TODO check validation logic
+        if (photograph != null || !photograph.isEmpty()) {
+            throw new InvalidDataException("Photograph must be empty");
         }
     }
 
