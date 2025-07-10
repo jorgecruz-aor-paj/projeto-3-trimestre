@@ -4,7 +4,7 @@
 2. Exportar para .xlsx;
 3. Página de settings;
 4. Alterar a password, por vontade do user;
-5. Forma de enviar mensagens para outro user.
+5. Forma de enviar mensagens para outro user. (Parcialmente implementado)
 6. Sinal visual de nova mensagem por ler no user que enviou mensagem. (Está branco e não se vê);
 
 - Integração do LLM nas restantes funcionalidades de geração de relatórios e sugestões de melhoria;
@@ -40,6 +40,8 @@
 ### Avaliações:
 
 1. Caixa de pesquisa está a pesquisar pelo feedback apenas;
+
+2. Após marcar avaliações como fechadas página não faz refresh;
 
 ---
 
