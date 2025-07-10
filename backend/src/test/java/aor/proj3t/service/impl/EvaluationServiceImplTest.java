@@ -1,5 +1,35 @@
 package aor.proj3t.service.impl;
 
+import java.time.Instant;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.eq;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import aor.proj3t.daos.DAOFactory;
 import aor.proj3t.daos.interfaces.EvaluationCycleDAO;
 import aor.proj3t.daos.interfaces.EvaluationDAO;
@@ -16,34 +46,18 @@ import aor.proj3t.entities.User;
 import aor.proj3t.enums.EvaluationCycleStatus;
 import aor.proj3t.enums.EvaluationScale;
 import aor.proj3t.enums.EvaluationStatus;
-import aor.proj3t.enums.NotificationType;
 import aor.proj3t.enums.Role;
-import aor.proj3t.service.interfaces.AuthorizationService;
 import aor.proj3t.exceptions.BadRequestException;
 import aor.proj3t.exceptions.ForbiddenException;
 import aor.proj3t.exceptions.NotFoundException;
 import aor.proj3t.filters.EvaluationFilter;
 import aor.proj3t.service.ServiceFactory;
 import aor.proj3t.service.interfaces.AIService;
+import aor.proj3t.service.interfaces.AsyncEmailService;
+import aor.proj3t.service.interfaces.AuthorizationService;
 import aor.proj3t.service.interfaces.NotificationService;
 import aor.proj3t.util.converterutils.ConverterFactory;
 import aor.proj3t.util.converterutils.EvaluationConverter;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InOrder;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class EvaluationServiceImplTest {
@@ -57,27 +71,30 @@ class EvaluationServiceImplTest {
 
     @Mock
     private DAOFactory daoFactory;
-    
+
     @Mock
     private ConverterFactory converterFactory;
-    
+
     @Mock
     private ServiceFactory serviceFactory;
-    
+
     @Mock
     private EvaluationDAO evaluationDAO;
-    
+
     @Mock
     private UserDAO userDAO;
-    
+
     @Mock
     private EvaluationConverter evaluationConverter;
-    
+
     @Mock
     private NotificationService notificationService;
-    
+
     @Mock
     private AIService aiService;
+
+    @Mock
+    private AsyncEmailService asyncEmailService;
 
     @InjectMocks
     private EvaluationServiceImpl evaluationService;
@@ -99,9 +116,8 @@ class EvaluationServiceImplTest {
         lenient().when(converterFactory.forEvaluation()).thenReturn(evaluationConverter);
         lenient().when(serviceFactory.forNotification()).thenReturn(notificationService);
         lenient().when(serviceFactory.forAI()).thenReturn(aiService);
-        lenient().when(serviceFactory.forEvaluationCycle()).thenReturn(evaluationCycleService);  // Add this line
-
-
+        lenient().when(serviceFactory.forEvaluationCycle()).thenReturn(evaluationCycleService);
+        lenient().when(serviceFactory.forAsyncEmail()).thenReturn(asyncEmailService);
 
         // Set up evaluator (manager)
         evaluator = new User();
@@ -140,10 +156,10 @@ class EvaluationServiceImplTest {
         lenient().when(evaluationCycleDAO.findById(cycle.getId())).thenReturn(Optional.of(cycle));
 
         // Set up mini DTOs
-        MiniUserDTO evaluatorDTO = new MiniUserDTO(evaluator.getId(), evaluator.getFirstName(), 
-            evaluator.getLastName(), evaluator.getEmail(), null);
-        MiniUserDTO evaluatedDTO = new MiniUserDTO(evaluated.getId(), evaluated.getFirstName(), 
-            evaluated.getLastName(), evaluated.getEmail(), null);
+        MiniUserDTO evaluatorDTO = new MiniUserDTO(evaluator.getId(), evaluator.getFirstName(),
+                evaluator.getLastName(), evaluator.getEmail(), null);
+        MiniUserDTO evaluatedDTO = new MiniUserDTO(evaluated.getId(), evaluated.getFirstName(),
+                evaluated.getLastName(), evaluated.getEmail(), null);
         MiniEvaluationCycleDTO cycleDTO = new MiniEvaluationCycleDTO();
         cycleDTO.setId(cycle.getId());
 
@@ -159,7 +175,7 @@ class EvaluationServiceImplTest {
     }
 
     @Mock
-    private EvaluationCycleDAO evaluationCycleDAO;  // Add this mock
+    private EvaluationCycleDAO evaluationCycleDAO; // Add this mock
 
     @Test
     @DisplayName("updateEvaluation should update evaluation and notify user when status is completed")
@@ -185,14 +201,13 @@ class EvaluationServiceImplTest {
         assertEquals(EvaluationStatus.COMPLETED, result.getStatus());
 
         // Verify all interactions in order
-        InOrder inOrder = inOrder(evaluationDAO, evaluationCycleDAO, notificationService, aiService);
-
         verify(evaluationDAO).findById(TEST_EVALUATION_ID);
         verify(aiService).analyzeSentiment(TEST_FEEDBACK);
         verify(evaluationDAO).update(any(Evaluation.class));
         verify(evaluationCycleDAO).updateStatus(eq(cycle.getId()), eq(EvaluationCycleStatus.COMPLETED));
-        verify(evaluationCycleDAO,times(2)).findById(cycle.getId());
+        verify(evaluationCycleDAO, times(2)).findById(cycle.getId());
         verify(evaluationCycleDAO).update(any(EvaluationCycle.class));
+        verify(asyncEmailService).sendCycleClosureEmailAsync(cycle.getId());
     }
 
     @Test
@@ -212,7 +227,7 @@ class EvaluationServiceImplTest {
         assertNotNull(result);
         assertEquals(TEST_EVALUATION_ID, result.getId());
         assertEquals(EvaluationStatus.COMPLETED, result.getStatus());
-        
+
         verify(evaluationDAO).findById(TEST_EVALUATION_ID);
         verify(evaluationDAO).update(any(Evaluation.class));
         verify(notificationService).createNotification(any(Notification.class));
@@ -228,7 +243,7 @@ class EvaluationServiceImplTest {
         // When/Then
         assertThrows(NotFoundException.class,
                 () -> evaluationService.updateEvaluation(TEST_EVALUATOR_ID, evaluationDTO));
-        
+
         verify(evaluationDAO).findById(TEST_EVALUATION_ID);
         verifyNoMoreInteractions(evaluationDAO);
         verifyNoInteractions(notificationService, aiService);
@@ -269,6 +284,7 @@ class EvaluationServiceImplTest {
         assertEquals(EvaluationStatus.CLOSED, evaluation.getStatus());
         verify(daoFactory.forEvaluationCycle()).update(activeCycle);
         assertEquals(EvaluationCycleStatus.CLOSED, activeCycle.getStatus());
+        verify(asyncEmailService).sendCycleClosureEmailAsync(activeCycle.getId());
     }
 
     @Test
@@ -284,7 +300,7 @@ class EvaluationServiceImplTest {
         // When/Then
         assertThrows(ForbiddenException.class,
                 () -> evaluationService.closeEvaluationsBulk(TEST_EVALUATOR_ID, closeDto));
-        
+
         verifyNoInteractions(daoFactory.forEvaluationCycle());
         verify(evaluationDAO, never()).update(any());
     }
@@ -311,7 +327,7 @@ class EvaluationServiceImplTest {
         // When/Then
         assertThrows(BadRequestException.class,
                 () -> evaluationService.closeEvaluationsBulk(admin.getId(), closeDto));
-        
+
         verify(evaluationDAO, never()).update(any());
     }
 
@@ -325,7 +341,7 @@ class EvaluationServiceImplTest {
 
         EvaluationFilter filter = new EvaluationFilter();
         filter.setEvaluatorId(TEST_EVALUATOR_ID);
-        
+
         List<Evaluation> evaluations = List.of(evaluation);
         List<EvaluationDTO> expectedDtos = List.of(evaluationDTO);
 
@@ -372,11 +388,10 @@ class EvaluationServiceImplTest {
         // Then
         assertNotNull(result);
         assertEquals(1, result.size());
-        
+
         // Verify filter was modified to only show user's evaluations
-        verify(evaluationDAO).getEvaluationsByFilters(argThat(f -> 
-            f.getEvaluatedId().equals(user.getId()) && f.getCycleClosed()
-        ));
+        verify(evaluationDAO)
+                .getEvaluationsByFilters(argThat(f -> f.getEvaluatedId().equals(user.getId()) && f.getCycleClosed()));
     }
 
     @Test
@@ -401,11 +416,9 @@ class EvaluationServiceImplTest {
         // Then
         assertNotNull(result);
         assertEquals(1, result.size());
-        
+
         // Verify filter was modified to show manager's evaluations
-        verify(evaluationDAO).getEvaluationsByFilters(argThat(f -> 
-            f.getEvaluatorId().equals(TEST_EVALUATOR_ID)
-        ));
+        verify(evaluationDAO).getEvaluationsByFilters(argThat(f -> f.getEvaluatorId().equals(TEST_EVALUATOR_ID)));
     }
 
     @Test
@@ -420,12 +433,12 @@ class EvaluationServiceImplTest {
         AuthorizationService authService = mock(AuthorizationService.class);
         when(serviceFactory.forAuthorization()).thenReturn(authService);
         doThrow(new ForbiddenException("Unauthorized access", "Test"))
-            .when(authService).authorizeEvaluationAccess(any(), any(), any());
+                .when(authService).authorizeEvaluationAccess(any(), any(), any());
 
         // When/Then
         assertThrows(ForbiddenException.class,
                 () -> evaluationService.getEvaluationsByFilter(TEST_EVALUATOR_ID, filter));
-        
+
         verifyNoInteractions(evaluationConverter);
         verify(evaluationDAO, never()).getEvaluationsByFilters(any());
     }
@@ -436,11 +449,11 @@ class EvaluationServiceImplTest {
         // Given
         evaluation.setStatus(EvaluationStatus.ONGOING);
         evaluationDTO.setStatus(EvaluationStatus.COMPLETED);
-        
+
         when(userDAO.findById(TEST_EVALUATOR_ID)).thenReturn(Optional.of(evaluator)); // evaluator is MANAGER role
         when(evaluationDAO.findById(TEST_EVALUATION_ID)).thenReturn(Optional.of(evaluation));
         when(evaluationConverter.toDTO(any(Evaluation.class))).thenReturn(evaluationDTO);
-        
+
         // Mock sentiment analysis
         SentimentResponseDTO sentimentResponse = new SentimentResponseDTO();
         sentimentResponse.setSentiment("POSITIVE");
@@ -463,14 +476,14 @@ class EvaluationServiceImplTest {
         // Given
         evaluation.setStatus(EvaluationStatus.COMPLETED);
         evaluationDTO.setStatus(EvaluationStatus.ONGOING);
-        
+
         when(userDAO.findById(TEST_EVALUATOR_ID)).thenReturn(Optional.of(evaluator)); // evaluator is MANAGER role
         when(evaluationDAO.findById(TEST_EVALUATION_ID)).thenReturn(Optional.of(evaluation));
 
         // When/Then
         ForbiddenException exception = assertThrows(ForbiddenException.class,
                 () -> evaluationService.updateEvaluation(TEST_EVALUATOR_ID, evaluationDTO));
-        
+
         assertEquals("Status change not allowed", exception.getUserMessage());
         assertTrue(exception.getMessage().contains("Managers can only change from ONGOING to COMPLETED"));
         verify(evaluationDAO, never()).update(any(Evaluation.class));
@@ -483,14 +496,14 @@ class EvaluationServiceImplTest {
         // Given
         evaluation.setStatus(EvaluationStatus.ONGOING);
         evaluationDTO.setStatus(EvaluationStatus.CLOSED);
-        
+
         when(userDAO.findById(TEST_EVALUATOR_ID)).thenReturn(Optional.of(evaluator)); // evaluator is MANAGER role
         when(evaluationDAO.findById(TEST_EVALUATION_ID)).thenReturn(Optional.of(evaluation));
 
         // When/Then
         ForbiddenException exception = assertThrows(ForbiddenException.class,
                 () -> evaluationService.updateEvaluation(TEST_EVALUATOR_ID, evaluationDTO));
-        
+
         assertEquals("Status change not allowed", exception.getUserMessage());
         assertTrue(exception.getMessage().contains("Managers can only change from ONGOING to COMPLETED"));
         verify(evaluationDAO, never()).update(any(Evaluation.class));
@@ -503,14 +516,14 @@ class EvaluationServiceImplTest {
         // Given
         evaluation.setStatus(EvaluationStatus.ONGOING);
         evaluationDTO.setStatus(EvaluationStatus.COMPLETED);
-        
+
         when(userDAO.findById(TEST_EVALUATED_ID)).thenReturn(Optional.of(evaluated)); // evaluated is USER role
         when(evaluationDAO.findById(TEST_EVALUATION_ID)).thenReturn(Optional.of(evaluation));
 
         // When/Then
         ForbiddenException exception = assertThrows(ForbiddenException.class,
                 () -> evaluationService.updateEvaluation(TEST_EVALUATED_ID, evaluationDTO));
-        
+
         assertEquals("Status change not allowed", exception.getUserMessage());
         assertTrue(exception.getMessage().contains("Only admins and managers can change evaluation status"));
         verify(evaluationDAO, never()).update(any(Evaluation.class));
@@ -526,14 +539,14 @@ class EvaluationServiceImplTest {
         admin.setRole(Role.ADMIN);
         admin.setFirstName("Admin");
         admin.setLastName("User");
-        
+
         evaluation.setStatus(EvaluationStatus.COMPLETED);
         evaluationDTO.setStatus(EvaluationStatus.ONGOING);
-        
+
         when(userDAO.findById(admin.getId())).thenReturn(Optional.of(admin));
         when(evaluationDAO.findById(TEST_EVALUATION_ID)).thenReturn(Optional.of(evaluation));
         when(evaluationConverter.toDTO(any(Evaluation.class))).thenReturn(evaluationDTO);
-        
+
         // Mock sentiment analysis
         SentimentResponseDTO sentimentResponse = new SentimentResponseDTO();
         sentimentResponse.setSentiment("NEUTRAL");
@@ -560,14 +573,14 @@ class EvaluationServiceImplTest {
         admin.setRole(Role.ADMIN);
         admin.setFirstName("Admin");
         admin.setLastName("User");
-        
+
         evaluation.setStatus(EvaluationStatus.CLOSED);
         evaluationDTO.setStatus(EvaluationStatus.COMPLETED);
-        
+
         when(userDAO.findById(admin.getId())).thenReturn(Optional.of(admin));
         when(evaluationDAO.findById(TEST_EVALUATION_ID)).thenReturn(Optional.of(evaluation));
         when(evaluationConverter.toDTO(any(Evaluation.class))).thenReturn(evaluationDTO);
-        
+
         // Mock sentiment analysis
         SentimentResponseDTO sentimentResponse = new SentimentResponseDTO();
         sentimentResponse.setSentiment("POSITIVE");
@@ -592,11 +605,11 @@ class EvaluationServiceImplTest {
         evaluationDTO.setStatus(EvaluationStatus.ONGOING); // Same status - no change
         evaluationDTO.setFeedback("Updated feedback");
         evaluationDTO.setScale(EvaluationScale.EXPECTED_CONTRIBUTION);
-        
+
         when(userDAO.findById(TEST_EVALUATOR_ID)).thenReturn(Optional.of(evaluator)); // evaluator is MANAGER role
         when(evaluationDAO.findById(TEST_EVALUATION_ID)).thenReturn(Optional.of(evaluation));
         when(evaluationConverter.toDTO(any(Evaluation.class))).thenReturn(evaluationDTO);
-        
+
         // Mock sentiment analysis
         SentimentResponseDTO sentimentResponse = new SentimentResponseDTO();
         sentimentResponse.setSentiment("NEUTRAL");
@@ -621,11 +634,11 @@ class EvaluationServiceImplTest {
         evaluation.setStatus(EvaluationStatus.ONGOING);
         evaluationDTO.setStatus(EvaluationStatus.ONGOING); // Same status - no change
         evaluationDTO.setFeedback("User updated feedback");
-        
+
         when(userDAO.findById(TEST_EVALUATED_ID)).thenReturn(Optional.of(evaluated)); // evaluated is USER role
         when(evaluationDAO.findById(TEST_EVALUATION_ID)).thenReturn(Optional.of(evaluation));
         when(evaluationConverter.toDTO(any(Evaluation.class))).thenReturn(evaluationDTO);
-        
+
         // Mock sentiment analysis
         SentimentResponseDTO sentimentResponse = new SentimentResponseDTO();
         sentimentResponse.setSentiment("POSITIVE");
