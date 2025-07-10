@@ -1,5 +1,15 @@
 package aor.proj3t.service.impl;
 
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import aor.proj3t.daos.DAOFactory;
 import aor.proj3t.dto.EvaluationCloseDTO;
 import aor.proj3t.dto.EvaluationDTO;
@@ -24,11 +34,6 @@ import aor.proj3t.util.converterutils.ConverterFactory;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.time.Instant;
-import java.util.*;
 
 @ApplicationScoped
 public class EvaluationServiceImpl extends BaseService implements EvaluationService {
@@ -49,31 +54,31 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
         Evaluation evaluation = getEntity(daoFactory.forEvaluation().findById(evaluationDTO.getId()),
                 evaluationDTO.getId(),
                 "Evaluation");
-        
+
         // Validate status change permissions based on user role
         EvaluationStatus currentStatus = evaluation.getStatus();
         EvaluationStatus newStatus = evaluationDTO.getStatus();
-        
+
         if (currentStatus != newStatus) {
             if (requester.getRole() == Role.MANAGER) {
                 // Managers can only change status from ONGOING to COMPLETED
                 if (currentStatus != EvaluationStatus.ONGOING || newStatus != EvaluationStatus.COMPLETED) {
                     throw new ForbiddenException(
-                        "Status change not allowed",
-                        "Manager with id " + requesterId + " attempted to change evaluation status from " 
-                        + currentStatus + " to " + newStatus + ". Managers can only change from ONGOING to COMPLETED."
-                    );
+                            "Status change not allowed",
+                            "Manager with id " + requesterId + " attempted to change evaluation status from "
+                                    + currentStatus + " to " + newStatus
+                                    + ". Managers can only change from ONGOING to COMPLETED.");
                 }
             } else if (requester.getRole() == Role.USER) {
                 // Regular users cannot change status at all
                 throw new ForbiddenException(
-                    "Status change not allowed",
-                    "User with id " + requesterId + " attempted to change evaluation status. Only admins and managers can change evaluation status."
-                );
+                        "Status change not allowed",
+                        "User with id " + requesterId
+                                + " attempted to change evaluation status. Only admins and managers can change evaluation status.");
             }
             // Admins (Role.ADMIN) can change status to any value - no restrictions
         }
-        
+
         evaluation.setScale(evaluationDTO.getScale());
         evaluation.setFeedback(evaluationDTO.getFeedback());
         evaluation.setStatus(evaluationDTO.getStatus());
@@ -215,7 +220,9 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
         cycle.setClosureDate(Instant.now());
         daoFactory.forEvaluationCycle().update(cycle);
         logger.info("Evaluation cycle with id {} has been closed", evaluationCycleId);
-        serviceFactory.forEvaluationCycle().sendCycleClosureEmail(cycle);
+
+        // Send emails asynchronously to avoid transaction timeout
+        serviceFactory.forAsyncEmail().sendCycleClosureEmailAsync(evaluationCycleId);
     }
 
     private void checkAndCompleteEvaluationCycle(Long evaluationCycleId) {
@@ -267,4 +274,3 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
     }
 
 }
-
