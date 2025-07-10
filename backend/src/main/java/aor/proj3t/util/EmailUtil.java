@@ -1,19 +1,25 @@
 package aor.proj3t.util;
 
+import java.util.Properties;
+import java.util.regex.Pattern;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import aor.proj3t.config.AppConstants;
 import io.github.cdimascio.dotenv.Dotenv;
 import io.github.cdimascio.dotenv.DotenvException;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.mail.*;
+import jakarta.mail.Authenticator;
+import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
+import jakarta.mail.PasswordAuthentication;
+import jakarta.mail.Session;
+import jakarta.mail.Transport;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.util.Properties;
-import java.util.regex.Pattern;
 
 /**
  * Utility class for sending emails and email validation.
@@ -47,7 +53,6 @@ public class EmailUtil {
         logger.info("Initializing Email utility service");
         try {
             // Load email configuration from environment variables
-            // TODO remover coment para commit
             Dotenv dotenv = Dotenv.configure()
                     .ignoreIfMalformed()
                     .load();

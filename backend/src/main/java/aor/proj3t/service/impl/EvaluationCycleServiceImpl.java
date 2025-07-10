@@ -1,5 +1,12 @@
 package aor.proj3t.service.impl;
 
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import aor.proj3t.daos.DAOFactory;
 import aor.proj3t.dto.EvaluationCycleDTO;
 import aor.proj3t.entities.Evaluation;
@@ -9,18 +16,13 @@ import aor.proj3t.enums.Role;
 import aor.proj3t.exceptions.ConflictException;
 import aor.proj3t.exceptions.InvalidDataException;
 import aor.proj3t.filters.DateRange;
+import aor.proj3t.service.ServiceFactory;
 import aor.proj3t.service.interfaces.EvaluationCycleService;
 import aor.proj3t.util.EmailUtil;
 import aor.proj3t.util.converterutils.ConverterFactory;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 @ApplicationScoped
 public class EvaluationCycleServiceImpl extends BaseService implements EvaluationCycleService {
@@ -35,6 +37,9 @@ public class EvaluationCycleServiceImpl extends BaseService implements Evaluatio
     @Inject
     private EmailUtil emailUtil;
 
+    @Inject
+    private ServiceFactory serviceFactory;
+
     @Override
     public void startCycle(Long requesterId, DateRange dateRange) {
         User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
@@ -42,22 +47,23 @@ public class EvaluationCycleServiceImpl extends BaseService implements Evaluatio
         if (daoFactory.forUser().countUsersWithoutManager() != 0) {
             throw new InvalidDataException(
                     "There are users without manager",
-                    "Admin with id " + requesterId + " started evaluation cycle with unmanaged users"
-            );
+                    "Admin with id " + requesterId + " started evaluation cycle with unmanaged users");
         }
         if (daoFactory.forEvaluationCycle().countActiveEvaluationCycles() > 0) {
             throw new InvalidDataException(
                     "There is an active evaluation cycle running",
-                    "Admin with id " + requesterId + " started evaluation cycle while another is active"
-            );
+                    "Admin with id " + requesterId + " started evaluation cycle while another is active");
         }
-        EvaluationCycle evaluationCycle = new EvaluationCycle(dateRange.getStartDate(), dateRange.getEndDate(), requester);
-        daoFactory.forEvaluationCycle().create(evaluationCycle);
+        EvaluationCycle evaluationCycle = new EvaluationCycle(dateRange.getStartDate(), dateRange.getEndDate(),
+                requester);
+        evaluationCycle = daoFactory.forEvaluationCycle().create(evaluationCycle);
         logger.info("Created evaluation cycle with id {}", evaluationCycle.getId());
         createNewEvaluations(evaluationCycle);
         logger.info("Created evaluations for evaluation cycle with id {}", evaluationCycle.getId());
-        sendCycleStartEmail(evaluationCycle);
-        logger.info("Sent evaluation start email to managers for evaluation cycle with id {}", evaluationCycle.getId());
+
+        // Send cycle start emails asynchronously to avoid transaction timeout
+        serviceFactory.forAsyncEmail().sendCycleStartEmailAsync(evaluationCycle.getId());
+        logger.info("Initiated async cycle start emails for evaluation cycle with id {}", evaluationCycle.getId());
     }
 
     @Override
@@ -100,28 +106,6 @@ public class EvaluationCycleServiceImpl extends BaseService implements Evaluatio
 
     }
 
-    private void sendCycleStartEmail(EvaluationCycle cycle) {
-        List<User> userList = daoFactory.forUser().getManagers();
-        DateTimeFormatter formatter = DateTimeFormatter
-                .ofPattern("dd MMMM yyyy")
-                .withZone(ZoneId.systemDefault());
-        String formattedStart = formatter.format(cycle.getStartDate());
-        String formattedEnd = formatter.format(cycle.getEndDate());
-        for (User user : userList) {
-            String subject = "Evaluation Cycle Started";
-            String body =
-                    "<h1>Evaluation Cycle Now Active</h1>" +
-                            "<p>Dear " + user.getFirstName() + ",</p>" +
-                            "<p>The new evaluation cycle has officially started.</p>" +
-                            "<p><strong>Start Date:</strong> " + formattedStart + "</p>" +
-                            "<p><strong>End Date:</strong> " + formattedEnd + "</p>" +
-                            "<p>Managers should complete performance evaluations for their managed users within this time frame.</p>" +
-                            "<br>" +
-                            "<p>Thank you for your collaboration.</p>";
-            emailUtil.sendEmail(user.getEmail(), subject, body);
-        }
-    }
-
     @Override
     public void sendCycleClosureEmail(EvaluationCycle cycle) {
         List<User> userList = daoFactory.forUser().findAll();
@@ -132,14 +116,25 @@ public class EvaluationCycleServiceImpl extends BaseService implements Evaluatio
 
         for (User user : userList) {
             String subject = "Evaluation Cycle Closed";
-            String body =
-                    "<h1>Evaluation Cycle Completed</h1>" +
-                            "<p>Dear " + user.getFirstName() + ",</p>" +
-                            "<p>The most recent evaluation cycle has officially closed on <strong>" + formattedClosure + "</strong>.</p>" +
-                            "<p>You can now view your performance evaluation on your profile page.</p>" +
-                            "<p>We encourage you to review the feedback and use it as a guide for your continued growth and development.</p>" +
-                            "<br>" +
-                            "<p>Thank you for your dedication and hard work.</p>";
+
+            // Use EmailUtil's template system for consistent email formatting
+            String mainMessage = "Dear " + user.getFirstName() + ",\n\n" +
+                    "The most recent evaluation cycle has officially closed on " + formattedClosure + ".\n\n" +
+                    "You can now view your performance evaluation on your profile page. " +
+                    "We encourage you to review the feedback and use it as a guide for your continued growth and development.";
+
+            String footerText = "Thank you for your dedication and hard work.\n\n" +
+                    "If you have any questions about your evaluation, please don't hesitate to contact your manager or HR department.";
+
+            // Create a dummy URL for the button (could link to profile/dashboard)
+            String profileUrl = "#"; // This could be made configurable or link to actual profile page
+
+            String body = emailUtil.createEmailTemplate(
+                    "Evaluation Cycle Completed",
+                    mainMessage,
+                    "View My Profile",
+                    profileUrl,
+                    footerText);
 
             emailUtil.sendEmail(user.getEmail(), subject, body);
         }

@@ -1,5 +1,32 @@
 package aor.proj3t.service.impl;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyString;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import aor.proj3t.daos.DAOFactory;
 import aor.proj3t.daos.impl.EvaluationCycleDAOimpl;
 import aor.proj3t.daos.impl.EvaluationDAOimpl;
@@ -14,27 +41,12 @@ import aor.proj3t.exceptions.ConflictException;
 import aor.proj3t.exceptions.ForbiddenException;
 import aor.proj3t.exceptions.InvalidDataException;
 import aor.proj3t.filters.DateRange;
+import aor.proj3t.service.ServiceFactory;
+import aor.proj3t.service.interfaces.AsyncEmailService;
 import aor.proj3t.util.EmailUtil;
 import aor.proj3t.util.converterutils.ConverterFactory;
 import aor.proj3t.util.converterutils.EvaluationCycleConverter;
 import jakarta.mail.MessagingException;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class EvaluationCycleServiceImplTest {
@@ -54,6 +66,10 @@ class EvaluationCycleServiceImplTest {
     private ConverterFactory converterFactory;
     @Mock
     private EmailUtil emailUtil;
+    @Mock
+    private ServiceFactory serviceFactory;
+    @Mock
+    private AsyncEmailService asyncEmailService;
     @Mock
     private UserDAOimpl userDAO;
     @Mock
@@ -83,6 +99,7 @@ class EvaluationCycleServiceImplTest {
         lenient().when(daoFactory.forEvaluation()).thenReturn(evaluationDAO);
         lenient().when(daoFactory.forEvaluationCycle()).thenReturn(evaluationCycleDAO);
         lenient().when(converterFactory.forEvaluationCycle()).thenReturn(evaluationCycleConverter);
+        lenient().when(serviceFactory.forAsyncEmail()).thenReturn(asyncEmailService);
 
         // Set up admin user
         adminUser = new User();
@@ -132,7 +149,11 @@ class EvaluationCycleServiceImplTest {
         when(userDAO.findById(adminUser.getId())).thenReturn(Optional.of(adminUser));
         when(userDAO.countUsersWithoutManager()).thenReturn(0L);
         when(evaluationCycleDAO.countActiveEvaluationCycles()).thenReturn(0L);
-        when(evaluationCycleDAO.create(any(EvaluationCycle.class))).thenReturn(cycle);
+
+        // Mock the cycle creation to return a cycle with an ID
+        EvaluationCycle createdCycle = new EvaluationCycle();
+        createdCycle.setId(TEST_CYCLE_ID);
+        when(evaluationCycleDAO.create(any(EvaluationCycle.class))).thenReturn(createdCycle);
 
         List<User> allUsers = new ArrayList<>();
         allUsers.add(regularUser);
@@ -143,18 +164,13 @@ class EvaluationCycleServiceImplTest {
         mockEvaluation.setId(1L);
         when(evaluationDAO.create(any(Evaluation.class))).thenReturn(mockEvaluation);
 
-        // Mock email sending to return true
-        when(emailUtil.sendEmail(anyString(), anyString(), anyString())).thenReturn(true);
-        when(userDAO.getManagers()).thenReturn(List.of(managerUser));
-
         // Execute
         evaluationCycleService.startCycle(adminUser.getId(), dateRange);
 
         // Verify
         verify(evaluationCycleDAO).create(any(EvaluationCycle.class));
         verify(evaluationDAO).create(any(Evaluation.class));
-        verify(emailUtil, atLeastOnce()).sendEmail(anyString(), anyString(), anyString());
-        verify(userDAO).getManagers();
+        verify(asyncEmailService).sendCycleStartEmailAsync(TEST_CYCLE_ID);
         verify(userDAO).findAll();
     }
 
@@ -234,7 +250,7 @@ class EvaluationCycleServiceImplTest {
     void getActiveCycle_MultipleActiveCycles_ThrowsConflictException() {
         // Set up
         when(userDAO.findById(adminUser.getId())).thenReturn(Optional.of(adminUser));
-        
+
         EvaluationCycle cycle2 = new EvaluationCycle();
         cycle2.setId(2L);
         when(evaluationCycleDAO.findActive(true)).thenReturn(List.of(cycle, cycle2));
@@ -280,6 +296,8 @@ class EvaluationCycleServiceImplTest {
         // Set up
         List<User> allUsers = List.of(adminUser, regularUser, managerUser);
         when(userDAO.findAll()).thenReturn(allUsers);
+        when(emailUtil.createEmailTemplate(anyString(), anyString(), anyString(), anyString(), anyString()))
+                .thenReturn("<html>Mock email body</html>");
         when(emailUtil.sendEmail(anyString(), anyString(), anyString())).thenReturn(true);
         cycle.setClosureDate(now.plus(1, ChronoUnit.DAYS));
 
@@ -288,6 +306,8 @@ class EvaluationCycleServiceImplTest {
 
         // Verify
         verify(emailUtil, times(allUsers.size())).sendEmail(anyString(), anyString(), anyString());
+        verify(emailUtil, times(allUsers.size())).createEmailTemplate(anyString(), anyString(), anyString(),
+                anyString(), anyString());
     }
 
     @Test
@@ -303,6 +323,10 @@ class EvaluationCycleServiceImplTest {
         cycle.setClosureDate(now.plus(60, ChronoUnit.DAYS));
         cycle.setStatus(EvaluationCycleStatus.COMPLETED);
 
+        // Mock email template creation to return a valid HTML body
+        when(emailUtil.createEmailTemplate(anyString(), anyString(), anyString(), anyString(), anyString()))
+                .thenReturn("<html>Mock email body</html>");
+
         // Mock email sending to throw RuntimeException
         doThrow(new RuntimeException("Email error"))
                 .when(emailUtil)
@@ -314,7 +338,8 @@ class EvaluationCycleServiceImplTest {
 
         assertEquals("Email error", exception.getMessage());
 
-        // Verify that email sending was attempted
+        // Verify that email template creation and sending were attempted
+        verify(emailUtil).createEmailTemplate(anyString(), anyString(), anyString(), anyString(), anyString());
         verify(emailUtil).sendEmail(anyString(), anyString(), anyString());
     }
 }
