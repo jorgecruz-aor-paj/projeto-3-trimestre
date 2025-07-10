@@ -67,6 +67,10 @@ class AsyncEmailServiceImplTest {
         when(daoFactory.forUser()).thenReturn(mock(aor.proj3t.daos.interfaces.UserDAO.class));
         when(daoFactory.forUser().findAll()).thenReturn(testUsers);
 
+        // Mock the createEmailTemplate method to return a non-null value
+        when(emailUtil.createEmailTemplate(anyString(), anyString(), anyString(), anyString(), anyString()))
+                .thenReturn("<html>Mock email body</html>");
+
         // Act
         asyncEmailService.sendCycleClosureEmailAsync(1L);
 
@@ -74,6 +78,8 @@ class AsyncEmailServiceImplTest {
         verify(emailUtil, times(2)).sendEmail(anyString(), eq("Evaluation Cycle Closed"), anyString());
         verify(emailUtil).sendEmail(eq("user1@example.com"), eq("Evaluation Cycle Closed"), anyString());
         verify(emailUtil).sendEmail(eq("user2@example.com"), eq("Evaluation Cycle Closed"), anyString());
+        verify(emailUtil, times(2)).createEmailTemplate(anyString(), anyString(), anyString(), anyString(),
+                anyString());
     }
 
     @Test
