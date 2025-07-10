@@ -1,7 +1,19 @@
 package aor.proj3t.service;
 
-import aor.proj3t.service.impl.TokenServiceImpl;
-import aor.proj3t.service.interfaces.*;
+import aor.proj3t.service.interfaces.AIService;
+import aor.proj3t.service.interfaces.AsyncEmailService;
+import aor.proj3t.service.interfaces.AuthService;
+import aor.proj3t.service.interfaces.AuthorizationService;
+import aor.proj3t.service.interfaces.EvaluationCycleService;
+import aor.proj3t.service.interfaces.EvaluationService;
+import aor.proj3t.service.interfaces.ExportService;
+import aor.proj3t.service.interfaces.MessageService;
+import aor.proj3t.service.interfaces.NotificationService;
+import aor.proj3t.service.interfaces.TokenService;
+import aor.proj3t.service.interfaces.TrainingParticipationService;
+import aor.proj3t.service.interfaces.TrainingService;
+import aor.proj3t.service.interfaces.UserService;
+import aor.proj3t.service.interfaces.WorkplaceService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
@@ -53,9 +65,6 @@ public class ServiceFactory {
     private EvaluationCycleService evaluationCycleService;
 
     @Inject
-    private TokenServiceImpl tokenServiceImpl;
-
-    @Inject
     private MessageService messageService;
 
     @Inject
@@ -72,6 +81,9 @@ public class ServiceFactory {
 
     @Inject
     private TokenService tokenService;
+
+    @Inject
+    private AsyncEmailService asyncEmailService;
 
     /**
      * Get the service for User operations This method provides access to the
@@ -190,7 +202,6 @@ public class ServiceFactory {
         return aiService;
     }
 
-
     /**
      * Get the service for Workplace operations
      *
@@ -198,6 +209,15 @@ public class ServiceFactory {
      */
     public WorkplaceService forWorkplace() {
         return workplaceService;
+    }
+
+    /**
+     * Get the service for Asynchronous Email operations
+     *
+     * @return The AsyncEmailService instance
+     */
+    public AsyncEmailService forAsyncEmail() {
+        return asyncEmailService;
     }
 
 }
