@@ -92,13 +92,13 @@ public class EvaluationConverter extends AbstractConverter<Evaluation, Evaluatio
         evaluation.setEditedAt(dto.getEditedAt());
 
         // Handle relationships using findSafely
-        EvaluationCycle evaluationCycle = findSafely(EvaluationCycle.class, dto.getEvaluationCycle());
+        EvaluationCycle evaluationCycle = findSafely(EvaluationCycle.class, dto.getEvaluationCycle() != null ? dto.getEvaluationCycle().getId() : null);
         evaluation.setEvaluationCycle(evaluationCycle);
 
-        User evaluatee = findSafely(User.class, dto.getEvaluatee());
+        User evaluatee = findSafely(User.class, dto.getEvaluatee() != null ? dto.getEvaluatee().getId() : null);
         evaluation.setEvaluated(evaluatee);
 
-        User evaluator = findSafely(User.class, dto.getEvaluator());
+        User evaluator = findSafely(User.class, dto.getEvaluator() != null ? dto.getEvaluator().getId() : null);
         evaluation.setEvaluator(evaluator);
     }
 }

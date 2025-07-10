@@ -93,10 +93,10 @@ public class UserConverter extends AbstractConverter<User, UserDTO, Long> {
         user.setPhotograph(dto.getPhotograph());
 
         // Handle relationships using findSafely
-        User manager = findSafely(User.class, dto.getManager());
+        User manager = findSafely(User.class, dto.getManager() != null ? dto.getManager().getId() : null);
         user.setManager(manager);
 
-        Workplace workplace = findSafely(Workplace.class, dto.getWorkplace());
+        Workplace workplace = findSafely(Workplace.class, dto.getWorkplace() != null ? dto.getWorkplace().getId() : null);
         user.setWorkplace(workplace);
     }
 

@@ -223,7 +223,7 @@ export const registerValidationRules = {
   },
   password: {
     required: true,
-    pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&.-_])\S{8,}$/,
+    pattern: /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!*])(?!.*[ \\t\\n\\r\\f\\u0000\\u00A0]).{8,}$/,
     patternError: 'validation.passwordInvalid',
     minLength: 8,
   },
@@ -342,7 +342,7 @@ export const resetPasswordRequestValidationRules = {
 export const setNewPasswordValidationRules = {
   password: {
     required: true,
-    pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&.-_])\S{8,}$/,
+    pattern: /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!*])(?!.*[ \\t\\n\\r\\f\\u0000\\u00A0]).{8,}$/,
     patternError: 'validation.passwordInvalid',
     minLength: 8,
   },

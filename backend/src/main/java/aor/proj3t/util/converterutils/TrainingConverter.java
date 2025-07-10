@@ -75,7 +75,7 @@ public class TrainingConverter extends AbstractConverter<Training, TrainingDTO, 
         training.setEditedAt(dto.getEditedAt());
 
         // Handle relationships using findSafely
-        TrainingArea trainingArea = findSafely(TrainingArea.class, dto.getTrainingArea());
+        TrainingArea trainingArea = findSafely(TrainingArea.class, dto.getTrainingArea() != null ? dto.getTrainingArea().getId() : null);
         training.setTrainingArea(trainingArea);
     }
 }
