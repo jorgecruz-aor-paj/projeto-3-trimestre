@@ -1,3 +1,42 @@
+## Missing features
+
+1. 2FA - Two factor authenticator;
+2. Exportar para .xlsx;
+3. Página de settings;
+4. Alterar a password, por vontade do user;
+
+- Integração do LLM nas restantes funcionalidades de geração de relatórios e sugestões de melhoria;
+
+## Known bugs:
+
+### Dashboard:
+
+1. Dashboard do user e do gestor necessita de informação para povoar dados;
+
+### Users:
+
+1. Filtro de "Todos os Gestores";
+
+### Wizard atribuir gestores:
+
+1. Opção seleccionar todos lança excepção "User not defined";
+
+### Notificações:
+
+1. Notificações de eventos como fechos de ciclo ou conclusão de avaliações devolvem excepção!
+
+### Responsividade:
+
+1. Cartões de avaliação: Nota da avaliação sai do cartão em ecrãs pequenos;
+
+### Excepções:
+
+1. Mapper para excepções do JwtUtil ? (Quando o jwt falha validação, imprime stacktrace desnecessário)
+
+---
+
+---
+
 ### Visão Geral do Projeto
 
 O documento descreve um projeto intitulado **Employee Performance Evaluation Management**, que tem como objetivo criar uma ferramenta online para a avaliação do desempenho dos colaboradores numa empresa. O sistema serve para acompanhar as avaliações, registar formações e fornecer feedback de forma estruturada e transparente.
