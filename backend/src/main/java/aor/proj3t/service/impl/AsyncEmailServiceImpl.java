@@ -48,15 +48,27 @@ public class AsyncEmailServiceImpl implements AsyncEmailService {
             for (User user : userList) {
                 try {
                     String subject = "Evaluation Cycle Closed";
-                    String body = "<h1>Evaluation Cycle Completed</h1>" +
-                            "<p>Dear " + user.getFirstName() + ",</p>" +
-                            "<p>The most recent evaluation cycle has officially closed on <strong>" + formattedClosure
-                            + "</strong>.</p>" +
-                            "<p>You can now view your performance evaluation on your profile page.</p>" +
-                            "<p>We encourage you to review the feedback and use it as a guide for your continued growth and development.</p>"
-                            +
-                            "<br>" +
-                            "<p>Thank you for your dedication and hard work.</p>";
+
+                    // Use EmailUtil's template system for consistent email formatting
+                    String mainMessage = "Dear " + user.getFirstName() + ",\n\n" +
+                            "The most recent evaluation cycle has officially closed on " + formattedClosure + ".\n\n" +
+                            "You can now view your performance evaluation on your profile page. " +
+                            "We encourage you to review the feedback and use it as a guide for your continued growth and development.";
+
+                    String footerText = """
+                            Thank you for your dedication and hard work.
+
+                            If you have any questions about your evaluation, please don't hesitate to contact your manager or HR department.""";
+
+                    // Create a dummy URL for the button (could link to profile/dashboard)
+                    String profileUrl = "#"; // This could be made configurable or link to actual profile page
+
+                    String body = emailUtil.createEmailTemplate(
+                            "Evaluation Cycle Completed",
+                            mainMessage,
+                            "View My Profile",
+                            profileUrl,
+                            footerText);
 
                     emailUtil.sendEmail(user.getEmail(), subject, body);
                     emailsSent++;
