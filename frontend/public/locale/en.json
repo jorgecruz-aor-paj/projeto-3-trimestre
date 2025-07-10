@@ -872,7 +872,9 @@
       "confirmCloseButton": "Close Evaluations",
       "closeSuccess": "Selected evaluations closed successfully.",
       "closeError": "Failed to close evaluations.",
-      "noCycleError": "Could not determine evaluation cycle."
+      "noCycleError": "Could not determine evaluation cycle.",
+      "selectAll": "Select All",
+      "deselectAll": "Deselect All"
     },
     "user": {
       "title": "My Evaluations",

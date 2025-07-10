@@ -316,8 +316,7 @@ export const AdminEvaluationManagement = () => {
                 )}
               </p>
             </div>
-            <div className="d-flex gap-2">
-            </div>
+            <div className="d-flex gap-2"></div>
           </div>
         </Col>
       </Row>
@@ -439,6 +438,25 @@ export const AdminEvaluationManagement = () => {
                 </Badge>
               </div>
               <div className="d-flex align-items-center gap-2">
+                {/* Select All Button - always visible when there are evaluations */}
+                {evaluations.length > 0 && (
+                  <Button
+                    variant="outline-secondary"
+                    size="sm"
+                    onClick={() => {
+                      if (selectedEvaluations.length === evaluations.length) {
+                        setSelectedEvaluations([]);
+                      } else {
+                        setSelectedEvaluations(evaluations.map(e => e.id));
+                      }
+                    }}
+                  >
+                    {selectedEvaluations.length === evaluations.length
+                      ? t('evaluations.admin.deselectAll', 'Deselect All')
+                      : t('evaluations.admin.selectAll', 'Select All')}
+                  </Button>
+                )}
+
                 {/* Bulk Actions */}
                 {selectedEvaluations.length > 0 && (
                   <div className="me-3 bulk-actions">

@@ -5,7 +5,6 @@
 3. Página de settings;
 5. Forma de enviar mensagens para outro user. (Parcialmente implementado);
 6. Sinal visual de nova mensagem por ler no user que enviou mensagem. (Está branco e não se vê);
-7. Opção de selecionar todas(selected all) as avaliações apresentadas na página de avaliações, para fechar em bulk;
 9. Integração do LLM nas restantes funcionalidades de geração de relatórios e sugestões de melhoria;
 10. JavaDoc e JsDoc;
 

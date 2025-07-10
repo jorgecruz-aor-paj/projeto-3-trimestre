@@ -872,7 +872,9 @@
       "confirmCloseButton": "Encerrar Avaliações",
       "closeSuccess": "Avaliações selecionadas encerradas com sucesso.",
       "closeError": "Falha ao encerrar avaliações.",
-      "noCycleError": "Não foi possível determinar o ciclo de avaliação."
+      "noCycleError": "Não foi possível determinar o ciclo de avaliação.",
+      "selectAll": "Selecionar Todas",
+      "deselectAll": "Desselecionar Todas"
     },
     "user": {
       "title": "As Minhas Avaliações",
