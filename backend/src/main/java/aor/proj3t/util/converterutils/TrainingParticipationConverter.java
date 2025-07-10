@@ -79,7 +79,7 @@ public class TrainingParticipationConverter
         User manager = findSafely(User.class, dto.getManagerId());
         participation.setManager(manager);
 
-        Training training = findSafely(Training.class, dto.getTraining());
+        Training training = findSafely(Training.class, dto.getTraining() != null ? dto.getTraining().getId() : null);
         participation.setTraining(training);
 
     }
