@@ -33,6 +33,10 @@
 
 1. Mapper para excepções do JwtUtil ? (Quando o jwt falha validação, imprime stacktrace desnecessário)
 
+### Avaliações:
+
+1. Caixa de pesquisa está a pesquisar pelo feedback apenas;
+
 ---
 
 ---
