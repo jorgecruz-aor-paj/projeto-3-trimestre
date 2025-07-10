@@ -4,10 +4,13 @@
 2. Exportar para .xlsx;
 3. Página de settings;
 4. Alterar a password, por vontade do user;
-5. Forma de enviar mensagens para outro user. (Parcialmente implementado)
+5. Forma de enviar mensagens para outro user. (Parcialmente implementado);
 6. Sinal visual de nova mensagem por ler no user que enviou mensagem. (Está branco e não se vê);
-
-- Integração do LLM nas restantes funcionalidades de geração de relatórios e sugestões de melhoria;
+7. Opção de selecionar todas(selected all) as avaliações apresentadas na página de avaliações, para fechar em bulk;
+8. Avaliações e formações na página de perfil não utilizam os mesmos cartões que as respetivas páginas;
+9. Check todo's in the backend and frontend;
+10. Integração do LLM nas restantes funcionalidades de geração de relatórios e sugestões de melhoria;
+11. JavaDoc e JsDoc;
 
 ## Known bugs:
 
