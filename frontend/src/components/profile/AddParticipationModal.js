@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, Button, Form } from 'react-bootstrap';
+import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
 import { FormInput } from 'components/forms/FormInput';
 import { FormDropdownInput } from 'components/forms/FormDropdownInput';
 import PropTypes from 'prop-types';
@@ -28,7 +28,8 @@ export const AddParticipationModal = ({
 }) => {
   const [form, setForm] = useState({
     trainingId: '',
-    participatedAt: '',
+    participatedDate: new Date().toISOString().slice(0, 10), // Format: YYYY-MM-DD
+    participatedTime: new Date().toTimeString().slice(0, 5), // Format: HH:MM
   });
   const [formError, setFormError] = useState({});
   const [submitting, setSubmitting] = useState(false);
@@ -43,27 +44,40 @@ export const AddParticipationModal = ({
     setFormError({});
     const errors = {};
     if (!form.trainingId) errors.trainingId = 'Required';
-    if (!form.participatedAt) errors.participatedAt = 'Required';
+    if (!form.participatedDate) errors.participatedDate = 'Required';
+    if (!form.participatedTime) errors.participatedTime = 'Required';
     if (Object.keys(errors).length) {
       setFormError(errors);
       return;
     }
     setSubmitting(true);
+    
+    // Combine date and time into ISO string
+    const combinedDateTime = `${form.participatedDate}T${form.participatedTime}:00.000Z`;
+    
     const participationObj = {
       participantId,
       managerId,
       trainingId: Number(form.trainingId),
-      participatedAt: new Date(form.participatedAt).toISOString(),
+      participatedAt: combinedDateTime,
     };
     await onSubmit(participationObj);
     setSubmitting(false);
-    setForm({ trainingId: '', participatedAt: '' });
+    setForm({
+      trainingId: '',
+      participatedDate: new Date().toISOString().slice(0, 10),
+      participatedTime: new Date().toTimeString().slice(0, 5),
+    });
     onHide();
   };
 
   const handleClose = () => {
     setFormError({});
-    setForm({ trainingId: '', participatedAt: '' });
+    setForm({
+      trainingId: '',
+      participatedDate: new Date().toISOString().slice(0, 10),
+      participatedTime: new Date().toTimeString().slice(0, 5),
+    });
     onHide();
   };
 
@@ -89,14 +103,23 @@ export const AddParticipationModal = ({
                 error={formError.trainingId}
                 placeholder={t('profile.selectTraining')}
               />
-              <FormInput
-                name="participatedAt"
-                label={t('profile.participatedAt')}
-                type="datetime-local"
-                value={form.participatedAt}
-                onChange={handleFormChange}
-                error={formError.participatedAt}
-              />
+              <Form.Group className="mb-3">
+                <Form.Label htmlFor="participatedAt">
+                  {t('profile.participatedAt')}
+                </Form.Label>
+                <Form.Control
+                  id="participatedAt"
+                  name="participatedAt"
+                  type="datetime-local"
+                  value={form.participatedAt}
+                  onChange={handleFormChange}
+                  isInvalid={!!formError.participatedAt}
+                  style={{ minWidth: '200px' }}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {formError.participatedAt}
+                </Form.Control.Feedback>
+              </Form.Group>
             </>
           )}
         </Modal.Body>

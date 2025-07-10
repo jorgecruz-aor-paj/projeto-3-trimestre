@@ -71,7 +71,8 @@
     "noResults": "Nenhum resultado encontrado",
     "noData": "Nenhum dado disponível",
     "invalidDate": "Data inválida",
-    "saving": "A guardar"
+    "saving": "A guardar",
+    "time": "Hora"
   },
   "roles": {
     "admin": "Administrador",
@@ -553,6 +554,7 @@
     "downloadError": "Erro ao descarregar avaliação",
     "noEvaluations": "Nenhuma avaliação encontrada.",
     "noParticipations": "Nenhuma participação encontrada.",
+    "noParticipationsDesc": "Tente ajustar os seus filtros para encontrar participações.",
     "addParticipation": "Registar Participação",
     "participatedAt": "Participou em",
     "selectTraining": "Selecionar Formação",
@@ -579,6 +581,7 @@
       "date": "Data",
       "scale": "Escala"
     },
+    "trainingStats": "Estatísticas de Formação",
     "error": "Erro",
     "invalidFileType": "Por favor, selecione um ficheiro de imagem válido",
     "fileTooLarge": "O ficheiro deve ter menos de 5MB",
@@ -587,7 +590,11 @@
     "pictureUpdateError": "Falha ao atualizar a fotografia de perfil",
     "managerAssignError": "Falha ao atribuir gestor",
     "updateSuccess": "Perfil atualizado com sucesso",
-    "updateError": "Falha ao atualizar o perfil do utilizador"
+    "updateError": "Falha ao atualizar o perfil do utilizador",
+    "changePassword": "Alterar Palavra-passe",
+    "passwordResetEmailSent": "Um link para alterar a palavra-passe foi enviado para o seu endereço de email",
+    "passwordResetError": "Falha ao enviar email de alteração de palavra-passe. Tente novamente.",
+    "sending": "A enviar..."
   },
   "messages": {
     "title": "Mensagens",
@@ -931,6 +938,7 @@
   "filters": {
     "title": "Filtros",
     "evaluationCycleDateRange": "Intervalo de Fecho do Ciclo de Avaliação",
+    "rangeByCycleClosureDate": "Intervalo por fecho do ciclo de avaliação",
     "ascending": "Ascendente",
     "startDate": "Data de Início",
     "endDate": "Data de Fim",

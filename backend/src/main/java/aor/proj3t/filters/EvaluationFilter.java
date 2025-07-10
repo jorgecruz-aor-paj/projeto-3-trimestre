@@ -9,6 +9,7 @@ import jakarta.ws.rs.QueryParam;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
 
 public class EvaluationFilter {
     @QueryParam("evaluationId")
@@ -176,8 +177,8 @@ public class EvaluationFilter {
                 }
                 if (endDate != null && !endDate.isEmpty()) {
                     end = Instant.parse(endDate);
-                    if(start == null || startDate.isEmpty()) {
-                        start = Instant.MIN;
+                    if(start == null) {
+                        start = Instant.now().minus(365 * 100, ChronoUnit.DAYS); // 100 years ago
                     }
                 }
             } catch (DateTimeParseException e) {

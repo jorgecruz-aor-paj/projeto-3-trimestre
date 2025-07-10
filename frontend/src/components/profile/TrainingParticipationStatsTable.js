@@ -45,28 +45,43 @@ export const TrainingParticipationStatsTable = ({ userId }) => {
   };
 
   return (
-    <div className="training-participation-stats-table mb-3">
-      <table
-        className="table table-sm table-bordered mb-0"
-        style={{ maxWidth: 320 }}
-      >
-        <thead>
-          <tr>
-            <th style={{ width: '60%' }}>{t('time.year') || 'Year'}</th>
-            <th style={{ width: '40%' }}>
-              {t('trainings.duration') || 'Minutes'}
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {stats.map(({ year, minutes }) => (
-            <tr key={year}>
-              <td>{year}</td>
-              <td>{formatMinutes(minutes)}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="card h-100 shadow-sm">
+      <div className="card-header bg-transparent border-bottom">
+        <h6 className="mb-0">
+          <i className="bi bi-bar-chart me-2"></i>
+          {t('profile.trainingStats', 'Training Statistics')}
+        </h6>
+      </div>
+      <div className="card-body p-0">
+        <div className="table-responsive">
+          <table className="table table-hover mb-0">
+            <thead className="table-light">
+              <tr>
+                <th className="border-0 fw-semibold">
+                  {t('time.year', 'Year')}
+                </th>
+                <th className="border-0 fw-semibold">
+                  {t('trainings.duration', 'Duration')}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {stats.map(({ year, minutes }) => (
+                <tr key={year}>
+                  <td className="border-0 py-3">
+                    <span className="fw-medium">{year}</span>
+                  </td>
+                  <td className="border-0 py-3">
+                    <span className="badge bg-primary rounded-pill">
+                      {formatMinutes(minutes)}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 };

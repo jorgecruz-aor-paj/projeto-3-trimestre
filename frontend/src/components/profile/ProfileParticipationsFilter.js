@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Row, Col, Form } from 'react-bootstrap';
+import { Button, Row, Col, Form, InputGroup } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 export const ProfileParticipationsFilter = ({ filters, setFilters }) => {
@@ -19,8 +19,11 @@ export const ProfileParticipationsFilter = ({ filters, setFilters }) => {
     });
   };
 
+  const handleClearFilters = () => {
+    setFilters({ participantId: filters.participantId });
+  };
+
   const statusOptions = [
-    { value: '', label: t('common.all') },
     { value: 'REGISTERED', label: t('participations.status.registered') },
     { value: 'ATTENDED', label: t('participations.status.attended') },
     { value: 'COMPLETED', label: t('participations.status.completed') },
@@ -28,7 +31,6 @@ export const ProfileParticipationsFilter = ({ filters, setFilters }) => {
   ];
 
   const sortOptions = [
-    { value: '', label: t('common.default') },
     { value: 'TRAINING_TITLE', label: t('participations.sort.trainingTitle') },
     { value: 'STATUS', label: t('participations.sort.status') },
     {
@@ -41,17 +43,45 @@ export const ProfileParticipationsFilter = ({ filters, setFilters }) => {
     },
   ];
 
+  const hasActiveFilters =
+    Object.keys(filters).filter(
+      key =>
+        key !== 'participantId' &&
+        filters[key] !== '' &&
+        filters[key] !== null &&
+        filters[key] !== undefined
+    ).length > 0;
+
   return (
-    <div className="profile-participations-filter">
-      {/* Filter Form */}
-      <Form>
-        <Row className="g-3 align-items-end">
-          {/* Search Text */}
-          <Col md={3}>
-            <Form.Group>
-              <Form.Label className="small fw-semibold">
-                {t('common.search')}
-              </Form.Label>
+    <div>
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <h6 className="mb-0">
+          <i className="bi bi-funnel me-2"></i>
+          {t('common.filters')}
+        </h6>
+        {hasActiveFilters && (
+          <Button
+            variant="outline-secondary"
+            size="sm"
+            onClick={handleClearFilters}
+          >
+            <i className="bi bi-x-circle me-1"></i>
+            {t('common.clearFilters')}
+          </Button>
+        )}
+      </div>
+
+      <Row className="g-3">
+        {/* Search Text */}
+        <Col md={6} lg={4}>
+          <Form.Group>
+            <Form.Label className="small fw-semibold">
+              {t('common.search')}
+            </Form.Label>
+            <InputGroup>
+              <InputGroup.Text>
+                <i className="bi bi-search"></i>
+              </InputGroup.Text>
               <Form.Control
                 type="text"
                 name="searchText"
@@ -62,83 +92,83 @@ export const ProfileParticipationsFilter = ({ filters, setFilters }) => {
                   'Search trainings...'
                 )}
               />
-            </Form.Group>
-          </Col>
+            </InputGroup>
+          </Form.Group>
+        </Col>
 
-          {/* Status Filter */}
-          <Col md={2}>
-            <Form.Group>
-              <Form.Label className="small fw-semibold">
-                {t('participations.status.title', 'Status')}
-              </Form.Label>
-              <Form.Select
-                name="status"
-                value={filters.status || ''}
-                onChange={handleChange}
-              >
-                {statusOptions.map(option => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </Form.Select>
-            </Form.Group>
-          </Col>
+        {/* Status Filter */}
+        <Col md={6} lg={4}>
+          <Form.Group>
+            <Form.Label className="small fw-semibold">
+              {t('participations.status.title', 'Status')}
+            </Form.Label>
+            <Form.Select
+              name="status"
+              value={filters.status || ''}
+              onChange={handleChange}
+            >
+              <option value="">{t('common.all')}</option>
+              {statusOptions.map(option => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </Form.Select>
+          </Form.Group>
+        </Col>
 
-          {/* Sort Field */}
-          <Col md={2}>
-            <Form.Group>
-              <Form.Label className="small fw-semibold">
-                {t('common.sortBy', 'Sort By')}
-              </Form.Label>
-              <Form.Select
-                name="sortField"
-                value={filters.sortField || ''}
-                onChange={handleChange}
-              >
-                {sortOptions.map(option => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </Form.Select>
-            </Form.Group>
-          </Col>
-
-          {/* Ascending Toggle */}
-          <Col md="auto">
-            <Form.Group>
-              <Form.Label className="small fw-semibold d-block">
-                {t('filters.ascending')}
-              </Form.Label>
-              <Button
-                variant={
-                  filters.ascending ? 'outline-primary' : 'outline-secondary'
-                }
-                onClick={() =>
-                  handleChange({
-                    target: {
-                      name: 'ascending',
-                      value: !filters.ascending,
-                      type: 'checkbox',
-                      checked: !filters.ascending,
-                    },
-                  })
-                }
-                title={
-                  filters.ascending
-                    ? t('common.ascending')
-                    : t('common.descending')
-                }
-              >
-                <i
-                  className={`bi bi-sort-${filters.ascending ? 'up' : 'down'}`}
-                />
-              </Button>
-            </Form.Group>
-          </Col>
-        </Row>
-      </Form>
+        {/* Sort */}
+        <Col md={12} lg={4}>
+          <Form.Group>
+            <Form.Label className="small fw-semibold">
+              {t('common.sortBy', 'Sort By')}
+            </Form.Label>
+            <Row className="g-2">
+              <Col>
+                <Form.Select
+                  name="sortField"
+                  value={filters.sortField || 'REGISTRATION_DATE'}
+                  onChange={handleChange}
+                >
+                  {sortOptions.map(option => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Col>
+              <Col xs="auto">
+                <Button
+                  variant={
+                    filters.ascending ? 'outline-primary' : 'outline-secondary'
+                  }
+                  onClick={() =>
+                    handleChange({
+                      target: {
+                        name: 'ascending',
+                        value: !filters.ascending,
+                        type: 'checkbox',
+                        checked: !filters.ascending,
+                      },
+                    })
+                  }
+                  title={
+                    filters.ascending
+                      ? t('common.ascending')
+                      : t('common.descending')
+                  }
+                >
+                  <i
+                    className={`bi bi-sort-${
+                      filters.ascending ? 'up' : 'down'
+                    }`}
+                  ></i>
+                </Button>
+              </Col>
+            </Row>
+          </Form.Group>
+        </Col>
+      </Row>
     </div>
   );
 };

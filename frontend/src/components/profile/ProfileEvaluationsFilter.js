@@ -1,17 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Row, Col, Form } from 'react-bootstrap';
+import { Button, Row, Col, Form, InputGroup } from 'react-bootstrap';
 import { exportService } from 'services/exportService';
 import { useTranslation } from 'react-i18next';
 import { useAlert } from 'contexts/AlertContext';
 import { SearchableUserSelect } from 'components/evaluations/filters/SearchableUserSelect';
-import { EvaluationScaleSelect } from 'components/evaluations/filters/EvaluationScaleSelect';
-import { EvaluationSortSelect } from 'components/evaluations/filters/EvaluationSortSelect';
-import { EvaluationDateRange } from 'components/evaluations/filters/EvaluationDateRange';
 
-// Accept displayedUserId as a prop to filter out the evaluator dropdown
-
-// Accept displayedUserId as a prop to filter out the evaluator dropdown
 export const ProfileEvaluationsFilter = ({
   filters,
   setFilters,
@@ -20,7 +14,7 @@ export const ProfileEvaluationsFilter = ({
   const { t } = useTranslation();
   const { showAlert } = useAlert();
 
-  // Unified handler for all modular filter components
+  // Unified handler for all filter components
   const handleChange = e => {
     const { name, value, type, checked } = e.target;
     setFilters(prev => {
@@ -34,12 +28,24 @@ export const ProfileEvaluationsFilter = ({
       ) {
         delete next[name];
       }
-      // For date fields, keep both display and API value
-      if (name === 'startDate' || name === 'endDate') {
+      // For date fields, convert to ISO format with start/end of day times
+      if (name === 'startDate') {
         if (value) {
-          next[`${name}Display`] = value;
+          // Convert YYYY-MM-DD to ISO format with start of day
+          next.startDate = `${value}T00:00:00.000Z`;
+          next.startDateDisplay = value;
         } else {
-          delete next[`${name}Display`];
+          delete next.startDate;
+          delete next.startDateDisplay;
+        }
+      } else if (name === 'endDate') {
+        if (value) {
+          // Convert YYYY-MM-DD to ISO format with end of day
+          next.endDate = `${value}T23:59:59.999Z`;
+          next.endDateDisplay = value;
+        } else {
+          delete next.endDate;
+          delete next.endDateDisplay;
         }
       }
       return next;
@@ -53,11 +59,11 @@ export const ProfileEvaluationsFilter = ({
       const exportFilters = { ...filters };
       delete exportFilters.startDateDisplay;
       delete exportFilters.endDateDisplay;
-      // Call exportService with current filters
+
       const response = await exportService.evaluationsToCSVFiltered(
         exportFilters
       );
-      // Get filename from Content-Disposition header if available
+
       let filename = 'evaluations.csv';
       if (
         response &&
@@ -69,7 +75,7 @@ export const ProfileEvaluationsFilter = ({
         );
         if (match && match[1]) filename = match[1];
       }
-      // Support both axios (response.data as Blob) and fetch (response as Blob)
+
       const blob = response.data instanceof Blob ? response.data : response;
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -95,8 +101,36 @@ export const ProfileEvaluationsFilter = ({
     }
   };
 
+  const handleClearFilters = () => {
+    setFilters({ evaluatedId: displayedUserId });
+  };
+
+  const scaleOptions = [
+    { value: 'LOW_CONTRIBUTION', label: t('evaluationScale.low') },
+    { value: 'PARCIAL_CONTRIBUTION', label: t('evaluationScale.partial') },
+    { value: 'EXPECTED_CONTRIBUTION', label: t('evaluationScale.expected') },
+    { value: 'EXCEED_CONTRIBUTION', label: t('evaluationScale.exceed') },
+  ];
+
+  const sortOptions = [
+    { value: 'EVALUATION_ID', label: t('profile.sortFields.id') },
+    { value: 'EVALUATED_ID', label: t('profile.sortFields.evaluated') },
+    { value: 'EVALUATOR_ID', label: t('profile.sortFields.evaluator') },
+    { value: 'STATUS', label: t('profile.sortFields.status') },
+    { value: 'SCALE', label: t('filters.scale') },
+  ];
+
+  const hasActiveFilters =
+    Object.keys(filters).filter(
+      key =>
+        key !== 'evaluatedId' &&
+        filters[key] !== '' &&
+        filters[key] !== null &&
+        filters[key] !== undefined
+    ).length > 0;
+
   return (
-    <div className="profile-evaluations-filter">
+    <div>
       {/* Export buttons */}
       <div className="d-flex justify-content-end gap-2 mb-3">
         <Button
@@ -119,99 +153,176 @@ export const ProfileEvaluationsFilter = ({
         </Button>
       </div>
 
-      {/* Filter Form */}
-      <Form>
-        <Row className="g-3 align-items-end">
-          {/* Evaluator Select */}
-          <Col md={3}>
-            <SearchableUserSelect
-              value={filters.evaluatorId}
-              onChange={handleChange}
-              excludeUserId={displayedUserId}
-              name="evaluatorId"
-              label={t('profile.evaluator')}
-              placeholder={t('common.search')}
-            />
-          </Col>
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <h6 className="mb-0">
+          <i className="bi bi-funnel me-2"></i>
+          {t('common.filters')}
+        </h6>
+        {hasActiveFilters && (
+          <Button
+            variant="outline-secondary"
+            size="sm"
+            onClick={handleClearFilters}
+          >
+            <i className="bi bi-x-circle me-1"></i>
+            {t('common.clearFilters')}
+          </Button>
+        )}
+      </div>
 
-          {/* Evaluation Scale */}
-          <Col md={2}>
-            <EvaluationScaleSelect
-              value={filters.evaluationScale}
-              onChange={handleChange}
-              name="evaluationScale"
-            />
-          </Col>
-
-          {/* Search Text */}
-          <Col md={2}>
-            <Form.Group>
-              <Form.Label className="small fw-semibold">
-                {t('common.search')}
-              </Form.Label>
+      <Row className="g-3">
+        {/* Search Text */}
+        <Col md={6} lg={4}>
+          <Form.Group>
+            <Form.Label className="small fw-semibold">
+              {t('evaluations.searchFeedback', 'Search in Feedback')}
+            </Form.Label>
+            <InputGroup>
+              <InputGroup.Text>
+                <i className="bi bi-search"></i>
+              </InputGroup.Text>
               <Form.Control
                 type="text"
                 name="searchText"
+                placeholder={t(
+                  'evaluations.searchFeedbackPlaceholder',
+                  'Search evaluation feedback...'
+                )}
                 value={filters.searchText || ''}
                 onChange={handleChange}
-                placeholder={t('common.search')}
               />
-            </Form.Group>
-          </Col>
+            </InputGroup>
+          </Form.Group>
+        </Col>
 
-          {/* Sort Field */}
-          <Col md={2}>
-            <EvaluationSortSelect
-              value={filters.evaluationSortField}
+        {/* Evaluator */}
+        <Col md={6} lg={4}>
+          <Form.Group>
+            <SearchableUserSelect
+              value={filters.evaluatorId || ''}
               onChange={handleChange}
-              name="evaluationSortField"
+              excludeUserId={displayedUserId}
+              label={t('filters.evaluator')}
+              name="evaluatorId"
+              placeholder={t('common.all')}
             />
-          </Col>
+          </Form.Group>
+        </Col>
 
-          {/* Ascending Toggle */}
-          <Col md="auto">
-            <Form.Group>
-              <Form.Label className="small fw-semibold d-block">
-                {t('filters.ascending')}
-              </Form.Label>
-              <Button
-                variant={
-                  filters.ascending ? 'outline-primary' : 'outline-secondary'
-                }
-                size="sm"
-                onClick={() =>
-                  handleChange({
-                    target: {
-                      name: 'ascending',
-                      value: !filters.ascending,
-                      type: 'checkbox',
-                      checked: !filters.ascending,
-                    },
-                  })
-                }
-                title={
-                  filters.ascending
-                    ? t('common.ascending')
-                    : t('common.descending')
-                }
-              >
-                <i
-                  className={`bi bi-sort-${filters.ascending ? 'up' : 'down'}`}
-                />
-              </Button>
-            </Form.Group>
-          </Col>
-
-          {/* Date Range */}
-          <Col md={4}>
-            <EvaluationDateRange
-              startDate={filters.startDateDisplay}
-              endDate={filters.endDateDisplay}
+        {/* Scale */}
+        <Col md={6} lg={4}>
+          <Form.Group>
+            <Form.Label className="small fw-semibold">
+              {t('evaluationScale.title')}
+            </Form.Label>
+            <Form.Select
+              name="evaluationScale"
+              value={filters.evaluationScale || ''}
               onChange={handleChange}
-            />
-          </Col>
-        </Row>
-      </Form>
+            >
+              <option value="">{t('evaluationScale.any')}</option>
+              {scaleOptions.map(option => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </Form.Select>
+          </Form.Group>
+        </Col>
+
+        {/* Date Range Group */}
+        <Col md={12} lg={8}>
+          <div className="border rounded p-3 bg-light">
+            <h6 className="mb-3 text-muted">
+              <i className="bi bi-calendar-range me-2"></i>
+              {t(
+                'filters.rangeByCycleClosureDate',
+                'Range by evaluation cycle closure'
+              )}
+            </h6>
+            <Row className="g-2">
+              <Col md={6}>
+                <Form.Group>
+                  <Form.Label className="small fw-semibold">
+                    {t('filters.startDate')}
+                  </Form.Label>
+                  <Form.Control
+                    type="date"
+                    name="startDate"
+                    value={filters.startDateDisplay || ''}
+                    onChange={handleChange}
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group>
+                  <Form.Label className="small fw-semibold">
+                    {t('filters.endDate')}
+                  </Form.Label>
+                  <Form.Control
+                    type="date"
+                    name="endDate"
+                    value={filters.endDateDisplay || ''}
+                    onChange={handleChange}
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+          </div>
+        </Col>
+
+        {/* Sort */}
+        <Col md={12} lg={4}>
+          <Form.Group>
+            <Form.Label className="small fw-semibold">
+              {t('common.sortBy')}
+            </Form.Label>
+            <Row className="g-2">
+              <Col>
+                <Form.Select
+                  name="evaluationSortField"
+                  value={filters.evaluationSortField || 'DATE'}
+                  onChange={handleChange}
+                >
+                  {sortOptions.map(option => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Col>
+              <Col xs="auto">
+                <Button
+                  variant={
+                    filters.ascending ? 'outline-primary' : 'outline-secondary'
+                  }
+                  onClick={() =>
+                    handleChange({
+                      target: {
+                        name: 'ascending',
+                        value: !filters.ascending,
+                        type: 'checkbox',
+                        checked: !filters.ascending,
+                      },
+                    })
+                  }
+                  title={
+                    filters.ascending
+                      ? t('common.ascending')
+                      : t('common.descending')
+                  }
+                >
+                  <i
+                    className={`bi bi-sort-${
+                      filters.ascending ? 'up' : 'down'
+                    }`}
+                  ></i>
+                </Button>
+              </Col>
+            </Row>
+          </Form.Group>
+        </Col>
+      </Row>
     </div>
   );
 };

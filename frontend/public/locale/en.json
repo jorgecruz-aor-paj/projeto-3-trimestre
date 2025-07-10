@@ -71,7 +71,8 @@
     "noResults": "No results found",
     "noData": "No data available",
     "invalidDate": "Invalid date",
-    "saving": "Saving"
+    "saving": "Saving",
+    "time": "Time"
   },
   "roles": {
     "admin": "Administrator",
@@ -554,6 +555,7 @@
     "noEvaluations": "No evaluations found.",
     "noParticipations": "No participations found.",
     "addParticipation": "Add Participation",
+    "noParticipationsDesc": "Try adjusting your filters to find participations.",
     "participatedAt": "Participation Date",
     "selectTraining": "Select Training",
     "training": "Training",
@@ -579,6 +581,7 @@
       "date": "Date",
       "scale": "Scale"
     },
+    "trainingStats": "Training Statistics",
     "error": "Error",
     "invalidFileType": "Please select a valid image file",
     "fileTooLarge": "File size must be less than 5MB",
@@ -587,7 +590,11 @@
     "pictureUpdateError": "Failed to update profile picture",
     "managerAssignError": "Failed to assign manager",
     "updateSuccess": "Profile updated successfully",
-    "updateError": "Failed to update user profile"
+    "updateError": "Failed to update user profile",
+    "changePassword": "Change Password",
+    "passwordResetEmailSent": "A password reset link has been sent to your email address",
+    "passwordResetError": "Failed to send password reset email. Please try again.",
+    "sending": "Sending..."
   },
   "messages": {
     "title": "Messages",
@@ -931,6 +938,7 @@
   "filters": {
     "title": "Filters",
     "evaluationCycleDateRange": "Evaluation Cycle Closure Date Range",
+    "rangeByCycleClosureDate": "Range by evaluation cycle closure",
     "ascending": "Ascending",
     "startDate": "Start Date",
     "endDate": "End Date",
