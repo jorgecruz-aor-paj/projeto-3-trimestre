@@ -24,7 +24,7 @@ public class TrainingDAOimpl extends AbstractDAO<Training, Long> implements Trai
     @Override
     public List<Training> findTrainingsNotParticipatedByUser(Long userId) {
         String query = """
-                    SELECT t FROM Training t WHERE t.id NOT IN (
+                    SELECT t FROM Training t WHERE t.isActive = true AND t.id NOT IN (
                         SELECT tp.training.id FROM TrainingParticipation tp WHERE tp.participant.id = :userId
                     )
                 """;
