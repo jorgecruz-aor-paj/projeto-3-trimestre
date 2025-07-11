@@ -375,8 +375,15 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     @Override
     public List<MiniUserDTO> getAllMiniUsers() {
+        return getAllMiniUsers(false);
+    }
+
+    @Override
+    public List<MiniUserDTO> getAllMiniUsers(boolean includeAdmins) {
         List<User> users = daoFactory.forUser().findAll();
-        users.removeIf(user -> user.getRole() == Role.ADMIN);
+        if (!includeAdmins) {
+            users.removeIf(user -> user.getRole() == Role.ADMIN);
+        }
         return miniUserConverter.toMiniUserDTOList(users);
     }
 

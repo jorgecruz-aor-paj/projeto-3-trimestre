@@ -38,4 +38,6 @@ public interface UserService {
     Map<String, Long> getTotalVSUnmanagedUsers(Long requesterId);
 
     List<MiniUserDTO> getAllMiniUsers();
+
+    List<MiniUserDTO> getAllMiniUsers(boolean includeAdmins);
 }
