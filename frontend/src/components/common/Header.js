@@ -96,9 +96,9 @@ export const Header = () => {
   // Handle logout
   const handleLogout = async () => {
     try {
+      await navigate('/');
       websocketService.disconnect();
       await authService.logout();
-      navigate('/');
       clearState();
     } catch (error) {
       console.error('Logout failed:', error);
