@@ -66,12 +66,11 @@ export const userService = {
 
   /**
    * Get mini user profiles
+   * @param {Object} params - Query parameters (search, etc.)
    * @returns {Promise} - List of mini user profiles
    */
-  getMiniUsers: () => {
-    return apiRequest(API_ENDPOINTS.user.getMiniUsers, {
-      method: 'GET',
-    });
+  getMiniUsers: (params = {}) => {
+    return apiService.getAll(API_ENDPOINTS.user.getMiniUsers, params);
   },
 
   /**
