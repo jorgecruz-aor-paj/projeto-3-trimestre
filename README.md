@@ -2,10 +2,9 @@
 
 1. 2FA - Two factor authenticator;
 2. Exportar para .xlsx;
-3. Forma de enviar mensagens para outro user. (Parcialmente implementado);
-4. Sinal visual de nova mensagem por ler no user que enviou mensagem. (Está branco e não se vê);
-5. Integração do LLM nas restantes funcionalidades de geração de relatórios e sugestões de melhoria;
-6. JavaDoc e JsDoc;
+3. Sinal visual de nova mensagem por ler no user que enviou mensagem. (Está branco e não se vê);
+4. Integração do LLM nas restantes funcionalidades de geração de relatórios e sugestões de melhoria;
+5. JavaDoc e JsDoc;
 
 ## Known bugs:
 
