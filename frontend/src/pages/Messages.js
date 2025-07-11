@@ -17,7 +17,7 @@ import 'styles/pages/Messages.css';
 export const Messages = () => {
   const { t } = useTranslation();
   const { user } = useAuthStore();
-  const { userList } = useUserList();
+  const { userList } = useUserList(true); // Include admins for Messages page
   const {
     conversations,
     activeConversation,
@@ -209,6 +209,7 @@ export const Messages = () => {
                             'messages.searchUsers',
                             'Search users...'
                           )}
+                          includeAdmins={true}
                         />
                       </div>
                     )}

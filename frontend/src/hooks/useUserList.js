@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { userService } from 'services';
 import { useTranslation } from 'react-i18next';
 
-export function useUserList() {
+export function useUserList(includeAdmins = false) {
   const { t } = useTranslation();
   const [userList, setUserList] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -13,7 +13,8 @@ export function useUserList() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await userService.getMiniUsers();
+        const params = includeAdmins ? { includeAdmins: true } : {};
+        const response = await userService.getMiniUsers(params);
         if (isMounted) {
           setUserList(response || []);
           setError(null);
@@ -31,7 +32,7 @@ export function useUserList() {
     return () => {
       isMounted = false;
     };
-  }, [t]);
+  }, [t, includeAdmins]);
 
   return { userList, loading, error };
 }

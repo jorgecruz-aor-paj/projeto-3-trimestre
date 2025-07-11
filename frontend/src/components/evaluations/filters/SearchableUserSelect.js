@@ -10,9 +10,10 @@ export const SearchableUserSelect = ({
   label,
   name,
   placeholder,
+  includeAdmins = false,
 }) => {
   const { t } = useTranslation();
-  const { userList, loading } = useUserList();
+  const { userList, loading } = useUserList(includeAdmins);
   const [searchTerm, setSearchTerm] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
@@ -251,4 +252,5 @@ SearchableUserSelect.propTypes = {
   label: PropTypes.string,
   name: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
+  includeAdmins: PropTypes.bool,
 };

@@ -66,7 +66,7 @@ export const userService = {
 
   /**
    * Get mini user profiles
-   * @param {Object} params - Query parameters (search, etc.)
+   * @param {Object} params - Query parameters (search, includeAdmins, etc.)
    * @returns {Promise} - List of mini user profiles
    */
   getMiniUsers: (params = {}) => {
