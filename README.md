@@ -8,13 +8,17 @@
 
 ## Known bugs:
 
+### Vários:
+
+- EvaluationCycleServiceImpl contém método já apagado que só está a ser chamado em testes???
+
 ### Dashboard:
 
 1. Dashboard do user e do gestor necessita de informação para povoar dados;
 
 ### Users:
 
-1. Filtro de "Todos os Gestores";
+1. [x] Filtro de "Todos os Gestores";
 
 ### Wizard atribuir gestores:
 
@@ -22,7 +26,7 @@
 
 ### Notificações:
 
-1. Notificações de eventos como fechos de ciclo ou conclusão de avaliações devolvem excepção!
+1. [x] Notificações de eventos como fechos de ciclo ou conclusão de avaliações devolvem excepção!
 
 2. Enviar do backend um placeholder para a tradução do New Message from;
 
@@ -38,7 +42,7 @@
 
 1. Caixa de pesquisa está a pesquisar pelo feedback apenas;
 
-2. Após marcar avaliações como fechadas página não faz refresh;
+2. [x] Após marcar avaliações como fechadas página não faz refresh (Email Assincrono);
 
 ---
 
