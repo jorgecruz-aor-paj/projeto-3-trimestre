@@ -606,7 +606,11 @@
     "selectConversation": "Select a conversation to start messaging",
     "startConversation": "Start Conversation",
     "online": "Online",
-    "loadingOlder": "Loading older messages..."
+    "loadingOlder": "Loading older messages...",
+    "searchUsers": "Search users...",
+    "noUsersFound": "No users found",
+    "typeToSearch": "Type to search for users",
+    "searchError": "Error searching users"
   },
   "chatbot": {
     "title": "AI Assistant",

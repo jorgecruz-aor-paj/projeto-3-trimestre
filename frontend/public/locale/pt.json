@@ -606,7 +606,11 @@
     "selectConversation": "Selecione uma conversa para começar a enviar mensagens",
     "startConversation": "Iniciar Conversa",
     "online": "Online",
-    "loadingOlder": "A carregar mensagens antigas..."
+    "loadingOlder": "A carregar mensagens antigas...",
+    "searchUsers": "Pesquisar utilizadores...",
+    "noUsersFound": "Nenhum utilizador encontrado",
+    "typeToSearch": "Digite para pesquisar utilizadores",
+    "searchError": "Erro ao pesquisar utilizadores"
   },
   "chatbot": {
     "title": "Assistente IA",
