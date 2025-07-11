@@ -168,7 +168,7 @@ public class EmailUtil {
     public boolean sendConfirmationEmail(String toEmail, String token, String baseUrl) {
         String subject = AppConstants.Email.DEFAULT_CONFIRMATION_SUBJECT;
         String confirmationLink = baseUrl + "/register/confirm?confirmationToken=" + token;
-        logger.info("Generated confirmation link: {}", confirmationLink); //TODO delete after utility expires
+        logger.info("Generated confirmation link: {}", confirmationLink); // TODO delete after utility expires
 
         String body = createEmailTemplate(
                 "Account Confirmation",
@@ -176,8 +176,8 @@ public class EmailUtil {
                 "Confirm Account",
                 confirmationLink,
                 "If you didn't create an account with us, you can safely ignore this email. This confirmation link will expire in "
-                        + AppConstants.Jwt.DEFAULT_CONFIRMATION_TOKEN_EXPIRATION_TIME
-                        + " minutes for security reasons.");
+                        + (AppConstants.Jwt.DEFAULT_CONFIRMATION_TOKEN_EXPIRATION_TIME / 60)
+                        + " hours for security reasons.");
 
         return sendEmail(toEmail, subject, body);
     }
@@ -193,7 +193,7 @@ public class EmailUtil {
     public boolean sendPasswordResetEmail(String toEmail, String token, String baseUrl) {
         String subject = AppConstants.Email.DEFAULT_PASSWORD_RESET_SUBJECT;
         String resetLink = baseUrl + "/reset-password/confirm?resetPasswordToken=" + token;
-        logger.info("Generated reset password link: {}", resetLink); //TODO delete after utility expires
+        logger.info("Generated reset password link: {}", resetLink); // TODO delete after utility expires
 
         String body = createEmailTemplate(
                 "Password Reset Request",

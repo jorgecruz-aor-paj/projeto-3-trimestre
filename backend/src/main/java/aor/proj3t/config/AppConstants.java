@@ -41,7 +41,7 @@ public final class AppConstants {
         public static final int DEFAULT_RESET_PASSWORD_TOKEN_EXPIRATION_TIME = 60;
 
         /** Default account confirmation token expiration time in minutes */
-        public static final int DEFAULT_CONFIRMATION_TOKEN_EXPIRATION_TIME = 60;
+        public static final int DEFAULT_CONFIRMATION_TOKEN_EXPIRATION_TIME = 1440;
 
         /** Authentication scheme used for JWT tokens */
         public static final String AUTHENTICATION_SCHEME = "Bearer";
