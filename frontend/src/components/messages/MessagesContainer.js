@@ -1,14 +1,21 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from 'contexts/LanguageContext';
 import 'styles/components/MessagesContainer.css';
 
-export const MessagesContainer = ({ messages, currentUserId }) => {
+export const MessagesContainer = ({
+  messages,
+  currentUserId,
+  onLoadOlder,
+  isLoading,
+}) => {
   const { t } = useTranslation();
   const { formatInstant, convertInstantToDate } = useLanguage();
   const messagesEndRef = useRef(null);
+  const messagesContainerRef = useRef(null);
   const prevMessagesLengthRef = useRef(0);
+  const [isLoadingOlder, setIsLoadingOlder] = useState(false);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({
@@ -24,6 +31,36 @@ export const MessagesContainer = ({ messages, currentUserId }) => {
     }
     prevMessagesLengthRef.current = messages ? messages.length : 0;
   }, [messages]);
+
+  // Handle scroll event to load older messages
+  const handleScroll = async e => {
+    const { scrollTop, scrollHeight } = e.target;
+
+    // If user scrolled to the top (within 50px) and we're not already loading
+    if (scrollTop < 50 && !isLoadingOlder && !isLoading && onLoadOlder) {
+      setIsLoadingOlder(true);
+
+      // Store the current scroll height to maintain position after loading
+      const prevScrollHeight = scrollHeight;
+
+      try {
+        await onLoadOlder();
+
+        // After loading, adjust scroll position to maintain user's view
+        setTimeout(() => {
+          if (messagesContainerRef.current) {
+            const newScrollHeight = messagesContainerRef.current.scrollHeight;
+            const scrollDiff = newScrollHeight - prevScrollHeight;
+            messagesContainerRef.current.scrollTop = scrollTop + scrollDiff;
+          }
+        }, 100);
+      } catch (error) {
+        console.error('Error loading older messages:', error);
+      } finally {
+        setIsLoadingOlder(false);
+      }
+    }
+  };
 
   const formatMessageTime = timestamp => {
     return formatInstant(timestamp, {
@@ -50,7 +87,19 @@ export const MessagesContainer = ({ messages, currentUserId }) => {
   }
 
   return (
-    <div className="messages-container">
+    <div
+      className="messages-container"
+      ref={messagesContainerRef}
+      onScroll={handleScroll}
+    >
+      {/* Loading indicator for older messages */}
+      {isLoadingOlder && (
+        <div className="loading-older-messages text-center p-2 text-muted">
+          <i className="fas fa-spinner fa-spin me-2"></i>
+          <span>{t('messages.loadingOlder', 'Loading older messages...')}</span>
+        </div>
+      )}
+
       {messages.map((message, index) => {
         const isOwnMessage = message.senderId === currentUserId;
 
@@ -111,4 +160,6 @@ MessagesContainer.propTypes = {
     })
   ),
   currentUserId: PropTypes.number,
+  onLoadOlder: PropTypes.func,
+  isLoading: PropTypes.bool,
 };

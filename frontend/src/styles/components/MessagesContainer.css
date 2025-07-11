@@ -60,3 +60,10 @@
 .fa-check.text-success {
     color: #28a745 !important;
 }
+
+.loading-older-messages {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-bottom: 1px solid #dee2e6;
+    font-size: 12px;
+    color: #6c757d;
+}

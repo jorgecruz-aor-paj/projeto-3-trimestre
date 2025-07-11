@@ -32,6 +32,7 @@ export const Messages = () => {
     handleNotification,
     getUnreadCountForConversation,
     refreshUnreadCounts,
+    loadOlderMessages,
   } = useMessageStore();
 
   // Chatbot state
@@ -170,6 +171,13 @@ export const Messages = () => {
 
   const getCurrentLoading = () => {
     return isVirtualAssistantActive ? chatbotLoading : isLoading;
+  };
+
+  const handleLoadOlderMessages = async () => {
+    // Only load older messages for regular conversations (not chatbot)
+    if (!isVirtualAssistantActive) {
+      await loadOlderMessages();
+    }
   };
 
   return (
@@ -370,6 +378,8 @@ export const Messages = () => {
                       <MessagesContainer
                         messages={getCurrentMessages()}
                         currentUserId={user?.id}
+                        onLoadOlder={handleLoadOlderMessages}
+                        isLoading={getCurrentLoading()}
                       />
                       <div>
                         {validationError && (
