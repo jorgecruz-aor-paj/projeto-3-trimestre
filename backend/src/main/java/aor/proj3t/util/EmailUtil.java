@@ -168,7 +168,7 @@ public class EmailUtil {
     public boolean sendConfirmationEmail(String toEmail, String token, String baseUrl) {
         String subject = AppConstants.Email.DEFAULT_CONFIRMATION_SUBJECT;
         String confirmationLink = baseUrl + "/register/confirm?confirmationToken=" + token;
-        logger.info("Generated confirmation link: {}", confirmationLink); //TODO delete after utility expires
+        logger.info("Generated confirmation link: {}", confirmationLink); // TODO delete after utility expires
 
         String body = createEmailTemplate(
                 "Account Confirmation",
@@ -176,8 +176,8 @@ public class EmailUtil {
                 "Confirm Account",
                 confirmationLink,
                 "If you didn't create an account with us, you can safely ignore this email. This confirmation link will expire in "
-                        + AppConstants.Jwt.DEFAULT_CONFIRMATION_TOKEN_EXPIRATION_TIME
-                        + " minutes for security reasons.");
+                        + (AppConstants.Jwt.DEFAULT_CONFIRMATION_TOKEN_EXPIRATION_TIME / 60)
+                        + " hours for security reasons.");
 
         return sendEmail(toEmail, subject, body);
     }
@@ -193,7 +193,7 @@ public class EmailUtil {
     public boolean sendPasswordResetEmail(String toEmail, String token, String baseUrl) {
         String subject = AppConstants.Email.DEFAULT_PASSWORD_RESET_SUBJECT;
         String resetLink = baseUrl + "/reset-password/confirm?resetPasswordToken=" + token;
-        logger.info("Generated reset password link: {}", resetLink); //TODO delete after utility expires
+        logger.info("Generated reset password link: {}", resetLink); // TODO delete after utility expires
 
         String body = createEmailTemplate(
                 "Password Reset Request",
@@ -203,6 +203,77 @@ public class EmailUtil {
                 "If you didn't request a password reset, please ignore this email or contact our support team if you're concerned about your account security. This reset link will expire in "
                         + AppConstants.Email.DEFAULT_PASSWORD_RESET_EXPIRATION_MINUTES
                         + " minutes for security reasons.");
+
+        return sendEmail(toEmail, subject, body);
+    }
+
+    /**
+     * Sends an evaluation cycle closure email to a user.
+     * 
+     * @param toEmail              the recipient's email address
+     * @param firstName            the user's first name
+     * @param formattedClosureDate the formatted closure date
+     * @return true if the email was sent successfully, false otherwise
+     */
+    public boolean sendCycleClosureEmail(String toEmail, String firstName, String formattedClosureDate) {
+        String subject = "Evaluation Cycle Closed";
+
+        String mainMessage = "Dear " + firstName + ",\n\n" +
+                "The most recent evaluation cycle has officially closed on " + formattedClosureDate + ".\n\n" +
+                "You can now view your performance evaluation on your profile page. " +
+                "We encourage you to review the feedback and use it as a guide for your continued growth and development.";
+
+        String footerText = """
+                Thank you for your dedication and hard work.
+
+                If you have any questions about your evaluation, please don't hesitate to contact your manager or HR department.""";
+
+        String profileUrl = "#"; // (Dummy link) This could be made configurable or link to actual evaluation
+                                 // page
+
+        String body = createEmailTemplate(
+                "Evaluation Cycle Completed",
+                mainMessage,
+                "View My Profile",
+                profileUrl,
+                footerText);
+
+        return sendEmail(toEmail, subject, body);
+    }
+
+    /**
+     * Sends an evaluation cycle start email to a manager.
+     * 
+     * @param toEmail            the recipient's email address
+     * @param firstName          the manager's first name
+     * @param formattedStartDate the formatted start date
+     * @param formattedEndDate   the formatted end date
+     * @return true if the email was sent successfully, false otherwise
+     */
+    public boolean sendCycleStartEmail(String toEmail, String firstName, String formattedStartDate,
+            String formattedEndDate) {
+        String subject = "Evaluation Cycle Started";
+
+        String mainMessage = "Dear " + firstName + ",\n\n" +
+                "The new evaluation cycle has officially started.\n\n" +
+                "Start Date: " + formattedStartDate + "\n" +
+                "End Date: " + formattedEndDate + "\n\n" +
+                "Managers should complete performance evaluations for their managed users within this time frame.";
+
+        String footerText = """
+                Thank you for your collaboration.
+
+                If you have any questions about the evaluation process, please contact your manager or HR department.""";
+
+        String evaluationUrl = "#"; // (Dummy link) This could be made configurable or link to actual evaluation
+                                    // page
+
+        String body = createEmailTemplate(
+                "Evaluation Cycle Now Active",
+                mainMessage,
+                "Go to Evaluations",
+                evaluationUrl,
+                footerText);
 
         return sendEmail(toEmail, subject, body);
     }

@@ -1,9 +1,9 @@
 package aor.proj3t.service.interfaces;
 
+import java.util.List;
+
 import aor.proj3t.dto.MessageDTO;
 import aor.proj3t.entities.Message;
-
-import java.util.List;
 
 /**
  * Service interface for Message operations
@@ -51,7 +51,6 @@ public interface MessageService {
      */
     List<MessageDTO> getUserMessages(Long userId);
 
-
     /**
      * Gets all users that have exchanged messages with the specified user
      * 
@@ -67,5 +66,14 @@ public interface MessageService {
      * @return Number of unread messages
      */
     Integer getUnreadMessageCount(Long userId);
+
+    /**
+     * Gets the count of unread messages between two users
+     * 
+     * @param recipientId The user ID who received the messages
+     * @param senderId    The user ID who sent the messages
+     * @return Number of unread messages from sender to recipient
+     */
+    Integer getUnreadMessageCountBetweenUsers(Long recipientId, Long senderId);
 
 }

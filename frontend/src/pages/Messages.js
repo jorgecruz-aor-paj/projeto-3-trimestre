@@ -30,6 +30,9 @@ export const Messages = () => {
     sendMessage,
     clearStore,
     handleNotification,
+    getUnreadCountForConversation,
+    refreshUnreadCounts,
+    loadOlderMessages,
   } = useMessageStore();
 
   // Chatbot state
@@ -170,6 +173,13 @@ export const Messages = () => {
     return isVirtualAssistantActive ? chatbotLoading : isLoading;
   };
 
+  const handleLoadOlderMessages = async () => {
+    // Only load older messages for regular conversations (not chatbot)
+    if (!isVirtualAssistantActive) {
+      await loadOlderMessages();
+    }
+  };
+
   return (
     <div className="container-fluid py-4">
       <div className="row">
@@ -271,38 +281,66 @@ export const Messages = () => {
                           </p>
                         </div>
                       ) : (
-                        conversations.map(conversation => (
-                          <div
-                            key={conversation.id}
-                            className={`conversation-item p-3 border-bottom cursor-pointer ${
-                              activeConversation?.id === conversation.id &&
-                              !isVirtualAssistantActive
-                                ? 'bg-light'
-                                : ''
-                            }`}
-                            onClick={() =>
-                              handleStartConversation(conversation)
-                            }
-                          >
-                            <div className="d-flex align-items-center">
-                              <div className="avatar-sm me-3">
-                                <div className="avatar-initial rounded-circle bg-primary">
-                                  {conversation.firstName?.charAt(0)}
-                                  {conversation.lastName?.charAt(0)}
+                        conversations.map(conversation => {
+                          const unreadCount = getUnreadCountForConversation(
+                            conversation.id
+                          );
+
+                          return (
+                            <div
+                              key={conversation.id}
+                              className={`conversation-item p-3 border-bottom cursor-pointer ${
+                                activeConversation?.id === conversation.id &&
+                                !isVirtualAssistantActive
+                                  ? 'bg-light'
+                                  : ''
+                              }`}
+                              onClick={() =>
+                                handleStartConversation(conversation)
+                              }
+                            >
+                              <div className="d-flex align-items-center">
+                                <div className="avatar-sm me-3 position-relative">
+                                  <div className="avatar-initial rounded-circle bg-primary">
+                                    {conversation.firstName?.charAt(0)}
+                                    {conversation.lastName?.charAt(0)}
+                                  </div>
+                                  {unreadCount > 0 && (
+                                    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                      {unreadCount > 99 ? '99+' : unreadCount}
+                                      <span className="visually-hidden">
+                                        unread messages
+                                      </span>
+                                    </span>
+                                  )}
                                 </div>
-                              </div>
-                              <div className="flex-fill">
-                                <div className="fw-medium">
-                                  {conversation.firstName}{' '}
-                                  {conversation.lastName}
+                                <div className="flex-fill">
+                                  <div className="d-flex justify-content-between align-items-center">
+                                    <div
+                                      className={`fw-medium ${
+                                        unreadCount > 0 ? 'fw-bold' : ''
+                                      }`}
+                                    >
+                                      {conversation.firstName}{' '}
+                                      {conversation.lastName}
+                                    </div>
+                                    {unreadCount > 0 && (
+                                      <small className="text-primary">
+                                        <i
+                                          className="fas fa-circle"
+                                          style={{ fontSize: '8px' }}
+                                        ></i>
+                                      </small>
+                                    )}
+                                  </div>
+                                  <small className="text-muted">
+                                    {conversation.email}
+                                  </small>
                                 </div>
-                                <small className="text-muted">
-                                  {conversation.email}
-                                </small>
                               </div>
                             </div>
-                          </div>
-                        ))
+                          );
+                        })
                       )}
                     </div>
                   </div>
@@ -340,6 +378,8 @@ export const Messages = () => {
                       <MessagesContainer
                         messages={getCurrentMessages()}
                         currentUserId={user?.id}
+                        onLoadOlder={handleLoadOlderMessages}
+                        isLoading={getCurrentLoading()}
                       />
                       <div>
                         {validationError && (

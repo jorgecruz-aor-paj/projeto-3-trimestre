@@ -1,5 +1,10 @@
 package aor.proj3t.resource;
 
+import java.util.List;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import aor.proj3t.daos.DAOFactory;
 import aor.proj3t.dto.APIResponseDTO;
 import aor.proj3t.dto.MessageDTO;
@@ -9,14 +14,18 @@ import aor.proj3t.util.authutils.Secured;
 import aor.proj3t.websocket.AppWebSocket;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.*;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.HeaderParam;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.util.List;
 
 /**
  * REST endpoint for message-related operations.
@@ -209,6 +218,36 @@ public class MessageResource {
 
         } catch (Exception e) {
             logger.error("Error retrieving unread message count", e);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(new APIResponseDTO("Error retrieving unread count: " + e.getMessage()))
+                    .build();
+        }
+    }
+
+    /**
+     * Get the count of unread messages from a specific user
+     * 
+     * @param authHeader The authorization header containing the JWT token
+     * @param senderId   The ID of the sender
+     * @return Response containing the unread message count from that sender
+     */
+    @GET
+    @Path("/unread/count/{senderId}")
+    @Secured
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUnreadMessageCountFromSender(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader,
+            @PathParam("senderId") Long senderId) {
+        logger.info("Received request to get unread message count from sender {}", senderId);
+
+        try {
+            Long userId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
+            Integer count = serviceFactory.forMessage().getUnreadMessageCountBetweenUsers(userId, senderId);
+
+            logger.info("User {} has {} unread messages from sender {}", userId, count, senderId);
+            return Response.ok(java.util.Map.of("count", count)).build();
+
+        } catch (Exception e) {
+            logger.error("Error retrieving unread message count from sender {}", senderId, e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(new APIResponseDTO("Error retrieving unread count: " + e.getMessage()))
                     .build();

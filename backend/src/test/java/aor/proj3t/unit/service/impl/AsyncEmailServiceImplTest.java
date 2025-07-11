@@ -66,19 +66,16 @@ class AsyncEmailServiceImplTest {
         when(daoFactory.forUser()).thenReturn(mock(aor.proj3t.daos.interfaces.UserDAO.class));
         when(daoFactory.forUser().findAll()).thenReturn(testUsers);
 
-        // Mock the createEmailTemplate method to return a non-null value
-        when(emailUtil.createEmailTemplate(anyString(), anyString(), anyString(), anyString(), anyString()))
-                .thenReturn("<html>Mock email body</html>");
+        // Mock the sendCycleClosureEmail method to return true
+        when(emailUtil.sendCycleClosureEmail(anyString(), anyString(), anyString())).thenReturn(true);
 
         // Act
         asyncEmailService.sendCycleClosureEmailAsync(1L);
 
         // Assert
-        verify(emailUtil, times(2)).sendEmail(anyString(), eq("Evaluation Cycle Closed"), anyString());
-        verify(emailUtil).sendEmail(eq("user1@example.com"), eq("Evaluation Cycle Closed"), anyString());
-        verify(emailUtil).sendEmail(eq("user2@example.com"), eq("Evaluation Cycle Closed"), anyString());
-        verify(emailUtil, times(2)).createEmailTemplate(anyString(), anyString(), anyString(), anyString(),
-                anyString());
+        verify(emailUtil, times(2)).sendCycleClosureEmail(anyString(), anyString(), anyString());
+        verify(emailUtil).sendCycleClosureEmail(eq("user1@example.com"), eq("John"), anyString());
+        verify(emailUtil).sendCycleClosureEmail(eq("user2@example.com"), eq("Jane"), anyString());
     }
 
     @Test
@@ -91,7 +88,7 @@ class AsyncEmailServiceImplTest {
         asyncEmailService.sendCycleClosureEmailAsync(1L);
 
         // Assert
-        verify(emailUtil, never()).sendEmail(anyString(), anyString(), anyString());
+        verify(emailUtil, never()).sendCycleClosureEmail(anyString(), anyString(), anyString());
     }
 
     @Test
@@ -102,19 +99,16 @@ class AsyncEmailServiceImplTest {
         when(daoFactory.forUser()).thenReturn(mock(aor.proj3t.daos.interfaces.UserDAO.class));
         when(daoFactory.forUser().getManagers()).thenReturn(testUsers);
 
-        // Mock the createEmailTemplate method to return a non-null value
-        when(emailUtil.createEmailTemplate(anyString(), anyString(), anyString(), anyString(), anyString()))
-                .thenReturn("<html>Mock email body</html>");
+        // Mock the sendCycleStartEmail method to return true
+        when(emailUtil.sendCycleStartEmail(anyString(), anyString(), anyString(), anyString())).thenReturn(true);
 
         // Act
         asyncEmailService.sendCycleStartEmailAsync(1L);
 
         // Assert
-        verify(emailUtil, times(2)).sendEmail(anyString(), eq("Evaluation Cycle Started"), anyString());
-        verify(emailUtil).sendEmail(eq("user1@example.com"), eq("Evaluation Cycle Started"), anyString());
-        verify(emailUtil).sendEmail(eq("user2@example.com"), eq("Evaluation Cycle Started"), anyString());
-        verify(emailUtil, times(2)).createEmailTemplate(anyString(), anyString(), anyString(), anyString(),
-                anyString());
+        verify(emailUtil, times(2)).sendCycleStartEmail(anyString(), anyString(), anyString(), anyString());
+        verify(emailUtil).sendCycleStartEmail(eq("user1@example.com"), eq("John"), anyString(), anyString());
+        verify(emailUtil).sendCycleStartEmail(eq("user2@example.com"), eq("Jane"), anyString(), anyString());
     }
 
     @Test
@@ -127,6 +121,6 @@ class AsyncEmailServiceImplTest {
         asyncEmailService.sendCycleStartEmailAsync(1L);
 
         // Assert
-        verify(emailUtil, never()).sendEmail(anyString(), anyString(), anyString());
+        verify(emailUtil, never()).sendCycleStartEmail(anyString(), anyString(), anyString(), anyString());
     }
 }

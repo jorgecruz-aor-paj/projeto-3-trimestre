@@ -1,5 +1,17 @@
 package aor.proj3t.util.authutils;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.crypto.SecretKey;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import aor.proj3t.config.AppConstants;
 import aor.proj3t.enums.TokenType;
 import io.github.cdimascio.dotenv.Dotenv;
 import io.github.cdimascio.dotenv.DotenvException;
@@ -14,15 +26,6 @@ import io.jsonwebtoken.security.SignatureException;
 import io.jsonwebtoken.security.WeakKeyException;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import javax.crypto.SecretKey;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Utility class for handling JWT (JSON Web Tokens) operations.
@@ -37,7 +40,7 @@ import java.util.Map;
 public class JwtUtil {
 
     private static final Logger logger = LogManager.getLogger(JwtUtil.class);
-    private static final int DEFAULT_TOKEN_EXPIRATION_TIME = 60; // value in minutes
+    private static final int DEFAULT_TOKEN_EXPIRATION_TIME = AppConstants.Jwt.DEFAULT_TOKEN_EXPIRATION_TIME;
     private String secretKey;
     private String issuer;
 

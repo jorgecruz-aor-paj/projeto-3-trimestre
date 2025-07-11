@@ -1,87 +1,100 @@
 package aor.proj3t.daos.impl;
 
+import java.time.Instant;
+import java.util.List;
+
 import aor.proj3t.daos.interfaces.MessageDAO;
 import aor.proj3t.entities.Message;
 import aor.proj3t.entities.User;
 import jakarta.ejb.Stateless;
 
-import java.time.Instant;
-import java.util.List;
-
 @Stateless
 public class MessageDAOimpl extends AbstractDAO<Message, Long> implements MessageDAO {
 
-        @Override
-        protected Class<Message> getEntityClass() {
-                return Message.class;
-        }
+    @Override
+    protected Class<Message> getEntityClass() {
+        return Message.class;
+    }
 
-        @Override
-        public List<Message> findBySenderId(Long senderId) {
+    @Override
+    public List<Message> findBySenderId(Long senderId) {
 
-                return em.createQuery("SELECT m FROM Message m WHERE m.sender.id = :senderId", Message.class)
-                                .setParameter("senderId", senderId)
-                                .getResultList();
-        }
+        return em.createQuery("SELECT m FROM Message m WHERE m.sender.id = :senderId", Message.class)
+                .setParameter("senderId", senderId)
+                .getResultList();
+    }
 
-        @Override
-        public List<Message> findByRecipientId(Long recipientId) {
+    @Override
+    public List<Message> findByRecipientId(Long recipientId) {
 
-                return em.createQuery(" SELECT m FROM Message m WHERE m.recipient.id = :recipientId", Message.class)
-                                .setParameter("recipientId", recipientId)
-                                .getResultList();
-        }
+        return em.createQuery(" SELECT m FROM Message m WHERE m.recipient.id = :recipientId", Message.class)
+                .setParameter("recipientId", recipientId)
+                .getResultList();
+    }
 
-        @Override
-        public List<Message> findBySenderIdAndRecipientId(Long senderId, Long recipientId) {
+    @Override
+    public List<Message> findBySenderIdAndRecipientId(Long senderId, Long recipientId) {
 
-                return em
-                                .createQuery("SELECT m FROM Message m WHERE m.sender.id = :senderId AND m.recipient.id = :recipientId",
-                                                Message.class)
-                                .setParameter("senderId", senderId)
-                                .setParameter("recipientId", recipientId)
-                                .getResultList();
-        }
+        return em
+                .createQuery("SELECT m FROM Message m WHERE m.sender.id = :senderId AND m.recipient.id = :recipientId",
+                        Message.class)
+                .setParameter("senderId", senderId)
+                .setParameter("recipientId", recipientId)
+                .getResultList();
+    }
 
-        @Override
-        public List<User> findMessagedUsers(Long userId) {
-                // More efficient approach using JOIN
-                return em.createQuery(
-                                "SELECT DISTINCT u FROM User u " +
-                                                "WHERE u.id IN (" +
-                                                "SELECT DISTINCT CASE " +
-                                                "WHEN m.sender.id = :userId THEN m.recipient.id " +
-                                                "ELSE m.sender.id " +
-                                                "END " +
-                                                "FROM Message m " +
-                                                "WHERE m.sender.id = :userId OR m.recipient.id = :userId" +
-                                                ") AND u.id != :userId",
-                                User.class)
-                                .setParameter("userId", userId)
-                                .getResultList();
-        }
+    @Override
+    public List<User> findMessagedUsers(Long userId) {
+        // More efficient approach using JOIN
+        return em.createQuery(
+                "SELECT DISTINCT u FROM User u " +
+                        "WHERE u.id IN (" +
+                        "SELECT DISTINCT CASE " +
+                        "WHEN m.sender.id = :userId THEN m.recipient.id " +
+                        "ELSE m.sender.id " +
+                        "END " +
+                        "FROM Message m " +
+                        "WHERE m.sender.id = :userId OR m.recipient.id = :userId" +
+                        ") AND u.id != :userId",
+                User.class)
+                .setParameter("userId", userId)
+                .getResultList();
+    }
 
-        @Override
-        public Integer findCountUnreadMessagesByRecipientId(Long recipientId) {
+    @Override
+    public Integer findCountUnreadMessagesByRecipientId(Long recipientId) {
 
-                return em
-                                .createQuery("SELECT COUNT(m) FROM Message m WHERE m.recipient.id = :recipientId AND m.isRead = FALSE",
-                                                Long.class)
-                                .setParameter("recipientId", recipientId)
-                                .getSingleResult()
-                                .intValue();
-        }
+        return em
+                .createQuery("SELECT COUNT(m) FROM Message m WHERE m.recipient.id = :recipientId AND m.isRead = FALSE",
+                        Long.class)
+                .setParameter("recipientId", recipientId)
+                .getSingleResult()
+                .intValue();
+    }
 
-        @Override
-        public Boolean markMessageAsRead(Long messageId) {
+    @Override
+    public Integer findCountUnreadMessagesBetweenUsers(Long recipientId, Long senderId) {
 
-                int updatedCount = em
-                                .createQuery(
-                                                "UPDATE Message m SET m.isRead = TRUE, m.timestampRead = :timestamp WHERE m.id = :messageId")
-                                .setParameter("timestamp", Instant.now())
-                                .setParameter("messageId", messageId)
-                                .executeUpdate();
+        return em
+                .createQuery(
+                        "SELECT COUNT(m) FROM Message m WHERE m.recipient.id = :recipientId AND m.sender.id = :senderId AND m.isRead = FALSE",
+                        Long.class)
+                .setParameter("recipientId", recipientId)
+                .setParameter("senderId", senderId)
+                .getSingleResult()
+                .intValue();
+    }
 
-                return updatedCount > 0;
-        }
+    @Override
+    public Boolean markMessageAsRead(Long messageId) {
+
+        int updatedCount = em
+                .createQuery(
+                        "UPDATE Message m SET m.isRead = TRUE, m.timestampRead = :timestamp WHERE m.id = :messageId")
+                .setParameter("timestamp", Instant.now())
+                .setParameter("messageId", messageId)
+                .executeUpdate();
+
+        return updatedCount > 0;
+    }
 }

@@ -34,6 +34,24 @@
     font-size: 14px;
 }
 
+/* Unread message indicators */
+.conversation-item .badge {
+    font-size: 10px;
+    min-width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.conversation-item .fw-bold {
+    color: #333;
+}
+
+.conversation-item .text-primary .fa-circle {
+    color: #0d6efd !important;
+}
+
 /* Fixed height layout styles */
 .messages-layout {
     height: 600px;

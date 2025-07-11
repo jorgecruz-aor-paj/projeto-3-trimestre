@@ -47,34 +47,13 @@ public class AsyncEmailServiceImpl implements AsyncEmailService {
             int emailsSent = 0;
             for (User user : userList) {
                 try {
-                    String subject = "Evaluation Cycle Closed";
-
-                    // Use EmailUtil's template system for consistent email formatting
-                    String mainMessage = "Dear " + user.getFirstName() + ",\n\n" +
-                            "The most recent evaluation cycle has officially closed on " + formattedClosure + ".\n\n" +
-                            "You can now view your performance evaluation on your profile page. " +
-                            "We encourage you to review the feedback and use it as a guide for your continued growth and development.";
-
-                    String footerText = """
-                            Thank you for your dedication and hard work.
-
-                            If you have any questions about your evaluation, please don't hesitate to contact your manager or HR department.""";
-
-                    // Create a dummy URL for the button (could link to profile/dashboard)
-                    String profileUrl = "#"; // This could be made configurable or link to actual profile page
-
-                    String body = emailUtil.createEmailTemplate(
-                            "Evaluation Cycle Completed",
-                            mainMessage,
-                            "View My Profile",
-                            profileUrl,
-                            footerText);
-
-                    emailUtil.sendEmail(user.getEmail(), subject, body);
-                    emailsSent++;
+                    if (emailUtil.sendCycleClosureEmail(user.getEmail(), user.getFirstName(), formattedClosure)) {
+                        emailsSent++;
+                    }
                 } catch (Exception e) {
-                    logger.error("Failed to send cycle closure email to user: {} ({})", user.getEmail(), user.getId(),
-                            e);
+                    logger.error("Failed to send cycle closure email to user: {} ({})",
+                            user.getEmail(),
+                            user.getId(), e);
                 }
             }
 
@@ -106,30 +85,10 @@ public class AsyncEmailServiceImpl implements AsyncEmailService {
             int emailsSent = 0;
             for (User user : userList) {
                 try {
-                    String subject = "Evaluation Cycle Started";
-
-                    // Use EmailUtil's template system for consistent email formatting
-                    String mainMessage = "Dear " + user.getFirstName() + ",\n\n" +
-                            "The new evaluation cycle has officially started.\n\n" +
-                            "Start Date: " + formattedStart + "\n" +
-                            "End Date: " + formattedEnd + "\n\n" +
-                            "Managers should complete performance evaluations for their managed users within this time frame.";
-
-                    String footerText = "Thank you for your collaboration.\n\n" +
-                            "If you have any questions about the evaluation process, please contact your manager or HR department.";
-
-                    // Create a dummy URL for the button (could link to evaluation dashboard)
-                    String evaluationUrl = "#"; // This could be made configurable or link to actual evaluation page
-
-                    String body = emailUtil.createEmailTemplate(
-                            "Evaluation Cycle Now Active",
-                            mainMessage,
-                            "Go to Evaluations",
-                            evaluationUrl,
-                            footerText);
-
-                    emailUtil.sendEmail(user.getEmail(), subject, body);
-                    emailsSent++;
+                    if (emailUtil.sendCycleStartEmail(user.getEmail(), user.getFirstName(), formattedStart,
+                            formattedEnd)) {
+                        emailsSent++;
+                    }
                 } catch (Exception e) {
                     logger.error("Failed to send cycle start email to user: {} ({})", user.getEmail(), user.getId(), e);
                 }
