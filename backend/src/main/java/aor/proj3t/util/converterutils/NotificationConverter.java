@@ -22,27 +22,27 @@ import jakarta.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class NotificationConverter extends AbstractConverter<Notification, NotificationDTO, Long> {
     @Override
-    protected Class<Notification> getEntityClass() {
+    public Class<Notification> getEntityClass() {
         return Notification.class;
     }
 
     @Override
-    protected Notification createEntityInstance() {
+    public Notification createEntityInstance() {
         return new Notification();
     }
 
     @Override
-    protected NotificationDTO createDTOInstance() {
+    public NotificationDTO createDTOInstance() {
         return new NotificationDTO();
     }
 
     @Override
-    protected Long getIdFromDTO(NotificationDTO dto) {
+    public Long getIdFromDTO(NotificationDTO dto) {
         return dto.getId();
     }
 
     @Override
-    protected void mapEntityToDTO(Notification notification, NotificationDTO dto) {
+    public void mapEntityToDTO(Notification notification, NotificationDTO dto) {
         dto.setId(notification.getId());
         dto.setContent(notification.getContent());
         dto.setType(notification.getType());
@@ -54,7 +54,7 @@ public class NotificationConverter extends AbstractConverter<Notification, Notif
     }
 
     @Override
-    protected void mapDTOToEntity(NotificationDTO dto, Notification notification) {
+    public void mapDTOToEntity(NotificationDTO dto, Notification notification) {
         notification.setContent(dto.getContent());
         notification.setType(dto.getType());
         notification.setRead(dto.isRead());

@@ -21,33 +21,33 @@ import jakarta.enterprise.context.ApplicationScoped;
 public class WorkplaceConverter extends AbstractConverter<Workplace, WorkplaceDTO, Long> {
 
     @Override
-    protected Class<Workplace> getEntityClass() {
+    public Class<Workplace> getEntityClass() {
         return Workplace.class;
     }
 
     @Override
-    protected Workplace createEntityInstance() {
+    public Workplace createEntityInstance() {
         return new Workplace();
     }
 
     @Override
-    protected WorkplaceDTO createDTOInstance() {
+    public WorkplaceDTO createDTOInstance() {
         return new WorkplaceDTO();
     }
 
     @Override
-    protected Long getIdFromDTO(WorkplaceDTO dto) {
+    public Long getIdFromDTO(WorkplaceDTO dto) {
         return dto.getId();
     }
 
     @Override
-    protected void mapEntityToDTO(Workplace workplace, WorkplaceDTO dto) {
+    public void mapEntityToDTO(Workplace workplace, WorkplaceDTO dto) {
         dto.setId(workplace.getId());
         dto.setName(workplace.getName());
     }
 
     @Override
-    protected void mapDTOToEntity(WorkplaceDTO dto, Workplace workplace) {
+    public void mapDTOToEntity(WorkplaceDTO dto, Workplace workplace) {
         workplace.setName(dto.getName());
     }
 }

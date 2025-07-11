@@ -76,7 +76,7 @@ public class UserValidator {
     }
 
     public void validatePhotograph(String photograph) {
-        if (photograph != null || !photograph.isEmpty()) {
+        if (photograph != null && !photograph.isEmpty()) {
             throw new InvalidDataException("Photograph must be empty");
         }
     }

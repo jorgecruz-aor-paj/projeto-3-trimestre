@@ -23,27 +23,27 @@ import jakarta.enterprise.context.ApplicationScoped;
 public class MessageConverter extends AbstractConverter<Message, MessageDTO, Long> {
 
     @Override
-    protected Class<Message> getEntityClass() {
+    public Class<Message> getEntityClass() {
         return Message.class;
     }
 
     @Override
-    protected Message createEntityInstance() {
+    public Message createEntityInstance() {
         return new Message();
     }
 
     @Override
-    protected MessageDTO createDTOInstance() {
+    public MessageDTO createDTOInstance() {
         return new MessageDTO();
     }
 
     @Override
-    protected Long getIdFromDTO(MessageDTO dto) {
+    public Long getIdFromDTO(MessageDTO dto) {
         return dto.getId();
     }
 
     @Override
-    protected void mapEntityToDTO(Message message, MessageDTO dto) {
+    public void mapEntityToDTO(Message message, MessageDTO dto) {
         dto.setId(message.getId());
         dto.setContent(message.getContent());
         dto.setTimestampSent(message.getTimestampSent());
@@ -60,7 +60,7 @@ public class MessageConverter extends AbstractConverter<Message, MessageDTO, Lon
     }
 
     @Override
-    protected void mapDTOToEntity(MessageDTO dto, Message message) {
+    public void mapDTOToEntity(MessageDTO dto, Message message) {
         message.setContent(dto.getContent());
         message.setTimestampSent(dto.getTimestampSent());
         message.setTimestampRead(dto.getTimestampRead());

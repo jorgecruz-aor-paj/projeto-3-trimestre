@@ -30,27 +30,27 @@ public class EvaluationConverter extends AbstractConverter<Evaluation, Evaluatio
     MiniEvaluationCycleConverter miniEvaluationCycleConverter;
 
     @Override
-    protected Class<Evaluation> getEntityClass() {
+    public Class<Evaluation> getEntityClass() {
         return Evaluation.class;
     }
 
     @Override
-    protected Evaluation createEntityInstance() {
+    public Evaluation createEntityInstance() {
         return new Evaluation();
     }
 
     @Override
-    protected EvaluationDTO createDTOInstance() {
+    public EvaluationDTO createDTOInstance() {
         return new EvaluationDTO();
     }
 
     @Override
-    protected Long getIdFromDTO(EvaluationDTO dto) {
+    public Long getIdFromDTO(EvaluationDTO dto) {
         return dto.getId();
     }
 
     @Override
-    protected void mapEntityToDTO(Evaluation evaluation, EvaluationDTO dto) {
+    public void mapEntityToDTO(Evaluation evaluation, EvaluationDTO dto) {
         dto.setId(evaluation.getId());
         dto.setScale(evaluation.getScale());
         dto.setStatus(evaluation.getStatus());
@@ -84,7 +84,7 @@ public class EvaluationConverter extends AbstractConverter<Evaluation, Evaluatio
     }
 
     @Override
-    protected void mapDTOToEntity(EvaluationDTO dto, Evaluation evaluation) {
+    public void mapDTOToEntity(EvaluationDTO dto, Evaluation evaluation) {
         evaluation.setScale(dto.getScale());
         evaluation.setStatus(dto.getStatus());
         evaluation.setFeedback(dto.getFeedback());

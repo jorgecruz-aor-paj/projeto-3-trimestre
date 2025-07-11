@@ -21,33 +21,33 @@ import jakarta.enterprise.context.ApplicationScoped;
 public class TrainingAreaConverter extends AbstractConverter<TrainingArea, TrainingAreaDTO, Long> {
 
     @Override
-    protected Class<TrainingArea> getEntityClass() {
+    public Class<TrainingArea> getEntityClass() {
         return TrainingArea.class;
     }
 
     @Override
-    protected TrainingArea createEntityInstance() {
+    public TrainingArea createEntityInstance() {
         return new TrainingArea();
     }
 
     @Override
-    protected TrainingAreaDTO createDTOInstance() {
+    public TrainingAreaDTO createDTOInstance() {
         return new TrainingAreaDTO();
     }
 
     @Override
-    protected Long getIdFromDTO(TrainingAreaDTO dto) {
+    public Long getIdFromDTO(TrainingAreaDTO dto) {
         return dto.getId();
     }
 
     @Override
-    protected void mapEntityToDTO(TrainingArea trainingArea, TrainingAreaDTO dto) {
+    public void mapEntityToDTO(TrainingArea trainingArea, TrainingAreaDTO dto) {
         dto.setId(trainingArea.getId());
         dto.setName(trainingArea.getName());
     }
 
     @Override
-    protected void mapDTOToEntity(TrainingAreaDTO dto, TrainingArea trainingArea) {
+    public void mapDTOToEntity(TrainingAreaDTO dto, TrainingArea trainingArea) {
         trainingArea.setName(dto.getName());
     }
 }

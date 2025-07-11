@@ -27,27 +27,27 @@ public class TrainingConverter extends AbstractConverter<Training, TrainingDTO, 
     TrainingAreaConverter trainingAreaConverter;
 
     @Override
-    protected Class<Training> getEntityClass() {
+    public Class<Training> getEntityClass() {
         return Training.class;
     }
 
     @Override
-    protected Training createEntityInstance() {
+    public Training createEntityInstance() {
         return new Training();
     }
 
     @Override
-    protected TrainingDTO createDTOInstance() {
+    public TrainingDTO createDTOInstance() {
         return new TrainingDTO();
     }
 
     @Override
-    protected Long getIdFromDTO(TrainingDTO dto) {
+    public Long getIdFromDTO(TrainingDTO dto) {
         return dto.getId();
     }
 
     @Override
-    protected void mapEntityToDTO(Training training, TrainingDTO dto) {
+    public void mapEntityToDTO(Training training, TrainingDTO dto) {
         dto.setId(training.getId());
         dto.setTitle(training.getTitle());
         dto.setDuration(training.getDuration());
@@ -64,7 +64,7 @@ public class TrainingConverter extends AbstractConverter<Training, TrainingDTO, 
     }
 
     @Override
-    protected void mapDTOToEntity(TrainingDTO dto, Training training) {
+    public void mapDTOToEntity(TrainingDTO dto, Training training) {
         training.setTitle(dto.getTitle());
         training.setDuration(dto.getDuration());
         training.setDescription(dto.getDescription());

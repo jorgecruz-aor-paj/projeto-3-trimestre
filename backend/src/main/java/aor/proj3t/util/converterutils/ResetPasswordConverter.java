@@ -22,27 +22,27 @@ import jakarta.enterprise.context.ApplicationScoped;
 public class ResetPasswordConverter extends AbstractConverter<ResetPassword, ResetPasswordDTO, Long> {
 
     @Override
-    protected Class<ResetPassword> getEntityClass() {
+    public Class<ResetPassword> getEntityClass() {
         return ResetPassword.class;
     }
 
     @Override
-    protected ResetPassword createEntityInstance() {
+    public ResetPassword createEntityInstance() {
         return new ResetPassword();
     }
 
     @Override
-    protected ResetPasswordDTO createDTOInstance() {
+    public ResetPasswordDTO createDTOInstance() {
         return new ResetPasswordDTO();
     }
 
     @Override
-    protected Long getIdFromDTO(ResetPasswordDTO dto) {
+    public Long getIdFromDTO(ResetPasswordDTO dto) {
         return dto.getId();
     }
 
     @Override
-    protected void mapEntityToDTO(ResetPassword resetPassword, ResetPasswordDTO dto) {
+    public void mapEntityToDTO(ResetPassword resetPassword, ResetPasswordDTO dto) {
         dto.setId(resetPassword.getId());
         dto.setCreatedAt(resetPassword.getCreatedAt());
         dto.setExpirationDate(resetPassword.getExpirationDate());
@@ -54,7 +54,7 @@ public class ResetPasswordConverter extends AbstractConverter<ResetPassword, Res
     }
 
     @Override
-    protected void mapDTOToEntity(ResetPasswordDTO dto, ResetPassword resetPassword) {
+    public void mapDTOToEntity(ResetPasswordDTO dto, ResetPassword resetPassword) {
         resetPassword.setCreatedAt(dto.getCreatedAt());
         resetPassword.setExpirationDate(dto.getExpirationDate());
         resetPassword.setResetPasswordToken(dto.getResetPasswordToken());
