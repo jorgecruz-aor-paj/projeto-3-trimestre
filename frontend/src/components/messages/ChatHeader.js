@@ -31,24 +31,6 @@ export const ChatHeader = ({ user }) => {
           <small className="ms-1">{t('messages.online', 'Online')}</small>
         </div>
       </div>
-
-      <style>{`
-        .avatar-sm {
-          width: 40px;
-          height: 40px;
-        }
-        
-        .avatar-initial {
-          width: 100%;
-          height: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-weight: 600;
-          color: white;
-          font-size: 14px;
-        }
-      `}</style>
     </div>
   );
 };
