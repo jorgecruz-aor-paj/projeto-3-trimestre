@@ -4,6 +4,39 @@ import aor.proj3t.filters.EvaluationFilter;
 import aor.proj3t.filters.TrainingFilter;
 import aor.proj3t.filters.UserFilter;
 
+/**
+ * Service interface for data export operations.
+ * This interface defines the contract for comprehensive data export
+ * functionality
+ * supporting multiple formats (CSV, PDF) and various data types including
+ * users, evaluations, and trainings.
+ * 
+ * <p>
+ * Key export services include:
+ * <ul>
+ * <li><b>User Data Export:</b> Comprehensive user information export with
+ * filtering capabilities</li>
+ * <li><b>Evaluation Export:</b> Detailed evaluation data export with
+ * performance metrics</li>
+ * <li><b>Training Export:</b> Training program and participation data
+ * export</li>
+ * <li><b>Multiple Formats:</b> Support for CSV and PDF export formats</li>
+ * <li><b>Advanced Filtering:</b> Customizable data selection and filtering
+ * options</li>
+ * <li><b>Professional Formatting:</b> Well-structured documents with proper
+ * styling</li>
+ * </ul>
+ * 
+ * <p>
+ * This service provides essential reporting and data analysis capabilities for
+ * administrators
+ * and managers, enabling data extraction for further processing, archival, or
+ * compliance purposes.
+ * 
+ * @author Jorge Cruz
+ * @version 1.0
+ * @since 2025
+ */
 public interface ExportService {
 
     /**
