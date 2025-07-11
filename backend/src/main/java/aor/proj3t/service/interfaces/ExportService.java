@@ -33,7 +33,7 @@ import aor.proj3t.filters.UserFilter;
  * and managers, enabling data extraction for further processing, archival, or
  * compliance purposes.
  * 
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 2025
  */

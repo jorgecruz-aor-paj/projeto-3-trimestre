@@ -5,7 +5,7 @@ package aor.proj3t.enums;
  * This enum provides a standardized way to handle multiple languages
  * in the training system, with utility methods for string conversion.
  * 
- * @author Project Team
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 1.0
  */

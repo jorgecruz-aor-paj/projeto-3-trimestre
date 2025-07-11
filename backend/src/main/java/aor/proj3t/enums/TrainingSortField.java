@@ -8,7 +8,7 @@ import aor.proj3t.exceptions.NotFoundException;
  * to order training results in queries. Each sort field has both
  * a unique identifier and a corresponding database field name.
  * 
- * @author Project Team
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 1.0
  */

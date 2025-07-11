@@ -16,7 +16,7 @@ import jakarta.persistence.Table;
  * and expiration dates for email verification during the user registration
  * process.
  * 
- * @author Jorge Osório
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 1.0
  */

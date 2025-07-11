@@ -20,7 +20,7 @@ import jakarta.persistence.Table;
  * Notifications are system-generated messages that inform users about
  * various events, activities, or status changes within the application.
  * 
- * @author Jorge Osório
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 1.0
  */

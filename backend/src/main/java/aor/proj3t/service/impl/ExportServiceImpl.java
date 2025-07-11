@@ -64,7 +64,7 @@ import java.util.stream.Collectors;
  * enabling administrators and managers to extract and analyze system data
  * in standardized formats for further processing or archival purposes.
  * 
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 2025
  */

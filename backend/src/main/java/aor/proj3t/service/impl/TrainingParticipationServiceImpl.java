@@ -45,101 +45,101 @@ import java.util.Objects;
  * maintains training records, and provides comprehensive participation
  * analytics for training program evaluation and user development tracking.
  * 
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 2025
  */
 @ApplicationScoped
 public class TrainingParticipationServiceImpl extends BaseService implements TrainingParticipationService {
-    private static final Logger logger = LogManager.getLogger(TrainingParticipationServiceImpl.class);
+        private static final Logger logger = LogManager.getLogger(TrainingParticipationServiceImpl.class);
 
-    @Inject
-    DAOFactory daoFactory;
+        @Inject
+        DAOFactory daoFactory;
 
-    @Inject
-    ConverterFactory converterFactory;
+        @Inject
+        ConverterFactory converterFactory;
 
-    @Inject
-    ServiceFactory serviceFactory;
+        @Inject
+        ServiceFactory serviceFactory;
 
-    @Override
-    public List<TrainingParticipationDTO> findTrainingParticipationsByUser(Long requesterId, Long userId) {
-        User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
-        User user = getEntity(daoFactory.forUser().findById(userId), userId, "User");
-        // access to Admins, the user himself, or the user's manager
-        if (!requester.getId().equals(user.getId()) &&
-                (requester.getRole() != Role.ADMIN &&
-                        (user.getManager() == null
-                                || !user.getManager().getId().equals(requesterId)))) {
-            throw new ForbiddenException(
-                    "Permission denied",
-                    "User with id " + requesterId + " requested invalid access to user with id "
-                            + userId + " training participation");
+        @Override
+        public List<TrainingParticipationDTO> findTrainingParticipationsByUser(Long requesterId, Long userId) {
+                User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
+                User user = getEntity(daoFactory.forUser().findById(userId), userId, "User");
+                // access to Admins, the user himself, or the user's manager
+                if (!requester.getId().equals(user.getId()) &&
+                                (requester.getRole() != Role.ADMIN &&
+                                                (user.getManager() == null
+                                                                || !user.getManager().getId().equals(requesterId)))) {
+                        throw new ForbiddenException(
+                                        "Permission denied",
+                                        "User with id " + requesterId + " requested invalid access to user with id "
+                                                        + userId + " training participation");
+                }
+
+                List<TrainingParticipation> trainingParticipationList = daoFactory.forTrainingParticipation()
+                                .findByParticipantId(user.getId());
+                return converterFactory.forTrainingParticipation().toDTOList(trainingParticipationList);
         }
 
-        List<TrainingParticipation> trainingParticipationList = daoFactory.forTrainingParticipation()
-                .findByParticipantId(user.getId());
-        return converterFactory.forTrainingParticipation().toDTOList(trainingParticipationList);
-    }
+        @Override
+        public void registerTrainingParticipation(Long requesterId,
+                        NewTrainingParticipationDTO newTrainingParticipationDto) {
+                User participant = getEntity(
+                                daoFactory.forUser().findById(newTrainingParticipationDto.getParticipantId()),
+                                newTrainingParticipationDto.getParticipantId(), "User");
+                User manager = getEntity(daoFactory.forUser().findById(newTrainingParticipationDto.getManagerId()),
+                                newTrainingParticipationDto.getManagerId(), "User");
+                // access by admin, or the user's manager
+                if (manager.getRole() != Role.ADMIN
+                                && !Objects.equals(manager.getId(), participant.getManager().getId())) {
+                        throw new ForbiddenException(
+                                        "Permission denied",
+                                        "User with id " + manager.getId()
+                                                        + " adding participation to unmanaged user with id "
+                                                        + participant.getId());
+                }
+                Training training = getEntity(
+                                daoFactory.forTraining().findById(newTrainingParticipationDto.getTrainingId()),
+                                newTrainingParticipationDto.getTrainingId(), "Training");
+                TrainingParticipation trainingParticipation = new TrainingParticipation(
+                                participant,
+                                manager,
+                                training,
+                                newTrainingParticipationDto.getParticipatedAt());
+                daoFactory.forTrainingParticipation().create(trainingParticipation);
 
-    @Override
-    public void registerTrainingParticipation(Long requesterId,
-            NewTrainingParticipationDTO newTrainingParticipationDto) {
-        User participant = getEntity(
-                daoFactory.forUser().findById(newTrainingParticipationDto.getParticipantId()),
-                newTrainingParticipationDto.getParticipantId(), "User");
-        User manager = getEntity(daoFactory.forUser().findById(newTrainingParticipationDto.getManagerId()),
-                newTrainingParticipationDto.getManagerId(), "User");
-        // access by admin, or the user's manager
-        if (manager.getRole() != Role.ADMIN
-                && !Objects.equals(manager.getId(), participant.getManager().getId())) {
-            throw new ForbiddenException(
-                    "Permission denied",
-                    "User with id " + manager.getId()
-                            + " adding participation to unmanaged user with id "
-                            + participant.getId());
-        }
-        Training training = getEntity(
-                daoFactory.forTraining().findById(newTrainingParticipationDto.getTrainingId()),
-                newTrainingParticipationDto.getTrainingId(), "Training");
-        TrainingParticipation trainingParticipation = new TrainingParticipation(
-                participant,
-                manager,
-                training,
-                newTrainingParticipationDto.getParticipatedAt());
-        daoFactory.forTrainingParticipation().create(trainingParticipation);
-
-        // Send notification to participant about the new training participation
-        try {
-            Notification notification = new Notification();
-            notification.setSender(manager);
-            notification.setRecipient(participant);
-            notification.setType(NotificationType.EDIT);
-            notification.setContent("You have been registered for training: " + training.getTitle());
-            serviceFactory.forNotification().createNotification(notification);
-        } catch (Exception e) {
-            // Log error but don't fail the registration
-            logger.error("Failed to send notification for training participation registration", e);
-        }
-    }
-
-    @Override
-    public LinkedHashMap<Integer, Long> getTrainingParticipationTimeByYearByUser(Long requesterId, Long userId) {
-        User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
-        User user = getEntity(daoFactory.forUser().findById(userId), userId, "User");
-
-        boolean isAdmin = requester.getRole() == Role.ADMIN;
-        boolean isSelf = requester.getId().equals(user.getId());
-        boolean isManager = user.getManager() != null && user.getManager().getId().equals(requesterId);
-
-        if (!(isAdmin || isSelf || isManager)) {
-            throw new ForbiddenException(
-                    "Permission denied",
-                    "User with id " + requesterId + " is not authorized to access user " + userId
-                            + "'s participation times.");
+                // Send notification to participant about the new training participation
+                try {
+                        Notification notification = new Notification();
+                        notification.setSender(manager);
+                        notification.setRecipient(participant);
+                        notification.setType(NotificationType.EDIT);
+                        notification.setContent("You have been registered for training: " + training.getTitle());
+                        serviceFactory.forNotification().createNotification(notification);
+                } catch (Exception e) {
+                        // Log error but don't fail the registration
+                        logger.error("Failed to send notification for training participation registration", e);
+                }
         }
 
-        return daoFactory.forTrainingParticipation().trainingTimeByYearByParticipantId(user.getId());
-    }
+        @Override
+        public LinkedHashMap<Integer, Long> getTrainingParticipationTimeByYearByUser(Long requesterId, Long userId) {
+                User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
+                User user = getEntity(daoFactory.forUser().findById(userId), userId, "User");
+
+                boolean isAdmin = requester.getRole() == Role.ADMIN;
+                boolean isSelf = requester.getId().equals(user.getId());
+                boolean isManager = user.getManager() != null && user.getManager().getId().equals(requesterId);
+
+                if (!(isAdmin || isSelf || isManager)) {
+                        throw new ForbiddenException(
+                                        "Permission denied",
+                                        "User with id " + requesterId + " is not authorized to access user " + userId
+                                                        + "'s participation times.");
+                }
+
+                return daoFactory.forTrainingParticipation().trainingTimeByYearByParticipantId(user.getId());
+        }
 
 }

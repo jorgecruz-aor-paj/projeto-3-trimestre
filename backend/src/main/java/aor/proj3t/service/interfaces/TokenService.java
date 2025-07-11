@@ -29,7 +29,7 @@ import aor.proj3t.enums.Role;
  * integrating with JWT utilities and session management to ensure secure token
  * operations.
  * 
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 2025
  */

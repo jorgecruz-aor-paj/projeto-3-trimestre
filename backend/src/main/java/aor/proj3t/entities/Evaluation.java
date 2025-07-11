@@ -25,7 +25,7 @@ import jakarta.persistence.Table;
  * evaluator,
  * including a scale rating, feedback, and status tracking.
  * 
- * @author Jorge Osório
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 1.0
  */

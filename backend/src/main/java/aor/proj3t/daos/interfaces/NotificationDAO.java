@@ -23,7 +23,7 @@ import aor.proj3t.entities.Notification;
  * <li>Notification management and cleanup operations</li>
  * </ul>
  *
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 1.0
  * @see Notification

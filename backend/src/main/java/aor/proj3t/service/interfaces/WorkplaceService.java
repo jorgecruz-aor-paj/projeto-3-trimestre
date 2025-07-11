@@ -1,8 +1,8 @@
 package aor.proj3t.service.interfaces;
 
-import aor.proj3t.dto.WorkplaceDTO;
-
 import java.util.List;
+
+import aor.proj3t.dto.WorkplaceDTO;
 
 /**
  * Service interface for workplace management operations.
@@ -27,7 +27,7 @@ import java.util.List;
  * Future enhancements may include workplace creation, updates, and detailed
  * management.
  * 
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 2025
  */

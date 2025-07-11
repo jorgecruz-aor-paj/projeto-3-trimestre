@@ -5,7 +5,7 @@ package aor.proj3t.enums;
  * An evaluation cycle goes through different phases from being active
  * to completion and finally closure.
  * 
- * @author Project Team
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 1.0
  */

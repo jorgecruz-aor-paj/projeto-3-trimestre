@@ -6,7 +6,7 @@ package aor.proj3t.enums;
  * Each type corresponds to a specific kind of system event or user action
  * that triggers a notification.
  * 
- * @author Project Team
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 1.0
  */

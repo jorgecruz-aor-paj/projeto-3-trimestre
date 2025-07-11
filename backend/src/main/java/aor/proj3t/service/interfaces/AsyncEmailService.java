@@ -25,7 +25,7 @@ package aor.proj3t.service.interfaces;
  * providing better user experience during large-scale notification sending
  * operations.
  * 
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 2025
  */

@@ -24,7 +24,7 @@ import aor.proj3t.dto.LoginDTO;
  * management, audit logging, and integration with JWT token utilities for
  * stateless authentication in the application.
  * 
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 2025
  */

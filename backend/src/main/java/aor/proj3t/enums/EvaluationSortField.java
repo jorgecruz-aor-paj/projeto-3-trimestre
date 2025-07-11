@@ -5,7 +5,7 @@ package aor.proj3t.enums;
  * Each field corresponds to a specific property that can be used
  * to order evaluation results in queries.
  * 
- * @author Project Team
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 1.0
  */

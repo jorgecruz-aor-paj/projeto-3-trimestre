@@ -34,7 +34,7 @@ import jakarta.inject.Inject;
  * <li>Secure logout and session invalidation</li>
  * </ul>
  * 
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 2025
  */

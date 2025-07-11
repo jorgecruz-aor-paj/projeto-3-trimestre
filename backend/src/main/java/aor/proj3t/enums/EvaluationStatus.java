@@ -7,7 +7,7 @@ import aor.proj3t.exceptions.NotFoundException;
  * Each status has an associated ID that corresponds to database values.
  * An evaluation progresses through these statuses during its lifecycle.
  * 
- * @author Project Team
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 1.0
  */

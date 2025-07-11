@@ -13,7 +13,7 @@ import jakarta.persistence.Table;
  * location,
  * providing context for employee management and reporting.
  * 
- * @author Jorge Osório
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 1.0
  */

@@ -1,11 +1,11 @@
 package aor.proj3t.service.interfaces;
 
+import java.util.List;
+import java.util.Map;
+
 import aor.proj3t.dto.EvaluationCloseDTO;
 import aor.proj3t.dto.EvaluationDTO;
 import aor.proj3t.filters.EvaluationFilter;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * Service interface for evaluation management operations.
@@ -36,7 +36,7 @@ import java.util.Map;
  * maintains data integrity, and provides comprehensive evaluation tracking and
  * reporting capabilities.
  * 
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 2025
  */

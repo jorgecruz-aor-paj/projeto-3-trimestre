@@ -22,7 +22,7 @@ import aor.proj3t.entities.Settings;
  * <li>System parameter storage and retrieval</li>
  * </ul>
  *
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 1.0
  * @see Settings

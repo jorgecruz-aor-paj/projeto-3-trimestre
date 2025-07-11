@@ -29,7 +29,7 @@ import aor.proj3t.exceptions.ForbiddenException;
  * logic separate from business logic, making it reusable across different
  * application components.
  * 
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 2025
  */

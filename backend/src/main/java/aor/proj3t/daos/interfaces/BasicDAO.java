@@ -19,7 +19,7 @@ import java.util.Optional;
  * @param <T>  The entity type that this DAO manages
  * @param <ID> The type of the entity's primary key identifier
  * 
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 1.0
  */

@@ -14,7 +14,7 @@ import aor.proj3t.exceptions.NotFoundException;
  * service layers,
  * including entity validation and authorization checks.
  * 
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 2025
  */

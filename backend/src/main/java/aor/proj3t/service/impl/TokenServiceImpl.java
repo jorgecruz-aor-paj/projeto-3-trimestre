@@ -37,7 +37,7 @@ import jakarta.inject.Inject;
  * This service integrates with JWT utilities and session management
  * to provide secure token-based authentication and authorization.
  * 
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 2025
  */

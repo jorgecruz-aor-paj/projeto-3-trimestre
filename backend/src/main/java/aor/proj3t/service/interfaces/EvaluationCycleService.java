@@ -1,10 +1,10 @@
 package aor.proj3t.service.interfaces;
 
+import java.util.List;
+
 import aor.proj3t.dto.EvaluationCycleDTO;
 import aor.proj3t.entities.EvaluationCycle;
 import aor.proj3t.filters.DateRange;
-
-import java.util.List;
 
 /**
  * Service interface for evaluation cycle management operations.
@@ -34,7 +34,7 @@ import java.util.List;
  * readiness, creating comprehensive evaluation coverage, and managing the
  * complete cycle workflow.
  * 
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 2025
  */

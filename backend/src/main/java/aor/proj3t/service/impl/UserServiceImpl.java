@@ -66,7 +66,7 @@ import jakarta.transaction.Transactional;
  * utilities,
  * file storage, JWT token management, and password hashing utilities.
  * 
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 2025
  */

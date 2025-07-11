@@ -23,7 +23,7 @@ import aor.proj3t.filters.TrainingFilter;
  * <li>Training catalog and discovery functionality</li>
  * </ul>
  *
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 1.0
  * @see Training

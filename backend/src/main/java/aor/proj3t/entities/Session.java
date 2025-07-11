@@ -17,7 +17,7 @@ import jakarta.persistence.Table;
  * Sessions track user authentication state with tokens, expiration dates,
  * and additional security information like IP address and user agent.
  * 
- * @author Jorge Osório
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 1.0
  */

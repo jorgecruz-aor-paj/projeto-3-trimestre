@@ -1,10 +1,10 @@
 package aor.proj3t.service.interfaces;
 
-import aor.proj3t.dto.NewTrainingParticipationDTO;
-import aor.proj3t.dto.TrainingParticipationDTO;
-
 import java.util.LinkedHashMap;
 import java.util.List;
+
+import aor.proj3t.dto.NewTrainingParticipationDTO;
+import aor.proj3t.dto.TrainingParticipationDTO;
 
 /**
  * Service interface for training participation management operations.
@@ -36,7 +36,7 @@ import java.util.List;
  * training records, and provides valuable participation analytics for training
  * program evaluation.
  * 
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 2025
  */

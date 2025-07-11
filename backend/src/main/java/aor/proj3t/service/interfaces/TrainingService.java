@@ -1,11 +1,11 @@
 package aor.proj3t.service.interfaces;
 
+import java.util.List;
+
 import aor.proj3t.dto.NewTrainingDTO;
 import aor.proj3t.dto.TrainingAreaDTO;
 import aor.proj3t.dto.TrainingDTO;
 import aor.proj3t.filters.TrainingFilter;
-
-import java.util.List;
 
 /**
  * Service interface for training management operations.
@@ -37,7 +37,7 @@ import java.util.List;
  * maintains training categorization, and provides comprehensive training
  * discovery capabilities.
  * 
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 2025
  */

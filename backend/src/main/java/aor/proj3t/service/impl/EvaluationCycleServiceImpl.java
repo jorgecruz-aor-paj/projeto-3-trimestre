@@ -47,7 +47,7 @@ import jakarta.transaction.Transactional;
  * that all users have assigned managers before starting cycles, creating
  * evaluations for all eligible users, and managing the complete cycle workflow.
  * 
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 2025
  */

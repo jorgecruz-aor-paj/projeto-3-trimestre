@@ -23,7 +23,7 @@ import jakarta.persistence.Table;
  * Training entities define educational content with metadata such as duration,
  * language, and associated training areas for employee development.
  * 
- * @author Jorge Osório
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 1.0
  */

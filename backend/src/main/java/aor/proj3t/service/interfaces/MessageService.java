@@ -33,7 +33,7 @@ import aor.proj3t.entities.Message;
  * checks and notification integration to ensure users are promptly informed of
  * new messages.
  * 
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 2025
  */

@@ -27,7 +27,7 @@ import aor.proj3t.filters.EvaluationFilter;
  * <li>Performance monitoring and reporting capabilities</li>
  * </ul>
  *
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 1.0
  * @see Evaluation

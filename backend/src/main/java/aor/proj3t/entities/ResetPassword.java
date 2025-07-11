@@ -17,7 +17,7 @@ import jakarta.persistence.Table;
  * This entity stores temporary password reset tokens with expiration dates
  * to securely handle password reset operations.
  * 
- * @author Jorge Osório
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 1.0
  */

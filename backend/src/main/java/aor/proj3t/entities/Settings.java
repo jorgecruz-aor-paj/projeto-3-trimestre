@@ -19,7 +19,7 @@ import jakarta.persistence.Table;
  * This entity stores various timeout and expiration values that control
  * the behavior of authentication, sessions, and other system operations.
  * 
- * @author Jorge Osório
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 1.0
  */

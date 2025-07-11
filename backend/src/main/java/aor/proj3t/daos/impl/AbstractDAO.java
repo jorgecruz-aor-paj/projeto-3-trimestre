@@ -38,7 +38,7 @@ import jakarta.persistence.criteria.Root;
  * @param <T>  The entity type managed by this DAO
  * @param <ID> The type of the entity's primary key
  * 
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 1.0
  * @see BasicDAO

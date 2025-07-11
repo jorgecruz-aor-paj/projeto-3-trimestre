@@ -12,7 +12,7 @@ import jakarta.persistence.Table;
  * Training areas help categorize and group related training courses
  * for better organization and filtering within the system.
  * 
- * @author Jorge Osório
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 1.0
  */

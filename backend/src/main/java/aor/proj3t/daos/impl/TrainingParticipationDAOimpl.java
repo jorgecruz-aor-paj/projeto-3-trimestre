@@ -29,7 +29,7 @@ import jakarta.ejb.Stateless;
  * <li>Ordered results for chronological analysis</li>
  * </ul>
  *
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 1.0
  * @see TrainingParticipationDAO

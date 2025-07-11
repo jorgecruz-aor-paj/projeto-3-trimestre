@@ -16,7 +16,7 @@ import jakarta.persistence.Table;
  * Messages support direct communication between users with read status tracking
  * and timestamp information for both sending and reading.
  * 
- * @author Jorge Osório
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 1.0
  */

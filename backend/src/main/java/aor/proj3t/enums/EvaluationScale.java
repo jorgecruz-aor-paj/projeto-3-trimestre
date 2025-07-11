@@ -5,7 +5,7 @@ package aor.proj3t.enums;
  * Each scale level has an associated numeric score and Portuguese description.
  * The scale ranges from 1 (low contribution) to 4 (exceeded contribution).
  * 
- * @author Project Team
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 1.0
  */

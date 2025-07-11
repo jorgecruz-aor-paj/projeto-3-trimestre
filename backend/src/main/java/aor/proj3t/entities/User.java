@@ -27,7 +27,7 @@ import jakarta.persistence.Table;
  * such as employees, managers, or administrators. They have hierarchical
  * relationships through manager-employee associations and belong to workplaces.
  * 
- * @author Jorge Osório
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 1.0
  */

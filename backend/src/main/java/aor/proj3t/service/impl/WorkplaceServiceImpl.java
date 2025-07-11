@@ -26,7 +26,7 @@ import jakarta.inject.Inject;
  * This service serves as a foundation for workplace management
  * and can be extended to support additional workplace operations.
  * 
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 2025
  */

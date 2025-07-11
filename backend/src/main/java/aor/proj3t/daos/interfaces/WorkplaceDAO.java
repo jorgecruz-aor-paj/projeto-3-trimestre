@@ -27,7 +27,7 @@ import aor.proj3t.entities.Workplace;
  * requirements.
  * </p>
  *
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 1.0
  * @see Workplace

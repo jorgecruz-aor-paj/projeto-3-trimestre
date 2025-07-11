@@ -37,7 +37,7 @@ import jakarta.inject.Inject;
  * email operations without blocking the main application flow. It includes
  * comprehensive error handling and logging for email delivery monitoring.
  * 
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 2025
  */

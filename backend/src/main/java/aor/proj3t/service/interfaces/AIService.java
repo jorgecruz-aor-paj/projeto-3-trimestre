@@ -1,8 +1,12 @@
 package aor.proj3t.service.interfaces;
 
-import aor.proj3t.dto.ai.*;
-
 import java.util.List;
+
+import aor.proj3t.dto.ai.ChatResponseDTO;
+import aor.proj3t.dto.ai.PerformancePredictionDTO;
+import aor.proj3t.dto.ai.ReportResponseDTO;
+import aor.proj3t.dto.ai.SentimentResponseDTO;
+import aor.proj3t.dto.ai.TrainingRecommendationDTO;
 
 /**
  * Service interface for AI microservice integration and artificial intelligence
@@ -35,7 +39,7 @@ import java.util.List;
  * seamless AI functionality integration throughout the evaluation and training
  * systems.
  * 
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 2025
  */

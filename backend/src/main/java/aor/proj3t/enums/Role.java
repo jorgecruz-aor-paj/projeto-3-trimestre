@@ -7,7 +7,7 @@ import aor.proj3t.exceptions.NotFoundException;
  * Each role has an associated ID and name, and provides different
  * levels of access and permissions within the application.
  * 
- * @author Project Team
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 1.0
  */

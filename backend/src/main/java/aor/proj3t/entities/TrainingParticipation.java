@@ -18,7 +18,7 @@ import jakarta.persistence.Table;
  * including the manager who approved/assigned the training and participation
  * timestamps.
  * 
- * @author Jorge Osório
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 1.0
  */

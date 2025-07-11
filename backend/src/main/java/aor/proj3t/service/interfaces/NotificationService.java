@@ -1,10 +1,10 @@
 package aor.proj3t.service.interfaces;
 
+import java.util.List;
+
 import aor.proj3t.dto.NotificationDTO;
 import aor.proj3t.dto.paginated.NotificationPaginationDTO;
 import aor.proj3t.entities.Notification;
-
-import java.util.List;
 
 /**
  * Service interface for notification management operations.
@@ -35,7 +35,7 @@ import java.util.List;
  * delivery and maintains comprehensive notification tracking for audit and user
  * experience purposes.
  * 
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 2025
  */
