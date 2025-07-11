@@ -227,8 +227,9 @@ public class EmailUtil {
                 Thank you for your dedication and hard work.
 
                 If you have any questions about your evaluation, please don't hesitate to contact your manager or HR department.""";
-        // Create a dummy URL for the button (could link to profile/dashboard)
-        String profileUrl = "#"; // This could be made configurable or link to actual profile page
+
+        String profileUrl = "#"; // (Dummy link) This could be made configurable or link to actual evaluation
+                                 // page
 
         String body = createEmailTemplate(
                 "Evaluation Cycle Completed",
