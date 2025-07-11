@@ -208,6 +208,76 @@ public class EmailUtil {
     }
 
     /**
+     * Sends an evaluation cycle closure email to a user.
+     * 
+     * @param toEmail              the recipient's email address
+     * @param firstName            the user's first name
+     * @param formattedClosureDate the formatted closure date
+     * @return true if the email was sent successfully, false otherwise
+     */
+    public boolean sendCycleClosureEmail(String toEmail, String firstName, String formattedClosureDate) {
+        String subject = "Evaluation Cycle Closed";
+
+        String mainMessage = "Dear " + firstName + ",\n\n" +
+                "The most recent evaluation cycle has officially closed on " + formattedClosureDate + ".\n\n" +
+                "You can now view your performance evaluation on your profile page. " +
+                "We encourage you to review the feedback and use it as a guide for your continued growth and development.";
+
+        String footerText = """
+                Thank you for your dedication and hard work.
+
+                If you have any questions about your evaluation, please don't hesitate to contact your manager or HR department.""";
+        // Create a dummy URL for the button (could link to profile/dashboard)
+        String profileUrl = "#"; // This could be made configurable or link to actual profile page
+
+        String body = createEmailTemplate(
+                "Evaluation Cycle Completed",
+                mainMessage,
+                "View My Profile",
+                profileUrl,
+                footerText);
+
+        return sendEmail(toEmail, subject, body);
+    }
+
+    /**
+     * Sends an evaluation cycle start email to a manager.
+     * 
+     * @param toEmail            the recipient's email address
+     * @param firstName          the manager's first name
+     * @param formattedStartDate the formatted start date
+     * @param formattedEndDate   the formatted end date
+     * @return true if the email was sent successfully, false otherwise
+     */
+    public boolean sendCycleStartEmail(String toEmail, String firstName, String formattedStartDate,
+            String formattedEndDate) {
+        String subject = "Evaluation Cycle Started";
+
+        String mainMessage = "Dear " + firstName + ",\n\n" +
+                "The new evaluation cycle has officially started.\n\n" +
+                "Start Date: " + formattedStartDate + "\n" +
+                "End Date: " + formattedEndDate + "\n\n" +
+                "Managers should complete performance evaluations for their managed users within this time frame.";
+
+        String footerText = """
+                Thank you for your collaboration.
+
+                If you have any questions about the evaluation process, please contact your manager or HR department.""";
+
+        String evaluationUrl = "#"; // (Dummy link) This could be made configurable or link to actual evaluation
+                                    // page
+
+        String body = createEmailTemplate(
+                "Evaluation Cycle Now Active",
+                mainMessage,
+                "Go to Evaluations",
+                evaluationUrl,
+                footerText);
+
+        return sendEmail(toEmail, subject, body);
+    }
+
+    /**
      * Creates a customized HTML email template.
      * 
      * @param title      the main title of the email
