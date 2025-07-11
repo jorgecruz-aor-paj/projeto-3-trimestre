@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Form, Row, Col, Button, InputGroup } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
-import { SearchableUserSelect } from '../evaluations/filters/SearchableUserSelect';
+import { SearchableUserSelect } from 'components/evaluations/filters/SearchableUserSelect';
 import { useUserList } from 'hooks/useUserList';
 import { exportService } from 'services/exportService';
 import { translateEvaluationScale } from 'utils/evaluationScaleTranslations';
@@ -99,9 +99,12 @@ export const EvaluationFilter = ({
     return () => clearTimeout(delayedSearch);
   }, [searchTerm, setFilters, onFiltersChange, filters.searchText]);
 
-  // Update local search term when filters change externally
+  // Update local search term when filters change externally (only if not actively typing)
   useEffect(() => {
-    if (filters.searchText !== searchTerm) {
+    if (
+      filters.searchText !== searchTerm &&
+      document.activeElement?.name !== 'searchText'
+    ) {
       setSearchTerm(filters.searchText || '');
     }
   }, [filters.searchText]);
@@ -256,6 +259,7 @@ export const EvaluationFilter = ({
               </InputGroup.Text>
               <Form.Control
                 type="text"
+                name="searchText"
                 placeholder={t(
                   'evaluations.searchFeedbackPlaceholder',
                   'Search evaluation feedback...'

@@ -54,12 +54,15 @@ export const UserFilters = ({ filters, setFilters }) => {
     return () => clearTimeout(delayedSearch);
   }, [searchTerm, setFilters, filters.searchText]);
 
-  // Update local search term when filters change externally
+  // Update local search term when filters change externally (only if not actively typing)
   useEffect(() => {
-    if (filters.searchText !== searchTerm) {
+    if (
+      filters.searchText !== searchTerm &&
+      document.activeElement?.name !== 'searchText'
+    ) {
       setSearchTerm(filters.searchText || '');
     }
-  }, [filters.searchText, searchTerm]);
+  }, [filters.searchText]);
 
   // Download users as CSV
   const handleDownloadCSV = async () => {
@@ -145,6 +148,7 @@ export const UserFilters = ({ filters, setFilters }) => {
               </InputGroup.Text>
               <Form.Control
                 type="text"
+                name="searchText"
                 placeholder={t('usersPage.filters.search', 'Search users...')}
                 value={searchTerm}
                 onChange={e => setSearchTerm(e.target.value)}
