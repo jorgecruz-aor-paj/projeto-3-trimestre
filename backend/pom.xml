@@ -29,6 +29,7 @@ gerenciamento de dependências -->
         <jakartaee.version>10.0.0</jakartaee.version>
         <junit.version>5.11.4</junit.version>
         <hamcrest.version>3.0</hamcrest.version>
+        <restassured.version>5.4.0</restassured.version>
         <mockito.version>5.15.2</mockito.version>
         <hibernate.version>6.6.7.Final</hibernate.version>
         <postgresql.version>42.7.5</postgresql.version>
@@ -80,6 +81,13 @@ gerenciamento de dependências -->
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest</artifactId>
             <version>${hamcrest.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- RestAssured for API integration testing -->
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>${restassured.version}</version>
             <scope>test</scope>
         </dependency>
         <!-- Dependência do Mockito para criação de mocks nos testes -->
