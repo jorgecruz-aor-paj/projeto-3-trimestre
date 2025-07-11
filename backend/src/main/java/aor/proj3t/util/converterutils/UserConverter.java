@@ -31,27 +31,27 @@ public class UserConverter extends AbstractConverter<User, UserDTO, Long> {
     
 
     @Override
-    protected Class<User> getEntityClass() {
+    public Class<User> getEntityClass() {
         return User.class;
     }
 
     @Override
-    protected User createEntityInstance() {
+    public User createEntityInstance() {
         return new User();
     }
 
     @Override
-    protected UserDTO createDTOInstance() {
+    public UserDTO createDTOInstance() {
         return new UserDTO();
     }
 
     @Override
-    protected Long getIdFromDTO(UserDTO dto) {
+    public Long getIdFromDTO(UserDTO dto) {
         return dto.getId() != 0 ? dto.getId() : null;
     }
 
     @Override
-    protected void mapEntityToDTO(User user, UserDTO dto) {
+    public void mapEntityToDTO(User user, UserDTO dto) {
         dto.setId(user.getId());
         dto.setEmail(user.getEmail());
         dto.setFirstName(user.getFirstName());
@@ -81,7 +81,7 @@ public class UserConverter extends AbstractConverter<User, UserDTO, Long> {
     }
 
     @Override
-    protected void mapDTOToEntity(UserDTO dto, User user) {
+    public void mapDTOToEntity(UserDTO dto, User user) {
         user.setEmail(dto.getEmail());
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());

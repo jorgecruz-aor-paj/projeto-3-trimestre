@@ -29,17 +29,17 @@ public class TrainingParticipationConverter
     TrainingConverter trainingConverter;
 
     @Override
-    protected Class<TrainingParticipation> getEntityClass() {
+    public Class<TrainingParticipation> getEntityClass() {
         return TrainingParticipation.class;
     }
 
     @Override
-    protected TrainingParticipation createEntityInstance() {
+    public TrainingParticipation createEntityInstance() {
         return new TrainingParticipation();
     }
 
     @Override
-    protected TrainingParticipationDTO createDTOInstance() {
+    public TrainingParticipationDTO createDTOInstance() {
         return new TrainingParticipationDTO();
     }
 

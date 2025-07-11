@@ -23,27 +23,27 @@ import jakarta.enterprise.context.ApplicationScoped;
 public class SettingsConverter extends AbstractConverter<Settings, SettingsDTO, Long> {
 
     @Override
-    protected Class<Settings> getEntityClass() {
+    public Class<Settings> getEntityClass() {
         return Settings.class;
     }
 
     @Override
-    protected Settings createEntityInstance() {
+    public Settings createEntityInstance() {
         return new Settings();
     }
 
     @Override
-    protected SettingsDTO createDTOInstance() {
+    public SettingsDTO createDTOInstance() {
         return new SettingsDTO();
     }
 
     @Override
-    protected Long getIdFromDTO(SettingsDTO dto) {
+    public Long getIdFromDTO(SettingsDTO dto) {
         return dto.getId();
     }
 
     @Override
-    protected void mapEntityToDTO(Settings settings, SettingsDTO dto) {
+    public void mapEntityToDTO(Settings settings, SettingsDTO dto) {
         dto.setId(settings.getId());
         dto.setConfirmationWindow(settings.getConfirmationExpirationTime());
         dto.setSessionWindow(settings.getSessionExpirationTime());
@@ -56,7 +56,7 @@ public class SettingsConverter extends AbstractConverter<Settings, SettingsDTO, 
     }
 
     @Override
-    protected void mapDTOToEntity(SettingsDTO dto, Settings settings) {
+    public void mapDTOToEntity(SettingsDTO dto, Settings settings) {
         settings.setConfirmationExpirationTime(dto.getConfirmationWindow());
         settings.setSessionExpirationTime(dto.getSessionWindow());
         settings.setResetPasswordExpirationTime(dto.getResetPasswordWindow());

@@ -23,27 +23,27 @@ import jakarta.enterprise.context.ApplicationScoped;
 public class SessionConverter extends AbstractConverter<Session, SessionDTO, Long> {
 
     @Override
-    protected Class<Session> getEntityClass() {
+    public Class<Session> getEntityClass() {
         return Session.class;
     }
 
     @Override
-    protected Session createEntityInstance() {
+    public Session createEntityInstance() {
         return new Session();
     }
 
     @Override
-    protected SessionDTO createDTOInstance() {
+    public SessionDTO createDTOInstance() {
         return new SessionDTO();
     }
 
     @Override
-    protected Long getIdFromDTO(SessionDTO dto) {
+    public Long getIdFromDTO(SessionDTO dto) {
         return dto.getId();
     }
 
     @Override
-    protected void mapEntityToDTO(Session session, SessionDTO dto) {
+    public void mapEntityToDTO(Session session, SessionDTO dto) {
         dto.setId(session.getId());
         dto.setCreatedAt(session.getCreatedAt());
         dto.setExpirationDate(session.getExpirationDate());
@@ -58,7 +58,7 @@ public class SessionConverter extends AbstractConverter<Session, SessionDTO, Lon
     }
 
     @Override
-    protected void mapDTOToEntity(SessionDTO dto, Session session) {
+    public void mapDTOToEntity(SessionDTO dto, Session session) {
         session.setCreatedAt(dto.getCreatedAt());
         session.setExpirationDate(dto.getExpirationDate());
         session.setSessionToken(dto.getSessionToken());
