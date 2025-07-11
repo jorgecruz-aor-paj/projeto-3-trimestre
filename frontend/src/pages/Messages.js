@@ -8,17 +8,16 @@ import { MessagesContainer } from 'components/messages/MessagesContainer';
 import { ChatbotMessagesContainer } from 'components/chatbot/ChatbotMessagesContainer';
 import { VirtualAssistant } from 'components/chatbot/VirtualAssistant';
 import { MessageInput } from 'components/messages/MessageInput';
-import { axiosInstance } from 'api/axiosInstance';
-import { API_ENDPOINTS } from 'api/apiConfig';
+import { SearchableUserSelect } from 'components/evaluations/filters/SearchableUserSelect';
+import { useUserList } from 'hooks/useUserList';
 import { websocketService } from 'services/websocketService';
 import { useFormValidation, messageValidationRules } from 'utils/validation';
-import { useErrorMessage } from 'hooks/useErrorMessage';
 import 'styles/pages/Messages.css';
 
 export const Messages = () => {
   const { t } = useTranslation();
   const { user } = useAuthStore();
-  const { getErrorMessage } = useErrorMessage();
+  const { userList } = useUserList();
   const {
     conversations,
     activeConversation,
@@ -31,7 +30,6 @@ export const Messages = () => {
     clearStore,
     handleNotification,
     getUnreadCountForConversation,
-    refreshUnreadCounts,
     loadOlderMessages,
     hasMoreMessages,
   } = useMessageStore();
@@ -44,17 +42,11 @@ export const Messages = () => {
   } = useChatbotStore();
 
   // Form validation for message input
-  const {
-    formData: messageData,
-    errors: messageErrors,
-    handleChange: handleMessageChange,
-    validateAll: validateMessage,
-    resetForm: resetMessageForm,
-  } = useFormValidation({ content: '' }, messageValidationRules);
+  const { handleChange: handleMessageChange, resetForm: resetMessageForm } =
+    useFormValidation({ content: '' }, messageValidationRules);
 
-  const [users, setUsers] = useState([]);
-  const [loadingUsers, setLoadingUsers] = useState(false);
-  const [showUserList, setShowUserList] = useState(false);
+  const [showUserSearch, setShowUserSearch] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState('');
   const [isVirtualAssistantActive, setIsVirtualAssistantActive] =
     useState(false);
   const [validationError, setValidationError] = useState(null);
@@ -82,37 +74,30 @@ export const Messages = () => {
     };
   }, [loadConversations, clearStore, handleNotification]);
 
-  // Load all users for starting new conversations
-  const loadUsers = async () => {
-    if (users.length > 0) return; // Already loaded
-
-    setLoadingUsers(true);
-    try {
-      const response = await axiosInstance.get(
-        API_ENDPOINTS.user.getMiniUsers.url
-      );
-      // Filter out current user
-      const filteredUsers = response.filter(u => u.id !== user?.id);
-      setUsers(filteredUsers);
-    } catch (err) {
-      console.error('Error loading users:', err);
-    } finally {
-      setLoadingUsers(false);
-    }
-  };
-
   const handleStartConversation = selectedUser => {
     setActiveConversation(selectedUser);
     setIsVirtualAssistantActive(false);
-    setShowUserList(false);
+    setShowUserSearch(false);
     setValidationError(null);
     resetMessageForm();
+  };
+
+  const handleUserSelectChange = e => {
+    const userId = e.target.value;
+    setSelectedUserId(userId);
+
+    if (userId && userId !== '' && userList) {
+      const selectedUser = userList.find(u => String(u.id) === String(userId));
+      if (selectedUser) {
+        handleStartConversation(selectedUser);
+      }
+    }
   };
 
   const handleSelectVirtualAssistant = () => {
     setActiveConversation(null);
     setIsVirtualAssistantActive(true);
-    setShowUserList(false);
+    setShowUserSearch(false);
     setValidationError(null);
     resetMessageForm();
   };
@@ -194,10 +179,12 @@ export const Messages = () => {
               <button
                 className="btn btn-primary btn-sm"
                 onClick={() => {
-                  setShowUserList(!showUserList);
-                  if (!showUserList) loadUsers();
+                  const newShowUserSearch = !showUserSearch;
+                  setShowUserSearch(newShowUserSearch);
+                  if (newShowUserSearch) {
+                    setSelectedUserId('');
+                  }
                 }}
-                disabled={loadingUsers}
               >
                 <i className="fas fa-plus me-1"></i>
                 {t('messages.newMessage', 'New Message')}
@@ -209,51 +196,20 @@ export const Messages = () => {
                 {/* Conversations Sidebar */}
                 <div className="col-md-4 border-end conversations-sidebar">
                   <div className="h-100 d-flex flex-column">
-                    {/* User selection dropdown */}
-                    {showUserList && (
+                    {/* User search dropdown */}
+                    {showUserSearch && (
                       <div className="border-bottom p-3">
-                        <h6 className="mb-2">
-                          {t('messages.selectUser', 'Select User')}
-                        </h6>
-                        {loadingUsers ? (
-                          <div className="text-center py-2">
-                            <div
-                              className="spinner-border spinner-border-sm"
-                              role="status"
-                            >
-                              <span className="visually-hidden">
-                                Loading...
-                              </span>
-                            </div>
-                          </div>
-                        ) : (
-                          <div className="user-list">
-                            {users.map(userItem => (
-                              <div
-                                key={userItem.id}
-                                className="d-flex align-items-center p-2 cursor-pointer user-item"
-                                onClick={() =>
-                                  handleStartConversation(userItem)
-                                }
-                              >
-                                <div className="avatar-sm me-2">
-                                  <div className="avatar-initial rounded-circle bg-primary">
-                                    {userItem.firstName?.charAt(0)}
-                                    {userItem.lastName?.charAt(0)}
-                                  </div>
-                                </div>
-                                <div>
-                                  <div className="fw-medium">
-                                    {userItem.firstName} {userItem.lastName}
-                                  </div>
-                                  <small className="text-muted">
-                                    {userItem.email}
-                                  </small>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        )}
+                        <SearchableUserSelect
+                          value={selectedUserId}
+                          onChange={handleUserSelectChange}
+                          excludeUserId={user?.id}
+                          label={t('messages.selectUser', 'Select User')}
+                          name="selectedUserId"
+                          placeholder={t(
+                            'messages.searchUsers',
+                            'Search users...'
+                          )}
+                        />
                       </div>
                     )}
 
@@ -348,6 +304,7 @@ export const Messages = () => {
                 </div>
 
                 {/* Chat Area */}
+                {/* Chat Area */}
                 <div className="col-md-8 chat-area">
                   {isVirtualAssistantActive ? (
                     <div className="h-100 d-flex flex-column">
@@ -419,10 +376,7 @@ export const Messages = () => {
                           </button>
                           <button
                             className="btn btn-primary"
-                            onClick={() => {
-                              setShowUserList(true);
-                              loadUsers();
-                            }}
+                            onClick={() => setShowUserSearch(true)}
                           >
                             <i className="fas fa-user me-2"></i>
                             {t(
