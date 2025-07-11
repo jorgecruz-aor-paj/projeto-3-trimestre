@@ -38,21 +38,29 @@ export const SearchableUserSelect = ({
     if (value && filteredUserList) {
       const user = filteredUserList.find(u => String(u.id) === String(value));
       setSelectedUser(user);
-      setSearchTerm(user ? `${user.firstName} ${user.lastName}` : '');
+      // Only update search term if input is not focused (not actively typing)
+      if (document.activeElement?.name !== name) {
+        setSearchTerm(user ? `${user.firstName} ${user.lastName}` : '');
+      }
     } else {
       setSelectedUser(null);
-      setSearchTerm('');
+      // Only update search term if input is not focused (not actively typing)
+      if (document.activeElement?.name !== name) {
+        setSearchTerm('');
+      }
     }
-  }, [value, filteredUserList]);
+  }, [value, filteredUserList, name]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = event => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsOpen(false);
-        // Reset search term if no selection was made
+        // Reset search term if no selection was made and show selected user name if any
         if (!selectedUser) {
           setSearchTerm('');
+        } else {
+          setSearchTerm(`${selectedUser.firstName} ${selectedUser.lastName}`);
         }
       }
     };
