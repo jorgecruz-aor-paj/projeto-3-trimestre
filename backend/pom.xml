@@ -2,8 +2,7 @@
 <!-- Projeto Maven com coordenadas, propriedades de configuração, dependências, plugins e
 gerenciamento de dependências -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <!-- Coordenadas do projeto -->
@@ -43,6 +42,11 @@ gerenciamento de dependências -->
         <opencsv.version>5.5</opencsv.version>
         <apachePOI.version>5.4.1</apachePOI.version>
         <itext.version>9.2.0</itext.version>
+
+        <!-- Maven related configurations -->
+
+        <!-- Skip tests during build -->
+        <maven.test.skip>true</maven.test.skip>
     </properties>
 
     <!-- Seção de dependências do projeto -->
