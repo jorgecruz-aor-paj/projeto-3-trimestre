@@ -1,9 +1,9 @@
 package aor.proj3t.daos.interfaces;
 
+import java.util.List;
+
 import aor.proj3t.entities.Message;
 import aor.proj3t.entities.User;
-
-import java.util.List;
 
 public interface MessageDAO extends BasicDAO<Message, Long> {
 
@@ -26,7 +26,7 @@ public interface MessageDAO extends BasicDAO<Message, Long> {
     /**
      * Finds all messages exchanged between a sender and recipient.
      *
-     * @param senderId   The ID of the sender.
+     * @param senderId    The ID of the sender.
      * @param recipientId The ID of the recipient.
      * @return List of messages exchanged between the sender and recipient.
      */
@@ -47,6 +47,15 @@ public interface MessageDAO extends BasicDAO<Message, Long> {
      * @return A count of unread messages.
      */
     Integer findCountUnreadMessagesByRecipientId(Long recipientId);
+
+    /**
+     * Counts the number of unread messages between two users.
+     *
+     * @param recipientId The ID of the recipient.
+     * @param senderId    The ID of the sender.
+     * @return A count of unread messages from sender to recipient.
+     */
+    Integer findCountUnreadMessagesBetweenUsers(Long recipientId, Long senderId);
 
     /**
      * Marks a message has read.

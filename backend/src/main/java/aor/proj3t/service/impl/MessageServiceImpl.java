@@ -1,5 +1,13 @@
 package aor.proj3t.service.impl;
 
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import aor.proj3t.daos.DAOFactory;
 import aor.proj3t.dto.MessageDTO;
 import aor.proj3t.entities.Message;
@@ -11,13 +19,6 @@ import aor.proj3t.util.converterutils.ConverterFactory;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * Implementation of the MessageService interface
@@ -109,5 +110,10 @@ public class MessageServiceImpl extends BaseService implements MessageService {
     @Override
     public Integer getUnreadMessageCount(Long userId) {
         return daoFactory.forMessage().findCountUnreadMessagesByRecipientId(userId);
+    }
+
+    @Override
+    public Integer getUnreadMessageCountBetweenUsers(Long recipientId, Long senderId) {
+        return daoFactory.forMessage().findCountUnreadMessagesBetweenUsers(recipientId, senderId);
     }
 }

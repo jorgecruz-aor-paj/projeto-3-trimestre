@@ -269,6 +269,10 @@ const API_ENDPOINTS = {
       url: `${MESSAGES_ENDPOINT}/unread/count`,
       requiresAuth: true,
     },
+    unreadCountFromSender: {
+      url: senderId => `${MESSAGES_ENDPOINT}/unread/count/${senderId}`,
+      requiresAuth: true,
+    },
     markAsRead: {
       url: messageId => `${MESSAGES_ENDPOINT}/${messageId}/read`,
       requiresAuth: true,
