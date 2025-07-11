@@ -37,6 +37,9 @@ public class TrainingServiceImpl extends BaseService implements TrainingService 
     @Inject
     ServiceFactory serviceFactory;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TrainingDTO createTraining(NewTrainingDTO newTrainingDto) {
         TrainingArea trainingArea = getEntity(
@@ -53,6 +56,9 @@ public class TrainingServiceImpl extends BaseService implements TrainingService 
         return converterFactory.forTraining().toDTO(training);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TrainingDTO updateTraining(TrainingDTO trainingDTO) {
         TrainingArea trainingArea = getEntity(
@@ -70,6 +76,13 @@ public class TrainingServiceImpl extends BaseService implements TrainingService 
         return converterFactory.forTraining().toDTO(training);
     }
 
+    /**
+     * {@inheritDoc}
+     * 
+     * <p>
+     * Implementation note: Deactivates training and sends notifications to all
+     * administrators and managers about the deactivation.
+     */
     @Override
     public Boolean deactivateTraining(Long trainingId) {
         try {
@@ -107,11 +120,17 @@ public class TrainingServiceImpl extends BaseService implements TrainingService 
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<TrainingAreaDTO> getAllTrainingAreas() {
         return converterFactory.forTrainingArea().toDTOList(daoFactory.forTrainingArea().findAll());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TrainingAreaDTO addTrainingArea(TrainingAreaDTO trainingAreaDTO) {
         daoFactory.forTrainingArea()
@@ -126,6 +145,13 @@ public class TrainingServiceImpl extends BaseService implements TrainingService 
         return converterFactory.forTrainingArea().toDTO(trainingArea);
     }
 
+    /**
+     * {@inheritDoc}
+     * 
+     * <p>
+     * Implementation note: Non-admin users can only view active trainings.
+     * Admin role check is performed before applying filters.
+     */
     @Override
     public List<TrainingDTO> getTrainingsByFilters(Long requesterId, TrainingFilter filters) {
         User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
@@ -139,6 +165,14 @@ public class TrainingServiceImpl extends BaseService implements TrainingService 
 
     }
 
+    /**
+     * {@inheritDoc}
+     * 
+     * <p>
+     * Implementation note: Verifies requester authorization (admin or user's
+     * manager)
+     * before returning unparticipated trainings for the specified user.
+     */
     @Override
     public List<TrainingDTO> getUnparticipatedTrainingsByUserId(Long requesterId, Long userId) {
         User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");

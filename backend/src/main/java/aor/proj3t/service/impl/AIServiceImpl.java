@@ -1,19 +1,53 @@
 package aor.proj3t.service.impl;
 
-import aor.proj3t.dto.ai.*;
-import aor.proj3t.service.interfaces.AIService;
-import aor.proj3t.util.HttpClientUtil;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.json.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import aor.proj3t.dto.ai.ChatResponseDTO;
+import aor.proj3t.dto.ai.PerformancePredictionDTO;
+import aor.proj3t.dto.ai.ReportResponseDTO;
+import aor.proj3t.dto.ai.SentimentResponseDTO;
+import aor.proj3t.dto.ai.TrainingRecommendationDTO;
+import aor.proj3t.service.interfaces.AIService;
+import aor.proj3t.util.HttpClientUtil;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.json.Json;
+import jakarta.json.JsonArrayBuilder;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonObjectBuilder;
+import jakarta.json.JsonReader;
+
 /**
- * Implementation of AIService that communicates with the AI microservice
+ * Implementation of the AIService interface.
+ * This service provides integration with the AI microservice for various
+ * artificial intelligence
+ * operations including sentiment analysis, chatbot interactions, and AI-powered
+ * insights.
+ * 
+ * <p>
+ * Key functionalities include:
+ * <ul>
+ * <li>Text sentiment analysis with polarity and subjectivity scores</li>
+ * <li>Chatbot conversation management and response generation</li>
+ * <li>AI-powered evaluation insights and recommendations</li>
+ * <li>HTTP client integration with the AI microservice</li>
+ * <li>JSON payload construction and response parsing</li>
+ * </ul>
+ * 
+ * <p>
+ * This service acts as a bridge between the main application and the AI
+ * microservice,
+ * handling request formatting, HTTP communication, and response parsing to
+ * provide
+ * seamless AI functionality integration.
+ * 
+ * @author Jorge Cruz
+ * @version 1.0
+ * @since 2025
  */
 @ApplicationScoped
 public class AIServiceImpl implements AIService {

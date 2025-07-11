@@ -41,14 +41,32 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Implementation of ExportService that provides functionality for exporting
- * data
- * to various formats.
+ * Implementation of the ExportService interface.
+ * This comprehensive service provides data export functionality in multiple
+ * formats
+ * including CSV and PDF, supporting various data types such as users,
+ * evaluations, and trainings.
+ * 
  * <p>
- * This service handles the export of system data to CSV format.
- * Currently supports user data export with optional filtering capabilities.
- * Uses OpenCSV for bean-to-CSV conversion.
- * </p>
+ * Key functionalities include:
+ * <ul>
+ * <li>User data export with filtering capabilities</li>
+ * <li>Evaluation data export with comprehensive details</li>
+ * <li>Training data export and reporting</li>
+ * <li>CSV format export using OpenCSV library</li>
+ * <li>PDF format export using iText library</li>
+ * <li>Customizable data filtering and selection</li>
+ * <li>Professional document formatting and styling</li>
+ * </ul>
+ * 
+ * <p>
+ * This service provides essential reporting and data analysis capabilities,
+ * enabling administrators and managers to extract and analyze system data
+ * in standardized formats for further processing or archival purposes.
+ * 
+ * @author Jorge Cruz
+ * @version 1.0
+ * @since 2025
  */
 @ApplicationScoped
 public class ExportServiceImpl extends BaseService implements ExportService {

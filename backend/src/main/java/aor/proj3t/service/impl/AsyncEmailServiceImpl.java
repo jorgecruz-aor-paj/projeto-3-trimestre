@@ -16,6 +16,31 @@ import jakarta.ejb.Asynchronous;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 
+/**
+ * Implementation of the AsyncEmailService interface.
+ * This service provides asynchronous email sending capabilities for system
+ * notifications,
+ * particularly for evaluation cycle closure notifications and bulk email
+ * operations.
+ * 
+ * <p>
+ * Key functionalities include:
+ * <ul>
+ * <li>Asynchronous evaluation cycle closure notifications</li>
+ * <li>Bulk email sending to all system users</li>
+ * <li>Email delivery tracking and error handling</li>
+ * <li>Formatted date and user-specific email content</li>
+ * </ul>
+ * 
+ * <p>
+ * This service uses EJB asynchronous processing to handle time-consuming
+ * email operations without blocking the main application flow. It includes
+ * comprehensive error handling and logging for email delivery monitoring.
+ * 
+ * @author Jorge Cruz
+ * @version 1.0
+ * @since 2025
+ */
 @Stateless
 public class AsyncEmailServiceImpl implements AsyncEmailService {
     private static final Logger logger = LogManager.getLogger(AsyncEmailServiceImpl.class);
@@ -26,6 +51,14 @@ public class AsyncEmailServiceImpl implements AsyncEmailService {
     @Inject
     EmailUtil emailUtil;
 
+    /**
+     * {@inheritDoc}
+     * 
+     * <p>
+     * Implementation note: Runs asynchronously to avoid blocking the calling
+     * thread,
+     * making it suitable for bulk email operations that may take considerable time.
+     */
     @Asynchronous
     @Override
     public void sendCycleClosureEmailAsync(Long cycleId) {

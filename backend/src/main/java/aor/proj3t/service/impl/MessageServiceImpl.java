@@ -21,7 +21,30 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
 /**
- * Implementation of the MessageService interface
+ * Implementation of the MessageService interface.
+ * This service manages messaging functionality within the application,
+ * including
+ * private messages between users, message threads, and notification
+ * integration.
+ * 
+ * <p>
+ * Key functionalities include:
+ * <ul>
+ * <li>Creating and sending messages between users</li>
+ * <li>Managing message conversations and threads</li>
+ * <li>Integration with notification system for message alerts</li>
+ * <li>Message history and conversation management</li>
+ * <li>Authorization and privacy controls for messaging</li>
+ * </ul>
+ * 
+ * <p>
+ * This service provides secure messaging capabilities with proper
+ * authorization checks and notification integration to ensure users
+ * are promptly informed of new messages.
+ * 
+ * @author Jorge Cruz
+ * @version 1.0
+ * @since 2025
  */
 @ApplicationScoped
 public class MessageServiceImpl extends BaseService implements MessageService {

@@ -1,5 +1,12 @@
 package aor.proj3t.service.impl;
 
+import java.time.Instant;
+import java.util.List;
+import java.util.Optional;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import aor.proj3t.daos.DAOFactory;
 import aor.proj3t.dto.NotificationDTO;
 import aor.proj3t.dto.paginated.NotificationPaginationDTO;
@@ -11,15 +18,30 @@ import aor.proj3t.websocket.AppWebSocket;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
 
 /**
- * Implementation of the NotificationService interface
+ * Implementation of the NotificationService interface.
+ * This service manages all notification-related operations including creation,
+ * retrieval,
+ * marking as read, and real-time WebSocket notifications to users.
+ * 
+ * <p>
+ * Key functionalities include:
+ * <ul>
+ * <li>Creating and persisting notifications</li>
+ * <li>Sending real-time WebSocket notifications</li>
+ * <li>Marking notifications as read with timestamps</li>
+ * <li>Retrieving paginated notification lists for users</li>
+ * <li>Converting between entity and DTO representations</li>
+ * </ul>
+ * 
+ * <p>
+ * This service integrates with WebSocket services to provide real-time
+ * notification delivery to connected users.
+ * 
+ * @author Jorge Cruz
+ * @version 1.0
+ * @since 2025
  */
 @ApplicationScoped
 public class NotificationServiceImpl extends BaseService implements NotificationService {
@@ -35,6 +57,14 @@ public class NotificationServiceImpl extends BaseService implements Notification
     @Inject
     private AppWebSocket webSocketService;
 
+    /**
+     * {@inheritDoc}
+     * 
+     * <p>
+     * Implementation note: Creates notification with timestamp, persists to
+     * database,
+     * and sends real-time WebSocket notification to recipient.
+     */
     @Override
     @Transactional
     public Notification createNotification(Notification notification) {
@@ -56,6 +86,9 @@ public class NotificationServiceImpl extends BaseService implements Notification
         return notification;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NotificationDTO getNotification(Long notificationId) {
         Optional<Notification> notificationOpt = daoFactory.forNotification().findById(notificationId);
@@ -63,6 +96,9 @@ public class NotificationServiceImpl extends BaseService implements Notification
         return converterFactory.forNotification().toDTO(notification);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public Boolean markAsRead(Long notificationId) {
@@ -80,12 +116,18 @@ public class NotificationServiceImpl extends BaseService implements Notification
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<NotificationDTO> getUserNotifications(Long userId) {
         List<Notification> notifications = daoFactory.forNotification().findByRecipientId(userId);
         return converterFactory.forNotification().toDTOList(notifications);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NotificationPaginationDTO getUserNotificationsPaginated(Long userId, int page, int size) {
         int offset = page * size;
@@ -102,6 +144,15 @@ public class NotificationServiceImpl extends BaseService implements Notification
         return new NotificationPaginationDTO(notificationDTOs, totalCount, size, page, sortInfo);
     }
 
+    /**
+     * Deletes a notification by its unique identifier.
+     * This method handles the case where the notification might not exist
+     * gracefully.
+     * 
+     * @param notificationId the unique identifier of the notification to delete
+     * @return true if the notification was successfully deleted, false if not found
+     *         or deletion failed
+     */
     @Override
     @Transactional
     public Boolean deleteNotification(Long notificationId) {

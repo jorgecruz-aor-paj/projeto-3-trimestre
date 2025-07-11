@@ -35,6 +35,34 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
+/**
+ * Implementation of the EvaluationService interface.
+ * This comprehensive service manages the complete evaluation lifecycle
+ * including creation,
+ * submission, feedback collection, approval workflows, and AI-powered sentiment
+ * analysis.
+ * 
+ * <p>
+ * Key functionalities include:
+ * <ul>
+ * <li>Evaluation creation and management within evaluation cycles</li>
+ * <li>Self-evaluation and manager feedback collection</li>
+ * <li>Multi-stage approval workflows (manager, admin)</li>
+ * <li>AI sentiment analysis integration for feedback text</li>
+ * <li>Evaluation statistics and reporting</li>
+ * <li>Notification system integration for workflow events</li>
+ * <li>Authorization and permission validation</li>
+ * </ul>
+ * 
+ * <p>
+ * This service ensures proper evaluation workflow progression, maintains data
+ * integrity,
+ * and provides comprehensive evaluation tracking and reporting capabilities.
+ * 
+ * @author Jorge Cruz
+ * @version 1.0
+ * @since 2025
+ */
 @ApplicationScoped
 public class EvaluationServiceImpl extends BaseService implements EvaluationService {
     private static final Logger logger = LogManager.getLogger(EvaluationServiceImpl.class);

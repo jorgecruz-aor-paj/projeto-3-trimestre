@@ -24,6 +24,33 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
+/**
+ * Implementation of the EvaluationCycleService interface.
+ * This service manages the complete lifecycle of evaluation cycles including
+ * creation,
+ * management, closure, and user notification workflows for performance
+ * evaluation periods.
+ * 
+ * <p>
+ * Key functionalities include:
+ * <ul>
+ * <li>Evaluation cycle creation with date validation</li>
+ * <li>Bulk evaluation creation for all managed users</li>
+ * <li>Cycle closure and finalization processes</li>
+ * <li>Email notification workflows for cycle events</li>
+ * <li>Validation of user management requirements</li>
+ * <li>Integration with asynchronous email services</li>
+ * </ul>
+ * 
+ * <p>
+ * This service ensures proper evaluation cycle management by validating
+ * that all users have assigned managers before starting cycles, creating
+ * evaluations for all eligible users, and managing the complete cycle workflow.
+ * 
+ * @author Jorge Cruz
+ * @version 1.0
+ * @since 2025
+ */
 @ApplicationScoped
 public class EvaluationCycleServiceImpl extends BaseService implements EvaluationCycleService {
     private static final Logger logger = LogManager.getLogger(EvaluationCycleServiceImpl.class);
@@ -40,6 +67,9 @@ public class EvaluationCycleServiceImpl extends BaseService implements Evaluatio
     @Inject
     private ServiceFactory serviceFactory;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void startCycle(Long requesterId, DateRange dateRange) {
         User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
@@ -66,6 +96,7 @@ public class EvaluationCycleServiceImpl extends BaseService implements Evaluatio
         logger.info("Initiated async cycle start emails for evaluation cycle with id {}", evaluationCycle.getId());
     }
 
+    // No JavaDoc needed - inherits from interface automatically
     @Override
     @Transactional
     public EvaluationCycleDTO getActiveCycle(Long requesterId) {
@@ -84,6 +115,13 @@ public class EvaluationCycleServiceImpl extends BaseService implements Evaluatio
         return converterFactory.forEvaluationCycle().toDTO(cycles.getFirst());
     }
 
+    /**
+     * {@inheritDoc}
+     * 
+     * <p>
+     * Implementation note: This method performs admin authorization check and
+     * retrieves cycles using the DAO layer with optional evaluation loading.
+     */
     @Override
     public List<EvaluationCycleDTO> getAllCycles(Long requesterId, boolean withEvaluations) {
         User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
@@ -106,6 +144,8 @@ public class EvaluationCycleServiceImpl extends BaseService implements Evaluatio
 
     }
 
+    // Inherits JavaDoc from interface
+    // TODO Método só chamado em testes.
     @Override
     public void sendCycleClosureEmail(EvaluationCycle cycle) {
         List<User> userList = daoFactory.forUser().findAll();

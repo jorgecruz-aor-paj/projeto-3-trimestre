@@ -42,6 +42,34 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
+/**
+ * Implementation of the UserService interface.
+ * This comprehensive service handles all user-related operations including
+ * registration, authentication,
+ * profile management, role assignment, and user data retrieval with filtering
+ * and pagination.
+ * 
+ * <p>
+ * Key functionalities include:
+ * <ul>
+ * <li>User registration with email confirmation</li>
+ * <li>User profile management and updates</li>
+ * <li>Password management and reset functionality</li>
+ * <li>Manager assignment and role management</li>
+ * <li>User search and filtering capabilities</li>
+ * <li>Profile picture upload and management</li>
+ * <li>User statistics and reporting</li>
+ * </ul>
+ * 
+ * <p>
+ * This service integrates with multiple external services including email
+ * utilities,
+ * file storage, JWT token management, and password hashing utilities.
+ * 
+ * @author Jorge Cruz
+ * @version 1.0
+ * @since 2025
+ */
 @ApplicationScoped
 public class UserServiceImpl extends BaseService implements UserService {
     private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
@@ -70,12 +98,22 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Inject
     MiniUserConverter miniUserConverter;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UserDTO getUser(Long userId) {
         User user = getEntity(daoFactory.forUser().findById(userId), userId, "User");
         return converterFactory.forUser().toDTO(user);
     }
 
+    /**
+     * {@inheritDoc}
+     * 
+     * <p>
+     * Implementation note: Creates a pending registration with expiration token
+     * and sends confirmation email asynchronously.
+     */
     @Override
     public void registerUser(LoginDTO loginDTO, String ipAddress) {
         Instant now = Instant.now();
@@ -91,6 +129,13 @@ public class UserServiceImpl extends BaseService implements UserService {
         sendConfirmationEmail(email, ipAddress, confirmationExpirationTime);
     }
 
+    /**
+     * {@inheritDoc}
+     * 
+     * <p>
+     * Implementation note: Validates pending registration, creates user account,
+     * and cleans up the pending registration record from database.
+     */
     @Override
     public void confirmUser(String email, UserRegistrationDTO userRegistrationDto) {
         PendingRegistration registration = getPendingRegistration(email);
@@ -103,6 +148,9 @@ public class UserServiceImpl extends BaseService implements UserService {
         logger.info("User with email {} successfully registered and confirmed.", registration.getEmail());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void changePassword(Long userId, String newRawPassword) {
         User user = getEntity(daoFactory.forUser().findById(userId), userId, "User");
@@ -110,6 +158,15 @@ public class UserServiceImpl extends BaseService implements UserService {
         daoFactory.forUser().update(user);
     }
 
+    /**
+     * {@inheritDoc}
+     * 
+     * <p>
+     * Implementation note: Validates admin permissions, promotes manager role if
+     * needed,
+     * and handles evaluation reassignments for affected users during bulk
+     * assignment.
+     */
     @Override
     @Transactional
     public void assignManagerBulk(Long userId, ManagerAssignDTO managerAssignDto) {
@@ -145,6 +202,9 @@ public class UserServiceImpl extends BaseService implements UserService {
         demoteManagersWithoutUsers();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void updateUser(Long requesterId, UserDTO userDto) {
         User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
@@ -161,6 +221,9 @@ public class UserServiceImpl extends BaseService implements UserService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<UserDTO> getUsersByFilters(Long requesterId, UserFilter filters) {
         filters.hydrate(daoFactory);
@@ -168,6 +231,14 @@ public class UserServiceImpl extends BaseService implements UserService {
         return converterFactory.forUser().toDTOList(daoFactory.forUser().getUsersByFilters(filters));
     }
 
+    /**
+     * Sends a password reset link to the specified email address.
+     * This method validates the email exists and sends a secure reset link.
+     * 
+     * @param email     the email address to send the reset link to
+     * @param ipAddress the IP address of the client requesting the reset
+     * @throws NotFoundException if no user exists with the given email
+     */
     @Override
     public void sendResetPasswordLink(String email, String ipAddress) {
         Optional<User> userOpt = daoFactory.forUser().findByEmail(email);
@@ -180,6 +251,15 @@ public class UserServiceImpl extends BaseService implements UserService {
         sendResetPasswordEmail(user.getEmail(), user.getId(), ipAddress, resetPasswordExpirationTime);
     }
 
+    /**
+     * Retrieves all users with manager role.
+     * This method is restricted to admin users only.
+     * 
+     * @param requesterId the ID of the admin user making the request
+     * @return a list of UserDTO objects representing all managers
+     * @throws NotFoundException  if the requester doesn't exist
+     * @throws ForbiddenException if the requester is not an admin
+     */
     @Override
     public List<UserDTO> getAllManagers(Long requesterId) {
         User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
@@ -279,6 +359,16 @@ public class UserServiceImpl extends BaseService implements UserService {
         emailUtil.sendConfirmationEmail(email, token, baseUrl);
     }
 
+    /**
+     * Retrieves statistics comparing total users versus unmanaged users.
+     * This method is restricted to admin users and provides insights into user
+     * management coverage.
+     * 
+     * @param requesterId the ID of the admin user making the request
+     * @return a map containing "total" and "unmanaged" user counts
+     * @throws NotFoundException  if the requester doesn't exist
+     * @throws ForbiddenException if the requester is not an admin
+     */
     @Override
     public Map<String, Long> getTotalVSUnmanagedUsers(Long requesterId) {
         User requester = getEntity(daoFactory.forUser().findById(requesterId), requesterId, "User");
@@ -291,6 +381,23 @@ public class UserServiceImpl extends BaseService implements UserService {
         return stats;
     }
 
+    /**
+     * Uploads and sets a new profile picture for a user.
+     * This method handles file validation, storage, and updates the user's
+     * photograph field.
+     * Users can upload their own profile pictures, and admins can upload for any
+     * user.
+     * 
+     * @param requesterId   the ID of the user making the upload request
+     * @param userId        the ID of the user whose profile picture is being
+     *                      updated
+     * @param fileUploadDTO the file upload data containing the image information
+     * @return true if the upload was successful, false otherwise
+     * @throws NotFoundException  if either the requester or target user doesn't
+     *                            exist
+     * @throws ForbiddenException if the requester lacks permission to upload for
+     *                            the target user
+     */
     @Override
     @Transactional
     public Boolean uploadProfilePicture(Long requesterId, Long userId, FileUploadDTO fileUploadDTO) {
@@ -337,6 +444,21 @@ public class UserServiceImpl extends BaseService implements UserService {
         }
     }
 
+    /**
+     * Resets a user's profile picture to the default image.
+     * This method removes the current profile picture (if not default) and sets the
+     * default one.
+     * Users can reset their own profile pictures, and admins can reset for any
+     * user.
+     * 
+     * @param requesterId the ID of the user making the reset request
+     * @param userId      the ID of the user whose profile picture is being reset
+     * @return true if the reset was successful, false otherwise
+     * @throws NotFoundException  if either the requester or target user doesn't
+     *                            exist
+     * @throws ForbiddenException if the requester lacks permission to reset for the
+     *                            target user
+     */
     @Override
     public Boolean resetProfilePicture(Long requesterId, Long userId) {
         logger.info("Starting profile picture reset for user ID: {} by requester ID: {}", userId, requesterId);
@@ -373,11 +495,29 @@ public class UserServiceImpl extends BaseService implements UserService {
         }
     }
 
+    /**
+     * Retrieves all users in a minimal format (MiniUserDTO) excluding admins by
+     * default.
+     * This method provides a lightweight user list for UI components like
+     * dropdowns.
+     * 
+     * @return a list of MiniUserDTO objects representing all non-admin users
+     */
     @Override
     public List<MiniUserDTO> getAllMiniUsers() {
         return getAllMiniUsers(false);
     }
 
+    /**
+     * Retrieves all users in a minimal format (MiniUserDTO) with option to include
+     * or exclude admins.
+     * This method provides a lightweight user list for UI components like
+     * dropdowns.
+     * 
+     * @param includeAdmins whether to include admin users in the result set
+     * @return a list of MiniUserDTO objects representing users based on the admin
+     *         inclusion flag
+     */
     @Override
     public List<MiniUserDTO> getAllMiniUsers(boolean includeAdmins) {
         List<User> users = daoFactory.forUser().findAll();

@@ -40,24 +40,7 @@ public class AuthorizationServiceImpl extends BaseService implements Authorizati
     DAOFactory daoFactory;
 
     /**
-     * Authorizes a user's access to evaluations based on filter parameters and user
-     * role.
-     * <p>
-     * Access rules:
-     * <ul>
-     * <li>ADMIN: Can access all evaluations regardless of parameters</li>
-     * <li>USER: Can only access evaluations where they are the evaluated
-     * person</li>
-     * <li>MANAGER: Can access evaluations where they are the evaluator or
-     * where they are the manager of the evaluated person</li>
-     * </ul>
-     * </p>
-     *
-     * @param requester   The user requesting access
-     * @param evaluatedId The ID of the evaluated user in the filter (can be null)
-     * @param evaluatorId The ID of the evaluator in the filter (can be null)
-     * @throws ForbiddenException if the user does not have permission to access the
-     *                            requested evaluations
+     * {@inheritDoc}
      */
     @Override
     public void authorizeEvaluationAccess(User requester, Long evaluatedId, Long evaluatorId) {
