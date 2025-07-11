@@ -4,12 +4,26 @@ package aor.proj3t.enums;
  * Enum representing the different types of JWT tokens used in the application.
  * Each token type serves a specific purpose and may have different validation
  * rules, expiration times, or claim requirements.
+ * 
+ * <p>
+ * This enum helps the application distinguish between different token contexts
+ * and apply appropriate security measures for each type.
+ * </p>
+ * 
+ * @author Project Team
+ * @version 1.0
+ * @since 1.0
  */
 public enum TokenType {
     /**
      * Token used for user authentication sessions.
      * These tokens are issued after successful login and allow the user
-     * to access protected resources.
+     * to access protected resources during their session.
+     * 
+     * <p>
+     * Session tokens typically have longer expiration times and are
+     * used for general API authentication.
+     * </p>
      */
     SESSION,
 
@@ -17,13 +31,23 @@ public enum TokenType {
      * Token used for account confirmation processes.
      * These tokens are sent to users' email addresses to verify ownership
      * during registration or email change procedures.
+     * 
+     * <p>
+     * Account confirmation tokens are typically single-use and have
+     * shorter expiration times for security purposes.
+     * </p>
      */
     ACCOUNT_CONFIRMATION,
 
     /**
      * Token used for password reset procedures.
      * These tokens are issued when a user requests a password reset
-     * and are typically sent via email.
+     * and are typically sent via email with a secure link.
+     * 
+     * <p>
+     * Password reset tokens are single-use and have very short
+     * expiration times to minimize security risks.
+     * </p>
      */
     PASSWORD_RESET
 }
