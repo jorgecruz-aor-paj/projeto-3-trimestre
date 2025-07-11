@@ -22,6 +22,33 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Implementation of the TrainingParticipationService interface.
+ * This service manages the participation of users in training programs,
+ * including
+ * registration, completion tracking, certification, and participation
+ * analytics.
+ * 
+ * <p>
+ * Key functionalities include:
+ * <ul>
+ * <li>Training participation registration and management</li>
+ * <li>Completion status tracking and updates</li>
+ * <li>Certificate generation and distribution</li>
+ * <li>Training participation analytics and reporting</li>
+ * <li>Notification integration for participation events</li>
+ * <li>Authorization controls for participation management</li>
+ * </ul>
+ * 
+ * <p>
+ * This service ensures proper tracking of user training progress,
+ * maintains training records, and provides comprehensive participation
+ * analytics for training program evaluation and user development tracking.
+ * 
+ * @author Jorge Cruz
+ * @version 1.0
+ * @since 2025
+ */
 @ApplicationScoped
 public class TrainingParticipationServiceImpl extends BaseService implements TrainingParticipationService {
     private static final Logger logger = LogManager.getLogger(TrainingParticipationServiceImpl.class);
@@ -57,7 +84,7 @@ public class TrainingParticipationServiceImpl extends BaseService implements Tra
 
     @Override
     public void registerTrainingParticipation(Long requesterId,
-                                              NewTrainingParticipationDTO newTrainingParticipationDto) {
+            NewTrainingParticipationDTO newTrainingParticipationDto) {
         User participant = getEntity(
                 daoFactory.forUser().findById(newTrainingParticipationDto.getParticipantId()),
                 newTrainingParticipationDto.getParticipantId(), "User");
