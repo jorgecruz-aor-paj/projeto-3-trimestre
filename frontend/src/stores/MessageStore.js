@@ -18,7 +18,7 @@ export const useMessageStore = create((set, get) => ({
   setActiveConversation: conversation => {
     set({ activeConversation: conversation, messages: [] });
     if (conversation) {
-      get().loadConversationMessages(conversation.id);
+      get().loadConversationMessages(conversation.id, 0, 20); // Load latest 20 messages
     }
   },
 
@@ -91,41 +91,73 @@ export const useMessageStore = create((set, get) => ({
     return 0;
   },
 
-  loadConversationMessages: async (otherUserId, page = 0, pageSize = 50) => {
+  // Function to load older messages (for scroll-to-top functionality)
+  loadOlderMessages: async () => {
+    const { activeConversation, isLoading, messages } = get();
+    if (!activeConversation || isLoading) return;
+
+    // Calculate next page based on current message count
+    const currentPage = Math.floor(messages.length / 20);
+    await get().loadConversationMessages(
+      activeConversation.id,
+      currentPage + 1,
+      20
+    );
+  },
+
+  loadConversationMessages: async (otherUserId, page = 0, pageSize = 20) => {
     set({ isLoading: true, error: null });
     try {
+      console.log(
+        'Loading conversation messages with user:',
+        otherUserId,
+        'page:',
+        page
+      );
+
       const url = `${API_ENDPOINTS.messages.conversation.url(
         otherUserId
       )}?page=${page}&pageSize=${pageSize}`;
       const response = await axiosInstance.get(url);
 
-      // Sort messages by timestamp (oldest first)
-      const sortedMessages = response.sort(
-        (a, b) => new Date(a.timestampSent) - new Date(b.timestampSent)
-      );
+      console.log('Messages response:', response);
+      const messages = Array.isArray(response) ? response : [];
 
-      // Calculate unread count before marking as read (for potential future use)
+      // Backend now returns newest first, but we want to display oldest first in chat
+      // So we reverse the order for display
+      const displayMessages = [...messages].reverse();
+
       const currentUserId = useAuthStore.getState().user?.id;
-      // const unreadCount = get().calculateUnreadFromMessages(sortedMessages, currentUserId);
 
-      set({ messages: sortedMessages, isLoading: false });
-
-      // Mark unread messages as read
-      const unreadMessages = sortedMessages.filter(
-        msg => !msg.read && msg.recipientId === currentUserId
-      );
-
-      for (const message of unreadMessages) {
-        await get().markMessageAsRead(message.id);
+      if (page === 0) {
+        // Initial load - replace all messages
+        set({ messages: displayMessages, isLoading: false });
+      } else {
+        // Loading older messages - prepend to existing messages
+        set(state => ({
+          messages: [...displayMessages, ...state.messages],
+          isLoading: false,
+        }));
       }
 
-      // Clear unread count for this conversation after marking as read
-      set(state => ({
-        unreadByConversation: {
-          ...state.unreadByConversation,
-          [otherUserId]: 0,
-        },
-      }));
+      // Mark unread messages as read (only for initial load)
+      if (page === 0) {
+        const unreadMessages = displayMessages.filter(
+          msg => !msg.read && msg.recipientId === currentUserId
+        );
+
+        for (const message of unreadMessages) {
+          await get().markMessageAsRead(message.id);
+        }
+
+        // Clear unread count for this conversation after marking as read
+        set(state => ({
+          unreadByConversation: {
+            ...state.unreadByConversation,
+            [otherUserId]: 0,
+          },
+        }));
+      }
     } catch (error) {
       console.error('Error loading conversation messages:', error);
       set({
@@ -268,18 +300,13 @@ export const useMessageStore = create((set, get) => ({
     console.log('Received notification:', notificationData);
 
     if (notificationData.type === 'new_message') {
-      const { senderId } = notificationData;
-
-      // Refresh current conversation if it's active
+      // If we're in an active conversation, reload the latest messages
       const { activeConversation } = get();
-      if (activeConversation && activeConversation.id === senderId) {
-        get().loadConversationMessages(activeConversation.id);
-      } else {
-        // Refresh unread counts for all conversations
-        get().refreshUnreadCounts();
+      if (activeConversation) {
+        get().loadConversationMessages(activeConversation.id, 0, 20);
       }
 
-      // Update conversations list and global unread count
+      // Always reload conversations to update unread counts
       get().loadConversations();
       get().loadUnreadCount();
     } else if (notificationData.type === 'message_read') {

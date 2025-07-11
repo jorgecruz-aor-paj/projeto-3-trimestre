@@ -84,8 +84,8 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         allMessages.addAll(sentMessages);
         allMessages.addAll(receivedMessages);
 
-        // Sort by timestamp
-        allMessages.sort((a, b) -> a.getTimestampSent().compareTo(b.getTimestampSent()));
+        // Sort by timestamp (NEWEST FIRST)
+        allMessages.sort((a, b) -> b.getTimestampSent().compareTo(a.getTimestampSent()));
 
         return converterFactory.forMessage().toDTOList(allMessages);
     }

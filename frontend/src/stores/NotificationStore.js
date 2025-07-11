@@ -30,7 +30,10 @@ export const useNotificationStore = create((set, get) => ({
       );
 
       const newNotifications = response.entities || [];
-      const unreadCount = newNotifications.filter(n => !n.read).length;
+      // Count unread notifications excluding MESSAGE type (to prevent double counting with messages)
+      const unreadCount = newNotifications.filter(
+        n => !n.read && n.type !== 'MESSAGE'
+      ).length;
 
       // Calculate if there are more pages
       const hasMore = page + 1 < (response.totalPages || 0);
@@ -39,7 +42,10 @@ export const useNotificationStore = create((set, get) => ({
         notifications: append
           ? [...state.notifications, ...newNotifications]
           : newNotifications,
-        unreadCount: append ? state.unreadCount + unreadCount : unreadCount,
+        unreadCount: append
+          ? state.unreadCount + unreadCount
+          : state.notifications.filter(n => !n.read && n.type !== 'MESSAGE')
+              .length,
         currentPage: page,
         pageSize: size,
         totalCount: response.totalCount || 0,
@@ -76,7 +82,8 @@ export const useNotificationStore = create((set, get) => ({
 
       set({
         notifications,
-        unreadCount: notifications.filter(n => !n.read).length,
+        unreadCount: notifications.filter(n => !n.read && n.type !== 'MESSAGE')
+          .length,
       });
     } catch (error) {
       console.error('Failed to mark notification as read:', error);
@@ -113,7 +120,8 @@ export const useNotificationStore = create((set, get) => ({
       );
       set({
         notifications,
-        unreadCount: notifications.filter(n => !n.read).length,
+        unreadCount: notifications.filter(n => !n.read && n.type !== 'MESSAGE')
+          .length,
       });
     } catch (error) {
       console.error('Failed to delete notification:', error);
@@ -126,7 +134,8 @@ export const useNotificationStore = create((set, get) => ({
     const notifications = [notification, ...get().notifications];
     set({
       notifications,
-      unreadCount: notifications.filter(n => !n.read).length,
+      unreadCount: notifications.filter(n => !n.read && n.type !== 'MESSAGE')
+        .length,
       totalCount: get().totalCount + 1,
     });
   },
@@ -134,7 +143,9 @@ export const useNotificationStore = create((set, get) => ({
   // Update unread count (for compatibility with existing message system)
   updateUnreadCount: () => {
     const { notifications } = get();
-    const unreadCount = notifications.filter(n => !n.read).length;
+    const unreadCount = notifications.filter(
+      n => !n.read && n.type !== 'MESSAGE'
+    ).length;
     set({ unreadCount });
   },
 
