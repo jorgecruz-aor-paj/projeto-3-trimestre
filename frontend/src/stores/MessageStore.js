@@ -14,6 +14,7 @@ export const useMessageStore = create((set, get) => ({
   isLoading: false,
   error: null,
   hasMoreMessages: true, // Track if there are more messages to load
+  currentPage: 0, // Track the current page for pagination
 
   // Actions
   setActiveConversation: conversation => {
@@ -21,6 +22,7 @@ export const useMessageStore = create((set, get) => ({
       activeConversation: conversation,
       messages: [],
       hasMoreMessages: true,
+      currentPage: 0, // Reset page counter
     });
     if (conversation) {
       get().loadConversationMessages(conversation.id, 0, 20); // Load latest 20 messages
@@ -98,16 +100,13 @@ export const useMessageStore = create((set, get) => ({
 
   // Function to load older messages (for scroll-to-top functionality)
   loadOlderMessages: async () => {
-    const { activeConversation, isLoading, messages, hasMoreMessages } = get();
+    const { activeConversation, isLoading, hasMoreMessages, currentPage } =
+      get();
     if (!activeConversation || isLoading || !hasMoreMessages) return;
 
-    // Calculate next page based on current message count
-    const currentPage = Math.floor(messages.length / 20);
-    await get().loadConversationMessages(
-      activeConversation.id,
-      currentPage + 1,
-      20
-    );
+    // Use the tracked current page + 1 for next page
+    const nextPage = currentPage + 1;
+    await get().loadConversationMessages(activeConversation.id, nextPage, 20);
   },
 
   loadConversationMessages: async (otherUserId, page = 0, pageSize = 20) => {
@@ -139,14 +138,16 @@ export const useMessageStore = create((set, get) => ({
         set({
           messages: displayMessages,
           isLoading: false,
-          hasMoreMessages: messages.length === pageSize, // If we got fewer messages than requested, there are no more
+          hasMoreMessages: messages.length === pageSize,
+          currentPage: 0, // Set current page to 0 for initial load
         });
       } else {
         // Loading older messages - prepend to existing messages
         set(state => ({
           messages: [...displayMessages, ...state.messages],
           isLoading: false,
-          hasMoreMessages: messages.length === pageSize, // If we got fewer messages than requested, there are no more
+          hasMoreMessages: messages.length === pageSize,
+          currentPage: page, // Update current page to the loaded page
         }));
       }
 
