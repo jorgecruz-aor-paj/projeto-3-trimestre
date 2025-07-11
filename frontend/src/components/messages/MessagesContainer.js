@@ -9,6 +9,7 @@ export const MessagesContainer = ({
   currentUserId,
   onLoadOlder,
   isLoading,
+  hasMoreMessages = true,
 }) => {
   const { t } = useTranslation();
   const { formatInstant, convertInstantToDate } = useLanguage();
@@ -16,28 +17,94 @@ export const MessagesContainer = ({
   const messagesContainerRef = useRef(null);
   const prevMessagesLengthRef = useRef(0);
   const [isLoadingOlder, setIsLoadingOlder] = useState(false);
+  const [hasInitiallyScrolled, setHasInitiallyScrolled] = useState(false);
+  const lastScrolledMessageCount = useRef(0);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'end',
-    });
+    // Try multiple methods to ensure scrolling works
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'end',
+      });
+    }
+
+    // Fallback: direct scroll on container
+    if (messagesContainerRef.current) {
+      const container = messagesContainerRef.current;
+      container.scrollTop = container.scrollHeight;
+    }
   };
 
   useEffect(() => {
-    // Only scroll to bottom if new messages were added (not on initial load or message updates)
-    if (messages && messages.length > prevMessagesLengthRef.current) {
-      scrollToBottom();
+    // Always scroll to bottom when messages are first loaded or when new messages arrive
+    if (messages && messages.length > 0) {
+      const currentLength = messages.length;
+      const previousLength = prevMessagesLengthRef.current;
+
+      // Initial load - first time getting messages
+      if (previousLength === 0) {
+        setTimeout(() => {
+          scrollToBottom();
+          setHasInitiallyScrolled(true);
+          lastScrolledMessageCount.current = currentLength;
+        }, 150); // Increased timeout to ensure DOM is fully rendered
+      }
+      // New messages added (and not from loading older messages)
+      else if (
+        currentLength > previousLength &&
+        !isLoadingOlder &&
+        hasInitiallyScrolled
+      ) {
+        scrollToBottom();
+        lastScrolledMessageCount.current = currentLength;
+      }
     }
+
     prevMessagesLengthRef.current = messages ? messages.length : 0;
+  }, [messages, isLoadingOlder, hasInitiallyScrolled]);
+
+  // Reset scroll state when conversation changes (messages array becomes empty or completely different)
+  useEffect(() => {
+    if (!messages || messages.length === 0) {
+      setHasInitiallyScrolled(false);
+      prevMessagesLengthRef.current = 0;
+      lastScrolledMessageCount.current = 0;
+    }
   }, [messages]);
+
+  // Additional effect to handle loading state changes
+  useEffect(() => {
+    // When loading finishes and we have messages, ensure we're scrolled to bottom
+    if (
+      !isLoading &&
+      messages &&
+      messages.length > 0 &&
+      !hasInitiallyScrolled
+    ) {
+      setTimeout(() => {
+        scrollToBottom();
+        setHasInitiallyScrolled(true);
+      }, 200);
+    }
+  }, [isLoading, messages, hasInitiallyScrolled]);
 
   // Handle scroll event to load older messages
   const handleScroll = async e => {
     const { scrollTop, scrollHeight } = e.target;
 
     // If user scrolled to the top (within 50px) and we're not already loading
-    if (scrollTop < 50 && !isLoadingOlder && !isLoading && onLoadOlder) {
+    // Also check if we have messages to avoid infinite loading on empty conversations
+    // and check if there are more messages to load
+    if (
+      scrollTop < 50 &&
+      !isLoadingOlder &&
+      !isLoading &&
+      onLoadOlder &&
+      messages &&
+      messages.length > 0 &&
+      hasMoreMessages
+    ) {
       setIsLoadingOlder(true);
 
       // Store the current scroll height to maintain position after loading
@@ -162,4 +229,5 @@ MessagesContainer.propTypes = {
   currentUserId: PropTypes.number,
   onLoadOlder: PropTypes.func,
   isLoading: PropTypes.bool,
+  hasMoreMessages: PropTypes.bool,
 };

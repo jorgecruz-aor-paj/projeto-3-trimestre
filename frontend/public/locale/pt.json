@@ -605,7 +605,8 @@
     "noConversations": "Ainda não há conversas",
     "selectConversation": "Selecione uma conversa para começar a enviar mensagens",
     "startConversation": "Iniciar Conversa",
-    "online": "Online"
+    "online": "Online",
+    "loadingOlder": "A carregar mensagens antigas..."
   },
   "chatbot": {
     "title": "Assistente IA",

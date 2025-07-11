@@ -13,10 +13,15 @@ export const useMessageStore = create((set, get) => ({
   unreadByConversation: {}, // Track unread count per conversation
   isLoading: false,
   error: null,
+  hasMoreMessages: true, // Track if there are more messages to load
 
   // Actions
   setActiveConversation: conversation => {
-    set({ activeConversation: conversation, messages: [] });
+    set({
+      activeConversation: conversation,
+      messages: [],
+      hasMoreMessages: true,
+    });
     if (conversation) {
       get().loadConversationMessages(conversation.id, 0, 20); // Load latest 20 messages
     }
@@ -93,8 +98,8 @@ export const useMessageStore = create((set, get) => ({
 
   // Function to load older messages (for scroll-to-top functionality)
   loadOlderMessages: async () => {
-    const { activeConversation, isLoading, messages } = get();
-    if (!activeConversation || isLoading) return;
+    const { activeConversation, isLoading, messages, hasMoreMessages } = get();
+    if (!activeConversation || isLoading || !hasMoreMessages) return;
 
     // Calculate next page based on current message count
     const currentPage = Math.floor(messages.length / 20);
@@ -131,12 +136,17 @@ export const useMessageStore = create((set, get) => ({
 
       if (page === 0) {
         // Initial load - replace all messages
-        set({ messages: displayMessages, isLoading: false });
+        set({
+          messages: displayMessages,
+          isLoading: false,
+          hasMoreMessages: messages.length === pageSize, // If we got fewer messages than requested, there are no more
+        });
       } else {
         // Loading older messages - prepend to existing messages
         set(state => ({
           messages: [...displayMessages, ...state.messages],
           isLoading: false,
+          hasMoreMessages: messages.length === pageSize, // If we got fewer messages than requested, there are no more
         }));
       }
 
@@ -330,6 +340,7 @@ export const useMessageStore = create((set, get) => ({
       unreadByConversation: {},
       isLoading: false,
       error: null,
+      hasMoreMessages: true,
     });
   },
 }));

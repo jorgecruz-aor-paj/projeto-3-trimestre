@@ -605,7 +605,8 @@
     "noConversations": "No conversations yet",
     "selectConversation": "Select a conversation to start messaging",
     "startConversation": "Start Conversation",
-    "online": "Online"
+    "online": "Online",
+    "loadingOlder": "Loading older messages..."
   },
   "chatbot": {
     "title": "AI Assistant",

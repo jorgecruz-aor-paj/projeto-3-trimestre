@@ -33,6 +33,7 @@ export const Messages = () => {
     getUnreadCountForConversation,
     refreshUnreadCounts,
     loadOlderMessages,
+    hasMoreMessages,
   } = useMessageStore();
 
   // Chatbot state
@@ -380,6 +381,7 @@ export const Messages = () => {
                         currentUserId={user?.id}
                         onLoadOlder={handleLoadOlderMessages}
                         isLoading={getCurrentLoading()}
+                        hasMoreMessages={hasMoreMessages}
                       />
                       <div>
                         {validationError && (
