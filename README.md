@@ -27,7 +27,7 @@
 
 1. [x] Notificações de eventos como fechos de ciclo ou conclusão de avaliações devolvem excepção!
 
-2. Enviar do backend um placeholder para a tradução do New Message from;
+2. [x] Fritei a pipoca! Enviar do backend um placeholder para a tradução do New Message from;
 
 ### Responsividade:
 
