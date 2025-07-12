@@ -39,9 +39,11 @@
 
 ### Avaliações:
 
-1. Caixa de pesquisa está a pesquisar pelo feedback apenas;
+1. checkAndCloseEvaluationCycle -> refactor para passar do EvaluationService para o EvaluationCycleService.
 
-2. [x] Após marcar avaliações como fechadas página não faz refresh (Email Assincrono);
+2. Caixa de pesquisa está a pesquisar pelo feedback apenas;
+
+3. [x] Após marcar avaliações como fechadas página não faz refresh (Email Assincrono);
 
 ---
 
