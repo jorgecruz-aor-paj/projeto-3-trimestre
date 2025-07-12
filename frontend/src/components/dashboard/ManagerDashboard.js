@@ -3,6 +3,9 @@ import { useTranslation } from 'react-i18next';
 import { Row, Col } from 'react-bootstrap';
 import { StatsCard } from './StatsCard';
 import { QuickActions } from './QuickActions';
+import { TeamPerformanceChart } from './TeamPerformanceChart';
+import { useAuthStore } from 'stores/AuthStore';
+import { useManagerStats } from 'hooks/useManagerStats';
 
 /**
  * Manager Dashboard Component
@@ -13,59 +16,59 @@ import { QuickActions } from './QuickActions';
  */
 export const ManagerDashboard = () => {
   const { t } = useTranslation();
-
-  // TODO: Backend endpoints needed for manager dashboard statistics:
-  // - Team member count for this manager
-  // - Active trainings count for team members
-  // - Pending evaluations count for team members
-  // - Average team performance metrics
-  //
-  // Current available endpoints:
-  // - GET /users (with filters) - could potentially filter by manager
-  // - GET /trainings (with filters)
-  // - GET /evaluations (with filters)
-  // - GET /trainings/unparticipated/{userId}
-  // - GET /trainings/participation/{userId}
+  const { user } = useAuthStore();
+  const { stats, loading, error } = useManagerStats(user?.id);
 
   const managerQuickActions = [
     {
       title: t('dashboard.manager.actions.teamManagement'),
       description: t('dashboard.manager.actions.teamManagementDesc'),
       icon: 'bi-people',
-      href: '/team',
+      link: '/users',
       variant: 'primary',
     },
     {
       title: t('dashboard.manager.actions.evaluateTeam'),
       description: t('dashboard.manager.actions.evaluateTeamDesc'),
       icon: 'bi-clipboard-check',
-      href: '/evaluations/team',
+      link: '/evaluations',
       variant: 'success',
     },
     {
       title: t('dashboard.manager.actions.assignTraining'),
       description: t('dashboard.manager.actions.assignTrainingDesc'),
       icon: 'bi-mortarboard',
-      href: '/trainings/assign',
+      link: '/users',
       variant: 'info',
     },
     {
       title: t('dashboard.manager.actions.teamReports'),
       description: t('dashboard.manager.actions.teamReportsDesc'),
       icon: 'bi-graph-up',
-      href: '/reports/team',
+      link: '/not-implemented',
       variant: 'warning',
     },
   ];
 
   return (
     <div className="manager-dashboard">
-      {/* Team Statistics - TODO: Implement when backend endpoints are available */}
+      {/* Error display */}
+      {error && (
+        <Row className="mb-3">
+          <Col>
+            <div className="alert alert-warning" role="alert">
+              {error}
+            </div>
+          </Col>
+        </Row>
+      )}
+
+      {/* Team Statistics */}
       <Row className="mb-4">
         <Col md={3}>
           <StatsCard
             title={t('dashboard.manager.stats.teamMembers')}
-            value="--"
+            value={loading ? '...' : stats.teamMembers}
             icon="bi-people"
             variant="primary"
             trend=""
@@ -75,7 +78,7 @@ export const ManagerDashboard = () => {
         <Col md={3}>
           <StatsCard
             title={t('dashboard.manager.stats.activeTrainings')}
-            value="--"
+            value={loading ? '...' : stats.activeTrainings}
             icon="bi-mortarboard"
             variant="success"
             trend=""
@@ -85,7 +88,7 @@ export const ManagerDashboard = () => {
         <Col md={3}>
           <StatsCard
             title={t('dashboard.manager.stats.pendingEvaluations')}
-            value="--"
+            value={loading ? '...' : stats.pendingEvaluations}
             icon="bi-clock"
             variant="warning"
             trend=""
@@ -95,7 +98,13 @@ export const ManagerDashboard = () => {
         <Col md={3}>
           <StatsCard
             title={t('dashboard.manager.stats.teamPerformance')}
-            value="--"
+            value={
+              loading
+                ? '...'
+                : stats.teamPerformance > 0
+                ? `${stats.teamPerformance}/4`
+                : '--'
+            }
             icon="bi-trophy"
             variant="info"
             trend=""
@@ -106,11 +115,14 @@ export const ManagerDashboard = () => {
 
       {/* Quick Actions */}
       <Row className="mb-4">
-        <Col>
+        <Col md={8}>
           <QuickActions
             title={t('dashboard.manager.quickActions')}
             actions={managerQuickActions}
           />
+        </Col>
+        <Col md={4}>
+          <TeamPerformanceChart stats={stats} loading={loading} />
         </Col>
       </Row>
     </div>

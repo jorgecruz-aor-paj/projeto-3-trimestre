@@ -38,6 +38,7 @@
     "view": "View",
     "download": "Download",
     "upload": "Upload",
+    "notImplementedYet": "Not implemented yet",
     "submit": "Submit",
     "reset": "Reset",
     "refresh": "Refresh",
@@ -475,6 +476,13 @@
         "assignTrainingDesc": "Assign training programs to team",
         "teamReports": "Team Reports",
         "teamReportsDesc": "View team performance reports"
+      },
+      "charts": {
+        "teamOverview": "Team Overview",
+        "completedEvaluations": "Completed Evaluations",
+        "pendingEvaluations": "Pending Evaluations",
+        "teamMembers": "Team Members",
+        "avgPerformance": "Average Performance"
       }
     },
     "user": {

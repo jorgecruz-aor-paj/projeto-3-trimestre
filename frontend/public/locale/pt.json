@@ -38,6 +38,7 @@
     "view": "Ver",
     "download": "Descarregar",
     "upload": "Carregar",
+    "notImplementedYet": "Ainda não implementado",
     "submit": "Submeter",
     "reset": "Repor",
     "refresh": "Atualizar",
@@ -475,6 +476,13 @@
         "assignTrainingDesc": "Atribuir programas de formação à equipa",
         "teamReports": "Relatórios da Equipa",
         "teamReportsDesc": "Ver relatórios de desempenho da equipa"
+      },
+      "charts": {
+        "teamOverview": "Visão Geral da Equipa",
+        "completedEvaluations": "Avaliações Concluídas",
+        "pendingEvaluations": "Avaliações Pendentes",
+        "teamMembers": "Membros da Equipa",
+        "avgPerformance": "Desempenho Médio"
       }
     },
     "user": {
