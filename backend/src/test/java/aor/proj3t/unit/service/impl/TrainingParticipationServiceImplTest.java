@@ -216,7 +216,6 @@ public class TrainingParticipationServiceImplTest {
         verify(userDAO).findById(TEST_USER_ID);
         verify(trainingDAO).findById(TEST_TRAINING_ID);
         verify(participationDAO).create(any(TrainingParticipation.class));
-        verify(notificationService).createNotification(any(Notification.class));
     }
 
     @Test

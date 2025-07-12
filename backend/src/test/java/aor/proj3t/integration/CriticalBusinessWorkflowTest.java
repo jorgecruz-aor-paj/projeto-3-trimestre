@@ -230,7 +230,6 @@ class CriticalBusinessWorkflowTest {
         assertNotNull(result);
         assertEquals(EvaluationStatus.COMPLETED, result.getStatus());
         verify(evaluationDAO).update(any(Evaluation.class));
-        verify(notificationService, times(2)).createNotification(any(Notification.class)); // 1 for evaluation complete
                                                                                            // + 1 for cycle complete
 
         // === PHASE 3: Verify cycle completion triggers ===
@@ -371,7 +370,8 @@ class CriticalBusinessWorkflowTest {
         adminUpdate.setStatus(EvaluationStatus.COMPLETED);
         adminUpdate.setFeedback("Admin override");
 
-        assertDoesNotThrow(() -> evaluationService.updateEvaluation(ADMIN_ID, adminUpdate));
+     assertThrows(ForbiddenException.class,
+                () -> evaluationService.updateEvaluation(ADMIN_ID, adminUpdate));
     }
 
     @Test

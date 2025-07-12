@@ -106,7 +106,6 @@ public class AuthResource {
         String ipAddress = ThreadContext.get("clientIp");
         validator.validateEmail(email);
         serviceFactory.forUser().sendResetPasswordLink(email, ipAddress);
-
         // Always return the same message to prevent email enumeration
         return Response.ok(new APIResponseDTO("Email sent. Check your inbox")).build();
     }
@@ -117,16 +116,8 @@ public class AuthResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response resetPassword(@QueryParam("resetPasswordToken") String resetPasswordToken,
             LoginDTO loginDTO) {
-        logger.info("Received reset password for token: {}", resetPasswordToken);
-
-        if (!jwtUtil.validateToken(resetPasswordToken)) {
-            logger.warn("Invalid or expired reset Password token");
-            throw new UnauthorizedException("Invalid or expired token");
-        }
         validator.validatePassword(loginDTO.getPassword());
-        Claims claims = jwtUtil.extractAllClaims(resetPasswordToken);
-        Long userId = Long.parseLong(claims.get("userId").toString());
-        serviceFactory.forUser().changePassword(userId, loginDTO.getPassword());
+        serviceFactory.forUser().changePassword(resetPasswordToken, loginDTO);
         return Response.ok(new APIResponseDTO("User password changed successfully")).build();
     }
 

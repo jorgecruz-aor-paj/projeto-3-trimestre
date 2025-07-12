@@ -2,7 +2,11 @@ package aor.proj3t.daos.impl;
 
 import aor.proj3t.daos.interfaces.ResetPasswordDAO;
 import aor.proj3t.entities.ResetPassword;
+import aor.proj3t.entities.Session;
 import jakarta.ejb.Stateless;
+import jakarta.persistence.TypedQuery;
+
+import java.util.Optional;
 
 /**
  * Stateless EJB implementation of the {@link ResetPasswordDAO} interface.
@@ -49,6 +53,29 @@ public class ResetPasswordDAOimpl extends AbstractDAO<ResetPassword, Long> imple
     @Override
     protected Class<ResetPassword> getEntityClass() {
         return ResetPassword.class;
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implementation uses JPQL query to find ResetPassword by token;
+     * Uses safe result handling by checking the result list and returning the first
+     * match wrapped in an Optional to avoid NoResultException.
+     * </p>
+     *
+     * @implNote Uses {@link TypedQuery#getResultList()} followed by stream
+     *           processing
+     *           to safely handle cases where no ResetPassword is found with the given
+     *           token.
+     *           This approach is more robust than {@code getSingleResult()} which
+     *           throws exceptions for empty results.
+     */
+    @Override
+    public Optional<ResetPassword> findByToken(String token){
+        TypedQuery<ResetPassword> query = em.createQuery(
+                "SELECT rp FROM ResetPassword rp WHERE rp.resetPasswordToken = :token", ResetPassword.class);
+        query.setParameter("token", token);
+        return query.getResultList().stream().findFirst();
     }
 
 }

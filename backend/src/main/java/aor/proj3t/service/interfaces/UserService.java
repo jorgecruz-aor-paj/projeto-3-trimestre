@@ -9,6 +9,8 @@ import aor.proj3t.dto.ManagerAssignDTO;
 import aor.proj3t.dto.MiniUserDTO;
 import aor.proj3t.dto.UserDTO;
 import aor.proj3t.dto.UserRegistrationDTO;
+import aor.proj3t.exceptions.ConflictException;
+import aor.proj3t.exceptions.UnauthorizedException;
 import aor.proj3t.filters.UserFilter;
 
 /**
@@ -80,13 +82,13 @@ public interface UserService {
     void confirmUser(String email, UserRegistrationDTO userRegistrationDTO);
 
     /**
-     * Changes a user's password by updating it with a new hashed password.
+     * Validates a resetPasswordToken and changes the password for the token owner
      * 
-     * @param userId      the ID of the user whose password should be changed
-     * @param newPassword the new password in plain text (will be hashed)
-     * @throws NotFoundException if no user exists with the given ID
+     * @param resetPasswordToken      The password reset token with the ID of the user whose password should be changed
+     * @param loginDTO The login object with the new password in plain text (will be hashed)
+     * @throws UnauthorizedException if token is invalid
      */
-    void changePassword(Long userId, String newPassword);
+    void changePassword(String resetPasswordToken, LoginDTO loginDTO);
 
     /**
      * Assigns a manager to multiple users in a bulk operation.

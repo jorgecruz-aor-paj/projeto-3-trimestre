@@ -9,6 +9,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import aor.proj3t.entities.*;
+import aor.proj3t.exceptions.UnauthorizedException;
+import io.jsonwebtoken.Claims;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -21,10 +24,6 @@ import aor.proj3t.dto.ManagerAssignDTO;
 import aor.proj3t.dto.MiniUserDTO;
 import aor.proj3t.dto.UserDTO;
 import aor.proj3t.dto.UserRegistrationDTO;
-import aor.proj3t.entities.Evaluation;
-import aor.proj3t.entities.PendingRegistration;
-import aor.proj3t.entities.User;
-import aor.proj3t.entities.Workplace;
 import aor.proj3t.enums.EvaluationStatus;
 import aor.proj3t.enums.Role;
 import aor.proj3t.exceptions.ConflictException;
@@ -152,10 +151,25 @@ public class UserServiceImpl extends BaseService implements UserService {
      * {@inheritDoc}
      */
     @Override
-    public void changePassword(Long userId, String newRawPassword) {
+    public void changePassword(String resetPasswordToken, LoginDTO loginDTO) {
+        logger.info("Received reset password for token: {}", resetPasswordToken);
+
+        if (!jwtUtil.validateToken(resetPasswordToken)) {
+            throw new UnauthorizedException("Invalid or expired token",
+                    "Invalid or expired reset Password token");
+        }
+        Optional<ResetPassword> opt = daoFactory.forResetPassword().findByToken(resetPasswordToken);
+        if (opt.isEmpty()) {
+            throw new UnauthorizedException("Invalid or expired token",
+                    "Invalid or expired reset Password token");
+        }
+        Claims claims = jwtUtil.extractAllClaims(resetPasswordToken);
+        Long userId = Long.parseLong(claims.get("userId").toString());
+
         User user = getEntity(daoFactory.forUser().findById(userId), userId, "User");
-        user.setPassword(passwordUtil.hashPassword(newRawPassword));
+        user.setPassword(passwordUtil.hashPassword(loginDTO.getPassword()));
         daoFactory.forUser().update(user);
+        daoFactory.forResetPassword().deleteById(opt.get().getId());
     }
 
     /**
@@ -248,7 +262,11 @@ public class UserServiceImpl extends BaseService implements UserService {
         }
         User user = userOpt.get();
         Integer resetPasswordExpirationTime = settingsProvider.getSettings().getResetPasswordExpirationTime();
-        sendResetPasswordEmail(user.getEmail(), user.getId(), ipAddress, resetPasswordExpirationTime);
+        String resetPasswordToken = jwtUtil.generatePasswordResetToken(email, user.getId(), ipAddress,
+                resetPasswordExpirationTime);
+        Instant expirationDate = Instant.now().plus(resetPasswordExpirationTime, ChronoUnit.MINUTES);
+        daoFactory.forResetPassword().create(new ResetPassword(user,resetPasswordToken,expirationDate)); //TODO added for API testing purposes
+        sendResetPasswordEmail(user.getEmail(), user.getId(), ipAddress, resetPasswordToken);
     }
 
     /**
@@ -304,9 +322,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     private void sendResetPasswordEmail(String email, Long userId, String ipAddress,
-            Integer resetPasswordExpirationTime) {
-        String resetPasswordToken = jwtUtil.generatePasswordResetToken(email, userId, ipAddress,
-                resetPasswordExpirationTime);
+            String resetPasswordToken) {
         String baseUrl = AppConstants.Email.EMAIL_BASE_URL;
         emailUtil.sendPasswordResetEmail(email, resetPasswordToken, baseUrl);
     }

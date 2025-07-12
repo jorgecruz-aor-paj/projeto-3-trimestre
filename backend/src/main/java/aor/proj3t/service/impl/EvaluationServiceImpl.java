@@ -108,7 +108,12 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
                         "User with id " + requesterId
                                 + " attempted to change evaluation status. Only admins and managers can change evaluation status.");
             }
-            // Admins (Role.ADMIN) can change status to any value - no restrictions
+            if (currentStatus == EvaluationStatus.CLOSED){
+                throw new ForbiddenException(
+                        "Status change not allowed",
+                        "User with id " + requesterId
+                                + " attempted to change status of a closed evaluation.");
+            }
         }
 
         evaluation.setScale(evaluationDTO.getScale());

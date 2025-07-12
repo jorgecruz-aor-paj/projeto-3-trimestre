@@ -2,15 +2,9 @@ package aor.proj3t.unit.service.impl;
 
 import aor.proj3t.config.SettingsProvider;
 import aor.proj3t.daos.DAOFactory;
-import aor.proj3t.daos.interfaces.EvaluationDAO;
-import aor.proj3t.daos.interfaces.PendingRegistrationDAO;
-import aor.proj3t.daos.interfaces.UserDAO;
-import aor.proj3t.daos.interfaces.WorkplaceDAO;
+import aor.proj3t.daos.interfaces.*;
 import aor.proj3t.dto.*;
-import aor.proj3t.entities.PendingRegistration;
-import aor.proj3t.entities.Settings;
-import aor.proj3t.entities.User;
-import aor.proj3t.entities.Workplace;
+import aor.proj3t.entities.*;
 import aor.proj3t.enums.Role;
 import aor.proj3t.exceptions.ConflictException;
 import aor.proj3t.exceptions.NotFoundException;
@@ -22,6 +16,8 @@ import aor.proj3t.util.authutils.PasswordUtil;
 import aor.proj3t.util.converterutils.ConverterFactory;
 import aor.proj3t.util.converterutils.MiniUserConverter;
 import aor.proj3t.util.converterutils.UserConverter;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.impl.DefaultClaims;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,10 +27,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -61,6 +54,9 @@ public class UserServiceImplTest {
 
     @Mock
     private WorkplaceDAO workplaceDAO;
+
+    @Mock
+    private ResetPasswordDAO resetPasswordDAO;
 
     @Mock
     private ConverterFactory converterFactory;
@@ -110,6 +106,7 @@ public class UserServiceImplTest {
         lenient().when(daoFactory.forEvaluation()).thenReturn(evaluationDAO);
         lenient().when(evaluationDAO.findByEvaluatedAndStatusIn(any(User.class), anyList()))
                 .thenReturn(Collections.emptyList()); // or a list of mock evaluations
+        lenient().when(daoFactory.forResetPassword()).thenReturn(resetPasswordDAO);
 
     }
 
@@ -267,44 +264,36 @@ public class UserServiceImplTest {
     }
 
     @Test
-    @DisplayName("changePassword should update user password")
+    @DisplayName("changePassword should update password and delete reset token")
     public void testChangePassword() {
         // Arrange
+        ResetPassword resetPassword = new ResetPassword();
+        resetPassword.setId(123L);
+        resetPassword.setResetPasswordToken("validToken");
+
         User user = new User();
         user.setId(TEST_USER_ID);
         user.setEmail(TEST_EMAIL);
         user.setPassword("oldHashedPassword");
 
-        when(userDAO.findById(TEST_USER_ID)).thenReturn(Optional.of(user));
+        LoginDTO loginDTO = new LoginDTO();
+        loginDTO.setPassword(TEST_PASSWORD);
+
+        when(jwtUtil.validateToken("validToken")).thenReturn(true);
+        when(jwtUtil.extractAllClaims("validToken")).thenReturn(new DefaultClaims(Map.of(
+                "userId", String.valueOf(TEST_USER_ID)
+        )));
+        when(daoFactory.forResetPassword().findByToken("validToken")).thenReturn(Optional.of(resetPassword));
+        when(daoFactory.forUser().findById(TEST_USER_ID)).thenReturn(Optional.of(user));
         when(passwordUtil.hashPassword(TEST_PASSWORD)).thenReturn(TEST_HASHED_PASSWORD);
 
         // Act
-        userService.changePassword(TEST_USER_ID, TEST_PASSWORD);
+        userService.changePassword("validToken", loginDTO);
 
         // Assert
         assertEquals(TEST_HASHED_PASSWORD, user.getPassword());
-
-        // Verify
-        verify(userDAO).findById(TEST_USER_ID);
-        verify(passwordUtil).hashPassword(TEST_PASSWORD);
-        verify(userDAO).update(user);
-    }
-
-    @Test
-    @DisplayName("changePassword should throw NotFoundException when user doesn't exist")
-    public void testChangePasswordUserNotFound() {
-        // Arrange
-        when(userDAO.findById(TEST_USER_ID)).thenReturn(Optional.empty());
-
-        // Act & Assert
-        NotFoundException exception = assertThrows(NotFoundException.class,
-                () -> userService.changePassword(TEST_USER_ID, TEST_PASSWORD));
-
-        assertTrue(exception.getMessage().contains("not found"));
-
-        // Verify
-        verify(userDAO).findById(TEST_USER_ID);
-        verifyNoInteractions(passwordUtil);
+        verify(daoFactory.forUser()).update(user);
+        verify(daoFactory.forResetPassword()).deleteById(resetPassword.getId());
     }
 
     @Test

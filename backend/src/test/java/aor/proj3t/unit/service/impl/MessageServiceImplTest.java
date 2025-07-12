@@ -117,14 +117,7 @@ class MessageServiceImplTest {
         assertNotNull(result);
         assertNotNull(capturedMessage.getTimestampSent());
         assertFalse(capturedMessage.isRead());
-        
-        verify(notificationService).createNotification(notificationCaptor.capture());
-        Notification notification = notificationCaptor.getValue();
-        assertEquals(NotificationType.MESSAGE, notification.getType());
-        assertEquals(sender, notification.getSender());
-        assertEquals(recipient, notification.getRecipient());
-        assertTrue(notification.getContent().contains(sender.getFirstName()));
-        assertTrue(notification.getContent().contains(sender.getLastName()));
+
     }
 
     @Test

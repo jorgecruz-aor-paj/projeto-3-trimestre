@@ -55,7 +55,7 @@ public class ResetPassword {
     /**
      * Unique token for password reset verification.
      */
-    @Column(name = "reset_password_token", nullable = false, unique = true)
+    @Column(name = "reset_password_token", nullable = false, unique = true, length = 800)
     private String resetPasswordToken;
 
     /**
@@ -64,6 +64,14 @@ public class ResetPassword {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    public ResetPassword() {}
+
+    public ResetPassword(User user, String resetPasswordToken, Instant expirationDate) {
+        this.user = user;
+        this.resetPasswordToken = resetPasswordToken;
+        this.expirationDate = expirationDate;
+    }
 
     /**
      * Gets the unique identifier of this password reset request.

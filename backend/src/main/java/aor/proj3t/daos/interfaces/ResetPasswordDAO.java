@@ -2,6 +2,8 @@ package aor.proj3t.daos.interfaces;
 
 import aor.proj3t.entities.ResetPassword;
 
+import java.util.Optional;
+
 /**
  * Data Access Object interface for ResetPassword entity operations.
  * <p>
@@ -35,11 +37,7 @@ import aor.proj3t.entities.ResetPassword;
  */
 public interface ResetPasswordDAO extends BasicDAO<ResetPassword, Long> {
 
-    // Currently inherits all methods from BasicDAO
-    // Additional password reset-specific methods can be added here as needed
-    // Examples:
-    // Optional<ResetPassword> findByToken(String token);
-    // void deleteExpiredTokens();
-    // Optional<ResetPassword> findByUserEmail(String email);
+    Optional<ResetPassword> findByToken(String token);
+
 
 }

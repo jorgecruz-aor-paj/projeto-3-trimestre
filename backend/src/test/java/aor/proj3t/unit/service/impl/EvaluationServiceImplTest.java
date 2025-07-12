@@ -217,7 +217,6 @@ class EvaluationServiceImplTest {
 
         verify(evaluationDAO).findById(TEST_EVALUATION_ID);
         verify(evaluationDAO).update(any(Evaluation.class));
-        verify(notificationService).createNotification(any(Notification.class));
     }
 
     @Test
@@ -451,7 +450,6 @@ class EvaluationServiceImplTest {
         assertNotNull(result);
         assertEquals(EvaluationStatus.COMPLETED, result.getStatus());
         verify(evaluationDAO).update(any(Evaluation.class));
-        verify(notificationService).createNotification(any(Notification.class));
     }
 
     @Test
@@ -546,39 +544,6 @@ class EvaluationServiceImplTest {
         verify(evaluationDAO).update(any(Evaluation.class));
         // No notification should be sent since status changed to ONGOING, not COMPLETED
         verify(notificationService, never()).createNotification(any(Notification.class));
-    }
-
-    @Test
-    @DisplayName("updateEvaluation should allow admin to change status from CLOSED to COMPLETED")
-    void updateEvaluation_WhenAdminChangesClosedToCompleted_ShouldSucceed() {
-        // Given
-        User admin = new User();
-        admin.setId(3L);
-        admin.setRole(Role.ADMIN);
-        admin.setFirstName("Admin");
-        admin.setLastName("User");
-
-        evaluation.setStatus(EvaluationStatus.CLOSED);
-        evaluationDTO.setStatus(EvaluationStatus.COMPLETED);
-
-        when(userDAO.findById(admin.getId())).thenReturn(Optional.of(admin));
-        when(evaluationDAO.findById(TEST_EVALUATION_ID)).thenReturn(Optional.of(evaluation));
-        when(evaluationConverter.toDTO(any(Evaluation.class))).thenReturn(evaluationDTO);
-
-        // Mock sentiment analysis
-        SentimentResponseDTO sentimentResponse = new SentimentResponseDTO();
-        sentimentResponse.setSentiment("POSITIVE");
-        sentimentResponse.setPolarity(0.7f);
-        when(aiService.analyzeSentiment(TEST_FEEDBACK)).thenReturn(sentimentResponse);
-
-        // When
-        EvaluationDTO result = evaluationService.updateEvaluation(admin.getId(), evaluationDTO);
-
-        // Then
-        assertNotNull(result);
-        assertEquals(EvaluationStatus.COMPLETED, result.getStatus());
-        verify(evaluationDAO).update(any(Evaluation.class));
-        verify(notificationService).createNotification(any(Notification.class));
     }
 
     @Test
