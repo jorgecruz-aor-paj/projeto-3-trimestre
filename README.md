@@ -9,39 +9,39 @@
 
 ### Vários:
 
-- EvaluationCycleServiceImpl contém método já apagado que só está a ser chamado em testes???
+- [] EvaluationCycleServiceImpl contém método já apagado que só está a ser chamado em testes???
 
 ### Dashboard:
 
-1. Dashboard do user e do gestor necessita de informação para povoar dados;
+1. [] Dashboard do user e do gestor necessita de informação para povoar dados;
 
 ### Users:
 
-1. [x] Filtro de "Todos os Gestores";
+1. [] Filtro de "Todos os Gestores" -> colocar todos os users;
 
 ### Wizard atribuir gestores:
 
-1. Opção seleccionar todos lança excepção "User not defined";
+1. [] Opção seleccionar todos lança excepção "User not defined";
 
 ### Notificações:
 
 1. [x] Notificações de eventos como fechos de ciclo ou conclusão de avaliações devolvem excepção!
 
-2. [x] Fritei a pipoca! Enviar do backend um placeholder para a tradução do New Message from;
+2. [x] Enviar do backend um placeholder para a tradução do New Message from;
 
 ### Responsividade:
 
-1. Cartões de avaliação: Nota da avaliação sai do cartão em ecrãs pequenos;
+1. [] Cartões de avaliação: Nota da avaliação sai do cartão em ecrãs pequenos;
 
 ### Excepções:
 
-1. Mapper para excepções do JwtUtil ? (Quando o jwt falha validação, imprime stacktrace desnecessário)
+1. [x] Mapper para excepções do JwtUtil ? (Quando o jwt falha validação, imprime stacktrace desnecessário)
 
 ### Avaliações:
 
-1. checkAndCloseEvaluationCycle -> refactor para passar do EvaluationService para o EvaluationCycleService.
+1. [] checkAndCloseEvaluationCycle -> refactor para passar do EvaluationService para o EvaluationCycleService.
 
-2. Caixa de pesquisa está a pesquisar pelo feedback apenas;
+2. [] Caixa de pesquisa está a pesquisar pelo feedback apenas;
 
 3. [x] Após marcar avaliações como fechadas página não faz refresh (Email Assincrono);
 
