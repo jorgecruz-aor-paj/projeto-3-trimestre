@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Form, Row, Col, Button, InputGroup } from 'react-bootstrap';
 import { useWorkplaces } from 'hooks/useWorkplaces';
-import { useManagersStore } from 'stores/ManagersStore';
 import { useTranslation } from 'react-i18next';
 import { exportService } from 'services/exportService';
+import { SearchableUserSelect } from 'components/evaluations/filters/SearchableUserSelect';
 import PropTypes from 'prop-types';
 
 const sortFields = [
@@ -23,12 +23,7 @@ const sortFields = [
 export const UserFilters = ({ filters, setFilters }) => {
   const { t } = useTranslation();
   const { workplaces } = useWorkplaces();
-  const { managers, fetchManagers } = useManagersStore();
   const [searchTerm, setSearchTerm] = useState(filters.searchText || '');
-
-  useEffect(() => {
-    fetchManagers();
-  }, [fetchManagers]);
 
   const handleFilterChange = (field, value) => {
     // Handle special case for search term with debouncing
@@ -179,22 +174,14 @@ export const UserFilters = ({ filters, setFilters }) => {
 
         {/* Manager */}
         <Col md={6} lg={4}>
-          <Form.Group>
-            <Form.Label className="small fw-semibold">
-              {t('usersPage.filters.manager', 'Manager')}
-            </Form.Label>
-            <Form.Select
-              value={filters.managerId || ''}
-              onChange={e => handleFilterChange('managerId', e.target.value)}
-            >
-              <option value="">{t('common.all', 'All')}</option>
-              {managers.map(m => (
-                <option key={m.id} value={m.id}>
-                  {m.firstName} {m.lastName}
-                </option>
-              ))}
-            </Form.Select>
-          </Form.Group>
+          <SearchableUserSelect
+            value={filters.managerId || ''}
+            onChange={e => handleFilterChange('managerId', e.target.value)}
+            name="managerId"
+            label={t('usersPage.filters.manager', 'Manager')}
+            placeholder={t('usersPage.filters.manager', 'Search manager...')}
+            includeAdmins={false}
+          />
         </Col>
 
         {/* Sort */}
