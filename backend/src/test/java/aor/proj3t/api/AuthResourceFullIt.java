@@ -32,7 +32,7 @@ public class AuthResourceFullIt {
     public static void setup() {
         RestAssured.baseURI = BASE_URI;
         RestAssured.port = 8080;
-        testEmail = "testuser_" + UUID.randomUUID() + "@example.com";
+        testEmail = "testinoJohn@example.com";
         testPassword = "Password123!";
         updatedPassword = "Password1234!";
     }
@@ -100,7 +100,7 @@ public class AuthResourceFullIt {
                 "\"phoneNumber\": \"111111111\"," +
                 "\"address\": \"test address\"," +
                 "\"birthdate\": [2000, 1, 1]," +
-                "\"biography\": \"Just a dude for testing\"," +
+                "\"biography\": \"Just an admin dude for testing\"," +
                 "\"workplaceId\": 1" +
                 "}";
         given()
