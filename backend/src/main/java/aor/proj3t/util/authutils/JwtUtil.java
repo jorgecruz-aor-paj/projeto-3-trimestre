@@ -13,6 +13,8 @@ import org.apache.logging.log4j.Logger;
 
 import aor.proj3t.config.AppConstants;
 import aor.proj3t.enums.TokenType;
+import aor.proj3t.exceptions.JwtConfigurationException;
+import aor.proj3t.exceptions.JwtTokenException;
 import io.github.cdimascio.dotenv.Dotenv;
 import io.github.cdimascio.dotenv.DotenvException;
 import io.jsonwebtoken.Claims;
@@ -59,17 +61,31 @@ public class JwtUtil {
             issuer = dotenv.get("JWT_ISSUER");
 
             if (secretKey == null || secretKey.isEmpty()) {
-                logger.warn("JWT_SECRET is not set in environment variables or .env file");
+                logger.error("JWT_SECRET is not set in environment variables or .env file");
+                throw new JwtConfigurationException(
+                        "Authentication service temporarily unavailable",
+                        "JWT secret key is not configured");
             }
             if (issuer == null || issuer.isEmpty()) {
-                logger.warn("JWT_ISSUER is not set in environment variables or .env file");
+                logger.error("JWT_ISSUER is not set in environment variables or .env file");
+                throw new JwtConfigurationException(
+                        "Authentication service temporarily unavailable",
+                        "JWT issuer is not configured");
             }
 
             logger.info("JWT utility service initialized successfully");
         } catch (DotenvException e) {
             logger.error("Failed to load JWT configuration from environment variables or .env file", e);
-        } catch (Exception e) {
-            logger.error("Unexpected error during JWT utility initialization", e);
+            throw new JwtConfigurationException(
+                    "Authentication service temporarily unavailable",
+                    "Failed to load JWT configuration: " + e.getMessage());
+        } catch (JwtConfigurationException e) {
+            throw e; // Re-throw our custom exceptions
+        } catch (RuntimeException e) {
+            logger.error("Runtime error during JWT utility initialization", e);
+            throw new JwtConfigurationException(
+                    "Authentication service temporarily unavailable",
+                    "Runtime error during JWT initialization: " + e.getMessage());
         }
     }
 
@@ -101,8 +117,11 @@ public class JwtUtil {
             String token = createToken(userEmail, TokenType.SESSION, claims, minutes);
             logger.info("JWT token generated successfully for user [ID={}]", userId);
             return token;
-        } catch (Exception e) {
-            logger.error("Failed to generate JWT token for user [ID={}]", userId, e);
+        } catch (JwtConfigurationException e) {
+            logger.error("Failed to generate JWT token for user [ID={}] due to configuration error", userId, e);
+            throw e;
+        } catch (JwtTokenException e) {
+            logger.error("Failed to generate JWT token for user [ID={}] due to token error", userId, e);
             throw e;
         }
     }
@@ -128,8 +147,11 @@ public class JwtUtil {
 
             logger.info("JWT token generated successfully for email [EMAIL={}]", userEmail);
             return token;
-        } catch (Exception e) {
-            logger.error("Failed to generate JWT token for email [EMAIL={}]", userEmail, e);
+        } catch (JwtConfigurationException e) {
+            logger.error("Failed to generate JWT token for email [EMAIL={}] due to configuration error", userEmail, e);
+            throw e;
+        } catch (JwtTokenException e) {
+            logger.error("Failed to generate JWT token for email [EMAIL={}] due to token error", userEmail, e);
             throw e;
         }
     }
@@ -157,8 +179,11 @@ public class JwtUtil {
 
             logger.info("JWT token generated successfully for email [EMAIL={}]", userEmail);
             return token;
-        } catch (Exception e) {
-            logger.error("Failed to generate JWT token for email [EMAIL={}]", userEmail, e);
+        } catch (JwtConfigurationException e) {
+            logger.error("Failed to generate JWT token for email [EMAIL={}] due to configuration error", userEmail, e);
+            throw e;
+        } catch (JwtTokenException e) {
+            logger.error("Failed to generate JWT token for email [EMAIL={}] due to token error", userEmail, e);
             throw e;
         }
     }
@@ -206,8 +231,17 @@ public class JwtUtil {
             logger.debug("JWT token created successfully");
             return token;
         } catch (InvalidKeyException e) {
-            logger.error("Error creating JWT token for subject [{}]", subject, e);
-            throw e;
+            logger.error("Error creating JWT token for subject [{}] - invalid signing key", subject, e);
+            throw new JwtConfigurationException(
+                    "Authentication service temporarily unavailable",
+                    "Invalid JWT signing key configuration: " + e.getMessage());
+        } catch (JwtConfigurationException e) {
+            throw e; // Re-throw our configuration exceptions
+        } catch (IllegalArgumentException e) {
+            logger.error("Invalid argument for JWT token creation for subject [{}]", subject, e);
+            throw new JwtTokenException(
+                    "Failed to create authentication token",
+                    "Invalid token parameters: " + e.getMessage());
         }
     }
 
@@ -221,7 +255,9 @@ public class JwtUtil {
         try {
             if (secretKey == null || secretKey.isEmpty()) {
                 logger.error("Cannot generate signing key: Secret key is null or empty");
-                throw new IllegalStateException("JWT secret key is not configured");
+                throw new JwtConfigurationException(
+                        "Authentication service temporarily unavailable",
+                        "JWT secret key is not configured");
             }
 
             byte[] keyBytes = Decoders.BASE64.decode(secretKey);
@@ -230,10 +266,21 @@ public class JwtUtil {
             return key;
         } catch (IllegalArgumentException e) {
             logger.error("Failed to decode secret key - invalid Base64 encoding", e);
-            throw e;
-        } catch (DecodingException | WeakKeyException | IllegalStateException e) {
-            logger.error("Unexpected error while generating signing key", e);
-            throw e;
+            throw new JwtConfigurationException(
+                    "Authentication service temporarily unavailable",
+                    "Invalid JWT secret key format - must be valid Base64: " + e.getMessage());
+        } catch (DecodingException e) {
+            logger.error("Failed to decode secret key", e);
+            throw new JwtConfigurationException(
+                    "Authentication service temporarily unavailable",
+                    "Failed to decode JWT secret key: " + e.getMessage());
+        } catch (WeakKeyException e) {
+            logger.error("JWT secret key is too weak", e);
+            throw new JwtConfigurationException(
+                    "Authentication service temporarily unavailable",
+                    "JWT secret key is too weak - must be at least 256 bits: " + e.getMessage());
+        } catch (JwtConfigurationException e) {
+            throw e; // Re-throw our custom exceptions
         }
     }
 
@@ -245,6 +292,11 @@ public class JwtUtil {
      */
     public Boolean validateToken(String token) {
         try {
+            if (token == null || token.trim().isEmpty()) {
+                logger.debug("Token validation failed: token is null or empty");
+                return false;
+            }
+
             Jwts.parser()
                     .verifyWith(getSigningKey())
                     .requireIssuer(issuer)
@@ -252,11 +304,17 @@ public class JwtUtil {
                     .parseSignedClaims(token);
             return true;
         } catch (SignatureException e) {
-            logger.error("Invalid JWT signature - invalid Base64 encoding", e);
+            logger.debug("Token validation failed: invalid signature - {}", e.getMessage());
             return false;
-        } catch (JwtException | IllegalArgumentException e) {
-            logger.error("JWT token validation failed", e);
+        } catch (JwtException e) {
+            logger.debug("Token validation failed: JWT error - {}", e.getMessage());
             return false;
+        } catch (IllegalArgumentException e) {
+            logger.debug("Token validation failed: illegal argument - {}", e.getMessage());
+            return false;
+        } catch (JwtConfigurationException e) {
+            logger.error("Token validation failed due to configuration error", e);
+            throw e; // Re-throw configuration errors as they indicate system issues
         }
     }
 
@@ -265,14 +323,43 @@ public class JwtUtil {
      * 
      * @param token The JWT token
      * @return The claims
+     * @throws JwtTokenException if the token is invalid or cannot be parsed
      */
     public Claims extractAllClaims(String token) {
-        return Jwts.parser()
-                .verifyWith(getSigningKey())
-                .requireIssuer(issuer)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
+        try {
+            if (token == null || token.trim().isEmpty()) {
+                throw new JwtTokenException(
+                        "Invalid token",
+                        "Token is null or empty");
+            }
+
+            return Jwts.parser()
+                    .verifyWith(getSigningKey())
+                    .requireIssuer(issuer)
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+        } catch (SignatureException e) {
+            logger.debug("Failed to extract claims: invalid token signature - {}", e.getMessage());
+            throw new JwtTokenException(
+                    "Invalid token",
+                    "Token signature verification failed: " + e.getMessage());
+        } catch (JwtException e) {
+            logger.debug("Failed to extract claims: JWT error - {}", e.getMessage());
+            throw new JwtTokenException(
+                    "Invalid token",
+                    "Token parsing failed: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            logger.debug("Failed to extract claims: illegal argument - {}", e.getMessage());
+            throw new JwtTokenException(
+                    "Invalid token",
+                    "Token format is invalid: " + e.getMessage());
+        } catch (JwtConfigurationException e) {
+            logger.error("Failed to extract claims due to configuration error", e);
+            throw e; // Re-throw configuration errors
+        } catch (JwtTokenException e) {
+            throw e; // Re-throw our custom token exceptions
+        }
     }
 
     /**
@@ -280,10 +367,17 @@ public class JwtUtil {
      * 
      * @param token The JWT token
      * @return The user ID
+     * @throws JwtTokenException if the token is invalid or the user ID is not found
      */
     public Long extractUserId(String token) {
         Claims claims = extractAllClaims(token);
-        return claims.get("userId", Long.class);
+        Long userId = claims.get("userId", Long.class);
+        if (userId == null) {
+            throw new JwtTokenException(
+                    "Invalid token",
+                    "Token does not contain user ID claim");
+        }
+        return userId;
     }
 
     /**
@@ -291,10 +385,17 @@ public class JwtUtil {
      * 
      * @param token The JWT token
      * @return The user email
+     * @throws JwtTokenException if the token is invalid or the email is not found
      */
     public String extractUserEmail(String token) {
         Claims claims = extractAllClaims(token);
-        return claims.getSubject();
+        String email = claims.getSubject();
+        if (email == null || email.trim().isEmpty()) {
+            throw new JwtTokenException(
+                    "Invalid token",
+                    "Token does not contain email subject");
+        }
+        return email;
     }
 
     /**
@@ -302,10 +403,17 @@ public class JwtUtil {
      * 
      * @param token The JWT token
      * @return The user role
+     * @throws JwtTokenException if the token is invalid or the role is not found
      */
     public String extractUserRole(String token) {
         Claims claims = extractAllClaims(token);
-        return claims.get("role", String.class);
+        String role = claims.get("role", String.class);
+        if (role == null || role.trim().isEmpty()) {
+            throw new JwtTokenException(
+                    "Invalid token",
+                    "Token does not contain role claim");
+        }
+        return role;
     }
 
     /**
@@ -313,10 +421,17 @@ public class JwtUtil {
      * 
      * @param token The JWT token
      * @return The expiration date as Instant
+     * @throws JwtTokenException if the token is invalid or the expiration date is
+     *                           not found
      */
     public Instant extractExpirationDate(String token) {
         Claims claims = extractAllClaims(token);
         Date expirationDate = claims.getExpiration();
+        if (expirationDate == null) {
+            throw new JwtTokenException(
+                    "Invalid token",
+                    "Token does not contain expiration claim");
+        }
         return expirationDate.toInstant();
     }
 
@@ -325,10 +440,66 @@ public class JwtUtil {
      * 
      * @param token The JWT token
      * @return true if the token is expired, false otherwise
+     * @throws JwtTokenException if the token is invalid
      */
     public boolean isTokenExpired(String token) {
         Instant expirationDate = extractExpirationDate(token);
         return expirationDate.isBefore(Instant.now());
+    }
+
+    /**
+     * Extract the token type from a JWT token.
+     * 
+     * @param token The JWT token
+     * @return The token type
+     * @throws JwtTokenException if the token is invalid or the token type is not
+     *                           found
+     */
+    public String extractTokenType(String token) {
+        Claims claims = extractAllClaims(token);
+        String tokenType = claims.get("tokenType", String.class);
+        if (tokenType == null || tokenType.trim().isEmpty()) {
+            throw new JwtTokenException(
+                    "Invalid token",
+                    "Token does not contain token type claim");
+        }
+        return tokenType;
+    }
+
+    /**
+     * Extract an optional claim from a JWT token without throwing an exception if
+     * not found.
+     * 
+     * @param token     The JWT token
+     * @param claimName The name of the claim to extract
+     * @param claimType The expected type of the claim
+     * @return The claim value, or null if not found
+     * @throws JwtTokenException if the token is invalid
+     */
+    public <T> T extractOptionalClaim(String token, String claimName, Class<T> claimType) {
+        Claims claims = extractAllClaims(token);
+        return claims.get(claimName, claimType);
+    }
+
+    /**
+     * Validate that a token is of the expected type.
+     * 
+     * @param token        The JWT token
+     * @param expectedType The expected token type
+     * @return true if the token is of the expected type
+     * @throws JwtTokenException if the token is invalid or not of the expected type
+     */
+    public boolean validateTokenType(String token, TokenType expectedType) {
+        String tokenType = extractTokenType(token);
+        boolean isValidType = expectedType.name().equals(tokenType);
+
+        if (!isValidType) {
+            throw new JwtTokenException(
+                    "Invalid token type",
+                    String.format("Expected token type '%s' but found '%s'", expectedType.name(), tokenType));
+        }
+
+        return true;
     }
 
 }
