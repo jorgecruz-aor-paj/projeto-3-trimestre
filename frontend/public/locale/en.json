@@ -507,6 +507,24 @@
         "myTrainingsDesc": "Track your training progress",
         "goals": "Goals",
         "goalsDesc": "Set and track your professional goals"
+      },
+      "charts": {
+        "trainingProgress": "Training Progress",
+        "performanceTrend": "Performance Trend",
+        "activityOverview": "Activity Overview",
+        "hoursCompleted": "Hours Completed",
+        "completed": "completed",
+        "totalThisYear": "Total this year",
+        "performanceScore": "Performance Score",
+        "score": "Score",
+        "currentScore": "Current Score",
+        "completedTrainings": "Completed Trainings",
+        "pendingEvaluations": "Pending Evaluations",
+        "achievedGoals": "Achieved Goals",
+        "totalActivities": "Total",
+        "trainings": "Trainings",
+        "evaluations": "Evaluations",
+        "goals": "Goals"
       }
     }
   },

@@ -507,6 +507,24 @@
         "myTrainingsDesc": "Acompanhar o seu progresso de formação",
         "goals": "Objetivos",
         "goalsDesc": "Definir e acompanhar os seus objetivos profissionais"
+      },
+      "charts": {
+        "trainingProgress": "Progresso de Formação",
+        "performanceTrend": "Tendência de Desempenho",
+        "activityOverview": "Resumo de Atividades",
+        "hoursCompleted": "Horas Concluídas",
+        "completed": "concluídas",
+        "totalThisYear": "Total este ano",
+        "performanceScore": "Pontuação de Desempenho",
+        "score": "Pontuação",
+        "currentScore": "Pontuação Atual",
+        "completedTrainings": "Formações Concluídas",
+        "pendingEvaluations": "Avaliações Pendentes",
+        "achievedGoals": "Objetivos Alcançados",
+        "totalActivities": "Total",
+        "trainings": "Formações",
+        "evaluations": "Avaliações",
+        "goals": "Objetivos"
       }
     }
   },

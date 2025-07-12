@@ -5,6 +5,9 @@ import PropTypes from 'prop-types';
 import { statsService } from 'services/statsService';
 import { StatsCard } from './StatsCard';
 import { QuickActions } from './QuickActions';
+import { UserTrainingProgressChart } from './UserTrainingProgressChart';
+import { UserPerformanceTrendChart } from './UserPerformanceTrendChart';
+import { UserActivityOverviewChart } from './UserActivityOverviewChart';
 
 /**
  * User Dashboard Component
@@ -67,28 +70,28 @@ export const UserDashboard = ({ user }) => {
       title: t('dashboard.user.actions.viewProfile'),
       description: t('dashboard.user.actions.viewProfileDesc'),
       icon: 'bi-person',
-      href: '/profile',
+      link: '/profile',
       variant: 'primary',
     },
     {
       title: t('dashboard.user.actions.myEvaluations'),
       description: t('dashboard.user.actions.myEvaluationsDesc'),
       icon: 'bi-clipboard-check',
-      href: '/evaluations/my',
+      link: '/evaluations',
       variant: 'success',
     },
     {
       title: t('dashboard.user.actions.myTrainings'),
       description: t('dashboard.user.actions.myTrainingsDesc'),
       icon: 'bi-mortarboard',
-      href: '/trainings/my',
+      link: '/trainings',
       variant: 'info',
     },
     {
       title: t('dashboard.user.actions.goals'),
       description: t('dashboard.user.actions.goalsDesc'),
       icon: 'bi-target',
-      href: '/goals',
+      link: '/not-implemented',
       variant: 'warning',
     },
   ];
@@ -141,13 +144,26 @@ export const UserDashboard = ({ user }) => {
         </Col>
       </Row>
 
-      {/* Quick Actions */}
+      {/* Quick Actions and Charts */}
       <Row className="mb-4">
-        <Col>
+        <Col md={8}>
           <QuickActions
             title={t('dashboard.user.quickActions')}
             actions={userQuickActions}
           />
+        </Col>
+        <Col md={4}>
+          <UserActivityOverviewChart stats={stats} loading={loading} />
+        </Col>
+      </Row>
+
+      {/* Additional Charts */}
+      <Row className="mb-4">
+        <Col md={6}>
+          <UserTrainingProgressChart stats={stats} loading={loading} />
+        </Col>
+        <Col md={6}>
+          <UserPerformanceTrendChart stats={stats} loading={loading} />
         </Col>
       </Row>
     </div>
