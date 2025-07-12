@@ -58,13 +58,44 @@ export const NotificationOffcanvas = ({ show, onHide }) => {
         return t('time.justNow', 'Agora mesmo');
       } else if (diffInSeconds < 3600) {
         const minutes = Math.floor(diffInSeconds / 60);
-        return t('time.minutesAgo', '{{count}} min', { count: minutes });
+
+        // Try translation first, fallback to direct string if translation fails
+        const translated = t('time.minutesAgo', 'há {{count}} min', {
+          count: minutes,
+        });
+
+        // If translation didn't work (still contains {{count}}), use direct formatting
+        if (
+          translated.includes('{{count}}') ||
+          !translated.includes(minutes.toString())
+        ) {
+          return `há ${minutes} min`;
+        }
+        return translated;
       } else if (diffInSeconds < 86400) {
         const hours = Math.floor(diffInSeconds / 3600);
-        return t('time.hoursAgo', 'há {{count}}h', { count: hours });
+
+        const translated = t('time.hoursAgo', 'há {{count}}h', {
+          count: hours,
+        });
+        if (
+          translated.includes('{{count}}') ||
+          !translated.includes(hours.toString())
+        ) {
+          return `há ${hours}h`;
+        }
+        return translated;
       } else if (diffInSeconds < 604800) {
         const days = Math.floor(diffInSeconds / 86400);
-        return t('time.daysAgo', 'há {{count}}d', { count: days });
+
+        const translated = t('time.daysAgo', 'há {{count}}d', { count: days });
+        if (
+          translated.includes('{{count}}') ||
+          !translated.includes(days.toString())
+        ) {
+          return `há ${days}d`;
+        }
+        return translated;
       } else {
         // For older dates, use the formatted date
         return formatDate(date, {
@@ -157,6 +188,69 @@ export const NotificationOffcanvas = ({ show, onHide }) => {
     }
   };
 
+  // Smart notification content parser
+  const parseNotificationContent = notification => {
+    try {
+      // Try to parse as JSON first
+      const contentData = JSON.parse(notification.content);
+
+      // If it's JSON and has a 'key' property, it's a translatable notification
+      if (contentData && typeof contentData === 'object' && contentData.key) {
+        const {
+          key,
+          senderFirstName,
+          senderLastName,
+          evaluatorFirstName,
+          evaluatorLastName,
+          trainingTitle,
+          managerFirstName,
+          managerLastName,
+          subject,
+          score,
+          title,
+          status,
+          cycleId,
+          ...otherParams
+        } = contentData;
+
+        // Build interpolation parameters
+        const interpolationParams = { ...otherParams };
+
+        // Handle sender name (for messages)
+        if (senderFirstName && senderLastName) {
+          interpolationParams.senderName = `${senderFirstName} ${senderLastName}`;
+        }
+
+        // Handle evaluator name (for evaluations)
+        if (evaluatorFirstName && evaluatorLastName) {
+          interpolationParams.evaluatorName = `${evaluatorFirstName} ${evaluatorLastName}`;
+        }
+
+        // Handle manager name (for training participation)
+        if (managerFirstName && managerLastName) {
+          interpolationParams.managerName = `${managerFirstName} ${managerLastName}`;
+        }
+
+        // Handle other specific parameters
+        if (trainingTitle) interpolationParams.title = trainingTitle;
+        if (subject) interpolationParams.subject = subject;
+        if (score) interpolationParams.score = score;
+        if (title) interpolationParams.title = title;
+        if (status) interpolationParams.status = status;
+        if (cycleId) interpolationParams.cycleId = cycleId;
+
+        // Return translated content
+        return t(key, interpolationParams);
+      }
+
+      // If it's JSON but doesn't have a 'key', treat as plain text
+      return notification.content;
+    } catch {
+      // If JSON parsing fails, it's a plain text notification
+      return notification.content;
+    }
+  };
+
   return (
     <Offcanvas
       show={show}
@@ -239,7 +333,7 @@ export const NotificationOffcanvas = ({ show, onHide }) => {
 
                     <div className="notification-content flex-grow-1">
                       <div className="notification-text">
-                        {notification.content}
+                        {parseNotificationContent(notification)}
                       </div>
 
                       <div className="notification-meta">

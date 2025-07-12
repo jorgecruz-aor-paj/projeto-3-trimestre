@@ -928,6 +928,28 @@
     "newNotification": "Nova notificação",
     "new": "Nova",
     "settings": "Definições de notificações",
+    "message": {
+      "new": "Nova mensagem de {{senderName}}"
+    },
+    "evaluation": {
+      "completed": "Avaliação concluída para {{subject}} - Pontuação: {{score}}",
+      "submitted": "Avaliação submetida para {{subject}}",
+      "update": "Avaliação atualizada para {{subject}}"
+    },
+    "training": {
+      "deactivated": "Sessão de formação desativada: {{title}}",
+      "created": "Nova sessão de formação disponível: {{title}}",
+      "updated": "Sessão de formação atualizada: {{title}}"
+    },
+    "trainingParticipation": {
+      "approved": "A sua participação em {{title}} foi aprovada",
+      "rejected": "A sua participação em {{title}} foi rejeitada",
+      "statusChanged": "O estado da sua participação em {{title}} mudou para {{status}}"
+    },
+    "evaluationCycle": {
+      "completed": "Ciclo de avaliação {{cycleId}} concluído: Todas as avaliações foram finalizadas",
+      "closed": "Ciclo de avaliação {{cycleId}} foi encerrado"
+    },
     "types": {
       "message": "Mensagem",
       "evaluation": "Avaliação",

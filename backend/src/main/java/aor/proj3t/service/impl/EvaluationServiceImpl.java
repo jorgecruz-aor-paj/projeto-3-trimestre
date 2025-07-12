@@ -30,6 +30,7 @@ import aor.proj3t.filters.EvaluationFilter;
 import aor.proj3t.service.ServiceFactory;
 import aor.proj3t.service.interfaces.AuthorizationService;
 import aor.proj3t.service.interfaces.EvaluationService;
+import aor.proj3t.util.NotificationHelper;
 import aor.proj3t.util.converterutils.ConverterFactory;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -75,6 +76,9 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
 
     @Inject
     ServiceFactory serviceFactory;
+
+    @Inject
+    NotificationHelper notificationHelper;
 
     @Override
     public EvaluationDTO updateEvaluation(Long requesterId, EvaluationDTO evaluationDTO) {
@@ -142,8 +146,12 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
                 notification.setSender(evaluator);
                 notification.setRecipient(evaluated);
                 notification.setType(NotificationType.EVALUATION);
-                notification.setContent("Your evaluation has been completed by " + evaluator.getFirstName() + " "
-                        + evaluator.getLastName());
+                notification.setContent(notificationHelper.createNotificationForEvaluationWithScore(
+                        "notifications.evaluation.completed",
+                        evaluator.getFirstName(),
+                        evaluator.getLastName(),
+                        "evaluation",
+                        evaluation.getScale() != null ? evaluation.getScale().toString() : "N/A"));
                 serviceFactory.forNotification().createNotification(notification);
             }
         } catch (Exception e) {
@@ -270,8 +278,9 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
                 notification.setSender(admin);
                 notification.setRecipient(admin);
                 notification.setType(NotificationType.CYCLE);
-                notification.setContent("Evaluation cycle completed: All evaluations in cycle " + evaluationCycleId
-                        + " have been completed.");
+                notification.setContent(notificationHelper.createNotificationForEvaluationCycleContent(
+                        "notifications.evaluationCycle.completed",
+                        evaluationCycleId.toString()));
                 serviceFactory.forNotification().createNotification(notification);
             }
         } catch (Exception e) {

@@ -15,6 +15,7 @@ import aor.proj3t.entities.Notification;
 import aor.proj3t.enums.NotificationType;
 import aor.proj3t.service.ServiceFactory;
 import aor.proj3t.service.interfaces.MessageService;
+import aor.proj3t.util.NotificationHelper;
 import aor.proj3t.util.converterutils.ConverterFactory;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -60,6 +61,9 @@ public class MessageServiceImpl extends BaseService implements MessageService {
     @Inject
     private ServiceFactory serviceFactory;
 
+    @Inject
+    private NotificationHelper notificationHelper;
+
     @Override
     @Transactional
     public Message createMessage(Message message) {
@@ -75,7 +79,10 @@ public class MessageServiceImpl extends BaseService implements MessageService {
             notification.setRecipient(message.getRecipient());
             notification.setType(NotificationType.MESSAGE);
             notification.setContent(
-                    "New message from " + message.getSender().getFirstName() + " " + message.getSender().getLastName());
+                    notificationHelper.createNotificationForMessageContent(
+                            "notifications.message.new",
+                            message.getSender().getFirstName(),
+                            message.getSender().getLastName()));
             serviceFactory.forNotification().createNotification(notification);
         } catch (Exception e) {
             logger.error("Failed to send notification for new message {}", message.getId(), e);

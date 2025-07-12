@@ -1,5 +1,11 @@
 package aor.proj3t.service.impl;
 
+import java.util.List;
+import java.util.NoSuchElementException;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import aor.proj3t.daos.DAOFactory;
 import aor.proj3t.dto.NewTrainingDTO;
 import aor.proj3t.dto.TrainingAreaDTO;
@@ -15,14 +21,10 @@ import aor.proj3t.exceptions.ForbiddenException;
 import aor.proj3t.filters.TrainingFilter;
 import aor.proj3t.service.ServiceFactory;
 import aor.proj3t.service.interfaces.TrainingService;
+import aor.proj3t.util.NotificationHelper;
 import aor.proj3t.util.converterutils.ConverterFactory;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.util.List;
-import java.util.NoSuchElementException;
 
 @ApplicationScoped
 public class TrainingServiceImpl extends BaseService implements TrainingService {
@@ -36,6 +38,9 @@ public class TrainingServiceImpl extends BaseService implements TrainingService 
 
     @Inject
     ServiceFactory serviceFactory;
+
+    @Inject
+    NotificationHelper notificationHelper;
 
     /**
      * {@inheritDoc}
@@ -102,7 +107,9 @@ public class TrainingServiceImpl extends BaseService implements TrainingService 
                         notification.setSender(user); // Self-notification for now
                         notification.setRecipient(user);
                         notification.setType(NotificationType.DELETE);
-                        notification.setContent("Training '" + trainingTitle + "' has been deactivated.");
+                        notification.setContent(notificationHelper.createNotificationForTrainingContent(
+                                "notifications.training.deactivated",
+                                trainingTitle));
                         serviceFactory.forNotification().createNotification(notification);
                     }
                 }

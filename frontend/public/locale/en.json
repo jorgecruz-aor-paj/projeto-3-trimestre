@@ -928,6 +928,28 @@
     "newNotification": "New notification",
     "new": "New",
     "settings": "Notification settings",
+    "message": {
+      "new": "New message from {{senderName}}"
+    },
+    "evaluation": {
+      "completed": "Evaluation completed for {{subject}} - Score: {{score}}",
+      "submitted": "Evaluation submitted for {{subject}}",
+      "update": "Evaluation updated for {{subject}}"
+    },
+    "training": {
+      "deactivated": "Training session deactivated: {{title}}",
+      "created": "New training session available: {{title}}",
+      "updated": "Training session updated: {{title}}"
+    },
+    "trainingParticipation": {
+      "approved": "Your participation in {{title}} has been approved",
+      "rejected": "Your participation in {{title}} has been rejected",
+      "statusChanged": "Your participation status in {{title}} has changed to {{status}}"
+    },
+    "evaluationCycle": {
+      "completed": "Evaluation cycle {{cycleId}} completed: All evaluations have been finished",
+      "closed": "Evaluation cycle {{cycleId}} has been closed"
+    },
     "types": {
       "message": "Message",
       "evaluation": "Evaluation",

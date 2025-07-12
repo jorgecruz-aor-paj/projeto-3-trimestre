@@ -1,5 +1,12 @@
 package aor.proj3t.service.impl;
 
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Objects;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import aor.proj3t.daos.DAOFactory;
 import aor.proj3t.dto.NewTrainingParticipationDTO;
 import aor.proj3t.dto.TrainingParticipationDTO;
@@ -12,15 +19,10 @@ import aor.proj3t.enums.Role;
 import aor.proj3t.exceptions.ForbiddenException;
 import aor.proj3t.service.ServiceFactory;
 import aor.proj3t.service.interfaces.TrainingParticipationService;
+import aor.proj3t.util.NotificationHelper;
 import aor.proj3t.util.converterutils.ConverterFactory;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Objects;
 
 /**
  * Implementation of the TrainingParticipationService interface.
@@ -61,6 +63,9 @@ public class TrainingParticipationServiceImpl extends BaseService implements Tra
 
         @Inject
         ServiceFactory serviceFactory;
+
+        @Inject
+        NotificationHelper notificationHelper;
 
         @Override
         public List<TrainingParticipationDTO> findTrainingParticipationsByUser(Long requesterId, Long userId) {
@@ -115,7 +120,12 @@ public class TrainingParticipationServiceImpl extends BaseService implements Tra
                         notification.setSender(manager);
                         notification.setRecipient(participant);
                         notification.setType(NotificationType.EDIT);
-                        notification.setContent("You have been registered for training: " + training.getTitle());
+                        notification.setContent(
+                                        notificationHelper.createNotificationForTrainingParticipationContent(
+                                                        "notifications.trainingParticipation.approved",
+                                                        training.getTitle(),
+                                                        manager.getFirstName(),
+                                                        manager.getLastName()));
                         serviceFactory.forNotification().createNotification(notification);
                 } catch (Exception e) {
                         // Log error but don't fail the registration
