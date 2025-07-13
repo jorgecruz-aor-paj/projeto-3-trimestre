@@ -722,7 +722,218 @@ training_conversations = [
     {
         "input": "Quais são as tuas capacidades?",
         "output": "As minhas capacidades incluem fornecer informações e orientação sobre:\n\n✅ Processos e resultados de avaliação\n✅ Programas de formação e participação\n✅ Gestão de perfil e conta\n✅ Navegação e funcionalidades do sistema\n✅ Mensagens e comunicação\n✅ Resolução de problemas comuns\n\nPosso responder a questões sobre como usar funcionalidades do sistema, explicar processos e fornecer orientação passo a passo. Sobre o que gostaria de saber mais?"
-    }
+    },
+    # Two-Factor Authentication (2FA) - English
+{
+    "input": "What is two-factor authentication?",
+    "output": "Two-factor authentication (2FA) is an extra layer of security that requires two different types of verification to access your account: your password and a time-based code from an authenticator app. This significantly improves your account security by making it much harder for unauthorized users to access your account even if they know your password."
+},
+{
+    "input": "How do I enable two-factor authentication?",
+    "output": "To enable 2FA: 1) Go to your Profile page and click the Security tab, 2) Click 'Enable Two-Factor Authentication', 3) Scan the QR code with your authenticator app (like Google Authenticator or Microsoft Authenticator), 4) Enter the 6-digit code from your app to verify setup, 5) Save your backup codes in a safe place. Once enabled, you'll need to enter a code from your authenticator app every time you log in."
+},
+{
+    "input": "What authenticator apps can I use for 2FA?",
+    "output": "You can use any TOTP-compatible authenticator app, including:\n• Google Authenticator\n• Microsoft Authenticator\n• Authy\n• 1Password\n• Bitwarden\n• Any other app that supports TOTP (Time-based One-Time Password). Simply scan the QR code during setup or manually enter the secret key if you can't scan the code."
+},
+{
+    "input": "What are backup codes and why do I need them?",
+    "output": "Backup codes are one-time use recovery codes that allow you to access your account if you lose your authenticator device. Each backup code can only be used once, and you typically get 8 codes during 2FA setup. Store these codes in a safe place separate from your device - you'll need them if your phone is lost, stolen, or reset. You can regenerate new backup codes anytime from your Security settings."
+},
+{
+    "input": "How do I use a backup code to log in?",
+    "output": "If you can't access your authenticator app during login: 1) On the 2FA verification screen, click 'Use backup code instead', 2) Enter one of your saved backup codes (format: ABCD-1234), 3) Click Verify. Remember: each backup code can only be used once. After using several codes, consider regenerating new ones from your Security settings."
+},
+{
+    "input": "How do I disable two-factor authentication?",
+    "output": "To disable 2FA: 1) Go to your Profile page and click the Security tab, 2) Click 'Disable Two-Factor Authentication', 3) Enter your current password to confirm, 4) Click 'Disable'. Warning: Disabling 2FA makes your account less secure. Only disable it if absolutely necessary, and consider re-enabling it as soon as possible."
+},
+{
+    "input": "How do I regenerate backup codes?",
+    "output": "To regenerate backup codes: 1) Go to your Profile page and click the Security tab, 2) Click 'Regenerate Backup Codes', 3) Save the new codes in a safe place. Important: Regenerating codes invalidates all previous backup codes. Make sure to update your stored codes with the new ones."
+},
+{
+    "input": "I lost my authenticator device, how do I recover my account?",
+    "output": "If you lose your authenticator device: 1) Use one of your backup codes to log in, 2) Go to Security settings and regenerate new backup codes, 3) You may want to disable and re-enable 2FA to set up a new authenticator app. If you don't have backup codes, contact your system administrator for assistance with account recovery."
+},
+{
+    "input": "Why should I enable two-factor authentication?",
+    "output": "You should enable 2FA because it: 1) Protects your account even if your password is compromised, 2) Prevents unauthorized access from unknown devices, 3) Adds an extra verification step that only you can complete, 4) Is recommended by security experts as a best practice, 5) Helps protect sensitive company data and evaluations. The small inconvenience of entering a code is worth the significant security improvement."
+},
+{
+    "input": "I'm having trouble scanning the QR code during 2FA setup",
+    "output": "If you can't scan the QR code: 1) Make sure your authenticator app has camera permissions, 2) Try manually entering the secret key shown below the QR code, 3) Ensure good lighting and hold your device steady, 4) Try moving closer or further from the screen, 5) If problems persist, try a different authenticator app or contact your system administrator for help."
+},
+{
+    "input": "The 2FA code from my authenticator app isn't working",
+    "output": "If your 2FA code isn't working: 1) Make sure your device's clock is synchronized (authenticator apps are time-sensitive), 2) Try the next code that appears (codes change every 30 seconds), 3) Double-check you're entering the code correctly, 4) Try using a backup code instead, 5) If problems persist, contact your system administrator. Time synchronization is the most common cause of 2FA code issues."
+},
+
+# Two-Factor Authentication (2FA) - Portuguese
+{
+    "input": "O que é autenticação de dois fatores?",
+    "output": "A autenticação de dois fatores (2FA) é uma camada extra de segurança que requer dois tipos diferentes de verificação para aceder à sua conta: a sua palavra-passe e um código baseado em tempo de uma aplicação autenticadora. Isto melhora significativamente a segurança da sua conta, tornando muito mais difícil para utilizadores não autorizados acederem à sua conta mesmo que saibam a sua palavra-passe."
+},
+{
+    "input": "Como ativo a autenticação de dois fatores?",
+    "output": "Para ativar 2FA: 1) Vá à sua página de Perfil e clique na aba Segurança, 2) Clique em 'Ativar Autenticação de Dois Fatores', 3) Leia o código QR com a sua aplicação autenticadora (como Google Authenticator ou Microsoft Authenticator), 4) Introduza o código de 6 dígitos da sua aplicação para verificar a configuração, 5) Guarde os seus códigos de reserva num local seguro. Uma vez ativado, precisará de introduzir um código da sua aplicação autenticadora sempre que iniciar sessão."
+},
+{
+    "input": "Que aplicações autenticadoras posso usar para 2FA?",
+    "output": "Pode usar qualquer aplicação autenticadora compatível com TOTP, incluindo:\n• Google Authenticator\n• Microsoft Authenticator\n• Authy\n• 1Password\n• Bitwarden\n• Qualquer outra aplicação que suporte TOTP (Time-based One-Time Password). Simplesmente leia o código QR durante a configuração ou introduza manualmente a chave secreta se não conseguir ler o código."
+},
+{
+    "input": "O que são códigos de reserva e porque preciso deles?",
+    "output": "Os códigos de reserva são códigos de recuperação de uso único que permitem aceder à sua conta se perder o seu dispositivo autenticador. Cada código de reserva só pode ser usado uma vez, e normalmente recebe 8 códigos durante a configuração 2FA. Guarde estes códigos num local seguro separado do seu dispositivo - precisará deles se o seu telefone for perdido, roubado ou reposto. Pode regenerar novos códigos de reserva a qualquer momento nas suas configurações de Segurança."
+},
+{
+    "input": "Como uso um código de reserva para iniciar sessão?",
+    "output": "Se não conseguir aceder à sua aplicação autenticadora durante o login: 1) No ecrã de verificação 2FA, clique em 'Usar código de reserva', 2) Introduza um dos seus códigos de reserva guardados (formato: ABCD-1234), 3) Clique em Verificar. Lembre-se: cada código de reserva só pode ser usado uma vez. Após usar vários códigos, considere regenerar novos códigos nas suas configurações de Segurança."
+},
+{
+    "input": "Como desativo a autenticação de dois fatores?",
+    "output": "Para desativar 2FA: 1) Vá à sua página de Perfil e clique na aba Segurança, 2) Clique em 'Desativar Autenticação de Dois Fatores', 3) Introduza a sua palavra-passe atual para confirmar, 4) Clique em 'Desativar'. Aviso: Desativar 2FA torna a sua conta menos segura. Só desative se absolutamente necessário e considere reativá-lo o mais rapidamente possível."
+},
+{
+    "input": "Como regenero códigos de reserva?",
+    "output": "Para regenerar códigos de reserva: 1) Vá à sua página de Perfil e clique na aba Segurança, 2) Clique em 'Regenerar Códigos de Reserva', 3) Guarde os novos códigos num local seguro. Importante: Regenerar códigos invalida todos os códigos de reserva anteriores. Certifique-se de atualizar os seus códigos guardados com os novos."
+},
+{
+    "input": "Perdi o meu dispositivo autenticador, como recupero a minha conta?",
+    "output": "Se perder o seu dispositivo autenticador: 1) Use um dos seus códigos de reserva para iniciar sessão, 2) Vá às configurações de Segurança e regenere novos códigos de reserva, 3) Pode querer desativar e reativar 2FA para configurar uma nova aplicação autenticadora. Se não tiver códigos de reserva, contacte o seu administrador do sistema para assistência com recuperação de conta."
+},
+{
+    "input": "Porque devo ativar a autenticação de dois fatores?",
+    "output": "Deve ativar 2FA porque: 1) Protege a sua conta mesmo se a sua palavra-passe for comprometida, 2) Previne acesso não autorizado de dispositivos desconhecidos, 3) Adiciona um passo de verificação extra que só você pode completar, 4) É recomendado por especialistas de segurança como boa prática, 5) Ajuda a proteger dados sensíveis da empresa e avaliações. O pequeno inconveniente de introduzir um código vale a pena pela melhoria significativa da segurança."
+},
+{
+    "input": "Estou a ter problemas a ler o código QR durante a configuração 2FA",
+    "output": "Se não conseguir ler o código QR: 1) Certifique-se de que a sua aplicação autenticadora tem permissões de câmara, 2) Tente introduzir manualmente a chave secreta mostrada abaixo do código QR, 3) Garanta boa iluminação e mantenha o seu dispositivo estável, 4) Tente mover-se mais perto ou mais longe do ecrã, 5) Se os problemas persistirem, tente uma aplicação autenticadora diferente ou contacte o seu administrador do sistema para ajuda."
+},
+{
+    "input": "O código 2FA da minha aplicação autenticadora não está a funcionar",
+    "output": "Se o seu código 2FA não estiver a funcionar: 1) Certifique-se de que o relógio do seu dispositivo está sincronizado (aplicações autenticadoras são sensíveis ao tempo), 2) Tente o próximo código que aparece (códigos mudam a cada 30 segundos), 3) Verifique duas vezes se está a introduzir o código corretamente, 4) Tente usar um código de reserva em vez disso, 5) Se os problemas persistirem, contacte o seu administrador do sistema. A sincronização de tempo é a causa mais comum de problemas com códigos 2FA."
+},
+
+# 2FA Troubleshooting - English
+{
+    "input": "My 2FA codes keep expiring before I can enter them",
+    "output": "TOTP codes expire every 30 seconds, which is normal. If codes seem to expire too quickly: 1) Check that your device's clock is accurate and synchronized, 2) Try entering the code as soon as it appears in your authenticator app, 3) Don't wait until the last few seconds of the 30-second window, 4) If your device clock is off by more than 30 seconds, codes may not work properly. You can also use backup codes which don't expire."
+},
+{
+    "input": "Can I use 2FA on multiple devices?",
+    "output": "Yes! You can set up the same 2FA secret on multiple devices: 1) During initial setup, scan the QR code or enter the secret key on each device you want to use, 2) All devices will generate the same codes at the same time, 3) This provides backup access if one device is lost or unavailable. However, remember that anyone with access to any of these devices can generate your 2FA codes."
+},
+{
+    "input": "How secure is two-factor authentication?",
+    "output": "2FA is very secure when implemented correctly. It uses TOTP (Time-based One-Time Password) which: 1) Generates codes that change every 30 seconds, 2) Requires physical access to your authenticated device, 3) Uses cryptographic algorithms to ensure codes can't be predicted, 4) Is resistant to many common attacks like password theft and phishing. However, it's not 100% foolproof - keep your backup codes secure and don't share your authenticator device."
+},
+{
+    "input": "What happens if I accidentally disable 2FA?",
+    "output": "If you accidentally disable 2FA: 1) Your account becomes less secure immediately, 2) You'll only need your password to log in, 3) You can re-enable 2FA anytime from your Security settings, 4) When you re-enable it, you'll need to set up your authenticator app again (scan a new QR code), 5) You'll get new backup codes. We recommend re-enabling 2FA as soon as possible for security."
+},
+
+# 2FA Troubleshooting - Portuguese
+{
+    "input": "Os meus códigos 2FA continuam a expirar antes de os conseguir introduzir",
+    "output": "Os códigos TOTP expiram a cada 30 segundos, o que é normal. Se os códigos parecem expirar muito rapidamente: 1) Verifique se o relógio do seu dispositivo está correto e sincronizado, 2) Tente introduzir o código assim que aparece na sua aplicação autenticadora, 3) Não espere até aos últimos segundos da janela de 30 segundos, 4) Se o relógio do seu dispositivo estiver desatualizado por mais de 30 segundos, os códigos podem não funcionar corretamente. Também pode usar códigos de reserva que não expiram."
+},
+{
+    "input": "Posso usar 2FA em múltiplos dispositivos?",
+    "output": "Sim! Pode configurar o mesmo segredo 2FA em múltiplos dispositivos: 1) Durante a configuração inicial, leia o código QR ou introduza a chave secreta em cada dispositivo que quer usar, 2) Todos os dispositivos gerarão os mesmos códigos ao mesmo tempo, 3) Isto fornece acesso de reserva se um dispositivo for perdido ou não estiver disponível. No entanto, lembre-se de que qualquer pessoa com acesso a qualquer um destes dispositivos pode gerar os seus códigos 2FA."
+},
+{
+    "input": "Quão segura é a autenticação de dois fatores?",
+    "output": "2FA é muito segura quando implementada corretamente. Usa TOTP (Time-based One-Time Password) que: 1) Gera códigos que mudam a cada 30 segundos, 2) Requer acesso físico ao seu dispositivo autenticado, 3) Usa algoritmos criptográficos para garantir que os códigos não podem ser previstos, 4) É resistente a muitos ataques comuns como roubo de palavra-passe e phishing. No entanto, não é 100% infalível - mantenha os seus códigos de reserva seguros e não partilhe o seu dispositivo autenticador."
+},
+{
+    "input": "O que acontece se desativar acidentalmente 2FA?",
+    "output": "Se desativar acidentalmente 2FA: 1) A sua conta torna-se menos segura imediatamente, 2) Só precisará da sua palavra-passe para iniciar sessão, 3) Pode reativar 2FA a qualquer momento nas suas configurações de Segurança, 4) Quando reativar, precisará de configurar a sua aplicação autenticadora novamente (ler um novo código QR), 5) Receberá novos códigos de reserva. Recomendamos reativar 2FA o mais rapidamente possível por segurança."
+},
+
+# 2FA Security Best Practices - English
+{
+    "input": "What are the best practices for using 2FA?",
+    "output": "Best practices for 2FA include: 1) Enable 2FA on all accounts that support it, 2) Use a reputable authenticator app like Google Authenticator or Microsoft Authenticator, 3) Store backup codes securely and separately from your device, 4) Keep your authenticator app updated, 5) Don't share your authenticator device with others, 6) Consider setting up 2FA on multiple devices for redundancy, 7) Regularly review and update your security settings, 8) Don't take screenshots of QR codes or secret keys."
+},
+{
+    "input": "Is 2FA mandatory in this system?",
+    "output": "2FA is not mandatory but is highly recommended for all users. The system will show recommendation banners encouraging you to enable 2FA for better security. Administrators may have the ability to enforce 2FA requirements for certain user roles or the entire organization. Check with your system administrator about any specific 2FA policies in your organization."
+},
+{
+    "input": "Can I export my 2FA settings?",
+    "output": "For security reasons, you cannot export your 2FA secret keys or settings from the system. If you need to set up 2FA on a new device, you'll need to: 1) Disable 2FA in your current settings, 2) Re-enable 2FA and scan the new QR code with your new device, 3) Save the new backup codes. This ensures the highest level of security for your account."
+},
+
+# 2FA Security Best Practices - Portuguese
+{
+    "input": "Quais são as melhores práticas para usar 2FA?",
+    "output": "As melhores práticas para 2FA incluem: 1) Ativar 2FA em todas as contas que o suportam, 2) Usar uma aplicação autenticadora respeitável como Google Authenticator ou Microsoft Authenticator, 3) Armazenar códigos de reserva de forma segura e separada do seu dispositivo, 4) Manter a sua aplicação autenticadora atualizada, 5) Não partilhar o seu dispositivo autenticador com outros, 6) Considerar configurar 2FA em múltiplos dispositivos para redundância, 7) Rever e atualizar regularmente as suas configurações de segurança, 8) Não tirar capturas de ecrã de códigos QR ou chaves secretas."
+},
+{
+    "input": "2FA é obrigatório neste sistema?",
+    "output": "2FA não é obrigatório mas é altamente recomendado para todos os utilizadores. O sistema mostrará banners de recomendação encorajando-o a ativar 2FA para melhor segurança. Os administradores podem ter a capacidade de impor requisitos 2FA para certos papéis de utilizador ou toda a organização. Verifique com o seu administrador do sistema sobre quaisquer políticas 2FA específicas na sua organização."
+},
+{
+    "input": "Posso exportar as minhas configurações 2FA?",
+    "output": "Por razões de segurança, não pode exportar as suas chaves secretas 2FA ou configurações do sistema. Se precisar de configurar 2FA num novo dispositivo, precisará de: 1) Desativar 2FA nas suas configurações atuais, 2) Reativar 2FA e ler o novo código QR com o seu novo dispositivo, 3) Guardar os novos códigos de reserva. Isto garante o mais alto nível de segurança para a sua conta."
+},
+
+# 2FA System Integration - English
+{
+    "input": "How does 2FA work with the login process?",
+    "output": "The 2FA login process works as follows: 1) Enter your email and password normally, 2) If you have 2FA enabled, you'll see a verification screen, 3) Open your authenticator app and enter the 6-digit code, 4) If you can't access your authenticator app, click 'Use backup code instead', 5) Enter one of your backup codes, 6) Click 'Verify' to complete login. The system uses secure JWT tokens and WebSocket connections for real-time verification."
+},
+{
+    "input": "Does 2FA affect my ability to use the system features?",
+    "output": "No, 2FA only affects the login process - it doesn't change any system features or functionality. Once you're logged in with 2FA verification, you can use all features normally including evaluations, training, messaging, and profile management. 2FA actually enhances your security without impacting your user experience within the system."
+},
+{
+    "input": "What happens to my 2FA when my account is updated?",
+    "output": "Your 2FA settings remain intact when your account information is updated. Changing your profile information, email, or other account details won't affect your 2FA configuration. However, if an administrator resets your account or if you change your password through the forgot password process, you may need to verify your 2FA settings still work properly."
+},
+
+# 2FA System Integration - Portuguese
+{
+    "input": "Como funciona 2FA com o processo de login?",
+    "output": "O processo de login 2FA funciona da seguinte forma: 1) Introduza o seu email e palavra-passe normalmente, 2) Se tiver 2FA ativado, verá um ecrã de verificação, 3) Abra a sua aplicação autenticadora e introduza o código de 6 dígitos, 4) Se não conseguir aceder à sua aplicação autenticadora, clique em 'Usar código de reserva', 5) Introduza um dos seus códigos de reserva, 6) Clique em 'Verificar' para completar o login. O sistema usa tokens JWT seguros e ligações WebSocket para verificação em tempo real."
+},
+{
+    "input": "2FA afeta a minha capacidade de usar as funcionalidades do sistema?",
+    "output": "Não, 2FA só afeta o processo de login - não altera quaisquer funcionalidades ou características do sistema. Uma vez que tenha feito login com verificação 2FA, pode usar todas as funcionalidades normalmente incluindo avaliações, formação, mensagens e gestão de perfil. 2FA na verdade melhora a sua segurança sem impactar a sua experiência de utilizador dentro do sistema."
+},
+{
+    "input": "O que acontece ao meu 2FA quando a minha conta é atualizada?",
+    "output": "As suas configurações 2FA permanecem intactas quando a informação da sua conta é atualizada. Alterar a sua informação de perfil, email ou outros detalhes da conta não afetará a sua configuração 2FA. No entanto, se um administrador repuser a sua conta ou se alterar a sua palavra-passe através do processo de palavra-passe esquecida, pode precisar de verificar se as suas configurações 2FA ainda funcionam corretamente."
+},
+
+# Additional 2FA edge cases and advanced topics - English
+{
+    "input": "What should I do if I suspect someone else has access to my 2FA codes?",
+    "output": "If you suspect unauthorized access to your 2FA codes: 1) Change your password immediately, 2) Disable 2FA from your Security settings, 3) Set up 2FA again with a new secret key on a secure device, 4) Generate new backup codes and store them securely, 5) Review your account activity for any suspicious actions, 6) Contact your system administrator to report the security concern. Act quickly to protect your account."
+},
+{
+    "input": "Can I use the same authenticator app for multiple accounts?",
+    "output": "Yes, you can use the same authenticator app for multiple accounts and services. Most authenticator apps support multiple accounts and will show them as separate entries with labels (like 'YourEmail - ServiceName'). Each account will have its own 6-digit code that changes every 30 seconds. This is convenient and secure as long as you keep your device protected."
+},
+{
+    "input": "What happens if the system's 2FA service is temporarily unavailable?",
+    "output": "If the 2FA service is temporarily unavailable, you may experience login issues. In such cases: 1) Try logging in with a backup code instead of your authenticator app, 2) Contact your system administrator for assistance, 3) The system may have fallback mechanisms that administrators can activate, 4) Wait for the service to be restored and try again later. System administrators will be notified of any 2FA service disruptions."
+},
+
+# Additional 2FA edge cases and advanced topics - Portuguese
+{
+    "input": "O que devo fazer se suspeitar que alguém tem acesso aos meus códigos 2FA?",
+    "output": "Se suspeitar de acesso não autorizado aos seus códigos 2FA: 1) Altere a sua palavra-passe imediatamente, 2) Desative 2FA nas suas configurações de Segurança, 3) Configure 2FA novamente com uma nova chave secreta num dispositivo seguro, 4) Gere novos códigos de reserva e armazene-os de forma segura, 5) Reveja a atividade da sua conta para quaisquer ações suspeitas, 6) Contacte o seu administrador do sistema para reportar a preocupação de segurança. Aja rapidamente para proteger a sua conta."
+},
+{
+    "input": "Posso usar a mesma aplicação autenticadora para múltiplas contas?",
+    "output": "Sim, pode usar a mesma aplicação autenticadora para múltiplas contas e serviços. A maioria das aplicações autenticadoras suportam múltiplas contas e mostrá-las-ão como entradas separadas com rótulos (como 'SeuEmail - NomeDoServiço'). Cada conta terá o seu próprio código de 6 dígitos que muda a cada 30 segundos. Isto é conveniente e seguro desde que mantenha o seu dispositivo protegido."
+},
+{
+    "input": "O que acontece se o serviço 2FA do sistema estiver temporariamente indisponível?",
+    "output": "Se o serviço 2FA estiver temporariamente indisponível, pode experienciar problemas de login. Nesses casos: 1) Tente fazer login com um código de reserva em vez da sua aplicação autenticadora, 2) Contacte o seu administrador do sistema para assistência, 3) O sistema pode ter mecanismos de fallback que os administradores podem ativar, 4) Espere que o serviço seja restaurado e tente novamente mais tarde. Os administradores do sistema serão notificados de quaisquer interrupções do serviço 2FA."
+}
 ]
 
 # Quality validation constants
