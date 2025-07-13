@@ -38,6 +38,7 @@
     "view": "View",
     "download": "Download",
     "upload": "Upload",
+    "notImplementedYet": "Not implemented yet",
     "submit": "Submit",
     "reset": "Reset",
     "refresh": "Refresh",
@@ -459,6 +460,8 @@
       "loadingStats": "Loading team statistics...",
       "errorTitle": "Error Loading Manager Dashboard",
       "failedToLoadStats": "Failed to load team statistics",
+      "personalStats": "My Personal Statistics",
+      "teamStats": "Team Statistics",
       "stats": {
         "teamMembers": "Team Members",
         "activeTrainings": "Active Trainings",
@@ -475,6 +478,13 @@
         "assignTrainingDesc": "Assign training programs to team",
         "teamReports": "Team Reports",
         "teamReportsDesc": "View team performance reports"
+      },
+      "charts": {
+        "teamOverview": "Team Overview",
+        "completedEvaluations": "Completed Evaluations",
+        "pendingEvaluations": "Pending Evaluations",
+        "teamMembers": "Team Members",
+        "avgPerformance": "Average Performance"
       }
     },
     "user": {
@@ -483,6 +493,9 @@
       "loadingStats": "Loading your statistics...",
       "errorTitle": "Error Loading Dashboard",
       "failedToLoadStats": "Failed to load your statistics",
+      "personalStats": "My Personal Statistics",
+      "quickActionsAndActivity": "Quick Actions & Activity Overview",
+      "performanceAnalytics": "Performance Analytics",
       "stats": {
         "completedTrainings": "Completed Trainings",
         "pendingEvaluations": "Pending Evaluations",
@@ -499,6 +512,24 @@
         "myTrainingsDesc": "Track your training progress",
         "goals": "Goals",
         "goalsDesc": "Set and track your professional goals"
+      },
+      "charts": {
+        "trainingProgress": "Training Progress",
+        "performanceTrend": "Performance Trend",
+        "activityOverview": "Activity Overview",
+        "hoursCompleted": "Hours Completed",
+        "completed": "completed",
+        "totalThisYear": "Total this year",
+        "performanceScore": "Performance Score",
+        "score": "Score",
+        "currentScore": "Current Score",
+        "completedTrainings": "Completed Trainings",
+        "pendingEvaluations": "Pending Evaluations",
+        "achievedGoals": "Achieved Goals",
+        "totalActivities": "Total",
+        "trainings": "Trainings",
+        "evaluations": "Evaluations",
+        "goals": "Goals"
       }
     }
   },

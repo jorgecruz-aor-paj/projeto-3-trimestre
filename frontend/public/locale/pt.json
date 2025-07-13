@@ -38,6 +38,7 @@
     "view": "Ver",
     "download": "Descarregar",
     "upload": "Carregar",
+    "notImplementedYet": "Ainda não implementado",
     "submit": "Submeter",
     "reset": "Repor",
     "refresh": "Atualizar",
@@ -459,6 +460,8 @@
       "loadingStats": "A carregar estatísticas da equipa...",
       "errorTitle": "Erro ao Carregar Painel de Gestão",
       "failedToLoadStats": "Falha ao carregar estatísticas da equipa",
+      "personalStats": "As Minhas Estatísticas Pessoais",
+      "teamStats": "Estatísticas da Equipa",
       "stats": {
         "teamMembers": "Membros da Equipa",
         "activeTrainings": "Formações Ativas",
@@ -475,6 +478,13 @@
         "assignTrainingDesc": "Atribuir programas de formação à equipa",
         "teamReports": "Relatórios da Equipa",
         "teamReportsDesc": "Ver relatórios de desempenho da equipa"
+      },
+      "charts": {
+        "teamOverview": "Visão Geral da Equipa",
+        "completedEvaluations": "Avaliações Concluídas",
+        "pendingEvaluations": "Avaliações Pendentes",
+        "teamMembers": "Membros da Equipa",
+        "avgPerformance": "Desempenho Médio"
       }
     },
     "user": {
@@ -483,6 +493,9 @@
       "loadingStats": "A carregar as suas estatísticas...",
       "errorTitle": "Erro ao Carregar Painel",
       "failedToLoadStats": "Falha ao carregar as suas estatísticas",
+      "personalStats": "As Minhas Estatísticas Pessoais",
+      "quickActionsAndActivity": "Ações Rápidas & Resumo de Atividades",
+      "performanceAnalytics": "Análise de Desempenho",
       "stats": {
         "completedTrainings": "Formações Concluídas",
         "pendingEvaluations": "Avaliações Pendentes",
@@ -499,6 +512,24 @@
         "myTrainingsDesc": "Acompanhar o seu progresso de formação",
         "goals": "Objetivos",
         "goalsDesc": "Definir e acompanhar os seus objetivos profissionais"
+      },
+      "charts": {
+        "trainingProgress": "Progresso de Formação",
+        "performanceTrend": "Tendência de Desempenho",
+        "activityOverview": "Resumo de Atividades",
+        "hoursCompleted": "Horas Concluídas",
+        "completed": "concluídas",
+        "totalThisYear": "Total este ano",
+        "performanceScore": "Pontuação de Desempenho",
+        "score": "Pontuação",
+        "currentScore": "Pontuação Atual",
+        "completedTrainings": "Formações Concluídas",
+        "pendingEvaluations": "Avaliações Pendentes",
+        "achievedGoals": "Objetivos Alcançados",
+        "totalActivities": "Total",
+        "trainings": "Formações",
+        "evaluations": "Avaliações",
+        "goals": "Objetivos"
       }
     }
   },

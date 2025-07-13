@@ -30,4 +30,13 @@ export const statsService = {
   getParticipationStats: userId => {
     return apiService.getAll(API_ENDPOINTS.stats.participations(userId));
   },
+
+  /**
+   * Get personal statistics for a user
+   * @param {number|string} userId
+   * @returns {Promise} - Personal statistics data
+   */
+  getPersonalStats: userId => {
+    return apiService.getAll(API_ENDPOINTS.stats.personal(userId));
+  },
 };

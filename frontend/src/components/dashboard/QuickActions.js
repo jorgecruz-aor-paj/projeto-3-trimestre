@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Card, Row, Col, Button } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 
 /**
  * Quick actions component for dashboard shortcuts
@@ -11,6 +12,8 @@ import { Card, Row, Col, Button } from 'react-bootstrap';
  * @returns {React.Component} Quick actions section
  */
 export const QuickActions = ({ title, actions }) => {
+  const { t } = useTranslation();
+
   return (
     <Card className="quick-actions-card">
       <Card.Header>
@@ -23,20 +26,38 @@ export const QuickActions = ({ title, actions }) => {
         <Row>
           {actions.map((action, index) => (
             <Col md={6} lg={3} key={index} className="mb-3">
-              <Button
-                as={Link}
-                to={action.link}
-                variant={`outline-${action.variant}`}
-                className="quick-action-btn w-100 h-100 text-start"
-              >
-                <div className="d-flex flex-column align-items-start">
-                  <div className="mb-2">
-                    <i className={`${action.icon} fs-4`}></i>
+              {action.link?.startsWith('/not-implemented') ? (
+                <Button
+                  variant={`outline-${action.variant}`}
+                  className="quick-action-btn w-100 h-100 text-start"
+                  title={t('common.notImplementedYet', 'Not implemented yet')}
+                  disabled
+                  style={{ cursor: 'not-allowed' }}
+                >
+                  <div className="d-flex flex-column align-items-start">
+                    <div className="mb-2">
+                      <i className={`${action.icon} fs-4`}></i>
+                    </div>
+                    <h6 className="mb-1">{action.title}</h6>
+                    <small className="text-muted">{action.description}</small>
                   </div>
-                  <h6 className="mb-1">{action.title}</h6>
-                  <small className="text-muted">{action.description}</small>
-                </div>
-              </Button>
+                </Button>
+              ) : (
+                <Button
+                  as={Link}
+                  to={action.link}
+                  variant={`outline-${action.variant}`}
+                  className="quick-action-btn w-100 h-100 text-start"
+                >
+                  <div className="d-flex flex-column align-items-start">
+                    <div className="mb-2">
+                      <i className={`${action.icon} fs-4`}></i>
+                    </div>
+                    <h6 className="mb-1">{action.title}</h6>
+                    <small className="text-muted">{action.description}</small>
+                  </div>
+                </Button>
+              )}
             </Col>
           ))}
         </Row>

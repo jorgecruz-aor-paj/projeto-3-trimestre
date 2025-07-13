@@ -9,6 +9,7 @@ import aor.proj3t.service.interfaces.EvaluationService;
 import aor.proj3t.service.interfaces.ExportService;
 import aor.proj3t.service.interfaces.MessageService;
 import aor.proj3t.service.interfaces.NotificationService;
+import aor.proj3t.service.interfaces.StatsService;
 import aor.proj3t.service.interfaces.TokenService;
 import aor.proj3t.service.interfaces.TrainingParticipationService;
 import aor.proj3t.service.interfaces.TrainingService;
@@ -84,6 +85,9 @@ public class ServiceFactory {
 
     @Inject
     private AsyncEmailService asyncEmailService;
+
+    @Inject
+    private StatsService statsService;
 
     /**
      * Get the service for User operations This method provides access to the
@@ -218,6 +222,18 @@ public class ServiceFactory {
      */
     public AsyncEmailService forAsyncEmail() {
         return asyncEmailService;
+    }
+
+    /**
+     * Get the service for Statistics operations
+     * This method provides access to the service responsible for
+     * statistics-related business logic including personal user statistics,
+     * performance trends, and training analytics.
+     *
+     * @return The StatsService instance
+     */
+    public StatsService forStats() {
+        return statsService;
     }
 
 }

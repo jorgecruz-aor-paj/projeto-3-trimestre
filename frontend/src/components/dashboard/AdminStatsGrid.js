@@ -24,6 +24,7 @@ export const AdminStatsGrid = () => {
           evaluations: evaluationStats,
         });
       } catch (err) {
+        console.error('Failed to fetch admin stats:', err);
         setError(t('dashboard.admin.failedToLoadStats'));
       } finally {
         setLoading(false);
@@ -67,8 +68,6 @@ export const AdminStatsGrid = () => {
           value={stats.managers?.total || 0}
           icon="bi-people"
           variant="primary"
-          trend="+5.2%"
-          trendPositive={true}
         />
       </Col>
       <Col md={3}>
@@ -77,11 +76,6 @@ export const AdminStatsGrid = () => {
           value={stats.managers?.unmanaged || 0}
           icon="bi-person-x"
           variant="warning"
-          trend={`${(
-            ((stats.managers?.unmanaged || 0) / (stats.managers?.total || 1)) *
-            100
-          ).toFixed(1)}%`}
-          trendPositive={false}
         />
       </Col>
       <Col md={3}>
@@ -90,18 +84,14 @@ export const AdminStatsGrid = () => {
           value={`${completedEvaluations}/${stats.evaluations?.total ?? 0}`}
           icon="bi-check-circle"
           variant="success"
-          trend="+12.3%"
-          trendPositive={true}
         />
       </Col>
       <Col md={3}>
         <StatsCard
           title={t('dashboard.admin.stats.pendingEvaluations')}
-          value={stats.evaluations?.pending || 0}
+          value={stats.evaluations?.ongoing || 0}
           icon="bi-clock"
           variant="info"
-          trend="-8.1%"
-          trendPositive={true}
         />
       </Col>
     </Row>

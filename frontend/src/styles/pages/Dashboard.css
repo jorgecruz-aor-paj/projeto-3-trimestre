@@ -97,6 +97,46 @@
     font-weight: 600;
 }
 
+/* Chart Cards */
+.dashboard-chart-card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.dashboard-chart-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-chart-card .card-header {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-bottom: 1px solid #dee2e6;
+    border-radius: 15px 15px 0 0;
+}
+
+.dashboard-chart-card .card-header h6 {
+    color: #495057;
+    font-weight: 600;
+}
+
+/* User Dashboard Specific Styles */
+.user-dashboard .quick-actions-card .card-header {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    color: white;
+}
+
+.user-dashboard .stats-card {
+    border-radius: 12px;
+    transition: all 0.2s ease-in-out;
+}
+
+.user-dashboard .stats-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 123, 255, 0.15);
+}
+
 .action-card {
     border: 1px solid #e9ecef;
     border-radius: 10px;
