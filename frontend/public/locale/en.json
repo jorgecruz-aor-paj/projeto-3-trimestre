@@ -460,6 +460,8 @@
       "loadingStats": "Loading team statistics...",
       "errorTitle": "Error Loading Manager Dashboard",
       "failedToLoadStats": "Failed to load team statistics",
+      "personalStats": "My Personal Statistics",
+      "teamStats": "Team Statistics",
       "stats": {
         "teamMembers": "Team Members",
         "activeTrainings": "Active Trainings",

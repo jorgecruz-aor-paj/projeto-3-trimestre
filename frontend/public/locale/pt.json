@@ -460,6 +460,8 @@
       "loadingStats": "A carregar estatísticas da equipa...",
       "errorTitle": "Erro ao Carregar Painel de Gestão",
       "failedToLoadStats": "Falha ao carregar estatísticas da equipa",
+      "personalStats": "As Minhas Estatísticas Pessoais",
+      "teamStats": "Estatísticas da Equipa",
       "stats": {
         "teamMembers": "Membros da Equipa",
         "activeTrainings": "Formações Ativas",

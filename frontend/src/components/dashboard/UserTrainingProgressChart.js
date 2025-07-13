@@ -65,8 +65,8 @@ export const UserTrainingProgressChart = ({ stats, loading }) => {
       date.toLocaleDateString('pt-PT', { month: 'short', year: '2-digit' })
     );
 
-    // Simulate training data - in a real app this would come from the backend
-    const monthData = stats.trainingHistory?.find(
+    // Get training data from backend
+    const monthData = stats.personal?.trainingHistory?.find(
       h => h.year === date.getFullYear() && h.month === date.getMonth() + 1
     );
     trainingHours.push(

@@ -235,6 +235,10 @@ const API_ENDPOINTS = {
       url: `${STATS_ENDPOINT}/participation/${userId}`,
       requiresAuth: true,
     }),
+    personal: userId => ({
+      url: `${STATS_ENDPOINT}/personal/${userId}`,
+      requiresAuth: true,
+    }),
   },
   test: {
     ping: {

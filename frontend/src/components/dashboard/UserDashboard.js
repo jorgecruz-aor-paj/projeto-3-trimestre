@@ -47,6 +47,49 @@ export const UserDashboard = ({ user }) => {
     fetchStats();
   }, [t, user.id]);
 
+  // Helper function to calculate performance trend from historical data
+  const calculatePerformanceTrend = () => {
+    const performanceHistory = stats.personal?.performanceHistory || [];
+    if (performanceHistory.length < 2) return null;
+
+    const latest =
+      performanceHistory[performanceHistory.length - 1]?.score || 0;
+    const previous =
+      performanceHistory[performanceHistory.length - 2]?.score || 0;
+
+    if (previous === 0) return null;
+
+    const change = ((latest - previous) / previous) * 100;
+    return {
+      value: `${change > 0 ? '+' : ''}${change.toFixed(1)}%`,
+      positive: change >= 0,
+    };
+  };
+
+  // Helper function to calculate training trend from monthly data
+  const calculateTrainingTrend = () => {
+    const trainingHistory = stats.personal?.trainingHistory || [];
+    if (trainingHistory.length < 2) return null;
+
+    // Get last 2 months with data
+    const recentMonths = trainingHistory
+      .filter(month => month.minutes > 0)
+      .slice(-2);
+
+    if (recentMonths.length < 2) return null;
+
+    const latest = recentMonths[recentMonths.length - 1]?.minutes || 0;
+    const previous = recentMonths[recentMonths.length - 2]?.minutes || 0;
+
+    if (previous === 0) return null;
+
+    const change = ((latest - previous) / previous) * 100;
+    return {
+      value: `${change > 0 ? '+' : ''}${change.toFixed(1)}%`,
+      positive: change >= 0,
+    };
+  };
+
   if (loading) {
     return (
       <div className="text-center py-5">
@@ -90,11 +133,15 @@ export const UserDashboard = ({ user }) => {
     {
       title: t('dashboard.user.actions.goals'),
       description: t('dashboard.user.actions.goalsDesc'),
-      icon: 'bi-target',
+      icon: 'bi-bullseye',
       link: '/not-implemented',
       variant: 'warning',
     },
   ];
+
+  // Calculate trends from real data
+  const performanceTrend = calculatePerformanceTrend();
+  const trainingTrend = calculateTrainingTrend();
 
   return (
     <div className="user-dashboard">
@@ -106,8 +153,8 @@ export const UserDashboard = ({ user }) => {
             value={stats.personal?.completedTrainings || 0}
             icon="bi-mortarboard"
             variant="success"
-            trend="+12.5%"
-            trendPositive={true}
+            trend={trainingTrend?.value}
+            trendPositive={trainingTrend?.positive}
           />
         </Col>
         <Col md={3}>
@@ -116,18 +163,16 @@ export const UserDashboard = ({ user }) => {
             value={stats.personal?.pendingEvaluations || 0}
             icon="bi-clock"
             variant="warning"
-            trend="-25.0%"
-            trendPositive={true}
           />
         </Col>
         <Col md={3}>
           <StatsCard
             title={t('dashboard.user.stats.performanceScore')}
-            value={`${stats.personal?.performanceScore || 0}%`}
+            value={`${(stats.personal?.performanceScore || 0).toFixed(1)}/4`}
             icon="bi-trophy"
             variant="info"
-            trend="+8.3%"
-            trendPositive={true}
+            trend={performanceTrend?.value}
+            trendPositive={performanceTrend?.positive}
           />
         </Col>
         <Col md={3}>
@@ -136,10 +181,8 @@ export const UserDashboard = ({ user }) => {
             value={`${stats.personal?.goalsAchieved || 0}/${
               stats.personal?.totalGoals || 0
             }`}
-            icon="bi-target"
+            icon="bi-bullseye"
             variant="primary"
-            trend="+15.2%"
-            trendPositive={true}
           />
         </Col>
       </Row>

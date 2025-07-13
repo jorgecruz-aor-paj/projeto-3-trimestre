@@ -52,13 +52,8 @@ export const UserPerformanceTrendChart = ({ stats, loading }) => {
     );
   }
 
-  // Simulate performance trend data - in a real app this would come from backend
-  const performanceHistory = stats.performanceHistory || [
-    { period: 'Q1 2024', score: 3.2 },
-    { period: 'Q2 2024', score: 3.5 },
-    { period: 'Q3 2024', score: 3.7 },
-    { period: 'Q4 2024', score: 3.8 },
-  ];
+  // Get performance trend data from backend - now uses consolidated DTO structure
+  const performanceHistory = stats.personal?.performanceHistory || [];
 
   const labels = performanceHistory.map(item => item.period);
   const scores = performanceHistory.map(item => item.score);
