@@ -1,23 +1,30 @@
 package aor.proj3t.unit.util.authutils;
 
-import aor.proj3t.enums.TokenType;
-import aor.proj3t.util.authutils.JwtUtil;
-import io.github.cdimascio.dotenv.Dotenv;
-import io.jsonwebtoken.Claims;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import static org.mockito.Mockito.lenient;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.lenient;
+import aor.proj3t.enums.TokenType;
+import aor.proj3t.exceptions.JwtTokenException;
+import aor.proj3t.util.authutils.JwtUtil;
+import io.github.cdimascio.dotenv.Dotenv;
+import io.jsonwebtoken.Claims;
 
 @ExtendWith(MockitoExtension.class)
 public class JwtUtilTest {
@@ -38,16 +45,16 @@ public class JwtUtilTest {
     @BeforeEach
     public void setup() throws Exception {
         MockitoAnnotations.openMocks(this);
-        
+
         // Mock the dotenv to return our test values
         lenient().when(dotenv.get("JWT_SECRET")).thenReturn(TEST_SECRET);
         lenient().when(dotenv.get("JWT_ISSUER")).thenReturn(TEST_ISSUER);
-        
+
         // Set the fields directly since we can't easily mock @PostConstruct
         java.lang.reflect.Field secretKeyField = JwtUtil.class.getDeclaredField("secretKey");
         secretKeyField.setAccessible(true);
         secretKeyField.set(jwtUtil, TEST_SECRET);
-        
+
         java.lang.reflect.Field issuerField = JwtUtil.class.getDeclaredField("issuer");
         issuerField.setAccessible(true);
         issuerField.set(jwtUtil, TEST_ISSUER);
@@ -65,7 +72,7 @@ public class JwtUtilTest {
         // Assert
         assertNotNull(token, "Token should not be null");
         assertTrue(jwtUtil.validateToken(token), "Token should be valid");
-        
+
         // Verify token claims
         Claims claims = jwtUtil.extractAllClaims(token);
         assertEquals(TEST_EMAIL, claims.getSubject(), "Subject should match the email");
@@ -74,13 +81,13 @@ public class JwtUtilTest {
         assertEquals(TEST_ROLE, claims.get("role"), "role claim should match test role");
         assertEquals(TEST_IP, claims.get("ipAddress"), "ipAddress claim should match test IP");
         assertEquals(TokenType.SESSION.name(), claims.get("tokenType"), "tokenType claim should be SESSION");
-        
+
         // Verify expiration time is approximately validityMinutes in the future
         Instant expiration = jwtUtil.extractExpirationDate(token);
         Instant now = Instant.now();
         long minutesDifference = ChronoUnit.MINUTES.between(now, expiration);
-        assertTrue(minutesDifference <= validityMinutes && minutesDifference > validityMinutes - 2, 
-                   "Token expiration should be within 2 minutes of the expected validity period");
+        assertTrue(minutesDifference <= validityMinutes && minutesDifference > validityMinutes - 2,
+                "Token expiration should be within 2 minutes of the expected validity period");
     }
 
     @Test
@@ -88,7 +95,7 @@ public class JwtUtilTest {
     public void testValidateToken() {
         // Arrange
         String token = jwtUtil.generateSessionToken(TEST_USER_ID, TEST_EMAIL, TEST_ROLE, TEST_IP, 60);
-        
+
         // Act & Assert
         assertTrue(jwtUtil.validateToken(token));
     }
@@ -98,9 +105,14 @@ public class JwtUtilTest {
     public void testInvalidToken() {
         // Arrange
         String invalidToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
-        
+
         // Act & Assert
         assertFalse(jwtUtil.validateToken(invalidToken));
+
+        // Test that extracting claims from invalid token throws JwtTokenException
+        assertThrows(JwtTokenException.class, () -> {
+            jwtUtil.extractAllClaims(invalidToken);
+        }, "Should throw JwtTokenException for invalid token");
     }
 
     @Test
@@ -108,10 +120,10 @@ public class JwtUtilTest {
     public void testExtractUserId() {
         // Arrange
         String token = jwtUtil.generateSessionToken(TEST_USER_ID, TEST_EMAIL, TEST_ROLE, TEST_IP, 60);
-        
+
         // Act
         Long userId = jwtUtil.extractUserId(token);
-        
+
         // Assert
         assertEquals(TEST_USER_ID, userId);
     }
@@ -121,10 +133,10 @@ public class JwtUtilTest {
     public void testExtractUserEmail() {
         // Arrange
         String token = jwtUtil.generateSessionToken(TEST_USER_ID, TEST_EMAIL, TEST_ROLE, TEST_IP, 60);
-        
+
         // Act
         String email = jwtUtil.extractUserEmail(token);
-        
+
         // Assert
         assertEquals(TEST_EMAIL, email);
     }
@@ -134,10 +146,10 @@ public class JwtUtilTest {
     public void testExtractUserRole() {
         // Arrange
         String token = jwtUtil.generateSessionToken(TEST_USER_ID, TEST_EMAIL, TEST_ROLE, TEST_IP, 60);
-        
+
         // Act
         String role = jwtUtil.extractUserRole(token);
-        
+
         // Assert
         assertEquals(TEST_ROLE, role);
     }
@@ -147,20 +159,22 @@ public class JwtUtilTest {
     public void testIsTokenExpired() throws InterruptedException {
         // Arrange - create a token with very short expiration
         String token = jwtUtil.generateSessionToken(TEST_USER_ID, TEST_EMAIL, TEST_ROLE, TEST_IP, 0);
-        
+
         // Give it a moment to ensure it expires
         Thread.sleep(1500);
-        
+
         // Act & Assert
         try {
-            // This should throw an ExpiredJwtException when trying to extract claims
+            // This should throw a JwtTokenException when trying to extract claims from an
+            // expired token
             jwtUtil.extractAllClaims(token);
-            fail("Expected ExpiredJwtException was not thrown");
-        } catch (io.jsonwebtoken.ExpiredJwtException e) {
+            fail("Expected JwtTokenException was not thrown");
+        } catch (JwtTokenException e) {
             // This is the expected behavior for an expired token
-            assertTrue(true, "Token correctly identified as expired");
+            assertTrue(e.getMessage().contains("Token parsing failed"),
+                    "Exception should indicate token parsing failed");
         }
-        
+
         // Alternatively, validate that validateToken returns false for expired tokens
         assertFalse(jwtUtil.validateToken(token));
     }
@@ -177,7 +191,7 @@ public class JwtUtilTest {
         // Assert
         assertNotNull(token);
         assertTrue(jwtUtil.validateToken(token));
-        
+
         // Verify token claims
         Claims claims = jwtUtil.extractAllClaims(token);
         assertEquals(TEST_EMAIL, claims.getSubject());
@@ -198,17 +212,60 @@ public class JwtUtilTest {
         // Assert
         assertNotNull(token);
         assertTrue(jwtUtil.validateToken(token));
-        
+
         // Verify token claims
         Claims claims = jwtUtil.extractAllClaims(token);
         assertEquals(TEST_EMAIL, claims.getSubject());
         assertEquals(TEST_EMAIL, claims.get("email"));
         assertEquals(TEST_IP, claims.get("ipAddress"));
-        
+
         // Get userId as Long to match the expected type
         Long userId = Long.valueOf(claims.get("userId").toString());
         assertEquals(TEST_USER_ID, userId);
-        
+
         assertEquals(TokenType.PASSWORD_RESET.name(), claims.get("tokenType"));
+    }
+
+    @Test
+    @DisplayName("Should throw JwtTokenException for null token")
+    public void testNullToken() {
+        // Act & Assert
+        assertThrows(JwtTokenException.class, () -> {
+            jwtUtil.extractAllClaims(null);
+        }, "Should throw JwtTokenException for null token");
+
+        assertFalse(jwtUtil.validateToken(null));
+    }
+
+    @Test
+    @DisplayName("Should throw JwtTokenException for empty token")
+    public void testEmptyToken() {
+        // Act & Assert
+        assertThrows(JwtTokenException.class, () -> {
+            jwtUtil.extractAllClaims("");
+        }, "Should throw JwtTokenException for empty token");
+
+        assertThrows(JwtTokenException.class, () -> {
+            jwtUtil.extractAllClaims("   ");
+        }, "Should throw JwtTokenException for whitespace token");
+
+        assertFalse(jwtUtil.validateToken(""));
+        assertFalse(jwtUtil.validateToken("   "));
+    }
+
+    @Test
+    @DisplayName("Should throw JwtTokenException when extracting from token with missing claims")
+    public void testTokenWithMissingClaims() {
+        // Arrange - create a valid token
+        String token = jwtUtil.generateSessionToken(TEST_USER_ID, TEST_EMAIL, TEST_ROLE, TEST_IP, 60);
+
+        // Act & Assert - all these should work with a valid token
+        assertDoesNotThrow(() -> {
+            jwtUtil.extractUserId(token);
+            jwtUtil.extractUserEmail(token);
+            jwtUtil.extractUserRole(token);
+            jwtUtil.extractTokenType(token);
+            jwtUtil.extractExpirationDate(token);
+        });
     }
 }
