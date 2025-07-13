@@ -427,16 +427,12 @@
       "actions": {
         "userManagement": "User Management",
         "userManagementDesc": "Manage users, roles, and permissions",
-        "evaluationCycle": "Evaluation Cycle",
-        "evaluationCycleDesc": "Start and monitor evaluation cycles",
-        "systemReports": "System Reports",
-        "systemReportsDesc": "View comprehensive system reports",
-        "systemSettings": "System Settings",
-        "systemSettingsDesc": "Configure system-wide settings",
-        "reports": "Reports",
-        "reportsDesc": "Generate and view system reports",
-        "exportData": "Export Data",
-        "exportDataDesc": "Export system data for analysis"
+        "trainingManagement": "Training Management",
+        "trainingManagementDesc": "Manage training programs and assignments",
+        "evaluationManagement": "Evaluation Management",
+        "evaluationManagementDesc": "Manage evaluation cycles and processes",
+        "systemSettings": "Settings",
+        "systemSettingsDesc": "Configure system settings"
       },
       "users": {
         "title": "User Profile Management",

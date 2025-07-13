@@ -427,16 +427,12 @@
       "actions": {
         "userManagement": "Gestão de Utilizadores",
         "userManagementDesc": "Gerir utilizadores, funções e permissões",
-        "evaluationCycle": "Ciclo de Avaliação",
-        "evaluationCycleDesc": "Iniciar e monitorizar ciclos de avaliação",
-        "systemReports": "Relatórios do Sistema",
-        "systemReportsDesc": "Ver relatórios abrangentes do sistema",
-        "systemSettings": "Configurações do Sistema",
-        "systemSettingsDesc": "Configurar definições do sistema",
-        "reports": "Relatórios",
-        "reportsDesc": "Gerar e ver relatórios do sistema",
-        "exportData": "Exportar Dados",
-        "exportDataDesc": "Exportar dados do sistema para análise"
+        "trainingManagement": "Gestão de Formações",
+        "trainingManagementDesc": "Gerir programas de formação e atribuições",
+        "evaluationManagement": "Gestão de Avaliações",
+        "evaluationManagementDesc": "Gerir ciclos e processos de avaliação",
+        "systemSettings": "Configurações",
+        "systemSettingsDesc": "Configurar definições do sistema"
       },
       "users": {
         "title": "Gestão de Perfis de Utilizador",
