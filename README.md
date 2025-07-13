@@ -20,9 +20,11 @@
 
 1. [x] Filtro de "Todos os Gestores" -> colocar todos os users;
 
+2. [x] Cartão de participação com design consistente com o de formação.
+
 ### Wizard atribuir gestores:
 
-1. [x] Opção seleccionar todos lança excepção "User not defined";
+1. [] Opção seleccionar todos lança excepção "User not defined";
 
 ### Notificações:
 
@@ -42,11 +44,11 @@
 
 1. [x] checkAndCloseEvaluationCycle -> refactor para passar do EvaluationService para o EvaluationCycleService.
 
-2. [] Caixa de pesquisa está a pesquisar pelo feedback apenas;
+2. [X] Caixa de pesquisa está a pesquisar pelo feedback apenas;
 
 3. [x] Após marcar avaliações como fechadas página não faz refresh (Email Assincrono);
 
----
+4. [] Visão de lista de avaliações para o admin não dá para mostrar avaliações;
 
 ---
 

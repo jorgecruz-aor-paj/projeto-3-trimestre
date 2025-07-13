@@ -87,23 +87,17 @@ export const ProfileParticipationCard = ({ participation }) => {
         {/* Action button */}
         {participation.training?.link && (
           <div className="mt-3">
-            <OverlayTrigger
-              placement="top"
-              overlay={<Tooltip>{t('profile.viewTraining')}</Tooltip>}
+            <Button
+              variant="primary"
+              as="a"
+              href={participation.training.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-100"
             >
-              <Button
-                variant="outline-info"
-                size="sm"
-                as="a"
-                href={participation.training.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-100"
-              >
-                <i className="bi bi-link-45deg me-1"></i>
-                {t('profile.viewTraining')}
-              </Button>
-            </OverlayTrigger>
+              <i className="bi bi-arrow-up-right-square me-2"></i>
+              {t('trainings.user.accessTraining', 'Access Training')}
+            </Button>
           </div>
         )}
       </Card.Body>

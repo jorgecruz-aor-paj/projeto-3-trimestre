@@ -9,16 +9,12 @@ import aor.proj3t.entities.Evaluation;
 import aor.proj3t.entities.EvaluationCycle;
 import aor.proj3t.entities.User;
 import aor.proj3t.enums.EvaluationCycleStatus;
+import aor.proj3t.enums.EvaluationScale;
 import aor.proj3t.enums.EvaluationStatus;
 import aor.proj3t.filters.EvaluationFilter;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.TypedQuery;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Join;
-import jakarta.persistence.criteria.JoinType;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.*;
 import jakarta.transaction.Transactional;
 
 /**
@@ -52,12 +48,12 @@ import jakarta.transaction.Transactional;
  *
  * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
- * @since 1.0
  * @see EvaluationDAO
  * @see AbstractDAO
  * @see Evaluation
  * @see EvaluationFilter
  * @see EvaluationCycle
+ * @since 1.0
  */
 @Stateless
 public class EvaluationDAOimpl extends AbstractDAO<Evaluation, Long> implements EvaluationDAO {
@@ -151,7 +147,7 @@ public class EvaluationDAOimpl extends AbstractDAO<Evaluation, Long> implements 
     @Transactional
     public int closeAllCompletedEvaluations() {
         return em.createQuery(
-                "UPDATE Evaluation e SET e.status = 'CLOSED' WHERE e.status = 'COMPLETED'")
+                        "UPDATE Evaluation e SET e.status = 'CLOSED' WHERE e.status = 'COMPLETED'")
                 .executeUpdate();
     }
 
@@ -251,12 +247,35 @@ public class EvaluationDAOimpl extends AbstractDAO<Evaluation, Long> implements 
         query.where(cb.and(predicates.toArray(Predicate[]::new)));
 
         if (filters.getEvaluationSortField() != null) {
-            if (Boolean.TRUE.equals(filters.getAscending())) {
-                query.orderBy(cb.asc(root.get(filters.getEvaluationSortField().getFieldName())));
+            String sortField = filters.getEvaluationSortField().getFieldName();
+
+            if ("scale".equals(sortField)) {
+                Expression<EvaluationScale> scaleExpr = root.get("scale");
+
+                //FIXME Non optimalSolution. The scale in the DB is in string so its ordered alphabetically and not by its value
+
+                // Start building the case
+                CriteriaBuilder.Case<Integer> caseExpr = cb.selectCase();
+                // Chain the when/then pairs
+                caseExpr = caseExpr
+                        .when(cb.equal(scaleExpr, EvaluationScale.LOW_CONTRIBUTION), cb.literal(EvaluationScale.LOW_CONTRIBUTION.getScore()))
+                        .when(cb.equal(scaleExpr, EvaluationScale.PARCIAL_CONTRIBUTION), cb.literal(EvaluationScale.PARCIAL_CONTRIBUTION.getScore()))
+                        .when(cb.equal(scaleExpr, EvaluationScale.EXPECTED_CONTRIBUTION), cb.literal(EvaluationScale.EXPECTED_CONTRIBUTION.getScore()))
+                        .when(cb.equal(scaleExpr, EvaluationScale.EXCEED_CONTRIBUTION), cb.literal(EvaluationScale.EXCEED_CONTRIBUTION.getScore()));
+                // Finalize the expression with `.otherwise(...)`
+                Expression<Integer> scaleScore = caseExpr.otherwise(cb.literal(0));
+
+                query.orderBy(Boolean.TRUE.equals(filters.getAscending())
+                        ? cb.asc(scaleScore)
+                        : cb.desc(scaleScore));
+
             } else {
-                query.orderBy(cb.desc(root.get(filters.getEvaluationSortField().getFieldName())));
+                query.orderBy(Boolean.TRUE.equals(filters.getAscending())
+                        ? cb.asc(root.get(sortField))
+                        : cb.desc(root.get(sortField)));
             }
         }
+
 
         return em.createQuery(query).getResultList();
     }
@@ -277,8 +296,8 @@ public class EvaluationDAOimpl extends AbstractDAO<Evaluation, Long> implements 
     @Override
     public Integer countUnclosedEvaluationsByCycleId(Long cycleId) {
         Long count = em.createQuery(
-                "SELECT COUNT(e) FROM Evaluation e WHERE e.evaluationCycle.id = :cycleId AND e.status <> :closedStatus",
-                Long.class)
+                        "SELECT COUNT(e) FROM Evaluation e WHERE e.evaluationCycle.id = :cycleId AND e.status <> :closedStatus",
+                        Long.class)
                 .setParameter("cycleId", cycleId)
                 .setParameter("closedStatus", EvaluationStatus.CLOSED)
                 .getSingleResult();
@@ -298,8 +317,8 @@ public class EvaluationDAOimpl extends AbstractDAO<Evaluation, Long> implements 
     @Override
     public Long countOngoingEvaluationsByCycle(Long cycleId) {
         return em.createQuery(
-                "SELECT COUNT(e) FROM Evaluation e WHERE e.evaluationCycle.id = :cycleId AND e.status = :status",
-                Long.class)
+                        "SELECT COUNT(e) FROM Evaluation e WHERE e.evaluationCycle.id = :cycleId AND e.status = :status",
+                        Long.class)
                 .setParameter("cycleId", cycleId)
                 .setParameter("status", EvaluationStatus.ONGOING)
                 .getSingleResult();
@@ -318,8 +337,8 @@ public class EvaluationDAOimpl extends AbstractDAO<Evaluation, Long> implements 
     @Override
     public Long countByCycleId(Long cycleId) {
         return em.createQuery(
-                "SELECT COUNT(e) FROM Evaluation e WHERE e.evaluationCycle.id = :cycleId",
-                Long.class)
+                        "SELECT COUNT(e) FROM Evaluation e WHERE e.evaluationCycle.id = :cycleId",
+                        Long.class)
                 .setParameter("cycleId", cycleId)
                 .getSingleResult();
     }
