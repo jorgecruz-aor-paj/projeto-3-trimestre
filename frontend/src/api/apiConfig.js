@@ -68,6 +68,32 @@ const API_ENDPOINTS = {
       url: `${AUTH_ENDPOINT}/resetPassword`,
       requiresAuth: false,
     },
+    twoFactor: {
+      setup: {
+        url: `${AUTH_ENDPOINT}/2fa/setup`,
+        requiresAuth: true,
+      },
+      verify: {
+        url: `${AUTH_ENDPOINT}/2fa/verify`,
+        requiresAuth: true,
+      },
+      loginVerify: {
+        url: `${AUTH_ENDPOINT}/2fa/login/verify`,
+        requiresAuth: true,
+      },
+      disable: {
+        url: `${AUTH_ENDPOINT}/2fa/disable`,
+        requiresAuth: true,
+      },
+      status: {
+        url: `${AUTH_ENDPOINT}/2fa/status`,
+        requiresAuth: true,
+      },
+      regenerateBackupCodes: {
+        url: `${AUTH_ENDPOINT}/2fa/backup-codes/regenerate`,
+        requiresAuth: true,
+      },
+    },
   },
   user: {
     getAll: {

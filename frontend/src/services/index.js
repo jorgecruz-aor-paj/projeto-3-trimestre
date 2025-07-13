@@ -13,6 +13,7 @@ import { aiService } from './aiService';
 import { exportService, downloadBlob } from './exportService';
 import { statsService } from './statsService';
 import { websocketService } from './websocketService';
+import { twoFactorService } from './twoFactorService';
 
 // Export all services and configurations
 export {
@@ -31,6 +32,7 @@ export {
   downloadBlob,
   statsService,
   websocketService,
+  twoFactorService,
 };
 
 // Default export for convenient importing
@@ -45,6 +47,7 @@ const services = {
   export: exportService,
   stats: statsService,
   websocket: websocketService,
+  twoFactor: twoFactorService,
 };
 
 export default services;
