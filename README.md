@@ -17,11 +17,11 @@
 
 ### Users:
 
-1. [] Filtro de "Todos os Gestores" -> colocar todos os users;
+1. [x] Filtro de "Todos os Gestores" -> colocar todos os users;
 
 ### Wizard atribuir gestores:
 
-1. [] Opção seleccionar todos lança excepção "User not defined";
+1. [X] Opção seleccionar todos lança excepção "User not defined";
 
 ### Notificações:
 

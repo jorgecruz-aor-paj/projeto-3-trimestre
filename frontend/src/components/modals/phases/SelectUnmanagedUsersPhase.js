@@ -22,7 +22,7 @@ export const SelectUnmanagedUsersPhase = ({
   };
 
   const handleSelectAll = () => {
-    if (selectedUserIds.size === users.length) {
+    if (selectedUserIds.size === unmanagedUsers.length) {
       setSelectedUserIds(new Set());
     } else {
       setSelectedUserIds(new Set(unmanagedUsers.map(user => user.id)));
