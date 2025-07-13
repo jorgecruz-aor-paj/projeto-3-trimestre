@@ -1,5 +1,30 @@
 package aor.proj3t.unit.service.impl;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import aor.proj3t.daos.DAOFactory;
 import aor.proj3t.daos.impl.EvaluationCycleDAOimpl;
 import aor.proj3t.daos.impl.EvaluationDAOimpl;
@@ -17,27 +42,8 @@ import aor.proj3t.filters.DateRange;
 import aor.proj3t.service.ServiceFactory;
 import aor.proj3t.service.impl.EvaluationCycleServiceImpl;
 import aor.proj3t.service.interfaces.AsyncEmailService;
-import aor.proj3t.util.EmailUtil;
 import aor.proj3t.util.converterutils.ConverterFactory;
 import aor.proj3t.util.converterutils.EvaluationCycleConverter;
-import jakarta.mail.MessagingException;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class EvaluationCycleServiceImplTest {
@@ -55,8 +61,6 @@ class EvaluationCycleServiceImplTest {
     private DAOFactory daoFactory;
     @Mock
     private ConverterFactory converterFactory;
-    @Mock
-    private EmailUtil emailUtil;
     @Mock
     private ServiceFactory serviceFactory;
     @Mock
@@ -135,7 +139,7 @@ class EvaluationCycleServiceImplTest {
 
     @Test
     @DisplayName("startCycle should create cycle and send notifications when admin creates cycle with valid data")
-    void startCycle_Success() throws MessagingException {
+    void startCycle_Success() {
         // Set up
         when(userDAO.findById(adminUser.getId())).thenReturn(Optional.of(adminUser));
         when(userDAO.countUsersWithoutManager()).thenReturn(0L);
@@ -282,55 +286,39 @@ class EvaluationCycleServiceImplTest {
     }
 
     @Test
-    @DisplayName("sendCycleClosureEmail should send emails to all users when cycle is valid")
-    void sendCycleClosureEmail_Success() throws MessagingException {
+    @DisplayName("checkAndCloseEvaluationCycle should trigger async email sending when cycle is closed")
+    void checkAndCloseEvaluationCycle_ShouldTriggerAsyncEmails() {
         // Set up
-        List<User> allUsers = List.of(adminUser, regularUser, managerUser);
-        when(userDAO.findAll()).thenReturn(allUsers);
-        when(emailUtil.createEmailTemplate(anyString(), anyString(), anyString(), anyString(), anyString()))
-                .thenReturn("<html>Mock email body</html>");
-        when(emailUtil.sendEmail(anyString(), anyString(), anyString())).thenReturn(true);
-        cycle.setClosureDate(now.plus(1, ChronoUnit.DAYS));
+        when(evaluationDAO.countUnclosedEvaluationsByCycleId(TEST_CYCLE_ID)).thenReturn(0);
+        when(evaluationCycleDAO.findById(TEST_CYCLE_ID)).thenReturn(Optional.of(cycle));
+        when(evaluationCycleDAO.update(any(EvaluationCycle.class))).thenReturn(cycle);
 
         // Execute
-        evaluationCycleService.sendCycleClosureEmail(cycle);
+        evaluationCycleService.checkAndCloseEvaluationCycle(TEST_CYCLE_ID);
 
         // Verify
-        verify(emailUtil, times(allUsers.size())).sendEmail(anyString(), anyString(), anyString());
-        verify(emailUtil, times(allUsers.size())).createEmailTemplate(anyString(), anyString(), anyString(),
-                anyString(), anyString());
+        verify(evaluationDAO).countUnclosedEvaluationsByCycleId(TEST_CYCLE_ID);
+        verify(evaluationCycleDAO).findById(TEST_CYCLE_ID);
+        verify(evaluationCycleDAO).update(cycle);
+        verify(asyncEmailService).sendCycleClosureEmailAsync(TEST_CYCLE_ID);
+
+        assertEquals(EvaluationCycleStatus.CLOSED, cycle.getStatus());
+        assertNotNull(cycle.getClosureDate());
     }
 
     @Test
-    @DisplayName("sendCycleClosureEmail should throw RuntimeException when email sending fails")
-    void sendCycleClosureEmail_WithEmailError_ThrowsRuntimeException() {
+    @DisplayName("checkAndCloseEvaluationCycle should not close cycle when unclosed evaluations exist")
+    void checkAndCloseEvaluationCycle_WithUnclosedEvaluations_ShouldNotClose() {
         // Set up
-        List<User> allUsers = List.of(adminUser, regularUser, managerUser);
-        when(userDAO.findAll()).thenReturn(allUsers);
+        when(evaluationDAO.countUnclosedEvaluationsByCycleId(TEST_CYCLE_ID)).thenReturn(5);
 
-        // Ensure cycle has proper dates
-        cycle.setStartDate(now);
-        cycle.setEndDate(now.plus(30, ChronoUnit.DAYS));
-        cycle.setClosureDate(now.plus(60, ChronoUnit.DAYS));
-        cycle.setStatus(EvaluationCycleStatus.COMPLETED);
+        // Execute
+        evaluationCycleService.checkAndCloseEvaluationCycle(TEST_CYCLE_ID);
 
-        // Mock email template creation to return a valid HTML body
-        when(emailUtil.createEmailTemplate(anyString(), anyString(), anyString(), anyString(), anyString()))
-                .thenReturn("<html>Mock email body</html>");
-
-        // Mock email sending to throw RuntimeException
-        doThrow(new RuntimeException("Email error"))
-                .when(emailUtil)
-                .sendEmail(anyString(), anyString(), anyString());
-
-        // Execute & Assert
-        RuntimeException exception = assertThrows(RuntimeException.class,
-                () -> evaluationCycleService.sendCycleClosureEmail(cycle));
-
-        assertEquals("Email error", exception.getMessage());
-
-        // Verify that email template creation and sending were attempted
-        verify(emailUtil).createEmailTemplate(anyString(), anyString(), anyString(), anyString(), anyString());
-        verify(emailUtil).sendEmail(anyString(), anyString(), anyString());
+        // Verify
+        verify(evaluationDAO).countUnclosedEvaluationsByCycleId(TEST_CYCLE_ID);
+        verify(evaluationCycleDAO, never()).findById(any());
+        verify(evaluationCycleDAO, never()).update(any());
+        verify(asyncEmailService, never()).sendCycleClosureEmailAsync(any());
     }
 }

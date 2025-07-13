@@ -3,7 +3,6 @@ package aor.proj3t.service.interfaces;
 import java.util.List;
 
 import aor.proj3t.dto.EvaluationCycleDTO;
-import aor.proj3t.entities.EvaluationCycle;
 import aor.proj3t.filters.DateRange;
 
 /**
@@ -79,14 +78,6 @@ public interface EvaluationCycleService {
      *                            information
      */
     List<EvaluationCycleDTO> getAllCycles(Long requesterId, boolean active);
-
-    /**
-     * Sends evaluation cycle closure notification emails to all users.
-     * Processes cycle closure and initiates email notification workflow.
-     * 
-     * @param cycle the EvaluationCycle entity that is being closed
-     */
-    void sendCycleClosureEmail(EvaluationCycle cycle);
 
     /**
      * Checks if an evaluation cycle should be closed based on the completion status
