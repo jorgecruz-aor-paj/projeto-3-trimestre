@@ -3,6 +3,7 @@ Response Matcher Service
 Handles pattern matching against training data and finding best responses.
 """
 
+import re
 from difflib import SequenceMatcher
 from training_data import (
     training_conversations, 
@@ -47,9 +48,12 @@ class ResponseMatcher:
             })
 
     def find_best_match(self, message: str, user_language: str) -> str | None:
-        """Find the best matching response considering language preference"""
+        """Enhanced matching with better fuzzy logic and multiple scoring factors"""
         message_lower = message.lower()
         message_keywords = self.language_service.extract_keywords(message, user_language)
+        
+        # Create message variations for better matching
+        message_variations = self._create_input_variations(message_lower)
         
         best_match = None
         best_score = 0
@@ -58,48 +62,67 @@ class ResponseMatcher:
         for pattern in self.conversation_patterns:
             score = 0
             
-            # Exact phrase matching (highest priority) - must be very similar
-            phrase_similarity = SequenceMatcher(None, message_lower, pattern["input"]).ratio()
-            if phrase_similarity > PHRASE_SIMILARITY_HIGH:
-                score += 18
-            elif phrase_similarity > PHRASE_SIMILARITY_MEDIUM:
-                score += 10
+            # 1. Enhanced phrase similarity - check against all variations
+            max_similarity = 0
+            for msg_var in message_variations:
+                similarity = SequenceMatcher(None, msg_var, pattern["input"]).ratio()
+                max_similarity = max(max_similarity, similarity)
             
-            # Strong keyword matching - require significant overlap
+            if max_similarity > PHRASE_SIMILARITY_HIGH:
+                score += 20  # Higher reward for very similar phrases
+            elif max_similarity > PHRASE_SIMILARITY_MEDIUM:
+                score += 12
+            elif max_similarity > 0.4:  # Even moderate similarity gets some points
+                score += 6
+            
+            # 2. Enhanced keyword matching with context awareness
             matching_keywords = set(message_keywords) & set(pattern["keywords"])
-            keyword_coverage = len(matching_keywords) / max(len(message_keywords), 1)
-            if keyword_coverage >= KEYWORD_COVERAGE_REQUIRED:
-                score += len(matching_keywords) * 4
-            elif len(matching_keywords) >= MIN_MATCHING_KEYWORDS:
-                score += len(matching_keywords) * 2
+            if matching_keywords:
+                keyword_coverage = len(matching_keywords) / max(len(message_keywords), 1)
+                if keyword_coverage >= KEYWORD_COVERAGE_REQUIRED:
+                    score += len(matching_keywords) * 5  # Higher reward
+                elif len(matching_keywords) >= MIN_MATCHING_KEYWORDS:
+                    score += len(matching_keywords) * 3
+                else:
+                    score += len(matching_keywords) * 1
             
-            # Language preference bonus (smaller bonus)
+            # 3. Semantic context check - stronger weight
+            if self._check_semantic_context(message_lower, pattern["input"]):
+                score += 4
+            
+            # 4. Language preference - small bonus
             if pattern.get("language") == user_language:
                 score += 2
             
-            # Semantic context check - ensure the question types align
-            if self._check_semantic_context(message_lower, pattern["input"]):
+            # 5. Question type alignment bonus
+            if self._check_question_type_alignment(message_lower, pattern["input"]):
                 score += 3
             
-            # Only log if score is above a threshold to reduce noise
-            if score >= POTENTIAL_MATCH_THRESHOLD:
-                print(f"🔍 Potential match: '{pattern['input'][:MAX_RESPONSE_PREVIEW_LENGTH]}...' | Score: {score:.1f}")
+            # 6. Length similarity bonus (similar question lengths often indicate similar questions)
+            length_ratio = min(len(message_lower), len(pattern["input"])) / max(len(message_lower), len(pattern["input"]))
+            if length_ratio > 0.6:
+                score += 1
             
-            if score > best_score and score >= confidence_threshold:
+            # Log potential matches for debugging
+            if score >= POTENTIAL_MATCH_THRESHOLD:
+                print(f"🔍 Match candidate: '{pattern['input'][:50]}...' | Score: {score:.1f}")
+            
+            if score > best_score:
                 best_score = score
                 best_match = pattern["output"]
         
         print(f"🎯 Best match score: {best_score:.1f} (needed: {confidence_threshold})")
         
-        # Only return match if we're confident it's relevant
+        # Only return match if we're confident
         if best_score >= confidence_threshold:
             print("✅ High confidence match found")
             return best_match
         else:
+            print("❌ No confident match found")
             return None
 
     def find_backup_match(self, message: str, user_language: str) -> str | None:
-        """Find a lower-confidence match when LLM is unavailable or fails"""
+        """Find a reasonable backup match with relaxed criteria"""
         message_lower = message.lower()
         message_keywords = self.language_service.extract_keywords(message, user_language)
         
@@ -110,27 +133,32 @@ class ResponseMatcher:
         for pattern in self.conversation_patterns:
             score = 0
             
-            # More permissive matching for backup scenarios
-            phrase_similarity = SequenceMatcher(None, message_lower, pattern["input"]).ratio()
-            if phrase_similarity > 0.5:  # 50% similarity
-                score += phrase_similarity * 8
+            # More permissive phrase matching
+            similarity = SequenceMatcher(None, message_lower, pattern["input"]).ratio()
+            if similarity > 0.4:
+                score += similarity * 10
             
-            # Keyword matching with lower requirements
+            # Keyword overlap
             matching_keywords = set(message_keywords) & set(pattern["keywords"])
             if matching_keywords:
                 score += len(matching_keywords) * 2
             
-            # Language preference
-            if pattern.get("language") == user_language:
+            # Context and language bonuses
+            if self._check_semantic_context(message_lower, pattern["input"]):
                 score += 2
+            if pattern.get("language") == user_language:
+                score += 1
             
-            if score > best_score and score >= backup_threshold:
+            if score > best_score:
                 best_score = score
                 best_match = pattern["output"]
         
         if best_score >= backup_threshold:
             print(f"🔄 Backup match found (score: {best_score:.1f})")
-        return best_match if best_score >= backup_threshold else None
+            return best_match
+        else:
+            print("❌ No backup match found")
+            return None
 
     def _check_semantic_context(self, user_message: str, pattern_message: str) -> bool:
         """Check if messages are asking about similar topics"""
@@ -188,3 +216,42 @@ class ResponseMatcher:
             return False
         
         return True
+    
+    def _create_input_variations(self, input_text: str) -> list:
+        """Create variations of input text for better fuzzy matching"""
+        import re
+        variations = [input_text.lower()]
+        
+        # Remove common question words that might vary
+        cleaned = re.sub(r'\b(como|how|posso|can|i|eu|o que|what|que|por favor|please)\b', '', input_text.lower())
+        cleaned = re.sub(r'\s+', ' ', cleaned).strip()
+        if cleaned and cleaned != input_text.lower():
+            variations.append(cleaned)
+        
+        # Create stem-like variations (simple)
+        stemmed = re.sub(r'(ão|ões|ing|ed|er|ar|ir)$', '', cleaned)
+        if stemmed != cleaned:
+            variations.append(stemmed)
+        
+        return variations
+
+    def _check_question_type_alignment(self, user_message: str, pattern_message: str) -> bool:
+        """Check if both messages are asking similar types of questions"""
+        user_type = self._get_question_type(user_message)
+        pattern_type = self._get_question_type(pattern_message)
+        return user_type == pattern_type and user_type != 'general'
+
+    def _get_question_type(self, message: str) -> str:
+        """Get the type of question being asked"""
+        if any(word in message for word in ['como', 'how']):
+            return 'how'
+        elif any(word in message for word in ['o que', 'que é', 'what']):
+            return 'what'
+        elif any(word in message for word in ['posso', 'can', 'conseguir']):
+            return 'can'
+        elif any(word in message for word in ['onde', 'where']):
+            return 'where'
+        elif any(word in message for word in ['quando', 'when']):
+            return 'when'
+        else:
+            return 'general'

@@ -818,7 +818,7 @@ SYSTEM_RESPONSE_TEMPLATES = {
     'pt': {
         'general_help': "Posso ajudar com informações sobre o sistema de gestão de avaliações e formações. Que área específica gostaria de explorar?",
         'evaluation_help': "No sistema de avaliações, pode ver as suas avaliações, entender os diferentes estados e acompanhar o seu desenvolvimento profissional.",
-        'training_help': "Na secção de formações, pode ver programas disponíveis, o seu histórico de participação e receber recomendações.",
+        'training_help': "Na secção de formações, pode ver programas disponíveis, o seu histórico de participação e como receber recomendações.",
         'profile_help': "No seu perfil, pode atualizar informações pessoais, ver histórico de avaliações e gerir a sua fotografia de perfil."
     },
     'en': {
@@ -1009,3 +1009,51 @@ stop_words = {
     'en': {'how', 'can', 'i', 'do', 'the', 'to', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'for', 'with', 'by', 'what', 'where', 'when', 'why', 'who', 'is', 'are', 'was', 'were', 'be', 'been', 'have', 'has', 'had', 'will', 'would', 'could', 'should', 'may', 'might', 'must'},
     'pt': {'como', 'posso', 'eu', 'fazer', 'o', 'a', 'para', 'um', 'uma', 'e', 'ou', 'mas', 'em', 'no', 'na', 'por', 'com', 'de', 'que', 'onde', 'quando', 'porque', 'quem', 'é', 'são', 'foi', 'foram', 'ser', 'sido', 'ter', 'tem', 'teve', 'vai', 'iria', 'poderia', 'deveria', 'pode', 'deve'}
 }
+
+# Common question variations for better fuzzy matching - Portuguese
+training_conversations += [
+    {
+        "input": "não sei",
+        "output": "Não tem problema! Estou aqui para ajudar. Pode perguntar-me sobre qualquer aspeto do sistema: avaliações, formações, perfil, mensagens ou navegação. O que gostaria de saber?"
+    },
+    {
+        "input": "help",
+        "output": "I'm here to help! You can ask me about any aspect of the system: evaluations, trainings, profile, messages, or navigation. What would you like to know?"
+    },
+    {
+        "input": "ajuda",
+        "output": "Estou aqui para ajudar! Pode perguntar-me sobre qualquer aspeto do sistema: avaliações, formações, perfil, mensagens ou navegação. O que gostaria de saber?"
+    },
+    {
+        "input": "não entendo",
+        "output": "Sem problema! Posso explicar qualquer funcionalidade do sistema. Pode perguntar sobre como usar avaliações, formações, mensagens, ou qualquer outra parte do sistema. Que tópico gostaria que esclarecesse?"
+    },
+    {
+        "input": "I don't understand",
+        "output": "No problem! I can explain any system functionality. You can ask about how to use evaluations, trainings, messages, or any other part of the system. What topic would you like me to clarify?"
+    },
+    {
+        "input": "como funciona",
+        "output": "Posso explicar como funciona qualquer parte do sistema! Pode perguntar sobre avaliações, formações, mensagens, perfil ou navegação. Sobre que funcionalidade específica gostaria de saber?"
+    },
+    {
+        "input": "how does it work",
+        "output": "I can explain how any part of the system works! You can ask about evaluations, trainings, messages, profile, or navigation. Which specific functionality would you like to know about?"
+    },
+    {
+        "input": "problemas",
+        "output": "Se está a ter problemas, posso ajudar! Pode perguntar sobre questões técnicas, problemas de navegação, ou como usar funcionalidades específicas. Qual é o problema que está a enfrentar?"
+    },
+    {
+        "input": "problems",
+        "output": "If you're having problems, I can help! You can ask about technical issues, navigation problems, or how to use specific features. What problem are you facing?"
+    },
+    {
+        "input": "erro",
+        "output": "Se encontrou um erro, posso tentar ajudar! Pode descrever o problema que está a ter ou perguntar sobre como usar funcionalidades específicas do sistema."
+    },
+    {
+        "input": "error",
+        "output": "If you encountered an error, I can try to help! You can describe the problem you're having or ask about how to use specific system features."
+    }
+]

@@ -84,7 +84,7 @@ async def recommend_training(req: TrainingRequest):
 
 class PredictionRequest(BaseModel):
     historical_scores: List[float]  # History of evaluations (for example, scores from 1 to 4)
-    extra_feature: float = None
+    extra_feature: float | None = None
 
 class PerformancePrediction(BaseModel):
     predicted_score: float
@@ -117,15 +117,14 @@ class ChatResponse(BaseModel):
 @app.post("/chatbot", response_model=ChatResponse)
 async def chatbot(req: ChatRequest):
     """
-    Enhanced chatbot using improved LLM generation strategies
+    Enhanced chatbot prioritizing training data over LLM generation
+    Minimizes LLM fallback to ensure consistent, reliable responses
     """
     try:
         print(f"🎯 Chatbot request: '{req.message}'")
         
-        # Simplified context - just key system info
-        context = "Sistema de gestão de formação e desempenho com avaliações, formações, mensagens e perfis."
-        
-        reply = llm_chatbot.generate_response(req.message, context)
+        # Use the improved LLM chatbot that prioritizes training data
+        reply = llm_chatbot.generate_response(req.message, "")
         
         print(f"🎯 Chatbot response: '{reply[:100]}...'")
         
@@ -133,6 +132,7 @@ async def chatbot(req: ChatRequest):
         
     except Exception as e:
         print(f"❌ Chatbot error: {e}")
+        # Even fallback should be simple and consistent
         return simple_chatbot_fallback(req.message)
 
 def simple_chatbot_fallback(message: str) -> ChatResponse:

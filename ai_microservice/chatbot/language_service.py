@@ -53,5 +53,15 @@ class LanguageService:
         return keywords
 
     def get_fallback_message(self, language: str = 'pt') -> str:
-        """Get generic fallback response in the specified language"""
-        return self.fallback_messages.get(language, self.fallback_messages['pt'])
+        """Get a varied fallback response in the specified language"""
+        import random
+        from config_constants import FALLBACK_RESPONSES
+        
+        # Get responses from config or use legacy fallback
+        responses = FALLBACK_RESPONSES.get(language, FALLBACK_RESPONSES.get('pt', []))
+        
+        if responses:
+            return random.choice(responses)
+        else:
+            # Legacy fallback from training_data
+            return self.fallback_messages.get(language, self.fallback_messages['pt'])
