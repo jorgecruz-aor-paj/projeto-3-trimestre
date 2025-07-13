@@ -1,6 +1,19 @@
 package aor.proj3t.daos;
 
-import aor.proj3t.daos.interfaces.*;
+import aor.proj3t.daos.interfaces.EvaluationCycleDAO;
+import aor.proj3t.daos.interfaces.EvaluationDAO;
+import aor.proj3t.daos.interfaces.MessageDAO;
+import aor.proj3t.daos.interfaces.NotificationDAO;
+import aor.proj3t.daos.interfaces.PendingRegistrationDAO;
+import aor.proj3t.daos.interfaces.ResetPasswordDAO;
+import aor.proj3t.daos.interfaces.SessionDAO;
+import aor.proj3t.daos.interfaces.SettingsDAO;
+import aor.proj3t.daos.interfaces.TrainingAreaDAO;
+import aor.proj3t.daos.interfaces.TrainingDAO;
+import aor.proj3t.daos.interfaces.TrainingParticipationDAO;
+import aor.proj3t.daos.interfaces.TwoFactorAuthDAO;
+import aor.proj3t.daos.interfaces.UserDAO;
+import aor.proj3t.daos.interfaces.WorkplaceDAO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
@@ -65,6 +78,9 @@ public class DAOFactory {
 
     @Inject
     private WorkplaceDAO workplaceDAO;
+
+    @Inject
+    private TwoFactorAuthDAO twoFactorAuthDAO;
 
     /**
      * Get the DAO for User entities
@@ -181,5 +197,14 @@ public class DAOFactory {
      */
     public WorkplaceDAO forWorkplace() {
         return workplaceDAO;
+    }
+
+    /**
+     * Get the DAO for TwoFactorAuth entities
+     * 
+     * @return The TwoFactorAuthDAO instance
+     */
+    public TwoFactorAuthDAO forTwoFactorAuth() {
+        return twoFactorAuthDAO;
     }
 }
