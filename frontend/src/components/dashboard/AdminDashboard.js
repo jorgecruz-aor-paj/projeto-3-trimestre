@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Row, Col, Alert, Spinner } from 'react-bootstrap';
-import { statsService } from 'services/statsService';
+import { Card } from 'react-bootstrap';
 import { AdminStatsGrid } from './AdminStatsGrid';
 import { QuickActions } from './QuickActions';
 
@@ -49,26 +48,23 @@ export const AdminDashboard = () => {
   return (
     <div className="admin-dashboard">
       {/* Statistics Overview */}
-      <Row className="mb-4">
-        <Col>
-          <h4 className="mb-3">
+      <Card className="mb-4">
+        <Card.Header>
+          <h5 className="mb-0">
             <i className="bi bi-bar-chart me-2"></i>
             {t('dashboard.admin.systemOverview')}
-          </h4>
-        </Col>
-      </Row>
-
-      <AdminStatsGrid />
+          </h5>
+        </Card.Header>
+        <Card.Body>
+          <AdminStatsGrid />
+        </Card.Body>
+      </Card>
 
       {/* Quick Actions */}
-      <Row className="mb-4">
-        <Col>
-          <QuickActions
-            title={t('dashboard.admin.quickActions')}
-            actions={adminQuickActions}
-          />
-        </Col>
-      </Row>
+      <QuickActions
+        title={t('dashboard.admin.quickActions')}
+        actions={adminQuickActions}
+      />
     </div>
   );
 };

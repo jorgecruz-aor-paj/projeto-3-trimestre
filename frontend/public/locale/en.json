@@ -493,6 +493,9 @@
       "loadingStats": "Loading your statistics...",
       "errorTitle": "Error Loading Dashboard",
       "failedToLoadStats": "Failed to load your statistics",
+      "personalStats": "My Personal Statistics",
+      "quickActionsAndActivity": "Quick Actions & Activity Overview",
+      "performanceAnalytics": "Performance Analytics",
       "stats": {
         "completedTrainings": "Completed Trainings",
         "pendingEvaluations": "Pending Evaluations",

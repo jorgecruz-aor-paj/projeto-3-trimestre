@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Row, Col, Alert, Spinner } from 'react-bootstrap';
+import { Row, Col, Alert, Spinner, Card } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { statsService } from 'services/statsService';
 import { StatsCard } from './StatsCard';
@@ -146,69 +146,101 @@ export const UserDashboard = ({ user }) => {
   return (
     <div className="user-dashboard">
       {/* Personal Statistics */}
-      <Row className="mb-4">
-        <Col md={3}>
-          <StatsCard
-            title={t('dashboard.user.stats.completedTrainings')}
-            value={stats.personal?.completedTrainings || 0}
-            icon="bi-mortarboard"
-            variant="success"
-            trend={trainingTrend?.value}
-            trendPositive={trainingTrend?.positive}
-          />
-        </Col>
-        <Col md={3}>
-          <StatsCard
-            title={t('dashboard.user.stats.pendingEvaluations')}
-            value={stats.personal?.pendingEvaluations || 0}
-            icon="bi-clock"
-            variant="warning"
-          />
-        </Col>
-        <Col md={3}>
-          <StatsCard
-            title={t('dashboard.user.stats.performanceScore')}
-            value={`${(stats.personal?.performanceScore || 0).toFixed(1)}/4`}
-            icon="bi-trophy"
-            variant="info"
-            trend={performanceTrend?.value}
-            trendPositive={performanceTrend?.positive}
-          />
-        </Col>
-        <Col md={3}>
-          <StatsCard
-            title={t('dashboard.user.stats.goalsAchieved')}
-            value={`${stats.personal?.goalsAchieved || 0}/${
-              stats.personal?.totalGoals || 0
-            }`}
-            icon="bi-bullseye"
-            variant="primary"
-          />
-        </Col>
-      </Row>
+      <Card className="mb-4">
+        <Card.Header>
+          <h5 className="mb-0">
+            <i className="bi bi-person me-2"></i>
+            {t('dashboard.user.personalStats')}
+          </h5>
+        </Card.Header>
+        <Card.Body>
+          <Row>
+            <Col md={3}>
+              <StatsCard
+                title={t('dashboard.user.stats.completedTrainings')}
+                value={stats.personal?.completedTrainings || 0}
+                icon="bi-mortarboard"
+                variant="success"
+                trend={trainingTrend?.value}
+                trendPositive={trainingTrend?.positive}
+              />
+            </Col>
+            <Col md={3}>
+              <StatsCard
+                title={t('dashboard.user.stats.pendingEvaluations')}
+                value={stats.personal?.pendingEvaluations || 0}
+                icon="bi-clock"
+                variant="warning"
+              />
+            </Col>
+            <Col md={3}>
+              <StatsCard
+                title={t('dashboard.user.stats.performanceScore')}
+                value={`${(stats.personal?.performanceScore || 0).toFixed(
+                  1
+                )}/4`}
+                icon="bi-trophy"
+                variant="info"
+                trend={performanceTrend?.value}
+                trendPositive={performanceTrend?.positive}
+              />
+            </Col>
+            <Col md={3}>
+              <StatsCard
+                title={t('dashboard.user.stats.goalsAchieved')}
+                value={`${stats.personal?.goalsAchieved || 0}/${
+                  stats.personal?.totalGoals || 0
+                }`}
+                icon="bi-bullseye"
+                variant="primary"
+              />
+            </Col>
+          </Row>
+        </Card.Body>
+      </Card>
 
       {/* Quick Actions and Charts */}
-      <Row className="mb-4">
-        <Col md={8}>
-          <QuickActions
-            title={t('dashboard.user.quickActions')}
-            actions={userQuickActions}
-          />
-        </Col>
-        <Col md={4}>
-          <UserActivityOverviewChart stats={stats} loading={loading} />
-        </Col>
-      </Row>
+      <Card className="mb-4">
+        <Card.Header>
+          <h5 className="mb-0">
+            <i className="bi bi-lightning me-2"></i>
+            {t('dashboard.user.quickActionsAndActivity')}
+          </h5>
+        </Card.Header>
+        <Card.Body>
+          <Row>
+            <Col md={8}>
+              <QuickActions
+                title={t('dashboard.user.quickActions')}
+                actions={userQuickActions}
+              />
+            </Col>
+            <Col md={4}>
+              <UserActivityOverviewChart stats={stats} loading={loading} />
+            </Col>
+          </Row>
+        </Card.Body>
+      </Card>
 
-      {/* Additional Charts */}
-      <Row className="mb-4">
-        <Col md={6}>
-          <UserTrainingProgressChart stats={stats} loading={loading} />
-        </Col>
-        <Col md={6}>
-          <UserPerformanceTrendChart stats={stats} loading={loading} />
-        </Col>
-      </Row>
+      {/* Analytics Charts */}
+      <Card className="mb-4">
+        <Card.Header>
+          <h5 className="mb-0">
+            <i className="bi bi-graph-up me-2"></i>
+            {t('dashboard.user.performanceAnalytics')}
+          </h5>
+        </Card.Header>
+        <Card.Body>
+          <Row>
+            <Col md={6}>
+              <UserTrainingProgressChart stats={stats} loading={loading} />
+            </Col>
+            <Col md={6}>
+              <UserPerformanceTrendChart stats={stats} loading={loading} />
+            </Col>
+          </Row>
+        </Card.Body>
+      </Card>
     </div>
   );
 };

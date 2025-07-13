@@ -493,6 +493,9 @@
       "loadingStats": "A carregar as suas estatísticas...",
       "errorTitle": "Erro ao Carregar Painel",
       "failedToLoadStats": "Falha ao carregar as suas estatísticas",
+      "personalStats": "As Minhas Estatísticas Pessoais",
+      "quickActionsAndActivity": "Ações Rápidas & Resumo de Atividades",
+      "performanceAnalytics": "Análise de Desempenho",
       "stats": {
         "completedTrainings": "Formações Concluídas",
         "pendingEvaluations": "Avaliações Pendentes",

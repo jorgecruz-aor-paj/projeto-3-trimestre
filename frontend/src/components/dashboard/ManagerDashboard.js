@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Row, Col, Alert } from 'react-bootstrap';
+import { Row, Col, Alert, Card } from 'react-bootstrap';
 import { StatsCard } from './StatsCard';
 import { QuickActions } from './QuickActions';
 import { TeamPerformanceChart } from './TeamPerformanceChart';
@@ -153,146 +153,157 @@ export const ManagerDashboard = () => {
       )}
 
       {/* Personal Statistics Section */}
-      <Row className="mb-4">
-        <Col>
-          <h5 className="mb-3">
+      <Card className="mb-4">
+        <Card.Header>
+          <h5 className="mb-0">
             <i className="bi bi-person me-2"></i>
             {t('dashboard.manager.personalStats')}
           </h5>
-        </Col>
-      </Row>
-
-      <Row className="mb-4">
-        <Col md={3}>
-          <StatsCard
-            title={t('dashboard.user.stats.completedTrainings')}
-            value={
-              personalLoading
-                ? '...'
-                : personalStats.personal?.completedTrainings || 0
-            }
-            icon="bi-mortarboard"
-            variant="success"
-            trend={trainingTrend?.value}
-            trendPositive={trainingTrend?.positive}
-          />
-        </Col>
-        <Col md={3}>
-          <StatsCard
-            title={t('dashboard.user.stats.pendingEvaluations')}
-            value={
-              personalLoading
-                ? '...'
-                : personalStats.personal?.pendingEvaluations || 0
-            }
-            icon="bi-clock"
-            variant="warning"
-          />
-        </Col>
-        <Col md={3}>
-          <StatsCard
-            title={t('dashboard.user.stats.performanceScore')}
-            value={
-              personalLoading
-                ? '...'
-                : `${(personalStats.personal?.performanceScore || 0).toFixed(
-                    1
-                  )}/4`
-            }
-            icon="bi-trophy"
-            variant="info"
-            trend={performanceTrend?.value}
-            trendPositive={performanceTrend?.positive}
-          />
-        </Col>
-        <Col md={3}>
-          <StatsCard
-            title={t('dashboard.user.stats.goalsAchieved')}
-            value={
-              personalLoading
-                ? '...'
-                : `${personalStats.personal?.goalsAchieved || 0}/${
-                    personalStats.personal?.totalGoals || 0
-                  }`
-            }
-            icon="bi-bullseye"
-            variant="primary"
-          />
-        </Col>
-      </Row>
+        </Card.Header>
+        <Card.Body>
+          <Row>
+            <Col md={3}>
+              <StatsCard
+                title={t('dashboard.user.stats.completedTrainings')}
+                value={
+                  personalLoading
+                    ? '...'
+                    : personalStats.personal?.completedTrainings || 0
+                }
+                icon="bi-mortarboard"
+                variant="success"
+                trend={trainingTrend?.value}
+                trendPositive={trainingTrend?.positive}
+              />
+            </Col>
+            <Col md={3}>
+              <StatsCard
+                title={t('dashboard.user.stats.pendingEvaluations')}
+                value={
+                  personalLoading
+                    ? '...'
+                    : personalStats.personal?.pendingEvaluations || 0
+                }
+                icon="bi-clock"
+                variant="warning"
+              />
+            </Col>
+            <Col md={3}>
+              <StatsCard
+                title={t('dashboard.user.stats.performanceScore')}
+                value={
+                  personalLoading
+                    ? '...'
+                    : `${(
+                        personalStats.personal?.performanceScore || 0
+                      ).toFixed(1)}/4`
+                }
+                icon="bi-trophy"
+                variant="info"
+                trend={performanceTrend?.value}
+                trendPositive={performanceTrend?.positive}
+              />
+            </Col>
+            <Col md={3}>
+              <StatsCard
+                title={t('dashboard.user.stats.goalsAchieved')}
+                value={
+                  personalLoading
+                    ? '...'
+                    : `${personalStats.personal?.goalsAchieved || 0}/${
+                        personalStats.personal?.totalGoals || 0
+                      }`
+                }
+                icon="bi-bullseye"
+                variant="primary"
+              />
+            </Col>
+          </Row>
+        </Card.Body>
+      </Card>
 
       {/* Team Statistics Section */}
-      <Row className="mb-4">
-        <Col>
-          <h5 className="mb-3">
+      <Card className="mb-4">
+        <Card.Header>
+          <h5 className="mb-0">
             <i className="bi bi-people me-2"></i>
             {t('dashboard.manager.teamStats')}
           </h5>
-        </Col>
-      </Row>
+        </Card.Header>
+        <Card.Body>
+          <Row>
+            <Col md={3}>
+              <StatsCard
+                title={t('dashboard.manager.stats.teamMembers')}
+                value={loading ? '...' : stats.teamMembers}
+                icon="bi-people"
+                variant="primary"
+                trend=""
+                trendPositive={true}
+              />
+            </Col>
+            <Col md={3}>
+              <StatsCard
+                title={t('dashboard.manager.stats.activeTrainings')}
+                value={loading ? '...' : stats.activeTrainings}
+                icon="bi-mortarboard"
+                variant="success"
+                trend=""
+                trendPositive={true}
+              />
+            </Col>
+            <Col md={3}>
+              <StatsCard
+                title={t('dashboard.manager.stats.pendingEvaluations')}
+                value={loading ? '...' : stats.pendingEvaluations}
+                icon="bi-clock"
+                variant="warning"
+                trend=""
+                trendPositive={true}
+              />
+            </Col>
+            <Col md={3}>
+              <StatsCard
+                title={t('dashboard.manager.stats.teamPerformance')}
+                value={
+                  loading
+                    ? '...'
+                    : stats.teamPerformance > 0
+                    ? `${stats.teamPerformance}/4`
+                    : '--'
+                }
+                icon="bi-trophy"
+                variant="info"
+                trend=""
+                trendPositive={true}
+              />
+            </Col>
+          </Row>
+        </Card.Body>
+      </Card>
 
-      {/* Team Statistics */}
-      <Row className="mb-4">
-        <Col md={3}>
-          <StatsCard
-            title={t('dashboard.manager.stats.teamMembers')}
-            value={loading ? '...' : stats.teamMembers}
-            icon="bi-people"
-            variant="primary"
-            trend=""
-            trendPositive={true}
-          />
-        </Col>
-        <Col md={3}>
-          <StatsCard
-            title={t('dashboard.manager.stats.activeTrainings')}
-            value={loading ? '...' : stats.activeTrainings}
-            icon="bi-mortarboard"
-            variant="success"
-            trend=""
-            trendPositive={true}
-          />
-        </Col>
-        <Col md={3}>
-          <StatsCard
-            title={t('dashboard.manager.stats.pendingEvaluations')}
-            value={loading ? '...' : stats.pendingEvaluations}
-            icon="bi-clock"
-            variant="warning"
-            trend=""
-            trendPositive={true}
-          />
-        </Col>
-        <Col md={3}>
-          <StatsCard
-            title={t('dashboard.manager.stats.teamPerformance')}
-            value={
-              loading
-                ? '...'
-                : stats.teamPerformance > 0
-                ? `${stats.teamPerformance}/4`
-                : '--'
-            }
-            icon="bi-trophy"
-            variant="info"
-            trend=""
-            trendPositive={true}
-          />
-        </Col>
-      </Row>
-
-      {/* Quick Actions */}
-      <Row className="mb-4">
-        <Col md={8}>
-          <QuickActions
-            title={t('dashboard.manager.quickActions')}
-            actions={managerQuickActions}
-          />
-        </Col>
-        <Col md={4}>
-          <TeamPerformanceChart stats={stats} loading={loading} />
-        </Col>
-      </Row>
+      {/* Quick Actions and Chart Section */}
+      <Card className="mb-4">
+        <Card.Header>
+          <h5 className="mb-0">
+            <i className="bi bi-lightning me-2"></i>
+            {t('dashboard.manager.quickActions')} & Team Performance
+          </h5>
+        </Card.Header>
+        <Card.Body>
+          <Row>
+            <Col md={8}>
+              <QuickActions
+                title={t('dashboard.manager.quickActions')}
+                actions={managerQuickActions}
+              />
+            </Col>
+            <Col md={4}>
+              <TeamPerformanceChart stats={stats} loading={loading} />
+            </Col>
+          </Row>
+        </Card.Body>
+      </Card>
     </div>
   );
 };
