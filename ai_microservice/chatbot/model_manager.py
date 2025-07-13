@@ -11,7 +11,7 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 class ModelManager:
     """Manages the LLM model loading and configuration"""
     
-    def __init__(self, model_name: str = "microsoft/DialoGPT-medium"):
+    def __init__(self, model_name: str = "microsoft/DialoGPT-small"):
         self.model_name = model_name
         self.tokenizer = None
         self.model = None
@@ -21,7 +21,7 @@ class ModelManager:
     def _load_model(self):
         """Load the LLM model and tokenizer"""
         cache_dir = os.environ.get("HF_HOME", "/app/models/chatbot_cache")
-        print(f"🤖 Loading model from/to: {cache_dir}")
+        print(f"🤖 Loading LLM model...")
 
         try:
             self.tokenizer = AutoTokenizer.from_pretrained(self.model_name, cache_dir=cache_dir)

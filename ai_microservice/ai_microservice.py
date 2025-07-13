@@ -5,6 +5,8 @@ from typing import List
 
 # Import the LLM chatbot
 from chatbot import llm_chatbot
+# Import centralized fallback responses
+from training_data import topic_fallback_responses, CONTEXT_CATEGORIES, LANGUAGE_INDICATORS
 
 app = FastAPI(title="AI Microservice for Performance Management", version="1.0")
 
@@ -115,17 +117,13 @@ class ChatResponse(BaseModel):
 @app.post("/chatbot", response_model=ChatResponse)
 async def chatbot(req: ChatRequest):
     """
-    Enhanced chatbot using fine-tuned LLM
+    Enhanced chatbot using improved LLM generation strategies
     """
     try:
         print(f"🎯 Chatbot request: '{req.message}'")
         
-        # Create context about the training system
-        context = """
-        This is a training and performance evaluation management system.
-        Users can view trainings, participate, view evaluations, and get recommendations.
-        The system has features for messaging, profile management, and AI assistance.
-        """
+        # Simplified context - just key system info
+        context = "Sistema de gestão de formação e desempenho com avaliações, formações, mensagens e perfis."
         
         reply = llm_chatbot.generate_response(req.message, context)
         
@@ -138,22 +136,27 @@ async def chatbot(req: ChatRequest):
         return simple_chatbot_fallback(req.message)
 
 def simple_chatbot_fallback(message: str) -> ChatResponse:
-    """Improved fallback logic"""
+    """Improved fallback logic using centralized bilingual responses"""
     lower_msg = message.lower()
     
-    # More specific keyword matching
-    if any(word in lower_msg for word in ["evaluation", "evaluate", "performance"]):
-        reply = "To access evaluations, go to the 'Evaluations' section in the main menu. You can view your evaluation history and current evaluation status there."
-    elif any(word in lower_msg for word in ["training", "course", "learn"]):
-        reply = "You can find available trainings in the 'Trainings' section. Your manager can register training participations for you, and you can view your training history in your profile."
-    elif any(word in lower_msg for word in ["message", "chat", "communication"]):
-        reply = "Use the Messages section to communicate with colleagues. You can start new conversations and receive real-time messages."
-    elif any(word in lower_msg for word in ["login", "password", "account"]):
-        reply = "For login issues, check your credentials or use 'Forgot Password'. For account registration, contact your administrator."
-    elif any(word in lower_msg for word in ["error", "problem", "issue"]):
-        reply = "Try refreshing the page or clearing your browser cache. If problems persist, contact your system administrator for technical support."
+    # Simple language detection for fallback using centralized indicators
+    portuguese_count = sum(1 for word in LANGUAGE_INDICATORS['pt'] if word in lower_msg)
+    english_count = sum(1 for word in LANGUAGE_INDICATORS['en'] if word in lower_msg)
+    language = 'pt' if portuguese_count > english_count else 'en'
+    
+    # More specific keyword matching using centralized categories
+    if any(word in lower_msg for word in CONTEXT_CATEGORIES['evaluation']):
+        reply = topic_fallback_responses['evaluation'][language]
+    elif any(word in lower_msg for word in CONTEXT_CATEGORIES['training']):
+        reply = topic_fallback_responses['training'][language]
+    elif any(word in lower_msg for word in CONTEXT_CATEGORIES['message']):
+        reply = topic_fallback_responses['messaging'][language]
+    elif any(word in lower_msg for word in CONTEXT_CATEGORIES['login']):
+        reply = topic_fallback_responses['login'][language]
+    elif any(word in lower_msg for word in ["error", "problem", "issue", "erro", "problema"]):
+        reply = topic_fallback_responses['error'][language]
     else:
-        reply = "I'm here to help with the Training and Performance Management System. You can ask about evaluations, trainings, messages, user accounts, or system navigation."
+        reply = topic_fallback_responses['general'][language]
     
     return ChatResponse(reply=reply)
 

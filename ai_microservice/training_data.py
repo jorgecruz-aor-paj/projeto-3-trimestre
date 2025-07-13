@@ -20,6 +20,22 @@ training_conversations = [
         "input": "How do I change my profile picture?",
         "output": "In your profile page, click on the profile picture area and select a new image file to upload. The system supports common image formats. You can also reset to the default picture if needed."
     },
+    {
+        "input": "How can I change my password?",
+        "output": "To change your password, first go to your profile page and click 'Change Password'. You'll receive a password reset link via email. Click the link and you'll be taken to a secure page where you can set a new password."
+    },
+    {
+        "input": "Can I reset my profile picture to default?",
+        "output": "Yes! In your profile page, when you're editing your profile, you'll see options to either upload a new profile picture or reset to the default picture. The reset option will remove your current custom picture and use the system default."
+    },
+    {
+        "input": "What are the password requirements?",
+        "output": "Your password must be at least 8 characters long and include: at least one uppercase letter, one lowercase letter, one number, and one special character (@#$%^&+=!*). Spaces and tabs are not allowed."
+    },
+    {
+        "input": "How do I upload a profile picture?",
+        "output": "In your profile page, click the 'Change Picture' button or click on your current profile picture. Select an image file from your device (JPG, PNG are supported). The system will automatically resize the image to fit properly. The maximum file size is 5MB."
+    },
 
     # Authentication and Account Management - Portuguese
     {
@@ -41,6 +57,202 @@ training_conversations = [
     {
         "input": "Como altero a minha fotografia de perfil?",
         "output": "Na sua página de perfil, clique na área da fotografia de perfil e selecione um novo ficheiro de imagem para carregar. O sistema suporta formatos de imagem comuns. Também pode repor a imagem predefinida se necessário."
+    },
+    {
+        "input": "Como posso alterar a minha palavra-passe?",
+        "output": "Para alterar a sua palavra-passe, primeiro aceda à sua página de perfil e clique em 'Alterar Palavra-passe'. Receberá uma ligação para redefinir a palavra-passe por email. Clique na ligação e será levado para uma página segura onde pode definir uma nova palavra-passe."
+    },
+    {
+        "input": "Posso repor a minha fotografia de perfil para a predefinida?",
+        "output": "Sim! Na sua página de perfil, quando estiver a editar o seu perfil, verá opções para carregar uma nova fotografia de perfil ou repor para a predefinida. A opção de reposição removerá a sua fotografia personalizada atual e usará a predefinida do sistema."
+    },
+    {
+        "input": "Quais são os requisitos da palavra-passe?",
+        "output": "A sua palavra-passe deve ter pelo menos 8 caracteres e incluir: pelo menos uma letra maiúscula, uma letra minúscula, um número e um carácter especial (@#$%^&+=!*). Espaços e tabulações não são permitidos."
+    },
+    {
+        "input": "Como carrego uma fotografia de perfil?",
+        "output": "Na sua página de perfil, clique no botão 'Alterar Fotografia' ou clique na sua fotografia de perfil atual. Selecione um ficheiro de imagem do seu dispositivo (JPG, PNG são suportados). O sistema redimensionará automaticamente a imagem para caber adequadamente. O tamanho máximo do ficheiro é 5MB."
+    },
+
+    # Real-time Notifications and WebSocket Features - English
+    {
+        "input": "How do I know when I receive new messages?",
+        "output": "The system provides real-time notifications! You'll see a notification badge with the number of unread messages in the main navigation. The system uses WebSocket technology for instant delivery, so you'll be notified immediately when someone sends you a message."
+    },
+    {
+        "input": "What are the notification indicators in the system?",
+        "output": "The system shows notification badges in the main navigation bar. You'll see counters for unread messages and system notifications. When you receive new messages or notifications, these badges update automatically in real-time without needing to refresh the page."
+    },
+    {
+        "input": "Do I get notified about system events?",
+        "output": "Yes! The system sends real-time notifications for various events like: new messages, evaluation cycle updates, training assignments, and other important system activities. All notifications appear instantly thanks to WebSocket technology."
+    },
+    {
+        "input": "Can I see when my messages are read?",
+        "output": "Yes, the system provides read receipts for messages. You can see when your messages have been read by the recipient through visual indicators in the conversation. This works in real-time through WebSocket connections."
+    },
+    {
+        "input": "How does real-time messaging work?",
+        "output": "The system uses advanced WebSocket technology for real-time communication. When you send a message, it's delivered instantly to the recipient if they're online. You'll also see when messages are delivered and read through visual indicators."
+    },
+
+    # Real-time Notifications and WebSocket Features - Portuguese
+    {
+        "input": "Como sei quando recebo novas mensagens?",
+        "output": "O sistema fornece notificações em tempo real! Verá um distintivo de notificação com o número de mensagens não lidas na navegação principal. O sistema usa tecnologia WebSocket para entrega instantânea, por isso será notificado imediatamente quando alguém lhe enviar uma mensagem."
+    },
+    {
+        "input": "Quais são os indicadores de notificação no sistema?",
+        "output": "O sistema mostra distintivos de notificação na barra de navegação principal. Verá contadores para mensagens não lidas e notificações do sistema. Quando recebe novas mensagens ou notificações, estes distintivos atualizam automaticamente em tempo real sem precisar de atualizar a página."
+    },
+    {
+        "input": "Sou notificado sobre eventos do sistema?",
+        "output": "Sim! O sistema envia notificações em tempo real para vários eventos como: novas mensagens, atualizações de ciclos de avaliação, atribuições de formação e outras atividades importantes do sistema. Todas as notificações aparecem instantaneamente graças à tecnologia WebSocket."
+    },
+    {
+        "input": "Posso ver quando as minhas mensagens são lidas?",
+        "output": "Sim, o sistema fornece confirmações de leitura para mensagens. Pode ver quando as suas mensagens foram lidas pelo destinatário através de indicadores visuais na conversa. Isto funciona em tempo real através de ligações WebSocket."
+    },
+    {
+        "input": "Como funciona o sistema de mensagens em tempo real?",
+        "output": "O sistema usa tecnologia WebSocket avançada para comunicação em tempo real. Quando envia uma mensagem, é entregue instantaneamente ao destinatário se estiver online. Também verá quando as mensagens são entregues e lidas através de indicadores visuais."
+    },
+
+    # Admin Features - Bulk Operations and User Management - English
+    {
+        "input": "How can I assign managers to multiple users at once?",
+        "output": "As an administrator, go to the Evaluation Cycles page and click 'Assign Managers'. This opens a multi-step wizard where you can: 1) Select unmanaged users, 2) Choose a manager, and 3) Confirm the bulk assignment. This is much faster than assigning managers individually."
+    },
+    {
+        "input": "What is bulk manager assignment?",
+        "output": "Bulk manager assignment allows administrators to assign one manager to multiple users simultaneously. This is useful for organizing teams and ensuring all users have proper management structure before starting evaluation cycles. The system automatically promotes users to manager role when needed."
+    },
+    {
+        "input": "How do I start a new evaluation cycle?",
+        "output": "As an administrator, go to the Evaluation Cycles page and click 'Start New Cycle'. You'll need to set start and end dates for the evaluation period. Note: all users must have assigned managers before you can start a cycle. The system will automatically create evaluations for all managed users."
+    },
+    {
+        "input": "Can I close evaluations in bulk?",
+        "output": "Yes! As an administrator in the Evaluation Management section, you can select multiple evaluations and close them all at once. This is useful at the end of evaluation cycles to finalize all completed evaluations efficiently."
+    },
+    {
+        "input": "What are unmanaged users?",
+        "output": "Unmanaged users are employees who don't have an assigned manager. This is important because managers are responsible for evaluating their team members. You can view unmanaged users on the Evaluation Cycles page and use the bulk manager assignment feature to assign managers to them."
+    },
+    {
+        "input": "How do I manage user roles and permissions?",
+        "output": "As an administrator, you can view and manage user roles in the User Management section. The system has three roles: Admin (full access), Manager (can evaluate team members), and User (basic access). When you assign users to a manager, the manager is automatically promoted to Manager role if needed."
+    },
+
+    # Admin Features - Bulk Operations and User Management - Portuguese
+    {
+        "input": "Como posso atribuir gestores a múltiplos utilizadores de uma vez?",
+        "output": "Como administrador, aceda à página Ciclos de Avaliação e clique em 'Atribuir Gestores'. Isto abre um assistente de múltiplos passos onde pode: 1) Selecionar utilizadores não geridos, 2) Escolher um gestor, e 3) Confirmar a atribuição em massa. Isto é muito mais rápido do que atribuir gestores individualmente."
+    },
+    {
+        "input": "O que é a atribuição em massa de gestores?",
+        "output": "A atribuição em massa de gestores permite aos administradores atribuir um gestor a múltiplos utilizadores simultaneamente. Isto é útil para organizar equipas e garantir que todos os utilizadores têm uma estrutura de gestão adequada antes de iniciar ciclos de avaliação. O sistema promove automaticamente utilizadores ao papel de gestor quando necessário."
+    },
+    {
+        "input": "Como inicio um novo ciclo de avaliação?",
+        "output": "Como administrador, aceda à página Ciclos de Avaliação e clique em 'Iniciar Novo Ciclo'. Terá de definir datas de início e fim para o período de avaliação. Nota: todos os utilizadores devem ter gestores atribuídos antes de poder iniciar um ciclo. O sistema criará automaticamente avaliações para todos os utilizadores geridos."
+    },
+    {
+        "input": "Posso fechar avaliações em massa?",
+        "output": "Sim! Como administrador na secção Gestão de Avaliação, pode selecionar múltiplas avaliações e fechá-las todas de uma vez. Isto é útil no final dos ciclos de avaliação para finalizar todas as avaliações concluídas eficientemente."
+    },
+    {
+        "input": "O que são utilizadores não geridos?",
+        "output": "Utilizadores não geridos são funcionários que não têm um gestor atribuído. Isto é importante porque os gestores são responsáveis por avaliar os membros da sua equipa. Pode ver utilizadores não geridos na página Ciclos de Avaliação e usar a funcionalidade de atribuição em massa de gestores para lhes atribuir gestores."
+    },
+    {
+        "input": "Como giro papéis e permissões de utilizadores?",
+        "output": "Como administrador, pode ver e gerir papéis de utilizadores na secção Gestão de Utilizadores. O sistema tem três papéis: Admin (acesso total), Gestor (pode avaliar membros da equipa), e Utilizador (acesso básico). Quando atribui utilizadores a um gestor, o gestor é automaticamente promovido ao papel de Gestor se necessário."
+    },
+
+    # Dashboard and Statistics Features - English
+    {
+        "input": "What can I see on the admin dashboard?",
+        "output": "The admin dashboard shows system overview statistics including: total users, active managers, unmanaged users, completed evaluations, and pending evaluations. You also get quick action buttons to access User Management, Training Management, Evaluation Management, and System Settings."
+    },
+    {
+        "input": "What features does the manager dashboard have?",
+        "output": "The manager dashboard displays both your personal statistics and team management features. You can see your own evaluation and training history, plus team management actions like evaluating team members, assigning training, and accessing team reports. It shows performance trends and training statistics for better team oversight."
+    },
+    {
+        "input": "How do I access system statistics?",
+        "output": "System statistics are available on role-specific dashboards. Administrators see comprehensive system stats including user counts and evaluation metrics. Managers see team-specific statistics and trends. All dashboards provide real-time data about system usage and performance."
+    },
+
+    # Dashboard and Statistics Features - Portuguese
+    {
+        "input": "O que posso ver no painel de administração?",
+        "output": "O painel de administração mostra estatísticas de visão geral do sistema incluindo: total de utilizadores, gestores ativos, utilizadores não geridos, avaliações concluídas e avaliações pendentes. Também obtém botões de ação rápida para aceder à Gestão de Utilizadores, Gestão de Formação, Gestão de Avaliação e Configurações do Sistema."
+    },
+    {
+        "input": "Que funcionalidades tem o painel de gestor?",
+        "output": "O painel de gestor exibe tanto as suas estatísticas pessoais como funcionalidades de gestão de equipa. Pode ver o seu próprio histórico de avaliação e formação, além de ações de gestão de equipa como avaliar membros da equipa, atribuir formação e aceder a relatórios de equipa. Mostra tendências de desempenho e estatísticas de formação para melhor supervisão da equipa."
+    },
+    {
+        "input": "Como acedo às estatísticas do sistema?",
+        "output": "As estatísticas do sistema estão disponíveis em painéis específicos por papel. Os administradores veem estatísticas abrangentes do sistema incluindo contagens de utilizadores e métricas de avaliação. Os gestores veem estatísticas específicas da equipa e tendências. Todos os painéis fornecem dados em tempo real sobre uso e desempenho do sistema."
+    },
+
+    # Advanced Training Features - English
+    {
+        "input": "How can managers track training participation?",
+        "output": "Managers can view training participation statistics on their dashboard and in individual user profiles. You can see which team members have completed which trainings, yearly training hours, and identify training gaps. This helps in making informed decisions about training assignments."
+    },
+    {
+        "input": "Can I see training recommendations?",
+        "output": "Yes! The AI system can analyze evaluation feedback and suggest relevant training programs. Managers can also review team member profiles to see which trainings they haven't participated in yet, making it easier to recommend appropriate training programs."
+    },
+    {
+        "input": "What training statistics are available?",
+        "output": "The system provides comprehensive training statistics including: individual training participation history, yearly training hours per user, training completion rates across teams, and trending analysis. Managers and administrators can use these insights for better training program management."
+    },
+
+    # Advanced Training Features - Portuguese
+    {
+        "input": "Como podem os gestores acompanhar a participação em formação?",
+        "output": "Os gestores podem ver estatísticas de participação em formação no seu painel e nos perfis individuais dos utilizadores. Pode ver que membros da equipa completaram que formações, horas de formação anuais e identificar lacunas de formação. Isto ajuda a tomar decisões informadas sobre atribuições de formação."
+    },
+    {
+        "input": "Posso ver recomendações de formação?",
+        "output": "Sim! O sistema de IA pode analisar o feedback de avaliação e sugerir programas de formação relevantes. Os gestores também podem rever perfis de membros da equipa para ver em que formações ainda não participaram, facilitando a recomendação de programas de formação apropriados."
+    },
+    {
+        "input": "Que estatísticas de formação estão disponíveis?",
+        "output": "O sistema fornece estatísticas abrangentes de formação incluindo: histórico individual de participação em formação, horas de formação anuais por utilizador, taxas de conclusão de formação entre equipas e análise de tendências. Gestores e administradores podem usar estas perceções para melhor gestão de programas de formação."
+    },
+
+    # Profile Picture and File Management - English
+    {
+        "input": "What image formats are supported for profile pictures?",
+        "output": "The system supports common image formats including JPG, JPEG, PNG, and other standard image types. Images are automatically resized to 300x300 pixels for optimal display and performance. The maximum file size allowed is 5MB."
+    },
+    {
+        "input": "Can I change someone else's profile picture?",
+        "output": "Only administrators can upload or reset profile pictures for other users. Regular users can only manage their own profile pictures. This is a security feature to prevent unauthorized changes to user profiles."
+    },
+    {
+        "input": "What happens when I upload a large image?",
+        "output": "The system automatically resizes large images to 300x300 pixels for profile pictures. This ensures consistent display across the application and improves performance. The original aspect ratio is maintained during resizing, and file size is optimized."
+    },
+
+    # Profile Picture and File Management - Portuguese
+    {
+        "input": "Que formatos de imagem são suportados para fotografias de perfil?",
+        "output": "O sistema suporta formatos de imagem comuns incluindo JPG, JPEG, PNG e outros tipos de imagem padrão. As imagens são automaticamente redimensionadas para 300x300 pixels para exibição e desempenho ideais. O tamanho máximo de ficheiro permitido é 5MB."
+    },
+    {
+        "input": "Posso alterar a fotografia de perfil de outra pessoa?",
+        "output": "Apenas os administradores podem carregar ou repor fotografias de perfil para outros utilizadores. Os utilizadores regulares apenas podem gerir as suas próprias fotografias de perfil. Esta é uma funcionalidade de segurança para prevenir alterações não autorizadas aos perfis de utilizadores."
+    },
+    {
+        "input": "O que acontece quando carrego uma imagem grande?",
+        "output": "O sistema redimensiona automaticamente imagens grandes para 300x300 pixels para fotografias de perfil. Isto garante exibição consistente em toda a aplicação e melhora o desempenho. A proporção original é mantida durante o redimensionamento, e o tamanho do ficheiro é otimizado."
     },
 
     # Evaluation Management - User Perspective - English
@@ -248,7 +460,7 @@ training_conversations = [
     },
     {
         "input": "Posso ver quando alguém leu a minha mensagem?",
-        "output": "Sim, o sistema fornece confirmações de leitura. Pode ver quando as suas mensagens foram lidas pelo destinatário através de indicadores visuais na conversa."
+        "output": "Sim, o sistema fornece confirmações de leitura para mensagens. Pode ver quando as suas mensagens foram lidas pelo destinatário através de indicadores visuais na conversa."
     },
     {
         "input": "Como inicio uma conversa com alguém?",
@@ -475,5 +687,325 @@ training_conversations = [
     {
         "input": "Hi",
         "output": "Hi! What can I help you with? I'm here to answer questions about the system."
+    },
+    # Enhanced capability questions - English
+    {
+        "input": "What can you do for me?",
+        "output": "I can help you with information about the evaluation and training management system:\n\n📊 **Evaluations** - View results, understand statuses, track progress\n🎓 **Training** - Available programs, participation history, recommendations\n👤 **Profile** - Personal information, profile pictures, activity history\n💬 **System** - Navigation, messaging, notifications\n\nWhich area would you like to explore?"
+    },
+    {
+        "input": "What can you help me with?",
+        "output": "I'm here to assist you with the evaluation and training management system. I can provide information about evaluations, training programs, profile management, and system features. You can ask me about how to navigate the system, understand evaluation processes, find training opportunities, or manage your profile."
+    },
+    {
+        "input": "How can you help me?",
+        "output": "I can assist you with various aspects of the evaluation and training management system:\n\n• **Evaluations**: How to view your evaluations, understand different statuses, and track your professional development\n• **Training**: Find available programs, view your training history, and get recommendations\n• **Profile**: Manage personal information, upload profile pictures, and view activity history\n• **Communication**: Send messages, view notifications, and use real-time features\n\nWhat specific topic would you like help with?"
+    },
+    {
+        "input": "What are your capabilities?",
+        "output": "My capabilities include providing information and guidance about:\n\n✅ Evaluation processes and results\n✅ Training programs and participation\n✅ Profile and account management\n✅ System navigation and features\n✅ Messaging and communication\n✅ Troubleshooting common issues\n\nI can answer questions about how to use system features, explain processes, and provide step-by-step guidance. What would you like to know more about?"
+    },
+
+    # Enhanced capability questions - Portuguese
+    {
+        "input": "O que podes fazer por mim?",
+        "output": "Posso ajudar com informações sobre o sistema de gestão de avaliações e formações:\n\n📊 **Avaliações** - Ver resultados, entender estados, acompanhar progresso\n🎓 **Formações** - Programas disponíveis, histórico de participação, recomendações\n👤 **Perfil** - Informações pessoais, fotografias de perfil, histórico de atividades\n💬 **Sistema** - Navegação, mensagens, notificações\n\nQue área gostaria de explorar?"
+    },
+    {
+        "input": "Com que me podes ajudar?",
+        "output": "Estou aqui para o ajudar com o sistema de gestão de avaliações e formações. Posso fornecer informações sobre avaliações, programas de formação, gestão de perfil e funcionalidades do sistema. Pode perguntar-me sobre como navegar no sistema, entender processos de avaliação, encontrar oportunidades de formação ou gerir o seu perfil."
+    },
+    {
+        "input": "Como me podes ajudar?",
+        "output": "Posso ajudá-lo com vários aspetos do sistema de gestão de avaliações e formações:\n\n• **Avaliações**: Como ver as suas avaliações, entender diferentes estados e acompanhar o seu desenvolvimento profissional\n• **Formações**: Encontrar programas disponíveis, ver o seu histórico de formação e receber recomendações\n• **Perfil**: Gerir informações pessoais, carregar fotografias de perfil e ver histórico de atividades\n• **Comunicação**: Enviar mensagens, ver notificações e usar funcionalidades em tempo real\n\nCom que tópico específico gostaria de ajuda?"
+    },
+    {
+        "input": "Quais são as tuas capacidades?",
+        "output": "As minhas capacidades incluem fornecer informações e orientação sobre:\n\n✅ Processos e resultados de avaliação\n✅ Programas de formação e participação\n✅ Gestão de perfil e conta\n✅ Navegação e funcionalidades do sistema\n✅ Mensagens e comunicação\n✅ Resolução de problemas comuns\n\nPosso responder a questões sobre como usar funcionalidades do sistema, explicar processos e fornecer orientação passo a passo. Sobre o que gostaria de saber mais?"
     }
 ]
+
+# Quality validation constants
+POOR_RESPONSE_PATTERNS = [
+    "i can help with that",
+    "i can help with this", 
+    "ive got the right stuff",
+    "ai",
+    "sure thing",
+    "of course",
+    "no problem",
+    "let me help",
+    "i understand",
+    "i can assist",
+    "happy to help",
+    "glad to help",
+    "posso ajudar com isso",
+    "posso ajudar com isto"
+]
+
+# Context leakage indicators
+CONTEXT_FRAGMENTS = [
+    "AVALIAÇÕES:", 
+    "FORMAÇÕES:", 
+    "MENSAGENS:", 
+    "PERFIL:", 
+    "GESTÃO"
+]
+
+# Question word mappings for semantic analysis
+QUESTION_WORDS = {
+    'how': ['como'],
+    'what': ['que', 'o que'],
+    'where': ['onde'],
+    'when': ['quando'],
+    'why': ['porque', 'por que'],
+    'who': ['quem']
+}
+
+# Topic keywords for semantic matching
+TOPIC_KEYWORDS = {
+    'login': ['login', 'entrar', 'acesso', 'password', 'senha'],
+    'evaluation': ['avaliação', 'evaluation', 'avaliar', 'desempenho', 'performance'],
+    'training': ['formação', 'training', 'curso', 'treino'],
+    'profile': ['perfil', 'profile', 'conta', 'account'],
+    'message': ['mensagem', 'message', 'chat', 'comunicação']
+}
+
+# Common words to ignore in relevance checking
+COMMON_WORDS = {
+    'a', 'an', 'the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by', 
+    'o', 'a', 'os', 'as', 'um', 'uma', 'e', 'ou', 'mas', 'em', 'no', 'na', 'para', 'de', 'com', 'por',
+    'how', 'what', 'where', 'when', 'why', 'who', 'can', 'could', 'would', 'should',
+    'como', 'que', 'onde', 'quando', 'porque', 'quem', 'pode', 'poderia', 'deveria'
+}
+
+# Language-specific fallback messages
+fallback_messages = {
+    'pt': "Desculpe, não consegui encontrar uma resposta específica para a sua pergunta. Pode reformular ou perguntar sobre avaliações, formações, perfis ou mensagens do sistema?",
+    'en': "I'm sorry, I couldn't find a specific answer to your question. Could you rephrase or ask about evaluations, trainings, profiles, or system messages?"
+}
+
+# Language detection helper words
+LANGUAGE_INDICATORS = {
+    'pt': ['como', 'posso', 'onde', 'quando', 'porque', 'que', 'não', 'sim', 'obrigado', 'por favor', 'avaliação', 'formação', 'treinamento'],
+    'en': ['how', 'can', 'where', 'when', 'why', 'what', 'yes', 'no', 'thank', 'please', 'evaluation', 'training']
+}
+
+# Validation error messages
+VALIDATION_MESSAGES = {
+    'too_short': "❌ Response too short",
+    'context_leakage': "❌ Context leakage detected",
+    'generic_response': "❌ Rejected generic response",
+    'pattern_dominated': "❌ Rejected pattern-dominated response",
+    'no_punctuation': "❌ No proper punctuation",
+    'too_repetitive': "❌ Too repetitive",
+    'not_relevant': "❌ Response not relevant to question",
+    'short_with_pattern': "❌ Rejected short response with pattern",
+    'single_word': "❌ Rejected single-word response",
+    'passed_validation': "✅ Response passed quality check"
+}
+
+# LLM generation error messages
+GENERATION_MESSAGES = {
+    'llm_failed': "❌ LLM failed",
+    'business_check_failed': "Business appropriateness check failed",
+    'problematic_patterns': "Response contains problematic patterns",
+    'model_not_loaded': "LLM model is not loaded"
+}
+
+# System response templates for specific contexts
+SYSTEM_RESPONSE_TEMPLATES = {
+    'pt': {
+        'general_help': "Posso ajudar com informações sobre o sistema de gestão de avaliações e formações. Que área específica gostaria de explorar?",
+        'evaluation_help': "No sistema de avaliações, pode ver as suas avaliações, entender os diferentes estados e acompanhar o seu desenvolvimento profissional.",
+        'training_help': "Na secção de formações, pode ver programas disponíveis, o seu histórico de participação e receber recomendações.",
+        'profile_help': "No seu perfil, pode atualizar informações pessoais, ver histórico de avaliações e gerir a sua fotografia de perfil."
+    },
+    'en': {
+        'general_help': "I can help with information about the evaluation and training management system. Which specific area would you like to explore?",
+        'evaluation_help': "In the evaluation system, you can view your evaluations, understand different statuses, and track your professional development.",
+        'training_help': "In the training section, you can see available programs, your participation history, and how to receive recommendations.",
+        'profile_help': "In your profile, you can update personal information, view evaluation history, and manage your profile picture."
+    }
+}
+
+# Enhanced capability response templates
+CAPABILITY_RESPONSE_TEMPLATES = {
+    'pt': {
+        'comprehensive': """Posso ajudar com informações sobre o sistema de gestão de avaliações e formações:
+
+📊 **Avaliações** - Ver resultados, entender estados, acompanhar progresso
+🎓 **Formações** - Programas disponíveis, histórico de participação, recomendações  
+👤 **Perfil** - Informações pessoais, fotografias de perfil, histórico de atividades
+💬 **Sistema** - Navegação, mensagens, notificações
+
+Que área gostaria de explorar?""",
+        'detailed': """As minhas capacidades incluem fornecer informações e orientação sobre:
+
+✅ Processos e resultados de avaliação
+✅ Programas de formação e participação
+✅ Gestão de perfil e conta
+✅ Navegação e funcionalidades do sistema
+✅ Mensagens e comunicação
+✅ Resolução de problemas comuns
+
+Posso responder a questões sobre como usar funcionalidades do sistema, explicar processos e fornecer orientação passo a passo."""
+    },
+    'en': {
+        'comprehensive': """I can help you with information about the evaluation and training management system:
+
+📊 **Evaluations** - View results, understand statuses, track progress
+🎓 **Training** - Available programs, participation history, recommendations
+👤 **Profile** - Personal information, profile pictures, activity history
+💬 **System** - Navigation, messaging, notifications
+
+Which area would you like to explore?""",
+        'detailed': """My capabilities include providing information and guidance about:
+
+✅ Evaluation processes and results
+✅ Training programs and participation
+✅ Profile and account management
+✅ System navigation and features
+✅ Messaging and communication
+✅ Troubleshooting common issues
+
+I can answer questions about how to use system features, explain processes, and provide step-by-step guidance."""
+    }
+}
+
+# Enhanced prompt context templates
+PROMPT_CONTEXT_TEMPLATES = {
+    'system_context': "Sistema de Gestão de Avaliações e Formações / Evaluation and Training Management System",
+    'assistant_role': "You are a helpful assistant for an evaluation and training management system. Provide clear, specific information about system features, processes, and usage.",
+    'response_guidelines': "Keep responses focused on the system functionality. Use structured formatting with bullet points or numbered lists when appropriate. Provide actionable guidance."
+}
+
+# Single word responses to reject
+SINGLE_WORD_RESPONSES = ['yes', 'no', 'ok', 'sim', 'não', 'ai']
+
+# Context categorization for business responses
+CONTEXT_CATEGORIES = {
+    'evaluation': ["evaluation", "evaluate", "performance", "avaliação", "avaliar", "desempenho"],
+    'training': ["training", "course", "learn", "formação", "curso", "treino"],
+    'message': ["message", "chat", "communication", "mensagem", "comunicação"],
+    'profile': ["profile", "account", "perfil", "conta"],
+    'login': ["login", "access", "password", "entrar", "acesso", "senha"]
+}
+
+# Topic-specific fallback responses for simple keyword matching
+topic_fallback_responses = {
+    'evaluation': {
+        'pt': "Sobre avaliações, posso ajudar com informações sobre como ver as suas avaliações, entender os diferentes estados e acompanhar o seu desenvolvimento profissional.",
+        'en': "About evaluations, I can help with information on how to view your evaluations, understand different statuses, and track your professional development."
+    },
+    'training': {
+        'pt': "Sobre formações, posso ajudar com informações sobre programas disponíveis, o seu histórico de participação e como receber recomendações.",
+        'en': "About training, I can help with information on available programs, your participation history, and how to receive recommendations."
+    },
+    'messaging': {
+        'pt': "Sobre mensagens, posso ajudar com informações sobre como enviar mensagens, ver notificações em tempo real e usar o sistema de comunicação.",
+        'en': "About messaging, I can help with information on how to send messages, view real-time notifications, and use the communication system."
+    },
+    'login': {
+        'pt': "Sobre acesso ao sistema, posso ajudar com informações sobre login, alteração de palavra-passe e gestão da sua conta.",
+        'en': "About system access, I can help with information on login, password changes, and account management."
+    },
+    'error': {
+        'pt': "Se está a ter problemas técnicos, recomendo contactar o administrador do sistema ou tentar atualizar a página.",
+        'en': "If you're having technical issues, I recommend contacting the system administrator or trying to refresh the page."
+    },
+    'general': {
+        'pt': "Posso ajudar com informações sobre o sistema de gestão de avaliações e formações. Pode perguntar sobre avaliações, formações, perfis ou mensagens.",
+        'en': "I can help with information about the evaluation and training management system. You can ask about evaluations, training, profiles, or messaging."
+    }
+}
+
+# Business advice responses for common professional topics
+business_advice = {
+    'feedback': {
+        'pt': {
+            'question': 'Como dar feedback eficaz?',
+            'response': 'Para dar feedback eficaz: seja específico e focado em comportamentos observáveis, dê feedback em tempo útil, use a técnica SBI (Situação-Comportamento-Impacto), mantenha um tom construtivo e ofereça sugestões para melhoria.'
+        },
+        'en': {
+            'question': 'How to give effective feedback?',
+            'response': 'For effective feedback: be specific and focus on observable behaviors, give timely feedback, use the SBI technique (Situation-Behavior-Impact), maintain a constructive tone, and offer suggestions for improvement.'
+        }
+    },
+    'management': {
+        'pt': {
+            'question': 'Como gerir uma equipa eficazmente?',
+            'response': 'Para gerir uma equipa eficazmente: estabeleça objetivos claros, comunique regularmente, reconheça conquistas, forneça recursos necessários, promova desenvolvimento profissional e mantenha um ambiente de trabalho positivo.'
+        },
+        'en': {
+            'question': 'How to manage a team effectively?',
+            'response': 'To manage a team effectively: set clear objectives, communicate regularly, recognize achievements, provide necessary resources, promote professional development, and maintain a positive work environment.'
+        }
+    },
+    'performance': {
+        'pt': {
+            'question': 'Como melhorar o desempenho?',
+            'response': 'Para melhorar o desempenho: identifique áreas de melhoria através de avaliações, estabeleça metas SMART, procure formação relevante, peça feedback regular e implemente as sugestões recebidas.'
+        },
+        'en': {
+            'question': 'How to improve performance?',
+            'response': 'To improve performance: identify improvement areas through evaluations, set SMART goals, seek relevant training, ask for regular feedback, and implement received suggestions.'
+        }
+    }
+}
+
+# Template responses for different question types
+response_templates = {
+    'pt': {
+        'how_to': "Para {action}, você pode {steps}. Se precisar de mais ajuda, fique à vontade para perguntar!",
+        'what_is': "O {concept} é {explanation}. No nosso sistema, isso significa {specific_info}.",
+        'why': "Isso acontece porque {reason}. É importante para {benefit}.",
+        'where': "Você pode encontrar isso em {location}. Acesse através de {navigation}.",
+        'general': "Sobre {topic}, posso dizer que {information}. Precisa de mais detalhes sobre algum aspecto específico?"
+    },
+    'en': {
+        'how_to': "To {action}, you can {steps}. If you need more help, feel free to ask!",
+        'what_is': "The {concept} is {explanation}. In our system, this means {specific_info}.",
+        'why': "This happens because {reason}. It's important for {benefit}.",
+        'where': "You can find this in {location}. Access it through {navigation}.",
+        'general': "About {topic}, I can tell you that {information}. Do you need more details about any specific aspect?"
+    }
+}
+
+# Domain knowledge for system-specific responses
+domain_knowledge = {
+    'evaluations': {
+        'pt': 'avaliações permitem que gestores avaliem o desempenho dos funcionários numa escala de 1-4',
+        'en': 'evaluations allow managers to assess employee performance on a 1-4 scale'
+    },
+    'training': {
+        'pt': 'formações ajudam no desenvolvimento profissional e podem ser registadas pelos gestores',
+        'en': 'trainings help with professional development and can be registered by managers'
+    },
+    'messaging': {
+        'pt': 'mensagens permitem comunicação em tempo real entre colegas no sistema',
+        'en': 'messaging allows real-time communication between colleagues in the system'
+    },
+    'profile': {
+        'pt': 'perfis contêm informações pessoais, histórico de avaliações e formações',
+        'en': 'profiles contain personal information, evaluation history, and training records'
+    },
+    'system': {
+        'pt': 'o sistema oferece gestão de avaliações, formações, mensagens e perfis de utilizadores',
+        'en': 'the system provides management of evaluations, training, messaging and user profiles'
+    }
+}
+
+# Inappropriate content indicators for business filtering
+inappropriate_indicators = [
+    'paid in cash', 'pago em dinheiro', 'trabalho informal',
+    'sem contrato', 'no contract', 'under the table',
+    'tax evasion', 'evasão fiscal', 'black market',
+    'illegal', 'ilegal', 'inappropriate', 'inapropriado'
+]
+
+# Language-specific stop words for keyword extraction
+stop_words = {
+    'en': {'how', 'can', 'i', 'do', 'the', 'to', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'for', 'with', 'by', 'what', 'where', 'when', 'why', 'who', 'is', 'are', 'was', 'were', 'be', 'been', 'have', 'has', 'had', 'will', 'would', 'could', 'should', 'may', 'might', 'must'},
+    'pt': {'como', 'posso', 'eu', 'fazer', 'o', 'a', 'para', 'um', 'uma', 'e', 'ou', 'mas', 'em', 'no', 'na', 'por', 'com', 'de', 'que', 'onde', 'quando', 'porque', 'quem', 'é', 'são', 'foi', 'foram', 'ser', 'sido', 'ter', 'tem', 'teve', 'vai', 'iria', 'poderia', 'deveria', 'pode', 'deve'}
+}
