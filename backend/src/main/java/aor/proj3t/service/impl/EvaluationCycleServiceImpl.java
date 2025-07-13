@@ -1,5 +1,6 @@
 package aor.proj3t.service.impl;
 
+import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -11,7 +12,10 @@ import aor.proj3t.daos.DAOFactory;
 import aor.proj3t.dto.EvaluationCycleDTO;
 import aor.proj3t.entities.Evaluation;
 import aor.proj3t.entities.EvaluationCycle;
+import aor.proj3t.entities.Notification;
 import aor.proj3t.entities.User;
+import aor.proj3t.enums.EvaluationCycleStatus;
+import aor.proj3t.enums.NotificationType;
 import aor.proj3t.enums.Role;
 import aor.proj3t.exceptions.ConflictException;
 import aor.proj3t.exceptions.InvalidDataException;
@@ -19,6 +23,7 @@ import aor.proj3t.filters.DateRange;
 import aor.proj3t.service.ServiceFactory;
 import aor.proj3t.service.interfaces.EvaluationCycleService;
 import aor.proj3t.util.EmailUtil;
+import aor.proj3t.util.NotificationHelper;
 import aor.proj3t.util.converterutils.ConverterFactory;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -66,6 +71,9 @@ public class EvaluationCycleServiceImpl extends BaseService implements Evaluatio
 
     @Inject
     private ServiceFactory serviceFactory;
+
+    @Inject
+    private NotificationHelper notificationHelper;
 
     /**
      * {@inheritDoc}
@@ -177,6 +185,52 @@ public class EvaluationCycleServiceImpl extends BaseService implements Evaluatio
                     footerText);
 
             emailUtil.sendEmail(user.getEmail(), subject, body);
+        }
+    }
+
+    // Inherits JavaDoc from interface
+    @Override
+    public void checkAndCloseEvaluationCycle(Long evaluationCycleId) {
+        if (daoFactory.forEvaluation().countUnclosedEvaluationsByCycleId(evaluationCycleId) > 0) {
+            return;
+        }
+        EvaluationCycle cycle = getEntity(daoFactory.forEvaluationCycle().findById(evaluationCycleId),
+                evaluationCycleId, "EvaluationCycle");
+        cycle.setStatus(EvaluationCycleStatus.CLOSED);
+        cycle.setClosureDate(Instant.now());
+        daoFactory.forEvaluationCycle().update(cycle);
+        logger.info("Evaluation cycle with id {} has been closed", evaluationCycleId);
+
+        // Send emails asynchronously to avoid transaction timeout
+        serviceFactory.forAsyncEmail().sendCycleClosureEmailAsync(evaluationCycleId);
+    }
+
+    // Inherits JavaDoc from interface
+    @Override
+    public void checkAndCompleteEvaluationCycle(Long evaluationCycleId) {
+        if (daoFactory.forEvaluation().countOngoingEvaluationsByCycle(evaluationCycleId) > 0) {
+            return;
+        }
+        daoFactory.forEvaluationCycle().updateStatus(evaluationCycleId, EvaluationCycleStatus.COMPLETED);
+        logger.info("Evaluation cycle with id {} has been completed", evaluationCycleId);
+
+        // Send notification to admin responsible for cycle
+        try {
+            EvaluationCycle cycle = getEntity(daoFactory.forEvaluationCycle().findById(evaluationCycleId),
+                    evaluationCycleId, "EvaluationCycle");
+            User admin = cycle.getCreatedBy();
+            if (admin != null) {
+                Notification notification = new Notification();
+                notification.setSender(admin);
+                notification.setRecipient(admin);
+                notification.setType(NotificationType.CYCLE);
+                notification.setContent(notificationHelper.createNotificationForEvaluationCycleContent(
+                        "notifications.evaluationCycle.completed",
+                        evaluationCycleId.toString()));
+                serviceFactory.forNotification().createNotification(notification);
+            }
+        } catch (Exception e) {
+            logger.error("Failed to send notification for completed evaluation cycle {}", evaluationCycleId, e);
         }
     }
 

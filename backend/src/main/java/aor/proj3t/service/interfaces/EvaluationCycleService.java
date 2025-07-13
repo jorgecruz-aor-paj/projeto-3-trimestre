@@ -87,4 +87,27 @@ public interface EvaluationCycleService {
      * @param cycle the EvaluationCycle entity that is being closed
      */
     void sendCycleClosureEmail(EvaluationCycle cycle);
+
+    /**
+     * Checks if an evaluation cycle should be closed based on the completion status
+     * of its evaluations.
+     * A cycle is closed when all evaluations within it are either completed or
+     * closed.
+     * When a cycle is closed, its status is updated and closure notifications are
+     * sent.
+     * 
+     * @param evaluationCycleId the ID of the evaluation cycle to check
+     */
+    void checkAndCloseEvaluationCycle(Long evaluationCycleId);
+
+    /**
+     * Checks if an evaluation cycle should be marked as completed based on the
+     * status of its evaluations.
+     * A cycle is marked as completed when there are no ongoing evaluations.
+     * When a cycle is completed, notifications are sent to the admin responsible
+     * for the cycle.
+     * 
+     * @param evaluationCycleId the ID of the evaluation cycle to check
+     */
+    void checkAndCompleteEvaluationCycle(Long evaluationCycleId);
 }
