@@ -4,12 +4,13 @@
 2. [] Exportar para .xlsx;
 3. [] Integração do LLM nas restantes funcionalidades de geração de relatórios e sugestões de melhoria;
 4. [x/-] JavaDoc e JsDoc;
+5. [] Alterar os textos das paǵinas para parecer uma aplicação e não um produto vendido em separado.
 
 ## Known bugs:
 
 ### Vários:
 
-- [] EvaluationCycleServiceImpl contém método já apagado que só está a ser chamado em testes???
+- [x] EvaluationCycleServiceImpl contém método já apagado que só está a ser chamado em testes???
 
 ### Dashboard:
 
