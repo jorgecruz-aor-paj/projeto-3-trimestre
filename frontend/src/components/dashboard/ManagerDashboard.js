@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Alert } from 'react-bootstrap';
 import { StatsCard } from './StatsCard';
 import { QuickActions } from './QuickActions';
 import { TeamPerformanceChart } from './TeamPerformanceChart';
 import { useAuthStore } from 'stores/AuthStore';
 import { useManagerStats } from 'hooks/useManagerStats';
+import { statsService } from 'services/statsService';
 
 /**
  * Manager Dashboard Component
@@ -18,6 +19,78 @@ export const ManagerDashboard = () => {
   const { t } = useTranslation();
   const { user } = useAuthStore();
   const { stats, loading, error } = useManagerStats(user?.id);
+
+  // Personal statistics state
+  const [personalStats, setPersonalStats] = useState({
+    personal: null,
+  });
+  const [personalLoading, setPersonalLoading] = useState(true);
+  const [personalError, setPersonalError] = useState(null);
+
+  // Fetch personal statistics
+  useEffect(() => {
+    const fetchPersonalStats = async () => {
+      if (!user?.id) return;
+
+      try {
+        setPersonalLoading(true);
+        setPersonalError(null);
+
+        const personal = await statsService.getPersonalStats(user.id);
+        setPersonalStats({ personal });
+      } catch (err) {
+        console.error('Failed to fetch personal stats:', err);
+        setPersonalError(t('dashboard.user.failedToLoadStats'));
+      } finally {
+        setPersonalLoading(false);
+      }
+    };
+
+    fetchPersonalStats();
+  }, [t, user?.id]);
+
+  // Helper function to calculate performance trend from historical data
+  const calculatePerformanceTrend = () => {
+    const performanceHistory = personalStats.personal?.performanceHistory || [];
+    if (performanceHistory.length < 2) return null;
+
+    const latest =
+      performanceHistory[performanceHistory.length - 1]?.score || 0;
+    const previous =
+      performanceHistory[performanceHistory.length - 2]?.score || 0;
+
+    if (previous === 0) return null;
+
+    const change = ((latest - previous) / previous) * 100;
+    return {
+      value: `${change > 0 ? '+' : ''}${change.toFixed(1)}%`,
+      positive: change >= 0,
+    };
+  };
+
+  // Helper function to calculate training trend from monthly data
+  const calculateTrainingTrend = () => {
+    const trainingHistory = personalStats.personal?.trainingHistory || [];
+    if (trainingHistory.length < 2) return null;
+
+    // Get last 2 months with data
+    const recentMonths = trainingHistory
+      .filter(month => month.minutes > 0)
+      .slice(-2);
+
+    if (recentMonths.length < 2) return null;
+
+    const latest = recentMonths[recentMonths.length - 1]?.minutes || 0;
+    const previous = recentMonths[recentMonths.length - 2]?.minutes || 0;
+
+    if (previous === 0) return null;
+
+    const change = ((latest - previous) / previous) * 100;
+    return {
+      value: `${change > 0 ? '+' : ''}${change.toFixed(1)}%`,
+      positive: change >= 0,
+    };
+  };
 
   const managerQuickActions = [
     {
@@ -50,6 +123,10 @@ export const ManagerDashboard = () => {
     },
   ];
 
+  // Calculate trends from real data
+  const performanceTrend = calculatePerformanceTrend();
+  const trainingTrend = calculateTrainingTrend();
+
   return (
     <div className="manager-dashboard">
       {/* Error display */}
@@ -62,6 +139,97 @@ export const ManagerDashboard = () => {
           </Col>
         </Row>
       )}
+
+      {/* Personal Error display */}
+      {personalError && (
+        <Row className="mb-3">
+          <Col>
+            <Alert variant="danger">
+              <Alert.Heading>{t('dashboard.user.errorTitle')}</Alert.Heading>
+              <p>{personalError}</p>
+            </Alert>
+          </Col>
+        </Row>
+      )}
+
+      {/* Personal Statistics Section */}
+      <Row className="mb-4">
+        <Col>
+          <h5 className="mb-3">
+            <i className="bi bi-person me-2"></i>
+            {t('dashboard.manager.personalStats')}
+          </h5>
+        </Col>
+      </Row>
+
+      <Row className="mb-4">
+        <Col md={3}>
+          <StatsCard
+            title={t('dashboard.user.stats.completedTrainings')}
+            value={
+              personalLoading
+                ? '...'
+                : personalStats.personal?.completedTrainings || 0
+            }
+            icon="bi-mortarboard"
+            variant="success"
+            trend={trainingTrend?.value}
+            trendPositive={trainingTrend?.positive}
+          />
+        </Col>
+        <Col md={3}>
+          <StatsCard
+            title={t('dashboard.user.stats.pendingEvaluations')}
+            value={
+              personalLoading
+                ? '...'
+                : personalStats.personal?.pendingEvaluations || 0
+            }
+            icon="bi-clock"
+            variant="warning"
+          />
+        </Col>
+        <Col md={3}>
+          <StatsCard
+            title={t('dashboard.user.stats.performanceScore')}
+            value={
+              personalLoading
+                ? '...'
+                : `${(personalStats.personal?.performanceScore || 0).toFixed(
+                    1
+                  )}/4`
+            }
+            icon="bi-trophy"
+            variant="info"
+            trend={performanceTrend?.value}
+            trendPositive={performanceTrend?.positive}
+          />
+        </Col>
+        <Col md={3}>
+          <StatsCard
+            title={t('dashboard.user.stats.goalsAchieved')}
+            value={
+              personalLoading
+                ? '...'
+                : `${personalStats.personal?.goalsAchieved || 0}/${
+                    personalStats.personal?.totalGoals || 0
+                  }`
+            }
+            icon="bi-bullseye"
+            variant="primary"
+          />
+        </Col>
+      </Row>
+
+      {/* Team Statistics Section */}
+      <Row className="mb-4">
+        <Col>
+          <h5 className="mb-3">
+            <i className="bi bi-people me-2"></i>
+            {t('dashboard.manager.teamStats')}
+          </h5>
+        </Col>
+      </Row>
 
       {/* Team Statistics */}
       <Row className="mb-4">
