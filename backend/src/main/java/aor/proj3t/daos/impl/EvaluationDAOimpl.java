@@ -198,6 +198,8 @@ public class EvaluationDAOimpl extends AbstractDAO<Evaluation, Long> implements 
         CriteriaQuery<Evaluation> query = cb.createQuery(Evaluation.class);
         Root<Evaluation> root = query.from(Evaluation.class);
         Join<Evaluation, EvaluationCycle> cycleJoin = root.join("evaluationCycle", JoinType.INNER);
+        Join<Evaluation, User> evaluatedJoin = root.join("evaluated", JoinType.INNER);
+        Join<Evaluation, User> evaluatorJoin = root.join("evaluator", JoinType.INNER);
 
         List<Predicate> predicates = new ArrayList<>();
 
@@ -225,7 +227,21 @@ public class EvaluationDAOimpl extends AbstractDAO<Evaluation, Long> implements 
         }
 
         if (filters.getSearchText() != null && !filters.getSearchText().isEmpty()) {
-            predicates.add(cb.like(cb.lower(root.get("feedback")), "%" + filters.getSearchText().toLowerCase() + "%"));
+            String searchLower = "%" + filters.getSearchText().toLowerCase() + "%";
+
+            Predicate feedbackMatch = cb.like(cb.lower(root.get("feedback")), searchLower);
+            Predicate evaluatedFirstMatch = cb.like(cb.lower(evaluatedJoin.get("firstName")), searchLower);
+            Predicate evaluatedLastMatch = cb.like(cb.lower(evaluatedJoin.get("lastName")), searchLower);
+            Predicate evaluatorFirstMatch = cb.like(cb.lower(evaluatorJoin.get("firstName")), searchLower);
+            Predicate evaluatorLastMatch = cb.like(cb.lower(evaluatorJoin.get("lastName")), searchLower);
+
+            predicates.add(cb.or(
+                    feedbackMatch,
+                    evaluatedFirstMatch,
+                    evaluatedLastMatch,
+                    evaluatorFirstMatch,
+                    evaluatorLastMatch
+            ));
         }
 
         if (filters.getCycleClosed() != null && filters.getCycleClosed()) {
