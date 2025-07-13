@@ -13,15 +13,15 @@
 
 ### Dashboard:
 
-1. [] Dashboard do user e do gestor necessita de informação para povoar dados;
+1. [x] Dashboard do user e do gestor necessita de informação para povoar dados;
 
 ### Users:
 
-1. [] Filtro de "Todos os Gestores" -> colocar todos os users;
+1. [x] Filtro de "Todos os Gestores" -> colocar todos os users;
 
 ### Wizard atribuir gestores:
 
-1. [] Opção seleccionar todos lança excepção "User not defined";
+1. [x] Opção seleccionar todos lança excepção "User not defined";
 
 ### Notificações:
 
@@ -31,7 +31,7 @@
 
 ### Responsividade:
 
-1. [] Cartões de avaliação: Nota da avaliação sai do cartão em ecrãs pequenos;
+1. [x] Cartões de avaliação: Nota da avaliação sai do cartão em ecrãs pequenos;
 
 ### Excepções:
 
