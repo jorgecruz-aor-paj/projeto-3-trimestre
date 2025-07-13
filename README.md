@@ -1,9 +1,9 @@
 ## Missing features
 
-1. 2FA - Two factor authenticator;
-2. Exportar para .xlsx;
-3. Integração do LLM nas restantes funcionalidades de geração de relatórios e sugestões de melhoria;
-4. JavaDoc e JsDoc;
+1. [] 2FA - Two factor authenticator;
+2. [] Exportar para .xlsx;
+3. [] Integração do LLM nas restantes funcionalidades de geração de relatórios e sugestões de melhoria;
+4. [x/-] JavaDoc e JsDoc;
 
 ## Known bugs:
 
@@ -39,7 +39,7 @@
 
 ### Avaliações:
 
-1. [] checkAndCloseEvaluationCycle -> refactor para passar do EvaluationService para o EvaluationCycleService.
+1. [x] checkAndCloseEvaluationCycle -> refactor para passar do EvaluationService para o EvaluationCycleService.
 
 2. [] Caixa de pesquisa está a pesquisar pelo feedback apenas;
 
