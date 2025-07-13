@@ -1,6 +1,5 @@
 package aor.proj3t.service.impl;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -108,7 +107,7 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
                         "User with id " + requesterId
                                 + " attempted to change evaluation status. Only admins and managers can change evaluation status.");
             }
-            if (currentStatus == EvaluationStatus.CLOSED){
+            if (currentStatus == EvaluationStatus.CLOSED) {
                 throw new ForbiddenException(
                         "Status change not allowed",
                         "User with id " + requesterId
@@ -163,8 +162,8 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
             logger.error("Failed to send notification for updated evaluation {}", evaluation.getId(), e);
         }
 
-        checkAndCompleteEvaluationCycle(evaluation.getEvaluationCycle().getId());
-        checkAndCloseEvaluationCycle(evaluation.getEvaluationCycle().getId());
+        serviceFactory.forEvaluationCycle().checkAndCompleteEvaluationCycle(evaluation.getEvaluationCycle().getId());
+        serviceFactory.forEvaluationCycle().checkAndCloseEvaluationCycle(evaluation.getEvaluationCycle().getId());
         return converterFactory.forEvaluation().toDTO(evaluation);
     }
 
@@ -208,7 +207,7 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
             eval.setStatus(EvaluationStatus.CLOSED);
             daoFactory.forEvaluation().update(eval);
         }
-        checkAndCloseEvaluationCycle(dto.getCycleId());
+        serviceFactory.forEvaluationCycle().checkAndCloseEvaluationCycle(dto.getCycleId());
     }
 
     @Override
@@ -249,49 +248,6 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
             }
         }
         return evaluations;
-    }
-
-    private void checkAndCloseEvaluationCycle(Long evaluationCycleId) {
-        if (daoFactory.forEvaluation().countUnclosedEvaluationsByCycleId(evaluationCycleId) > 0) {
-            return;
-        }
-        EvaluationCycle cycle = getEntity(daoFactory.forEvaluationCycle().findById(evaluationCycleId),
-                evaluationCycleId, "EvaluationCycle");
-        cycle.setStatus(EvaluationCycleStatus.CLOSED);
-        cycle.setClosureDate(Instant.now());
-        daoFactory.forEvaluationCycle().update(cycle);
-        logger.info("Evaluation cycle with id {} has been closed", evaluationCycleId);
-
-        // Send emails asynchronously to avoid transaction timeout
-        serviceFactory.forAsyncEmail().sendCycleClosureEmailAsync(evaluationCycleId);
-    }
-
-    private void checkAndCompleteEvaluationCycle(Long evaluationCycleId) {
-        if (daoFactory.forEvaluation().countOngoingEvaluationsByCycle(evaluationCycleId) > 0) {
-            return;
-        }
-        daoFactory.forEvaluationCycle().updateStatus(evaluationCycleId, EvaluationCycleStatus.COMPLETED);
-        logger.info("Evaluation cycle with id {} has been completed", evaluationCycleId);
-
-        // Send notification to admin responsible for cycle
-        try {
-            EvaluationCycle cycle = getEntity(daoFactory.forEvaluationCycle().findById(evaluationCycleId),
-                    evaluationCycleId, "EvaluationCycle");
-            User admin = cycle.getCreatedBy();
-            if (admin != null) {
-                Notification notification = new Notification();
-                notification.setSender(admin);
-                notification.setRecipient(admin);
-                notification.setType(NotificationType.CYCLE);
-                notification.setContent(notificationHelper.createNotificationForEvaluationCycleContent(
-                        "notifications.evaluationCycle.completed",
-                        evaluationCycleId.toString()));
-                serviceFactory.forNotification().createNotification(notification);
-            }
-        } catch (Exception e) {
-            logger.error("Failed to send notification for completed evaluation cycle {}", evaluationCycleId, e);
-        }
-
     }
 
     @Override

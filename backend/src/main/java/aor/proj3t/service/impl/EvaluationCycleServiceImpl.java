@@ -1,7 +1,6 @@
 package aor.proj3t.service.impl;
 
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
+import java.time.Instant;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -11,14 +10,17 @@ import aor.proj3t.daos.DAOFactory;
 import aor.proj3t.dto.EvaluationCycleDTO;
 import aor.proj3t.entities.Evaluation;
 import aor.proj3t.entities.EvaluationCycle;
+import aor.proj3t.entities.Notification;
 import aor.proj3t.entities.User;
+import aor.proj3t.enums.EvaluationCycleStatus;
+import aor.proj3t.enums.NotificationType;
 import aor.proj3t.enums.Role;
 import aor.proj3t.exceptions.ConflictException;
 import aor.proj3t.exceptions.InvalidDataException;
 import aor.proj3t.filters.DateRange;
 import aor.proj3t.service.ServiceFactory;
 import aor.proj3t.service.interfaces.EvaluationCycleService;
-import aor.proj3t.util.EmailUtil;
+import aor.proj3t.util.NotificationHelper;
 import aor.proj3t.util.converterutils.ConverterFactory;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -62,10 +64,10 @@ public class EvaluationCycleServiceImpl extends BaseService implements Evaluatio
     private ConverterFactory converterFactory;
 
     @Inject
-    private EmailUtil emailUtil;
+    private ServiceFactory serviceFactory;
 
     @Inject
-    private ServiceFactory serviceFactory;
+    private NotificationHelper notificationHelper;
 
     /**
      * {@inheritDoc}
@@ -145,38 +147,48 @@ public class EvaluationCycleServiceImpl extends BaseService implements Evaluatio
     }
 
     // Inherits JavaDoc from interface
-    // TODO Método só chamado em testes.
     @Override
-    public void sendCycleClosureEmail(EvaluationCycle cycle) {
-        List<User> userList = daoFactory.forUser().findAll();
-        DateTimeFormatter formatter = DateTimeFormatter
-                .ofPattern("dd MMMM yyyy")
-                .withZone(ZoneId.systemDefault());
-        String formattedClosure = formatter.format(cycle.getClosureDate());
+    public void checkAndCloseEvaluationCycle(Long evaluationCycleId) {
+        if (daoFactory.forEvaluation().countUnclosedEvaluationsByCycleId(evaluationCycleId) > 0) {
+            return;
+        }
+        EvaluationCycle cycle = getEntity(daoFactory.forEvaluationCycle().findById(evaluationCycleId),
+                evaluationCycleId, "EvaluationCycle");
+        cycle.setStatus(EvaluationCycleStatus.CLOSED);
+        cycle.setClosureDate(Instant.now());
+        daoFactory.forEvaluationCycle().update(cycle);
+        logger.info("Evaluation cycle with id {} has been closed", evaluationCycleId);
 
-        for (User user : userList) {
-            String subject = "Evaluation Cycle Closed";
+        // Send emails asynchronously to avoid transaction timeout
+        serviceFactory.forAsyncEmail().sendCycleClosureEmailAsync(evaluationCycleId);
+    }
 
-            // Use EmailUtil's template system for consistent email formatting
-            String mainMessage = "Dear " + user.getFirstName() + ",\n\n" +
-                    "The most recent evaluation cycle has officially closed on " + formattedClosure + ".\n\n" +
-                    "You can now view your performance evaluation on your profile page. " +
-                    "We encourage you to review the feedback and use it as a guide for your continued growth and development.";
+    // Inherits JavaDoc from interface
+    @Override
+    public void checkAndCompleteEvaluationCycle(Long evaluationCycleId) {
+        if (daoFactory.forEvaluation().countOngoingEvaluationsByCycle(evaluationCycleId) > 0) {
+            return;
+        }
+        daoFactory.forEvaluationCycle().updateStatus(evaluationCycleId, EvaluationCycleStatus.COMPLETED);
+        logger.info("Evaluation cycle with id {} has been completed", evaluationCycleId);
 
-            String footerText = "Thank you for your dedication and hard work.\n\n" +
-                    "If you have any questions about your evaluation, please don't hesitate to contact your manager or HR department.";
-
-            // Create a dummy URL for the button (could link to profile/dashboard)
-            String profileUrl = "#"; // This could be made configurable or link to actual profile page
-
-            String body = emailUtil.createEmailTemplate(
-                    "Evaluation Cycle Completed",
-                    mainMessage,
-                    "View My Profile",
-                    profileUrl,
-                    footerText);
-
-            emailUtil.sendEmail(user.getEmail(), subject, body);
+        // Send notification to admin responsible for cycle
+        try {
+            EvaluationCycle cycle = getEntity(daoFactory.forEvaluationCycle().findById(evaluationCycleId),
+                    evaluationCycleId, "EvaluationCycle");
+            User admin = cycle.getCreatedBy();
+            if (admin != null) {
+                Notification notification = new Notification();
+                notification.setSender(admin);
+                notification.setRecipient(admin);
+                notification.setType(NotificationType.CYCLE);
+                notification.setContent(notificationHelper.createNotificationForEvaluationCycleContent(
+                        "notifications.evaluationCycle.completed",
+                        evaluationCycleId.toString()));
+                serviceFactory.forNotification().createNotification(notification);
+            }
+        } catch (Exception e) {
+            logger.error("Failed to send notification for completed evaluation cycle {}", evaluationCycleId, e);
         }
     }
 

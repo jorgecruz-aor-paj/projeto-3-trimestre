@@ -1,19 +1,20 @@
 ## Missing features
 
-1. 2FA - Two factor authenticator;
-2. Exportar para .xlsx;
-3. Integração do LLM nas restantes funcionalidades de geração de relatórios e sugestões de melhoria;
-4. JavaDoc e JsDoc;
+1. [] 2FA - Two factor authenticator;
+2. [] Exportar para .xlsx;
+3. [] Integração do LLM nas restantes funcionalidades de geração de relatórios e sugestões de melhoria;
+4. [x/-] JavaDoc e JsDoc;
+5. [] Alterar os textos das paǵinas para parecer uma aplicação e não um produto vendido em separado.
 
 ## Known bugs:
 
 ### Vários:
 
-- [] EvaluationCycleServiceImpl contém método já apagado que só está a ser chamado em testes???
+- [x] EvaluationCycleServiceImpl contém método já apagado que só está a ser chamado em testes???
 
 ### Dashboard:
 
-1. [] Dashboard do user e do gestor necessita de informação para povoar dados;
+1. [x] Dashboard do user e do gestor necessita de informação para povoar dados;
 
 ### Users:
 
@@ -23,7 +24,7 @@
 
 ### Wizard atribuir gestores:
 
-1. [X] Opção seleccionar todos lança excepção "User not defined";
+1. [] Opção seleccionar todos lança excepção "User not defined";
 
 ### Notificações:
 
@@ -33,7 +34,7 @@
 
 ### Responsividade:
 
-1. [] Cartões de avaliação: Nota da avaliação sai do cartão em ecrãs pequenos;
+1. [x] Cartões de avaliação: Nota da avaliação sai do cartão em ecrãs pequenos;
 
 ### Excepções:
 
@@ -41,7 +42,7 @@
 
 ### Avaliações:
 
-1. [] checkAndCloseEvaluationCycle -> refactor para passar do EvaluationService para o EvaluationCycleService.
+1. [x] checkAndCloseEvaluationCycle -> refactor para passar do EvaluationService para o EvaluationCycleService.
 
 2. [X] Caixa de pesquisa está a pesquisar pelo feedback apenas;
 

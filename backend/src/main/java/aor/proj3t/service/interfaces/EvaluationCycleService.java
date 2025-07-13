@@ -3,7 +3,6 @@ package aor.proj3t.service.interfaces;
 import java.util.List;
 
 import aor.proj3t.dto.EvaluationCycleDTO;
-import aor.proj3t.entities.EvaluationCycle;
 import aor.proj3t.filters.DateRange;
 
 /**
@@ -81,10 +80,25 @@ public interface EvaluationCycleService {
     List<EvaluationCycleDTO> getAllCycles(Long requesterId, boolean active);
 
     /**
-     * Sends evaluation cycle closure notification emails to all users.
-     * Processes cycle closure and initiates email notification workflow.
+     * Checks if an evaluation cycle should be closed based on the completion status
+     * of its evaluations.
+     * A cycle is closed when all evaluations within it are either completed or
+     * closed.
+     * When a cycle is closed, its status is updated and closure notifications are
+     * sent.
      * 
-     * @param cycle the EvaluationCycle entity that is being closed
+     * @param evaluationCycleId the ID of the evaluation cycle to check
      */
-    void sendCycleClosureEmail(EvaluationCycle cycle);
+    void checkAndCloseEvaluationCycle(Long evaluationCycleId);
+
+    /**
+     * Checks if an evaluation cycle should be marked as completed based on the
+     * status of its evaluations.
+     * A cycle is marked as completed when there are no ongoing evaluations.
+     * When a cycle is completed, notifications are sent to the admin responsible
+     * for the cycle.
+     * 
+     * @param evaluationCycleId the ID of the evaluation cycle to check
+     */
+    void checkAndCompleteEvaluationCycle(Long evaluationCycleId);
 }
