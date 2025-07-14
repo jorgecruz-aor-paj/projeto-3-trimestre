@@ -21,26 +21,26 @@ services:
     depends_on:
       postgres_db:
         condition: service_healthy
-      ai_service:
-        condition: service_started
+#      ai_service:
+#        condition: service_started
     hostname: backend
-
-  ai_service:
-    build:
-      context: ./ai_microservice
-      dockerfile: Dockerfile
-    ports:
-      - "8000:8000"
-    volumes:
-      - ./ai_microservice:/app
-      - ai_model_cache:/app/models/chatbot_cache
-    restart: unless-stopped
-    environment:
-      - LOG_LEVEL=info
-      - HF_HOME=/app/models/chatbot_cache
-    networks:
-      - proj3t-network
-    hostname: ai-service
+#
+#  ai_service:
+#    build:
+#      context: ./ai_microservice
+#      dockerfile: Dockerfile
+#    ports:
+#      - "8000:8000"
+#    volumes:
+#      - ./ai_microservice:/app
+#      - ai_model_cache:/app/models/chatbot_cache
+#    restart: unless-stopped
+#    environment:
+#      - LOG_LEVEL=info
+#      - HF_HOME=/app/models/chatbot_cache
+#    networks:
+#      - proj3t-network
+#    hostname: ai-service
 
   postgres_db:
     image: postgres:15
@@ -87,7 +87,7 @@ volumes:
     driver: local
   pgadmin_data:
     driver: local
-  ai_model_cache:
-    driver: local
+#  ai_model_cache:
+#    driver: local
   profile_pictures_data:
     driver: local

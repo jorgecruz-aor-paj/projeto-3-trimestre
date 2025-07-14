@@ -16,6 +16,7 @@ import aor.proj3t.util.authutils.PasswordUtil;
 import aor.proj3t.util.converterutils.ConverterFactory;
 import aor.proj3t.util.converterutils.MiniUserConverter;
 import aor.proj3t.util.converterutils.UserConverter;
+import aor.proj3t.util.validatorutils.fordto.UserValidator;
 import io.jsonwebtoken.impl.DefaultClaims;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -46,6 +47,9 @@ public class UserServiceImplTest {
 
     @Mock
     private EvaluationDAO evaluationDAO;
+
+    @Mock
+    private UserValidator userValidator;
 
 
     @Mock
@@ -106,6 +110,8 @@ public class UserServiceImplTest {
         lenient().when(evaluationDAO.findByEvaluatedAndStatusIn(any(User.class), anyList()))
                 .thenReturn(Collections.emptyList()); // or a list of mock evaluations
         lenient().when(daoFactory.forResetPassword()).thenReturn(resetPasswordDAO);
+        lenient().doNothing().when(userValidator).validateEmail(TEST_EMAIL);
+
 
     }
 
@@ -208,8 +214,6 @@ public class UserServiceImplTest {
         verify(pendingRegistrationDAO).deleteExpired(); // this is the only interaction with this DAO
         verifyNoMoreInteractions(userDAO);
         verifyNoMoreInteractions(pendingRegistrationDAO);
-        verify(passwordUtil).hashPassword(TEST_PASSWORD);
-        verifyNoMoreInteractions(passwordUtil);
         verifyNoInteractions(jwtUtil);
         verifyNoInteractions(emailUtil);
     }

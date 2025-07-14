@@ -2,6 +2,7 @@ package aor.proj3t.unit.resource;
 
 import aor.proj3t.dto.APIResponseDTO;
 import aor.proj3t.dto.LoginDTO;
+import aor.proj3t.dto.auth.LoginResponseDTO;
 import aor.proj3t.resource.AuthResource;
 import aor.proj3t.service.ServiceFactory;
 import aor.proj3t.service.interfaces.AuthService;
@@ -60,7 +61,9 @@ public class AuthResourceTest {
     public void setup() {
         // Create the resource instance
         authResource = new AuthResource();
-        
+
+
+
         // Set mocked dependencies using reflection
         try {
             setField(authResource, "serviceFactory", serviceFactory);
@@ -91,20 +94,22 @@ public class AuthResourceTest {
         LoginDTO loginDTO = new LoginDTO();
         loginDTO.setEmail(TEST_EMAIL);
         loginDTO.setPassword(TEST_PASSWORD);
-        
+        LoginResponseDTO loginResponse = new LoginResponseDTO();
+        loginResponse.setSessionToken(TEST_TOKEN);
         // Specific test setup
         when(headers.getHeaderString("User-Agent")).thenReturn(TEST_USER_AGENT);
-        
+
+
         // Use lenient() and doReturn() for more flexible stubbing
-        lenient().doReturn(TEST_TOKEN).when(authService).login(any(LoginDTO.class), any(), any());
         doNothing().when(validator).validateLoginDTO(any());
-        
+        lenient().doReturn(loginResponse).when(authService).login(any(LoginDTO.class), any(), any());
+
         // Act
         Response response = authResource.login(loginDTO);
         
         // Assert
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus(), "Response status should be 200 OK");
-        assertEquals(TEST_TOKEN, response.getEntity(), "Response entity should be the token");
+        assertEquals(TEST_TOKEN, ((LoginResponseDTO) response.getEntity()).getSessionToken());
     }
 
     @Test
