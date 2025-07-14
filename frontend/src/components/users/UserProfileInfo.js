@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import '../../styles/profile-picture-responsive.css';
 import PropTypes from 'prop-types';
 import {
   Card,
@@ -391,15 +392,13 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
                   <img
                     src={previewUrl}
                     alt={`${user.firstName} ${user.lastName} (Preview)`}
-                    className="rounded-circle mb-3"
-                    style={{ width: 120, height: 120, objectFit: 'cover' }}
+                    className="mb-3 profile-picture-responsive"
                   />
                 ) : (
                   <ProfilePicture
                     userId={user.id}
                     alt={`${user.firstName} ${user.lastName}`}
-                    className="rounded-circle mb-3"
-                    style={{ width: 120, height: 120, objectFit: 'cover' }}
+                    className="mb-3 profile-picture-responsive"
                   />
                 )}
                 {uploadingProfilePicture && (
@@ -446,8 +445,7 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
               <ProfilePicture
                 userId={user.id}
                 alt={`${user.firstName} ${user.lastName}`}
-                className="rounded-circle mb-3"
-                style={{ width: 280, height: 280, objectFit: 'cover' }}
+                className="mb-3 profile-picture-responsive"
               />
             )}
             <div className="mt-3">

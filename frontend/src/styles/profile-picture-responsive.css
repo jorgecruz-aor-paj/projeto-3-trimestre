@@ -1,0 +1,11 @@
+/* Ensures profile picture is always circular and responsive, max size 280px */
+.profile-picture-responsive {
+  display: block;
+  width: 100%;
+  max-width: 280px;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-left: auto;
+  margin-right: auto;
+}

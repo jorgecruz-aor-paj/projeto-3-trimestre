@@ -1,4 +1,5 @@
 import React from 'react';
+import '../../styles/profile-picture-responsive.css';
 import { ProfilePicture } from 'components/common/ProfilePicture';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -71,18 +72,13 @@ export const EvaluationCard = ({ evaluation }) => {
           <div className="d-flex align-items-center">
             <ProfilePicture
               userId={evaluation.evaluatee?.id}
-              className="rounded-circle me-3"
+              className="me-3 profile-picture-responsive"
               alt={
                 evaluation.evaluatee
                   ? `${evaluation.evaluatee.firstName} ${evaluation.evaluatee.lastName}`
                   : 'Profile'
               }
-              style={{
-                width: 48,
-                height: 48,
-                objectFit: 'cover',
-                border: '1px solid #dee2e6',
-              }}
+              style={{ border: '1px solid #dee2e6' }}
             />
             <div>
               <h6 className="card-title mb-1">
