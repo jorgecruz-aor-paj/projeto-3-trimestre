@@ -11,6 +11,7 @@ import {
   Alert,
   OverlayTrigger,
   Tooltip,
+  Modal,
 } from 'react-bootstrap';
 import { EvaluationFilter } from 'components/filters';
 import { EvaluationList } from './EvaluationList';
@@ -19,6 +20,8 @@ import { useAuthStore } from 'stores/AuthStore';
 import { useTranslation } from 'react-i18next';
 import { useAlert } from 'contexts/AlertContext';
 import { translateEvaluationScale } from 'utils/evaluationScaleTranslations';
+import { EvaluationCard } from './EvaluationCard';
+import { EditableEvaluationCard } from './EditableEvaluationCard';
 import { evaluationService } from 'services/evaluationService';
 import 'styles/pages/EvaluationsPage.css';
 
@@ -32,6 +35,8 @@ export const AdminEvaluationManagement = () => {
   const [filters, setFilters] = useState({});
   const [selectedEvaluations, setSelectedEvaluations] = useState([]); // array of evaluation ids
   const [viewMode, setViewMode] = useState('cards'); // 'table' or 'cards'
+  const [showModal, setShowModal] = useState(false);
+  const [modalEvaluation, setModalEvaluation] = useState(null);
   const user = useAuthStore(state => state.user);
   const { evaluations, fetchEvaluations, loading, error } =
     useEvaluationStore();
@@ -138,157 +143,188 @@ export const AdminEvaluationManagement = () => {
     }
 
     return (
-      <div className="table-responsive">
-        <Table hover className="mb-0">
-          <thead className="table-light">
-            <tr>
-              {viewMode === 'table' && (
-                <th width="40">
-                  <input
-                    type="checkbox"
-                    className="form-check-input evaluation-selection-checkbox"
-                    onChange={e => {
-                      if (e.target.checked) {
-                        setSelectedEvaluations(
-                          evaluations.map(evaluation => evaluation.id)
-                        );
-                      } else {
-                        setSelectedEvaluations([]);
-                      }
-                    }}
-                    checked={
-                      selectedEvaluations.length === evaluations.length &&
-                      evaluations.length > 0
-                    }
-                    style={{
-                      width: '20px',
-                      height: '20px',
-                      cursor: 'pointer',
-                    }}
-                  />
-                </th>
-              )}
-              <th>{t('profile.sortFields.id', 'ID')}</th>
-              <th>{t('filters.evaluatee', 'Evaluatee')}</th>
-              <th>{t('filters.evaluator', 'Evaluator')}</th>
-              <th>{t('common.status', 'Status')}</th>
-              <th>{t('evaluationScale.title', 'Scale')}</th>
-              <th>{t('filters.creationDate', 'Date')}</th>
-              <th className="text-center">{t('common.actions', 'Actions')}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {evaluations.map(evaluation => (
-              <tr
-                key={evaluation.id}
-                className={
-                  selectedEvaluations.includes(evaluation.id)
-                    ? 'selected-evaluation-row'
-                    : ''
-                }
-              >
+      <>
+        <div className="table-responsive">
+          <Table hover className="mb-0">
+            <thead className="table-light">
+              <tr>
                 {viewMode === 'table' && (
-                  <td>
+                  <th width="40">
                     <input
                       type="checkbox"
                       className="form-check-input evaluation-selection-checkbox"
-                      checked={selectedEvaluations.includes(evaluation.id)}
-                      onChange={e =>
-                        handleSelectEvaluation(evaluation.id, e.target.checked)
+                      onChange={e => {
+                        if (e.target.checked) {
+                          setSelectedEvaluations(
+                            evaluations.map(evaluation => evaluation.id)
+                          );
+                        } else {
+                          setSelectedEvaluations([]);
+                        }
+                      }}
+                      checked={
+                        selectedEvaluations.length === evaluations.length &&
+                        evaluations.length > 0
                       }
                       style={{
                         width: '20px',
                         height: '20px',
                         cursor: 'pointer',
-                        backgroundColor: selectedEvaluations.includes(
-                          evaluation.id
-                        )
-                          ? '#0d6efd'
-                          : 'white',
-                        border: selectedEvaluations.includes(evaluation.id)
-                          ? '2px solid #0d6efd'
-                          : '2px solid #dee2e6',
                       }}
                     />
-                  </td>
+                  </th>
                 )}
-                <td>#{evaluation.id}</td>
-                <td>
-                  {evaluation.evaluatee
-                    ? `${evaluation.evaluatee.firstName} ${evaluation.evaluatee.lastName}`
-                    : '-'}
-                </td>
-                <td>
-                  {evaluation.evaluator
-                    ? `${evaluation.evaluator.firstName} ${evaluation.evaluator.lastName}`
-                    : '-'}
-                </td>
-                <td>
-                  <Badge
-                    bg={
-                      evaluation.status === 'COMPLETED'
-                        ? 'success'
-                        : evaluation.status === 'ONGOING'
-                        ? 'warning'
-                        : evaluation.status === 'CLOSED'
-                        ? 'danger'
-                        : 'secondary'
-                    }
-                  >
-                    {t(
-                      `evaluationStatus.${evaluation.status}`,
-                      evaluation.status
-                    )}
-                  </Badge>
-                </td>
-                <td>
-                  {evaluation.scale ? (
-                    <Badge bg="info">
-                      {translateEvaluationScale(
-                        evaluation.scale,
-                        i18n.language
+                <th>{t('profile.sortFields.id', 'ID')}</th>
+                <th>{t('filters.evaluatee', 'Evaluatee')}</th>
+                <th>{t('filters.evaluator', 'Evaluator')}</th>
+                <th>{t('common.status', 'Status')}</th>
+                <th>{t('evaluationScale.title', 'Scale')}</th>
+                <th>{t('filters.creationDate', 'Date')}</th>
+                <th className="text-center">
+                  {t('common.actions', 'Actions')}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {evaluations.map(evaluation => (
+                <tr
+                  key={evaluation.id}
+                  className={
+                    selectedEvaluations.includes(evaluation.id)
+                      ? 'selected-evaluation-row'
+                      : ''
+                  }
+                >
+                  {viewMode === 'table' && (
+                    <td>
+                      <input
+                        type="checkbox"
+                        className="form-check-input evaluation-selection-checkbox"
+                        checked={selectedEvaluations.includes(evaluation.id)}
+                        onChange={e =>
+                          handleSelectEvaluation(
+                            evaluation.id,
+                            e.target.checked
+                          )
+                        }
+                        style={{
+                          width: '20px',
+                          height: '20px',
+                          cursor: 'pointer',
+                          backgroundColor: selectedEvaluations.includes(
+                            evaluation.id
+                          )
+                            ? '#0d6efd'
+                            : 'white',
+                          border: selectedEvaluations.includes(evaluation.id)
+                            ? '2px solid #0d6efd'
+                            : '2px solid #dee2e6',
+                        }}
+                      />
+                    </td>
+                  )}
+                  <td>#{evaluation.id}</td>
+                  <td>
+                    {evaluation.evaluatee
+                      ? `${evaluation.evaluatee.firstName} ${evaluation.evaluatee.lastName}`
+                      : '-'}
+                  </td>
+                  <td>
+                    {evaluation.evaluator
+                      ? `${evaluation.evaluator.firstName} ${evaluation.evaluator.lastName}`
+                      : '-'}
+                  </td>
+                  <td>
+                    <Badge
+                      bg={
+                        evaluation.status === 'COMPLETED'
+                          ? 'success'
+                          : evaluation.status === 'ONGOING'
+                          ? 'warning'
+                          : evaluation.status === 'CLOSED'
+                          ? 'danger'
+                          : 'secondary'
+                      }
+                    >
+                      {t(
+                        `evaluationStatus.${evaluation.status}`,
+                        evaluation.status
                       )}
                     </Badge>
-                  ) : (
-                    <span className="text-muted">-</span>
-                  )}
-                </td>
-                <td>
-                  {evaluation.evaluationCycle?.closureDate
-                    ? new Date(
-                        evaluation.evaluationCycle.closureDate
-                      ).toLocaleDateString()
-                    : '-'}
-                </td>
-                <td className="text-center">
-                  <OverlayTrigger
-                    placement="top"
-                    overlay={<Tooltip>{t('common.view', 'View')}</Tooltip>}
-                  >
-                    <Button
-                      variant="outline-primary"
-                      size="sm"
-                      className="me-1"
-                    >
-                      <i className="bi bi-eye"></i>
-                    </Button>
-                  </OverlayTrigger>
-                  {evaluation.status !== 'CLOSED' && (
+                  </td>
+                  <td>
+                    {evaluation.scale ? (
+                      <Badge bg="info">
+                        {translateEvaluationScale(
+                          evaluation.scale,
+                          i18n.language
+                        )}
+                      </Badge>
+                    ) : (
+                      <span className="text-muted">-</span>
+                    )}
+                  </td>
+                  <td>
+                    {evaluation.evaluationCycle?.closureDate
+                      ? new Date(
+                          evaluation.evaluationCycle.closureDate
+                        ).toLocaleDateString()
+                      : '-'}
+                  </td>
+                  <td className="text-center">
                     <OverlayTrigger
                       placement="top"
-                      overlay={<Tooltip>{t('common.edit', 'Edit')}</Tooltip>}
+                      overlay={<Tooltip>{t('common.view', 'View')}</Tooltip>}
                     >
-                      <Button variant="outline-secondary" size="sm">
-                        <i className="bi bi-pencil"></i>
+                      <Button
+                        variant="outline-primary"
+                        size="sm"
+                        className="me-1"
+                        onClick={() => {
+                          setModalEvaluation(evaluation);
+                          setShowModal(true);
+                        }}
+                      >
+                        <i className="bi bi-eye"></i>
                       </Button>
                     </OverlayTrigger>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      </div>
+                    {evaluation.status !== 'CLOSED' && (
+                      <OverlayTrigger
+                        placement="top"
+                        overlay={<Tooltip>{t('common.edit', 'Edit')}</Tooltip>}
+                      >
+                        <Button variant="outline-secondary" size="sm">
+                          <i className="bi bi-pencil"></i>
+                        </Button>
+                      </OverlayTrigger>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </div>
+        {/* Modal for viewing evaluation */}
+        {showModal && modalEvaluation && (
+          <Modal
+            show={showModal}
+            onHide={() => setShowModal(false)}
+            size="lg"
+            centered
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>{t('common.view', 'View Evaluation')}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              {modalEvaluation.status === 'CLOSED' ? (
+                <EvaluationCard evaluation={modalEvaluation} />
+              ) : (
+                <EditableEvaluationCard evaluation={modalEvaluation} />
+              )}
+            </Modal.Body>
+          </Modal>
+        )}
+      </>
     );
   };
 
