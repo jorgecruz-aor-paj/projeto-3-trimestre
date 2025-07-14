@@ -8,7 +8,7 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 /**
  * DTO for error response messages.
  * 
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  */
 @XmlRootElement(name = "error")
 @XmlAccessorType(XmlAccessType.FIELD)

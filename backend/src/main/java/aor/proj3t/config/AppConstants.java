@@ -189,7 +189,7 @@ public final class AppConstants {
      * This class provides constants related to 2FA functionality,
      * including backup code settings and configuration parameters.
      * 
-     * @author Jorge Cruz
+     * @author Jorge Cruz & João Osório - Gr4
      * @version 1.0
      */
     public static final class TwoFactorAuth {

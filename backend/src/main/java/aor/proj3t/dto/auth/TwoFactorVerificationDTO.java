@@ -9,7 +9,7 @@ import jakarta.xml.bind.annotation.XmlRootElement;
  * DTO for Two-Factor Authentication verification request.
  * Contains the TOTP code or backup code for verification.
  * 
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  */
 @XmlRootElement(name = "twoFactorVerification")
 @XmlAccessorType(XmlAccessType.FIELD)

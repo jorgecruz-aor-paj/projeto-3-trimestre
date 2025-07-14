@@ -10,7 +10,7 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 /**
  * DTO for backup codes response.
  * 
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  */
 @XmlRootElement(name = "backupCodes")
 @XmlAccessorType(XmlAccessType.FIELD)

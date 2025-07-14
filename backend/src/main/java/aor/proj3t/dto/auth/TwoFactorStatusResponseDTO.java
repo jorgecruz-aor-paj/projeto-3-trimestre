@@ -8,7 +8,7 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 /**
  * DTO for two-factor authentication status response.
  * 
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  */
 @XmlRootElement(name = "twoFactorStatus")
 @XmlAccessorType(XmlAccessType.FIELD)

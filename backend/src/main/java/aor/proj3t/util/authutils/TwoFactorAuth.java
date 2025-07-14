@@ -13,7 +13,7 @@ import jakarta.ws.rs.NameBinding;
  * issued during the two-factor authentication process, rather than requiring
  * full session tokens.
  * 
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  */
 @NameBinding
 @Retention(RetentionPolicy.RUNTIME)

@@ -16,7 +16,7 @@ import jakarta.ws.rs.ext.Provider;
  * This filter validates temporary 2FA tokens rather than requiring full session
  * tokens.
  * 
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  */
 @Provider
 @TwoFactorAuth
