@@ -12,6 +12,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
@@ -28,7 +29,12 @@ import jakarta.persistence.Table;
  * @since 1.0
  */
 @Entity
-@Table(name = "trainings")
+@Table(name = "trainings", indexes = {
+        @Index(name = "idx_trainings_is_active", columnList = "is_active"),
+        @Index(name = "idx_trainings_training_area_id", columnList = "training_area_id"),
+        @Index(name = "idx_trainings_language", columnList = "language"),
+        @Index(name = "idx_trainings_created_at", columnList = "created_at")
+})
 public class Training {
 
     /**

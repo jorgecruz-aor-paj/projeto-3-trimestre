@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 
 /**
@@ -18,7 +19,9 @@ import jakarta.persistence.Table;
  * @since 1.0
  */
 @Entity
-@Table(name = "workplace")
+@Table(name = "workplace", indexes = {
+        @Index(name = "idx_workplace_name", columnList = "name")
+})
 public class Workplace {
 
     /**

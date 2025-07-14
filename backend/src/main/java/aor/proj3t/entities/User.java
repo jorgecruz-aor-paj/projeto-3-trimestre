@@ -13,6 +13,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
@@ -32,7 +33,13 @@ import jakarta.persistence.Table;
  * @since 1.0
  */
 @Entity
-@Table(name = "users")
+@Table(name = "users", indexes = {
+        @Index(name = "idx_users_email", columnList = "email"),
+        @Index(name = "idx_users_manager_id", columnList = "manager_id"),
+        @Index(name = "idx_users_workplace_id", columnList = "workplace_id"),
+        @Index(name = "idx_users_role", columnList = "role"),
+        @Index(name = "idx_users_phonenumber", columnList = "phonenumber")
+})
 
 @NamedQueries({
         @NamedQuery(name = "users.allUsersHaveManager", query = "SELECT COUNT(u) FROM User u WHERE u.manager IS NULL"),

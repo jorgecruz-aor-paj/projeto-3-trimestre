@@ -11,6 +11,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
@@ -30,7 +31,15 @@ import jakarta.persistence.Table;
  * @since 1.0
  */
 @Entity
-@Table(name = "evaluations")
+@Table(name = "evaluations", indexes = {
+        @Index(name = "idx_evaluations_status", columnList = "status"),
+        @Index(name = "idx_evaluations_cycle_id", columnList = "evaluation_cycle_id"),
+        @Index(name = "idx_evaluations_evaluated_id", columnList = "evaluated_id"),
+        @Index(name = "idx_evaluations_evaluator_id", columnList = "evaluator_id"),
+        @Index(name = "idx_evaluations_created_at", columnList = "created_at"),
+        @Index(name = "idx_evaluations_edited_at", columnList = "edited_at"),
+        @Index(name = "idx_evaluations_evaluated_status", columnList = "evaluated_id, status")
+})
 @NamedQueries({
         @NamedQuery(name = "Evaluation.findCompleted", query = "SELECT e FROM Evaluation e WHERE e.status = 'COMPLETED'"),
 })

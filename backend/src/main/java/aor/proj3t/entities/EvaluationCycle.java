@@ -12,6 +12,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
@@ -32,7 +33,13 @@ import jakarta.persistence.Table;
  * @since 1.0
  */
 @Entity
-@Table(name = "evaluation_cycles")
+@Table(name = "evaluation_cycles", indexes = {
+        @Index(name = "idx_evaluation_cycles_status", columnList = "status"),
+        @Index(name = "idx_evaluation_cycles_closure_date", columnList = "closure_date"),
+        @Index(name = "idx_evaluation_cycles_start_date", columnList = "start_date"),
+        @Index(name = "idx_evaluation_cycles_end_date", columnList = "end_date"),
+        @Index(name = "idx_evaluation_cycles_created_by", columnList = "created_by")
+})
 
 @NamedQueries({
         @NamedQuery(name = "EvaluationCycle.findActive", query = "SELECT ec FROM EvaluationCycle ec WHERE ec.status = 'ACTIVE' OR ec.status = 'COMPLETED'"),

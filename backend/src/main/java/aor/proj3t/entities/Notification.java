@@ -10,6 +10,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
@@ -25,7 +26,13 @@ import jakarta.persistence.Table;
  * @since 1.0
  */
 @Entity
-@Table(name = "notifications")
+@Table(name = "notifications", indexes = {
+        @Index(name = "idx_notifications_recipient_id", columnList = "recipient_id"),
+        @Index(name = "idx_notifications_type", columnList = "type"),
+        @Index(name = "idx_notifications_is_read", columnList = "is_read"),
+        @Index(name = "idx_notifications_timestamp_sent", columnList = "timestamp_sent"),
+        @Index(name = "idx_notifications_recipient_read", columnList = "recipient_id, is_read")
+})
 public class Notification {
 
     /**

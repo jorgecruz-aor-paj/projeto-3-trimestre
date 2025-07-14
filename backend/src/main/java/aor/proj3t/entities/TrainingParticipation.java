@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
@@ -23,7 +24,13 @@ import jakarta.persistence.Table;
  * @since 1.0
  */
 @Entity
-@Table(name = "training_participation")
+@Table(name = "training_participation", indexes = {
+        @Index(name = "idx_training_participation_participant_id", columnList = "participant_id"),
+        @Index(name = "idx_training_participation_manager_id", columnList = "manager_id"),
+        @Index(name = "idx_training_participation_training_id", columnList = "training_id"),
+        @Index(name = "idx_training_participation_created_at", columnList = "created_at"),
+        @Index(name = "idx_training_participation_participated_at", columnList = "participated_at")
+})
 public class TrainingParticipation {
 
     /**
