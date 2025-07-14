@@ -1,13 +1,14 @@
 package aor.proj3t.util.validatorutils.fordto;
 
+import java.util.regex.Pattern;
+
+import aor.proj3t.config.AppConstants;
 import aor.proj3t.dto.NewTrainingDTO;
 import aor.proj3t.dto.TrainingAreaDTO;
 import aor.proj3t.dto.TrainingDTO;
 import aor.proj3t.enums.TrainingLanguage;
 import aor.proj3t.exceptions.InvalidDataException;
 import jakarta.enterprise.context.ApplicationScoped;
-
-import java.util.regex.Pattern;
 
 @ApplicationScoped
 public class TrainingValidator {
@@ -45,11 +46,11 @@ public class TrainingValidator {
 
     public void validateTrainingLink(String link) {
         if (link != null && !link.isEmpty()) {
-            if (link.length() > 500) {
-                throw new InvalidDataException("Link must not exceed 500 characters");
+            if (link.length() > AppConstants.Validation.MAX_URL_LENGTH) {
+                throw new InvalidDataException(
+                        "Link must not exceed " + AppConstants.Validation.MAX_URL_LENGTH + " characters");
             }
-            String urlRegex = "^(https?|ftp)://[\\w.-]+(?:\\.[\\w.-]+)+(?:[/?#]\\S*)?$";
-            if (!Pattern.matches(urlRegex, link)) {
+            if (!Pattern.matches(AppConstants.Validation.URL_REGEX, link)) {
                 throw new InvalidDataException("Link is not a valid URL format");
             }
         }
@@ -59,7 +60,8 @@ public class TrainingValidator {
         if (language == null) {
             throw new InvalidDataException("Training language must be provided");
         }
-        // No need to validate the enum value itself, as it's already guaranteed to be valid if it's not null
+        // No need to validate the enum value itself, as it's already guaranteed to be
+        // valid if it's not null
     }
 
     public void validateNewTrainingDTO(NewTrainingDTO newTrainingDto) {
@@ -84,6 +86,5 @@ public class TrainingValidator {
     public void validateTrainingAreaDTO(TrainingAreaDTO trainingAreaDto) {
         validateTrainingTitle(trainingAreaDto.getName());
     }
-
 
 }

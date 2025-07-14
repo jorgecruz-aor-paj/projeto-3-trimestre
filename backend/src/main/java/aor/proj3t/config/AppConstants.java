@@ -43,6 +43,9 @@ public final class AppConstants {
         /** Default account confirmation token expiration time in minutes */
         public static final int DEFAULT_CONFIRMATION_TOKEN_EXPIRATION_TIME = 1440;
 
+        /** Two-factor authentication login token expiration time in minutes */
+        public static final int TWO_FACTOR_LOGIN_EXPIRATION_TIME = 5;
+
         /** Authentication scheme used for JWT tokens */
         public static final String AUTHENTICATION_SCHEME = "Bearer";
     }
@@ -180,5 +183,106 @@ public final class AppConstants {
         public static final int MIN_PASSWORD_LENGTH = 8;
     }
 
+    /**
+     * Constants for Two-Factor Authentication configuration.
+     * 
+     * This class provides constants related to 2FA functionality,
+     * including backup code settings and configuration parameters.
+     * 
+     * @author Jorge Cruz
+     * @version 1.0
+     */
+    public static final class TwoFactorAuth {
+        private TwoFactorAuth() {
+            // Prevent instantiation
+        }
+
+        /**
+         * Number of backup codes to generate for 2FA.
+         * This is set to 8 backup codes per user.
+         */
+        public static final int BACKUP_CODES_COUNT = 8;
+
+        /**
+         * Length of each backup code in characters.
+         * This is set to 8 characters per backup code.
+         */
+        public static final int BACKUP_CODE_LENGTH = 8;
+    }
+
+    /**
+     * Constants for input validation.
+     * 
+     * This class provides regex patterns and validation rules used throughout
+     * the application for validating user input data.
+     * 
+     * @author Jorge Cruz & João Osório - Gr4
+     * @version 1.0
+     */
+    public static final class Validation {
+        private Validation() {
+            // Prevent instantiation
+        }
+
+        /**
+         * Regular expression for email validation.
+         * Validates email format with domain length restrictions.
+         */
+        public static final String EMAIL_REGEX = "^(?=.{1,64}@.{1,255}$)([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,})$";
+
+        /**
+         * Regular expression for password validation.
+         * Requires at least 8 characters, 1 uppercase, 1 lowercase, 1 digit,
+         * 1 special character, and no whitespace/null characters.
+         */
+        public static final String PASSWORD_REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!*])(?!.*[ \\t\\n\\r\\f\\u0000\\u00A0]).{8,}$";
+
+        /**
+         * Regular expression for phone number validation.
+         * Validates Portuguese phone numbers with 9 digits.
+         */
+        public static final String PHONE_REGEX = "^\\d{9}$";
+
+        /**
+         * Regular expression for URL validation.
+         * Validates HTTP, HTTPS, and FTP URLs.
+         */
+        public static final String URL_REGEX = "^(https?|ftp)://[\\w.-]+(?:\\.[\\w.-]+)+(?:[/?#]\\S*)?$";
+
+        /**
+         * Minimum length for name fields.
+         */
+        public static final int MIN_NAME_LENGTH = 2;
+
+        /**
+         * Maximum length for name fields.
+         */
+        public static final int MAX_NAME_LENGTH = 30;
+
+        /**
+         * Minimum length for address fields.
+         */
+        public static final int MIN_ADDRESS_LENGTH = 2;
+
+        /**
+         * Maximum length for address fields.
+         */
+        public static final int MAX_ADDRESS_LENGTH = 100;
+
+        /**
+         * Minimum length for biography fields.
+         */
+        public static final int MIN_BIOGRAPHY_LENGTH = 2;
+
+        /**
+         * Maximum length for biography fields.
+         */
+        public static final int MAX_BIOGRAPHY_LENGTH = 250;
+
+        /**
+         * Maximum length for URL/link fields.
+         */
+        public static final int MAX_URL_LENGTH = 500;
+    }
 
 }

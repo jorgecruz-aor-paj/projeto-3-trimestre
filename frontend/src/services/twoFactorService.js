@@ -22,7 +22,7 @@ export const twoFactorService = {
    * @returns {Promise<Object>} Success response
    */
   verifyAndEnable: code => {
-    return apiRequest(API_ENDPOINTS.auth.twoFactor.verify, {
+    return apiRequest(API_ENDPOINTS.auth.twoFactor.setupVerify, {
       method: 'POST',
       data: { code },
     });
@@ -30,13 +30,17 @@ export const twoFactorService = {
 
   /**
    * Verify two-factor authentication code during login
+   * @param {string} temporaryToken - Temporary token from initial login
    * @param {string} code - TOTP code or backup code
-   * @returns {Promise<Object>} Verification response
+   * @returns {Promise<string>} Session token for completed login
    */
-  verifyLogin: code => {
+  verifyLogin: (temporaryToken, code) => {
     return apiRequest(API_ENDPOINTS.auth.twoFactor.loginVerify, {
       method: 'POST',
-      data: { code },
+      data: {
+        temporaryToken,
+        code,
+      },
     });
   },
 

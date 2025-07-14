@@ -1,4 +1,4 @@
-package aor.proj3t.service;
+package aor.proj3t.service.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,28 +8,51 @@ import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import aor.proj3t.config.AppConstants;
 import aor.proj3t.daos.DAOFactory;
 import aor.proj3t.daos.interfaces.TwoFactorAuthDAO;
 import aor.proj3t.daos.interfaces.UserDAO;
 import aor.proj3t.entities.TwoFactorAuth;
 import aor.proj3t.entities.User;
 import aor.proj3t.exceptions.TwoFactorAuthException;
+import aor.proj3t.service.interfaces.TwoFactorAuthService;
+import aor.proj3t.util.authutils.PasswordUtil;
 import aor.proj3t.util.authutils.TotpUtil;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 /**
- * Service class for managing Two-Factor Authentication operations.
- * Handles TOTP setup, verification, backup codes, and 2FA management.
+ * Implementation of the TwoFactorAuthService interface.
+ * This service manages Two-Factor Authentication operations including TOTP
+ * setup,
+ * verification, backup codes, and 2FA management within the security framework.
+ * 
+ * <p>
+ * Key functionalities include:
+ * <ul>
+ * <li>TOTP secret key generation and QR code URL creation for authenticator
+ * apps</li>
+ * <li>Time-based one-time password verification with replay attack
+ * prevention</li>
+ * <li>Backup code generation, verification, and one-time usage management</li>
+ * <li>2FA enablement/disablement with proper security validations</li>
+ * <li>User 2FA status checking and management</li>
+ * </ul>
+ * 
+ * <p>
+ * This implementation follows RFC 6238 standards for TOTP and provides
+ * compatibility with popular authenticator applications like Google
+ * Authenticator,
+ * Authy, and Microsoft Authenticator.
  * 
  * @author Jorge Cruz
+ * @version 1.0
+ * @since 2025
  */
 @ApplicationScoped
-public class TwoFactorAuthService {
+public class TwoFactorAuthServiceImpl extends BaseService implements TwoFactorAuthService {
 
-    private static final Logger logger = LogManager.getLogger(TwoFactorAuthService.class);
-    private static final int BACKUP_CODES_COUNT = 8;
-    private static final int BACKUP_CODE_LENGTH = 8;
+    private static final Logger logger = LogManager.getLogger(TwoFactorAuthServiceImpl.class);
 
     @Inject
     private DAOFactory daoFactory;
@@ -37,13 +60,13 @@ public class TwoFactorAuthService {
     @Inject
     private TotpUtil totpUtil;
 
+    @Inject
+    private PasswordUtil passwordUtil;
+
     /**
-     * Sets up 2FA for a user by generating a secret key and backup codes.
-     * 
-     * @param userId the user ID to set up 2FA for
-     * @return the setup data including secret key and QR code URL
-     * @throws TwoFactorAuthException if setup fails
+     * {@inheritDoc}
      */
+    @Override
     public TwoFactorSetupData setupTwoFactorAuth(Long userId) {
         try {
             UserDAO userDAO = daoFactory.forUser();
@@ -105,13 +128,9 @@ public class TwoFactorAuthService {
     }
 
     /**
-     * Verifies a TOTP code and enables 2FA if verification is successful.
-     * 
-     * @param userId the user ID
-     * @param code   the 6-digit TOTP code
-     * @return true if verification successful and 2FA is now enabled
-     * @throws TwoFactorAuthException if verification fails
+     * {@inheritDoc}
      */
+    @Override
     public boolean verifyAndEnableTwoFactorAuth(Long userId, String code) {
         try {
             TwoFactorAuthDAO twoFactorDAO = daoFactory.forTwoFactorAuth();
@@ -160,13 +179,9 @@ public class TwoFactorAuthService {
     }
 
     /**
-     * Verifies a TOTP code for login purposes.
-     * 
-     * @param userId the user ID
-     * @param code   the 6-digit TOTP code or backup code
-     * @return true if verification successful
-     * @throws TwoFactorAuthException if verification fails
+     * {@inheritDoc}
      */
+    @Override
     public boolean verifyTwoFactorCode(Long userId, String code) {
         try {
             TwoFactorAuthDAO twoFactorDAO = daoFactory.forTwoFactorAuth();
@@ -196,7 +211,7 @@ public class TwoFactorAuthService {
             }
 
             // If TOTP fails, try backup codes
-            if (code.length() == BACKUP_CODE_LENGTH && verifyBackupCode(twoFactor, code)) {
+            if (code.length() == AppConstants.TwoFactorAuth.BACKUP_CODE_LENGTH && verifyBackupCode(twoFactor, code)) {
                 twoFactorDAO.update(twoFactor);
                 logger.info("2FA backup code verification successful for user: {}", userId);
                 return true;
@@ -214,13 +229,9 @@ public class TwoFactorAuthService {
     }
 
     /**
-     * Disables 2FA for a user.
-     * 
-     * @param userId   the user ID
-     * @param password the user's password for confirmation
-     * @return true if 2FA was successfully disabled
-     * @throws TwoFactorAuthException if disabling fails
+     * {@inheritDoc}
      */
+    @Override
     public boolean disableTwoFactorAuth(Long userId, String password) {
         try {
             UserDAO userDAO = daoFactory.forUser();
@@ -233,8 +244,10 @@ public class TwoFactorAuthService {
             User user = userOpt.get();
 
             // Verify password for security
-            // Note: This assumes you have a password verification method in UserService
-            // You may need to inject UserService or implement password verification here
+            if (!passwordUtil.verifyPassword(password, user.getPassword())) {
+                logger.warn("Invalid password provided for 2FA disable attempt by user: {}", userId);
+                throw new TwoFactorAuthException("Invalid password", "Password verification failed");
+            }
 
             TwoFactorAuthDAO twoFactorDAO = daoFactory.forTwoFactorAuth();
             Optional<TwoFactorAuth> twoFactorOpt = twoFactorDAO.findByUser(user);
@@ -257,12 +270,9 @@ public class TwoFactorAuthService {
     }
 
     /**
-     * Generates new backup codes for a user.
-     * 
-     * @param userId the user ID
-     * @return list of new backup codes
-     * @throws TwoFactorAuthException if generation fails
+     * {@inheritDoc}
      */
+    @Override
     public List<String> regenerateBackupCodes(Long userId) {
         try {
             TwoFactorAuthDAO twoFactorDAO = daoFactory.forTwoFactorAuth();
@@ -290,11 +300,9 @@ public class TwoFactorAuthService {
     }
 
     /**
-     * Checks if 2FA is enabled for a user.
-     * 
-     * @param userId the user ID
-     * @return true if 2FA is enabled
+     * {@inheritDoc}
      */
+    @Override
     public boolean isTwoFactorEnabled(Long userId) {
         try {
             TwoFactorAuthDAO twoFactorDAO = daoFactory.forTwoFactorAuth();
@@ -312,7 +320,7 @@ public class TwoFactorAuthService {
      */
     private List<String> generateBackupCodes() {
         List<String> codes = new ArrayList<>();
-        for (int i = 0; i < BACKUP_CODES_COUNT; i++) {
+        for (int i = 0; i < AppConstants.TwoFactorAuth.BACKUP_CODES_COUNT; i++) {
             codes.add(generateBackupCode());
         }
         return codes;
@@ -326,7 +334,7 @@ public class TwoFactorAuthService {
     private String generateBackupCode() {
         String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         StringBuilder code = new StringBuilder();
-        for (int i = 0; i < BACKUP_CODE_LENGTH; i++) {
+        for (int i = 0; i < AppConstants.TwoFactorAuth.BACKUP_CODE_LENGTH; i++) {
             code.append(chars.charAt((int) (Math.random() * chars.length())));
         }
         return code.toString();
@@ -354,32 +362,5 @@ public class TwoFactorAuthService {
         }
 
         return removed;
-    }
-
-    /**
-     * Data class for 2FA setup information.
-     */
-    public static class TwoFactorSetupData {
-        private final String secretKey;
-        private final String qrCodeUrl;
-        private final List<String> backupCodes;
-
-        public TwoFactorSetupData(String secretKey, String qrCodeUrl, List<String> backupCodes) {
-            this.secretKey = secretKey;
-            this.qrCodeUrl = qrCodeUrl;
-            this.backupCodes = backupCodes;
-        }
-
-        public String getSecretKey() {
-            return secretKey;
-        }
-
-        public String getQrCodeUrl() {
-            return qrCodeUrl;
-        }
-
-        public List<String> getBackupCodes() {
-            return backupCodes;
-        }
     }
 }

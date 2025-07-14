@@ -108,11 +108,20 @@ export const LoginAuthForm = () => {
     setTwoFactorError(null);
 
     try {
-      // Verify the 2FA code
-      await twoFactorService.verifyLogin(code);
+      // Get the temporary token from the current token state
+      const currentToken = useAuthStore.getState().token;
+
+      // Verify the 2FA code with the temporary token
+      const sessionToken = await twoFactorService.verifyLogin(
+        currentToken,
+        code
+      );
 
       // Hide modal and complete login
       setShowTwoFactorModal(false);
+
+      // Update the token to the full session token
+      setToken(sessionToken);
       await completeLogin();
     } catch (err) {
       console.error('2FA verification error:', err);
@@ -147,30 +156,21 @@ export const LoginAuthForm = () => {
     setLoading(true);
     try {
       // Step 1: Login with credentials
-      const response = await authService.login(formData);
+      const loginResponse = await authService.login(formData);
 
-      // Step 2: Set temporary token to check 2FA status
-      setToken(response);
+      // Step 2: Check if 2FA is required
+      if (loginResponse.requiresTwoFactor) {
+        // Store the temporary token
+        setToken(loginResponse.temporaryToken);
 
-      // Step 3: Check if user has 2FA enabled
-      try {
-        const twoFactorStatus = await twoFactorService.getStatus();
-
-        if (twoFactorStatus.enabled) {
-          // User has 2FA enabled - show verification modal
-          setShowTwoFactorModal(true);
-          setLoading(false);
-          return;
-        }
-      } catch (twoFactorCheckError) {
-        // If 2FA status check fails, assume 2FA is not enabled and continue
-        console.warn(
-          'Failed to check 2FA status, continuing login:',
-          twoFactorCheckError
-        );
+        // Show 2FA verification modal
+        setShowTwoFactorModal(true);
+        setLoading(false);
+        return;
       }
 
-      // Step 4: Complete login (no 2FA required)
+      // Step 3: Complete login (no 2FA required)
+      setToken(loginResponse.sessionToken);
       await completeLogin();
     } catch (err) {
       console.error('Login error:', err);
