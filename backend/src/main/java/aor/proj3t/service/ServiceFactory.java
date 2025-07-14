@@ -13,6 +13,7 @@ import aor.proj3t.service.interfaces.StatsService;
 import aor.proj3t.service.interfaces.TokenService;
 import aor.proj3t.service.interfaces.TrainingParticipationService;
 import aor.proj3t.service.interfaces.TrainingService;
+import aor.proj3t.service.interfaces.TwoFactorAuthService;
 import aor.proj3t.service.interfaces.UserService;
 import aor.proj3t.service.interfaces.WorkplaceService;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -88,6 +89,9 @@ public class ServiceFactory {
 
     @Inject
     private StatsService statsService;
+
+    @Inject
+    private TwoFactorAuthService twoFactorAuthService;
 
     /**
      * Get the service for User operations This method provides access to the
@@ -234,6 +238,18 @@ public class ServiceFactory {
      */
     public StatsService forStats() {
         return statsService;
+    }
+
+    /**
+     * Get the service for Two-Factor Authentication operations
+     * This method provides access to the service responsible for
+     * 2FA-related business logic including TOTP setup, verification,
+     * backup codes management, and 2FA security operations.
+     *
+     * @return The TwoFactorAuthService instance
+     */
+    public TwoFactorAuthService forTwoFactorAuth() {
+        return twoFactorAuthService;
     }
 
 }

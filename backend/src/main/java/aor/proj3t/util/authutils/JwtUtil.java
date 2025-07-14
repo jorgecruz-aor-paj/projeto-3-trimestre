@@ -189,6 +189,38 @@ public class JwtUtil {
     }
 
     /**
+     * Generate a temporary token for two-factor authentication during login.
+     * This token has limited scope and can only be used to complete 2FA
+     * verification.
+     * 
+     * @param userId    The user ID requiring 2FA
+     * @param userEmail The user email
+     * @param ipAddress The IP address of the client
+     * @return The temporary JWT token for 2FA completion
+     */
+    public String generateTwoFactorLoginToken(Long userId, String userEmail, String ipAddress) {
+        // 2FA tokens should have a very short expiration time
+        int validityMinutes = AppConstants.Jwt.TWO_FACTOR_LOGIN_EXPIRATION_TIME;
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("userId", userId);
+        claims.put("email", userEmail);
+        claims.put("ipAddress", ipAddress);
+
+        try {
+            String token = createToken(userEmail, TokenType.TWO_FACTOR_LOGIN, claims, validityMinutes);
+            logger.info("Temporary 2FA token generated successfully for user [ID={}]", userId);
+            return token;
+        } catch (JwtConfigurationException e) {
+            logger.error("Failed to generate 2FA token for user [ID={}] due to configuration error", userId, e);
+            throw e;
+        } catch (JwtTokenException e) {
+            logger.error("Failed to generate 2FA token for user [ID={}] due to token error", userId, e);
+            throw e;
+        }
+    }
+
+    /**
      * Create a JWT token with the specified subject, token type, additional claims
      * and validity period.
      * 

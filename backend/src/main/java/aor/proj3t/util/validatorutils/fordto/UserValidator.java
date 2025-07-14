@@ -1,5 +1,10 @@
 package aor.proj3t.util.validatorutils.fordto;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.regex.Pattern;
+
+import aor.proj3t.config.AppConstants;
 import aor.proj3t.dto.LoginDTO;
 import aor.proj3t.dto.ManagerAssignDTO;
 import aor.proj3t.dto.UserDTO;
@@ -8,10 +13,6 @@ import aor.proj3t.enums.Role;
 import aor.proj3t.exceptions.InvalidDataException;
 import jakarta.enterprise.context.ApplicationScoped;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.regex.Pattern;
-
 @ApplicationScoped
 public class UserValidator {
 
@@ -19,8 +20,7 @@ public class UserValidator {
         if (email == null || email.isEmpty()) {
             throw new InvalidDataException("Email cannot be null or empty");
         }
-        String emailRegex = "^(?=.{1,64}@.{1,255}$)([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,})$";
-        if (!Pattern.compile(emailRegex).matcher(email).matches()) {
+        if (!Pattern.compile(AppConstants.Validation.EMAIL_REGEX).matcher(email).matches()) {
             throw new InvalidDataException("Email format is invalid");
         }
     }
@@ -29,15 +29,16 @@ public class UserValidator {
         if (password == null || password.isEmpty()) {
             throw new InvalidDataException("Password cannot be null or empty");
         }
-        String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*#?&.-_])\\S{8,}$";
-        if (!Pattern.compile(passwordRegex).matcher(password).matches()) {
+        if (!Pattern.compile(AppConstants.Validation.PASSWORD_REGEX).matcher(password).matches()) {
             throw new InvalidDataException("Password does not meet complexity requirements");
         }
     }
 
     public void validateName(String name) {
-        if (name == null || name.length() < 2 || name.length() > 30) {
-            throw new InvalidDataException("Name must be between 2 and 30 characters");
+        if (name == null || name.length() < AppConstants.Validation.MIN_NAME_LENGTH
+                || name.length() > AppConstants.Validation.MAX_NAME_LENGTH) {
+            throw new InvalidDataException("Name must be between " + AppConstants.Validation.MIN_NAME_LENGTH + " and "
+                    + AppConstants.Validation.MAX_NAME_LENGTH + " characters");
         }
     }
 
@@ -45,15 +46,16 @@ public class UserValidator {
         if (phoneNumber == null || phoneNumber.isEmpty()) {
             throw new InvalidDataException("Phone number cannot be empty");
         }
-        String phoneRegex = "^\\d{9}$";
-        if (!Pattern.compile(phoneRegex).matcher(phoneNumber).matches()) {
+        if (!Pattern.compile(AppConstants.Validation.PHONE_REGEX).matcher(phoneNumber).matches()) {
             throw new InvalidDataException("Phone number must be 9 digits");
         }
     }
 
     public void validateAddress(String address) {
-        if (address == null || address.isEmpty() || address.length() < 2 || address.length() > 100) {
-            throw new InvalidDataException("Address must be between 2 and 100 characters");
+        if (address == null || address.isEmpty() || address.length() < AppConstants.Validation.MIN_ADDRESS_LENGTH
+                || address.length() > AppConstants.Validation.MAX_ADDRESS_LENGTH) {
+            throw new InvalidDataException("Address must be between " + AppConstants.Validation.MIN_ADDRESS_LENGTH
+                    + " and " + AppConstants.Validation.MAX_ADDRESS_LENGTH + " characters");
         }
     }
 
@@ -64,8 +66,10 @@ public class UserValidator {
     }
 
     public void validateBiography(String biography) {
-        if (biography == null || biography.length() < 2 || biography.length() > 250) {
-            throw new InvalidDataException("Biography must be between 2 and 250 characters");
+        if (biography == null || biography.length() < AppConstants.Validation.MIN_BIOGRAPHY_LENGTH
+                || biography.length() > AppConstants.Validation.MAX_BIOGRAPHY_LENGTH) {
+            throw new InvalidDataException("Biography must be between " + AppConstants.Validation.MIN_BIOGRAPHY_LENGTH
+                    + " and " + AppConstants.Validation.MAX_BIOGRAPHY_LENGTH + " characters");
         }
     }
 
@@ -128,7 +132,7 @@ public class UserValidator {
         validateBiography(dto.getBiography());
         validateId(dto.getWorkplace().getId(), "Workplace");
         validatePhotograph(dto.getPhotograph());
-        if(dto.getManager() != null){
+        if (dto.getManager() != null) {
             validateId(dto.getManager().getId(), "Manager");
         }
         validateRole(dto.getRole().getName());

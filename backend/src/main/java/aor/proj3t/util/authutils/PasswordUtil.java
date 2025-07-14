@@ -1,20 +1,20 @@
 package aor.proj3t.util.authutils;
 
-import aor.proj3t.config.AppConstants;
-import jakarta.enterprise.context.ApplicationScoped;
+import java.util.regex.Pattern;
+
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.util.regex.Pattern;
+import aor.proj3t.config.AppConstants;
+import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class PasswordUtil {
 
     private final int gensalt = AppConstants.Password.BCRYPT_WORK_FACTOR;
 
-    // Password validation pattern: at least 8 chars, 1 uppercase, 1 lowercase, 1
-    // digit, 1 special char, no spaces/tabs/newlines/null characters
+    // Password validation pattern using centralized regex from AppConstants
     private static final Pattern PASSWORD_PATTERN = Pattern
-            .compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!*])(?!.*[ \\t\\n\\r\\f\\u0000\\u00A0]).{8,}$");
+            .compile(AppConstants.Validation.PASSWORD_REGEX);
 
     /**
      * Hash a password using BCrypt.

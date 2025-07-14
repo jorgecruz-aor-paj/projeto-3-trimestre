@@ -88,4 +88,24 @@ public interface TokenService {
      */
     Session getSessionByToken(String token);
 
+    /**
+     * Validates a temporary 2FA token without requiring an active session.
+     * This method is used for validating tokens during the 2FA login process.
+     * 
+     * @param token the temporary 2FA token to validate
+     * @return true if the token is valid and not expired, false otherwise
+     */
+    boolean validateTwoFactorToken(String token);
+
+    /**
+     * Extracts the user ID from a temporary 2FA token.
+     * This method validates the token and extracts the user ID without
+     * requiring an active session.
+     * 
+     * @param token the temporary 2FA token
+     * @return the user ID contained in the token
+     * @throws UnauthorizedException if the token is invalid or expired
+     */
+    Long getUserIdFromTwoFactorToken(String token);
+
 }

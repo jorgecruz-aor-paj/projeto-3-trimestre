@@ -9,9 +9,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import aor.proj3t.entities.*;
-import aor.proj3t.exceptions.UnauthorizedException;
-import io.jsonwebtoken.Claims;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,11 +21,17 @@ import aor.proj3t.dto.ManagerAssignDTO;
 import aor.proj3t.dto.MiniUserDTO;
 import aor.proj3t.dto.UserDTO;
 import aor.proj3t.dto.UserRegistrationDTO;
+import aor.proj3t.entities.Evaluation;
+import aor.proj3t.entities.PendingRegistration;
+import aor.proj3t.entities.ResetPassword;
+import aor.proj3t.entities.User;
+import aor.proj3t.entities.Workplace;
 import aor.proj3t.enums.EvaluationStatus;
 import aor.proj3t.enums.Role;
 import aor.proj3t.exceptions.ConflictException;
 import aor.proj3t.exceptions.ForbiddenException;
 import aor.proj3t.exceptions.NotFoundException;
+import aor.proj3t.exceptions.UnauthorizedException;
 import aor.proj3t.filters.UserFilter;
 import aor.proj3t.service.interfaces.UserService;
 import aor.proj3t.util.EmailUtil;
@@ -37,6 +40,8 @@ import aor.proj3t.util.authutils.JwtUtil;
 import aor.proj3t.util.authutils.PasswordUtil;
 import aor.proj3t.util.converterutils.ConverterFactory;
 import aor.proj3t.util.converterutils.MiniUserConverter;
+import aor.proj3t.util.validatorutils.fordto.UserValidator;
+import io.jsonwebtoken.Claims;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -97,6 +102,9 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Inject
     MiniUserConverter miniUserConverter;
 
+    @Inject
+    UserValidator userValidator;
+
     /**
      * {@inheritDoc}
      */
@@ -117,9 +125,15 @@ public class UserServiceImpl extends BaseService implements UserService {
     public void registerUser(LoginDTO loginDTO, String ipAddress) {
         Instant now = Instant.now();
         String email = loginDTO.getEmail();
-        String password = passwordUtil.hashPassword(loginDTO.getPassword());
+        String plainPassword = loginDTO.getPassword();
+
+        // Validate email format and uniqueness, password strength
+        userValidator.validateEmail(email); // Format validation
+        validateEmail(email); // Uniqueness validation
+        userValidator.validatePassword(plainPassword);
+
+        String password = passwordUtil.hashPassword(plainPassword);
         Integer confirmationExpirationTime = settingsProvider.getSettings().getConfirmationExpirationTime();
-        validateEmail(email);
         PendingRegistration registration = new PendingRegistration(email, password);
         registration
                 .setConfirmationToken(jwtUtil.generateConfirmationToken(email, ipAddress, confirmationExpirationTime));
@@ -265,7 +279,10 @@ public class UserServiceImpl extends BaseService implements UserService {
         String resetPasswordToken = jwtUtil.generatePasswordResetToken(email, user.getId(), ipAddress,
                 resetPasswordExpirationTime);
         Instant expirationDate = Instant.now().plus(resetPasswordExpirationTime, ChronoUnit.MINUTES);
-        daoFactory.forResetPassword().create(new ResetPassword(user,resetPasswordToken,expirationDate)); //TODO added for API testing purposes
+        daoFactory.forResetPassword().create(new ResetPassword(user, resetPasswordToken, expirationDate)); // TODO added
+                                                                                                           // for API
+                                                                                                           // testing
+                                                                                                           // purposes
         sendResetPasswordEmail(user.getEmail(), user.getId(), ipAddress, resetPasswordToken);
     }
 
