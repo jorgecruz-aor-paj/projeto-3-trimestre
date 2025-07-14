@@ -235,7 +235,7 @@ public final class AppConstants {
          * Requires at least 8 characters, 1 uppercase, 1 lowercase, 1 digit,
          * 1 special character, and no whitespace/null characters.
          */
-        public static final String PASSWORD_REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!*])(?!.*[ \\t\\n\\r\\f\\u0000\\u00A0]).{8,}$";
+        public static final String PASSWORD_REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!*.])(?!.*[ \\t\\n\\r\\f\\u0000\\u00A0]).{8,}$";
 
         /**
          * Regular expression for phone number validation.

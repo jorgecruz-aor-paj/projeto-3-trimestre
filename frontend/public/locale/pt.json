@@ -796,7 +796,7 @@
       "trainingsList": "Lista de Formações",
       "trainingsCount": "formações",
       "noTrainings": "Nenhuma formação disponível",
-      "noTrainingsDesc": "Comece por criar o seu primeiro programa de formação",
+      "noTrainingsDesc": "Nenhuma formação corresponde aos seus filtros atuais",
       "loading": "A carregar formações...",
       "fetchError": "Falha ao carregar formações",
       "success": "Sucesso",
@@ -963,7 +963,7 @@
       "evaluationsList": "Lista de Avaliações",
       "evaluationsCount": "avaliações",
       "noEvaluations": "Nenhuma avaliação disponível",
-      "noEvaluationsDesc": "Ainda não foram criadas avaliações",
+      "noEvaluationsDesc": "Nenhuma avaliação corresponde aos seus filtros atuais",
       "loading": "A carregar avaliações...",
       "fetchError": "Falha ao carregar avaliações",
       "viewToggle": {

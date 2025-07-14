@@ -9,10 +9,12 @@ import aor.proj3t.entities.Session;
 import aor.proj3t.entities.Settings;
 import aor.proj3t.entities.User;
 import aor.proj3t.enums.Role;
+import aor.proj3t.exceptions.TwoFactorAuthException;
 import aor.proj3t.exceptions.UnauthorizedException;
 import aor.proj3t.service.ServiceFactory;
 import aor.proj3t.service.impl.AuthServiceImpl;
 import aor.proj3t.service.interfaces.TokenService;
+import aor.proj3t.service.interfaces.TwoFactorAuthService;
 import aor.proj3t.util.authutils.JwtUtil;
 import aor.proj3t.util.authutils.PasswordUtil;
 import org.junit.jupiter.api.BeforeEach;
@@ -60,6 +62,10 @@ public class AuthServiceImplTest {
     @Mock
     private TokenService tokenService;
 
+    @Mock
+    private TwoFactorAuthService twoFactorAuthService;
+
+
     private final String TEST_EMAIL = "test@example.com";
     private final String TEST_PASSWORD = "Password123!";
     private final String TEST_HASHED_PASSWORD = "$2a$10$abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ12";
@@ -94,6 +100,9 @@ public class AuthServiceImplTest {
         lenient().when(daoFactory.forUser()).thenReturn(userDAO);
         lenient().when(daoFactory.forSession()).thenReturn(sessionDAO);
         lenient().when(settingsProvider.getSettings()).thenReturn(testSettings);
+        lenient().when(serviceFactory.forTwoFactorAuth()).thenReturn(twoFactorAuthService);
+        lenient().when(twoFactorAuthService.isTwoFactorEnabled(TEST_USER_ID)).thenReturn(false); // se for necessário
+
     }
 
     @Test
@@ -107,11 +116,11 @@ public class AuthServiceImplTest {
         when(jwtUtil.extractExpirationDate(TEST_TOKEN)).thenReturn(Instant.now().plusSeconds(3600));
 
         // Act
-        String token = authService.login(testLoginDTO, TEST_IP, TEST_USER_AGENT);
+        var loginResponse = authService.login(testLoginDTO, TEST_IP, TEST_USER_AGENT);
 
         // Assert
-        assertEquals(TEST_TOKEN, token);
-        
+        assertEquals(TEST_TOKEN, loginResponse.getSessionToken());
+
         // Verify session creation
         verify(sessionDAO).create(any(Session.class));
     }
@@ -126,11 +135,11 @@ public class AuthServiceImplTest {
         Exception exception = assertThrows(UnauthorizedException.class, () -> {
             authService.login(testLoginDTO, TEST_IP, TEST_USER_AGENT);
         });
-        
+
         // Check the user message, not the detailed dev message
         UnauthorizedException unauthorizedException = (UnauthorizedException) exception;
         assertEquals("Invalid credentials", unauthorizedException.getUserMessage());
-        
+
         // Verify no session creation occurred
         verify(sessionDAO, never()).create(any(Session.class));
     }
@@ -146,11 +155,11 @@ public class AuthServiceImplTest {
         Exception exception = assertThrows(UnauthorizedException.class, () -> {
             authService.login(testLoginDTO, TEST_IP, TEST_USER_AGENT);
         });
-        
+
         // Check the user message, not the detailed dev message
         UnauthorizedException unauthorizedException = (UnauthorizedException) exception;
         assertEquals("Invalid credentials", unauthorizedException.getUserMessage());
-        
+
         // Verify no session creation occurred
         verify(sessionDAO, never()).create(any(Session.class));
     }
@@ -174,4 +183,22 @@ public class AuthServiceImplTest {
         assertFalse(session.getActive());
         verify(sessionDAO).update(session);
     }
+
+    @Test
+    @DisplayName("Login should trigger 2FA flow when 2FA is enabled")
+    public void testLoginRequires2FA() {
+        // Arrange
+        when(userDAO.findByEmail(TEST_EMAIL)).thenReturn(Optional.of(testUser));
+        when(passwordUtil.verifyPassword(TEST_PASSWORD, TEST_HASHED_PASSWORD)).thenReturn(true);
+        when(serviceFactory.forTwoFactorAuth()).thenReturn(twoFactorAuthService);
+        when(twoFactorAuthService.isTwoFactorEnabled(TEST_USER_ID)).thenReturn(true);
+
+        // Act
+        var response = authService.login(testLoginDTO, TEST_IP, TEST_USER_AGENT);
+
+        // Assert
+        assertTrue(response.isRequiresTwoFactor()); // assuming your response has this flag
+        assertNull(response.getSessionToken());     // token isn't issued until 2FA is verified
+    }
+
 }

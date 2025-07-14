@@ -160,16 +160,18 @@ public class AuthResourceFullIt {
                 given()
                         .contentType(ContentType.JSON)
                         .accept(ContentType.JSON)
-                        .body("{" +
-                                "\"email\": \"" + testEmail + "\"," +
-                                "\"password\": \"" + testPassword + "\"}")
+                        .body("{\"email\": \"" + testEmail + "\", \"password\": \"" + testPassword + "\"}")
                         .when()
                         .post("/auth/login")
                         .then()
                         .statusCode(200)
-                        .extract().asString();
+                        .extract()
+                        .jsonPath()
+                        .getString("sessionToken"); // now extracting the field from the JSON object
+
         Assertions.assertNotNull(sessionToken, "Session token should not be null");
     }
+
 
     @Test
     @Order(8)

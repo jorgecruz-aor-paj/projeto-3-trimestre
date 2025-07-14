@@ -1,4 +1,4 @@
-package aor.proj3t.util;
+package aor.proj3t.unit.util.authutils;
 
 import java.time.Instant;
 

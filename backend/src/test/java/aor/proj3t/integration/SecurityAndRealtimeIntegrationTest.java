@@ -17,6 +17,7 @@ import aor.proj3t.service.ServiceFactory;
 import aor.proj3t.service.impl.AuthServiceImpl;
 import aor.proj3t.service.impl.NotificationServiceImpl;
 import aor.proj3t.service.interfaces.TokenService;
+import aor.proj3t.service.interfaces.TwoFactorAuthService;
 import aor.proj3t.util.authutils.JwtUtil;
 import aor.proj3t.util.authutils.PasswordUtil;
 import aor.proj3t.util.converterutils.ConverterFactory;
@@ -61,6 +62,8 @@ class SecurityAndRealtimeIntegrationTest {
     @Mock private ConverterFactory converterFactory;
     @Mock private ServiceFactory serviceFactory;
     @Mock private SettingsProvider settingsProvider;
+    @Mock private TwoFactorAuthService twoFactorAuthService;
+
 
     // DAO mocks
     @Mock private UserDAO userDAO;
@@ -94,6 +97,9 @@ class SecurityAndRealtimeIntegrationTest {
         lenient().when(daoFactory.forNotification()).thenReturn(notificationDAO);
         lenient().when(converterFactory.forNotification()).thenReturn(notificationConverter);
         lenient().when(serviceFactory.forToken()).thenReturn(tokenService);
+        lenient().when(serviceFactory.forTwoFactorAuth()).thenReturn(twoFactorAuthService);
+        lenient().when(twoFactorAuthService.isTwoFactorEnabled(TEST_USER_ID)).thenReturn(false);
+
 
         // Set up test users
         testUser = new User();
@@ -132,6 +138,8 @@ class SecurityAndRealtimeIntegrationTest {
         when(userDAO.findByEmail(TEST_EMAIL)).thenReturn(Optional.of(testUser));
         when(passwordUtil.verifyPassword(TEST_PASSWORD, TEST_HASHED_PASSWORD)).thenReturn(false);
 
+
+
         // Simulate multiple failed attempts
         for (int i = 0; i < 5; i++) {
             UnauthorizedException exception = assertThrows(UnauthorizedException.class, () -> 
@@ -148,7 +156,7 @@ class SecurityAndRealtimeIntegrationTest {
             eq(TEST_IP), anyInt())).thenReturn(TEST_TOKEN);
         when(jwtUtil.extractExpirationDate(TEST_TOKEN)).thenReturn(Instant.now().plusSeconds(3600));
 
-        String token = authService.login(testLoginDTO, TEST_IP, TEST_USER_AGENT);
+        String token = authService.login(testLoginDTO, TEST_IP, TEST_USER_AGENT).getSessionToken();
         assertEquals(TEST_TOKEN, token);
         verify(sessionDAO).create(any(Session.class));
     }
@@ -205,7 +213,7 @@ class SecurityAndRealtimeIntegrationTest {
         // === TEST: Concurrent login attempts from different IPs ===
         CompletableFuture<String> login1 = CompletableFuture.supplyAsync(() -> {
             try {
-                return authService.login(testLoginDTO, "192.168.1.101", "Browser1");
+                return authService.login(testLoginDTO, "192.168.1.101", "Browser1").getSessionToken();
             } catch (Exception e) {
                 return null;
             }
@@ -213,7 +221,7 @@ class SecurityAndRealtimeIntegrationTest {
 
         CompletableFuture<String> login2 = CompletableFuture.supplyAsync(() -> {
             try {
-                return authService.login(testLoginDTO, "192.168.1.102", "Browser2");
+                return authService.login(testLoginDTO, "192.168.1.102", "Browser2").getSessionToken();
             } catch (Exception e) {
                 return null;
             }
@@ -221,7 +229,7 @@ class SecurityAndRealtimeIntegrationTest {
 
         CompletableFuture<String> login3 = CompletableFuture.supplyAsync(() -> {
             try {
-                return authService.login(testLoginDTO, "192.168.1.103", "Browser3");
+                return authService.login(testLoginDTO, "192.168.1.103", "Browser3").getSessionToken();
             } catch (Exception e) {
                 return null;
             }
@@ -346,7 +354,7 @@ class SecurityAndRealtimeIntegrationTest {
         when(userDAO.findByEmail(TEST_EMAIL)).thenReturn(Optional.of(testUser));
         when(passwordUtil.verifyPassword(TEST_PASSWORD, TEST_HASHED_PASSWORD)).thenReturn(true);
 
-        String token = authService.login(testLoginDTO, TEST_IP, TEST_USER_AGENT);
+        String token = authService.login(testLoginDTO, TEST_IP, TEST_USER_AGENT).getSessionToken();
         
         // Verify token was generated with proper session timeout
         verify(jwtUtil).generateSessionToken(TEST_USER_ID, TEST_EMAIL, Role.USER.getName(), TEST_IP, 60);

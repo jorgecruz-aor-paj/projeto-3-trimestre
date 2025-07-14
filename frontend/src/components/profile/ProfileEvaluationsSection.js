@@ -74,7 +74,7 @@ export const ProfileEvaluationsSection = ({ userId }) => {
               <h5 className="mt-3 text-muted">{t('profile.noEvaluations')}</h5>
               <p className="text-muted">
                 {t(
-                  'profile.noEvaluationsDesc',
+                  'evaluations.admin.noEvaluationsDesc',
                   'No evaluations match your current criteria'
                 )}
               </p>
