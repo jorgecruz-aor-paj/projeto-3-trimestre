@@ -17,7 +17,7 @@ import { useLanguage } from 'contexts/LanguageContext';
 import { FormInput } from 'components/forms/FormInput';
 import { FormDropdownInput } from 'components/forms/FormDropdownInput';
 import { useAuthStore } from 'stores/AuthStore';
-import { userService, authService } from 'services';
+import { userService } from 'services';
 import { useUserList } from 'hooks/useUserList';
 import { useWorkplaces } from 'hooks/useWorkplaces';
 import { useFormValidation, profileValidationRules } from 'utils/validation';
@@ -37,7 +37,6 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploadingProfilePicture, setUploadingProfilePicture] = useState(false);
   const [previewUrl, setPreviewUrl] = useState(null);
-  const [requestingPasswordReset, setRequestingPasswordReset] = useState(false);
 
   const {
     userList,
@@ -380,34 +379,6 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
     // Edit mode is closed in the success case
   };
 
-  const handlePasswordReset = async () => {
-    try {
-      setRequestingPasswordReset(true);
-      await authService.requestPasswordReset(user.email);
-
-      showAlert({
-        title: t('profile.success'),
-        message: t(
-          'profile.passwordResetEmailSent',
-          `A password reset link has been sent to ${user.email}`
-        ),
-        variant: 'success',
-      });
-    } catch (error) {
-      console.error('Failed to request password reset:', error);
-      showAlert({
-        title: t('profile.error'),
-        message: t(
-          'profile.passwordResetError',
-          'Failed to send password reset email. Please try again.'
-        ),
-        variant: 'danger',
-      });
-    } finally {
-      setRequestingPasswordReset(false);
-    }
-  };
-
   return (
     <Card className="mb-4">
       <Card.Header as="h5">{t('profile.info')}</Card.Header>
@@ -486,29 +457,6 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
                     <Button variant="primary" onClick={() => setEditMode(true)}>
                       {t('common.edit')}
                     </Button>
-                    {isSelf && (
-                      <Button
-                        variant="outline-secondary"
-                        onClick={handlePasswordReset}
-                        disabled={requestingPasswordReset}
-                      >
-                        {requestingPasswordReset ? (
-                          <>
-                            <Spinner
-                              as="span"
-                              animation="border"
-                              size="sm"
-                              role="status"
-                              aria-hidden="true"
-                              className="me-1"
-                            />
-                            {t('profile.sending', 'Sending...')}
-                          </>
-                        ) : (
-                          t('profile.changePassword', 'Change Password')
-                        )}
-                      </Button>
-                    )}
                   </div>
                 ) : (
                   <>

@@ -1,7 +1,9 @@
-import React from 'react';
-import { Container, Row, Col, Card } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Container, Row, Col, Card, Button, Spinner } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { TwoFactorSecuritySettings } from 'components/security/TwoFactorSecuritySettings';
+import { useAlert } from 'contexts/AlertContext';
+import { authService } from 'services/authService';
 
 /**
  * Security Settings Component for Profile Page
@@ -9,6 +11,38 @@ import { TwoFactorSecuritySettings } from 'components/security/TwoFactorSecurity
  */
 export const SecuritySettings = () => {
   const { t } = useTranslation();
+  const [requestingPasswordReset, setRequestingPasswordReset] = useState(false);
+  React.useState(false);
+  const { showAlert } = useAlert();
+  const user = require('stores/AuthStore').useAuthStore(state => state.user);
+
+  const handlePasswordReset = async () => {
+    try {
+      setRequestingPasswordReset(true);
+      await authService.requestPasswordReset(user.email);
+
+      showAlert({
+        title: t('profile.success'),
+        message: t(
+          'profile.passwordResetEmailSent',
+          `A password reset link has been sent to ${user.email}`
+        ),
+        variant: 'success',
+      });
+    } catch (error) {
+      console.error('Failed to request password reset:', error);
+      showAlert({
+        title: t('profile.error'),
+        message: t(
+          'profile.passwordResetError',
+          'Failed to send password reset email. Please try again.'
+        ),
+        variant: 'danger',
+      });
+    } finally {
+      setRequestingPasswordReset(false);
+    }
+  };
 
   return (
     <Container>
@@ -33,10 +67,31 @@ export const SecuritySettings = () => {
               <h5 className="mb-0">{t('security.passwordSettings.title')}</h5>
             </Card.Header>
             <Card.Body>
-              <p className="text-muted mb-0">
+              <p className="text-muted mb-3">
                 {t('security.passwordSettings.description')}
               </p>
-              {/* Password change functionality can be added here later */}
+              {/* Password change functionality */}
+              <Button
+                variant="outline-secondary"
+                onClick={handlePasswordReset}
+                disabled={requestingPasswordReset}
+              >
+                {requestingPasswordReset ? (
+                  <>
+                    <Spinner
+                      as="span"
+                      animation="border"
+                      size="sm"
+                      role="status"
+                      aria-hidden="true"
+                      className="me-1"
+                    />
+                    {t('profile.sending', 'Sending...')}
+                  </>
+                ) : (
+                  t('profile.changePassword', 'Change Password')
+                )}
+              </Button>
             </Card.Body>
           </Card>
         </Col>
