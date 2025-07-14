@@ -49,5 +49,18 @@ public enum TokenType {
      * expiration times to minimize security risks.
      * </p>
      */
-    PASSWORD_RESET
+    PASSWORD_RESET,
+
+    /**
+     * Token used for two-factor authentication during login.
+     * These tokens are issued after successful credential verification
+     * but before 2FA verification is completed.
+     * 
+     * <p>
+     * Two-factor login tokens have very short expiration times and
+     * can only be used to complete the 2FA verification process.
+     * They provide limited access and cannot be used for general API calls.
+     * </p>
+     */
+    TWO_FACTOR_LOGIN
 }

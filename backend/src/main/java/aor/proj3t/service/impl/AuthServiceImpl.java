@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import aor.proj3t.config.SettingsProvider;
 import aor.proj3t.daos.DAOFactory;
 import aor.proj3t.dto.LoginDTO;
+import aor.proj3t.dto.auth.LoginResponseDTO;
 import aor.proj3t.entities.Session;
 import aor.proj3t.entities.User;
 import aor.proj3t.exceptions.UnauthorizedException;
@@ -58,24 +59,75 @@ public class AuthServiceImpl extends BaseService implements AuthService {
     PasswordUtil passwordUtil;
 
     @Override
-    public String login(LoginDTO loginDto, String ipAddress, String userAgent) {
+    public LoginResponseDTO login(LoginDTO loginDto, String ipAddress, String userAgent) {
         User user = daoFactory.forUser()
                 .findByEmail(loginDto.getEmail())
                 .orElseThrow(() -> new UnauthorizedException(
                         "Invalid credentials",
                         "User with email " + loginDto.getEmail() + " not found on login"));
+
         if (!passwordUtil.verifyPassword(loginDto.getPassword(), user.getPassword())) {
             throw new UnauthorizedException(
                     "Invalid credentials",
                     "User with email " + loginDto.getEmail() + " provided wrong password on login");
         }
+
+        // Check if user has 2FA enabled
+        boolean isTwoFactorEnabled = serviceFactory.forTwoFactorAuth().isTwoFactorEnabled(user.getId());
+
+        if (isTwoFactorEnabled) {
+            // Generate temporary token for 2FA verification
+            String temporaryToken = jwtUtil.generateTwoFactorLoginToken(user.getId(), user.getEmail(), ipAddress);
+            logger.info("Login successful for user with email {}, 2FA verification required", loginDto.getEmail());
+            return new LoginResponseDTO(true, temporaryToken);
+        } else {
+            // Complete login without 2FA
+            String sessionToken = createSessionToken(user, ipAddress, userAgent);
+            logger.info("Login successful for user with email {}, no 2FA required", loginDto.getEmail());
+            return new LoginResponseDTO(sessionToken);
+        }
+    }
+
+    @Override
+    public String completeTwoFactorLogin(String temporaryToken, String twoFactorCode, String ipAddress,
+            String userAgent) {
+        // Validate temporary token using dedicated 2FA token validation
+        if (!serviceFactory.forToken().validateTwoFactorToken(temporaryToken)) {
+            throw new UnauthorizedException("Invalid or expired temporary token", "Temporary token validation failed");
+        }
+
+        // Extract user ID using dedicated 2FA token method
+        Long userId = serviceFactory.forToken().getUserIdFromTwoFactorToken(temporaryToken);
+
+        // Extract user email using existing JWT utility
+        String userEmail = jwtUtil.extractUserEmail(temporaryToken);
+
+        // Verify 2FA code
+        boolean isValid = serviceFactory.forTwoFactorAuth().verifyTwoFactorCode(userId, twoFactorCode);
+        if (!isValid) {
+            throw new UnauthorizedException("Invalid 2FA code", "Two-factor authentication failed");
+        }
+
+        // Get user and create full session
+        User user = daoFactory.forUser()
+                .findById(userId)
+                .orElseThrow(() -> new UnauthorizedException("User not found", "User not found during 2FA completion"));
+
+        String sessionToken = createSessionToken(user, ipAddress, userAgent);
+        logger.info("2FA login completed successfully for user with email {}", userEmail);
+        return sessionToken;
+    }
+
+    /**
+     * Helper method to create session token and record
+     */
+    private String createSessionToken(User user, String ipAddress, String userAgent) {
         Integer sessionTimeoutMinutes = settingsProvider.getSettings().getSessionExpirationTime();
         String token = jwtUtil.generateSessionToken(user.getId(), user.getEmail(), user.getRole().getName(), ipAddress,
                 sessionTimeoutMinutes);
         Instant tokenLimit = jwtUtil.extractExpirationDate(token);
         Session newSession = new Session(token, ipAddress, userAgent, user, tokenLimit);
         daoFactory.forSession().create(newSession);
-        logger.info("Login successful for user with email {}", loginDto.getEmail());
         return token;
     }
 

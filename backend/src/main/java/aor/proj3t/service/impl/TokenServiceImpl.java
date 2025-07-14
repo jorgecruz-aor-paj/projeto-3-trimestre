@@ -159,4 +159,37 @@ public class TokenServiceImpl extends BaseService implements TokenService {
         return claims;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean validateTwoFactorToken(String token) {
+        try {
+            if (!jwtUtil.validateToken(token)) {
+                return false;
+            }
+            if (jwtUtil.isTokenExpired(token)) {
+                return false;
+            }
+            Claims claims = jwtUtil.extractAllClaims(token);
+            String tokenType = claims.get("tokenType", String.class);
+            return "TWO_FACTOR_LOGIN".equals(tokenType);
+        } catch (Exception e) {
+            logger.warn("Error validating 2FA token: {}", e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Long getUserIdFromTwoFactorToken(String token) {
+        if (!validateTwoFactorToken(token)) {
+            throw new UnauthorizedException("Invalid or expired 2FA token", "2FA token validation failed");
+        }
+        Claims claims = jwtUtil.extractAllClaims(token);
+        return extractUserId(claims);
+    }
+
 }

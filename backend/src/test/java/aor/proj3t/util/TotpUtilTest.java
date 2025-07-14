@@ -203,7 +203,7 @@ public class TotpUtilTest {
         // 1. Leading zeros stripped (some apps might do this)
         String codeWithoutLeadingZeros = currentCode.replaceFirst("^0+", "");
         if (!codeWithoutLeadingZeros.equals(currentCode) && codeWithoutLeadingZeros.length() < 6) {
-            String paddedCode = String.format("%06d", Integer.parseInt(codeWithoutLeadingZeros));
+            String paddedCode = String.format("%06d", Integer.valueOf(codeWithoutLeadingZeros));
             System.out.println("Testing code without leading zeros: " + codeWithoutLeadingZeros + " -> " + paddedCode);
             boolean paddedVerification = totpUtil.verifyCode(paddedCode, secretKey, null);
             System.out.println("Padded Verification: " + paddedVerification);

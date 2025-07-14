@@ -1,8 +1,14 @@
 package aor.proj3t.resource;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.ThreadContext;
+
 import aor.proj3t.dto.APIResponseDTO;
 import aor.proj3t.dto.LoginDTO;
 import aor.proj3t.dto.UserRegistrationDTO;
+import aor.proj3t.dto.auth.LoginResponseDTO;
+import aor.proj3t.dto.auth.LoginTwoFactorVerificationDTO;
 import aor.proj3t.exceptions.UnauthorizedException;
 import aor.proj3t.service.ServiceFactory;
 import aor.proj3t.util.authutils.JwtUtil;
@@ -11,14 +17,19 @@ import aor.proj3t.util.validatorutils.fordto.UserValidator;
 import io.jsonwebtoken.Claims;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.*;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.HeaderParam;
+import jakarta.ws.rs.PATCH;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.ThreadContext;
 
 /**
  * REST endpoint for authentication-related operations.
@@ -65,7 +76,22 @@ public class AuthResource {
         validator.validateLoginDTO(loginDto);
         String userAgent = headers.getHeaderString("User-Agent");
         String ipAddress = ThreadContext.get("clientIp");
-        String sessionToken = serviceFactory.forAuth().login(loginDto, ipAddress, userAgent);
+        LoginResponseDTO loginResponse = serviceFactory.forAuth().login(loginDto, ipAddress, userAgent);
+        return Response.ok(loginResponse).build();
+    }
+
+    @POST
+    @Path("/complete-2fa")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response completeTwoFactorLogin(LoginTwoFactorVerificationDTO verificationDto) {
+        String userAgent = headers.getHeaderString("User-Agent");
+        String ipAddress = ThreadContext.get("clientIp");
+        String sessionToken = serviceFactory.forAuth().completeTwoFactorLogin(
+                verificationDto.getTemporaryToken(),
+                verificationDto.getCode(),
+                ipAddress,
+                userAgent);
         return Response.ok(sessionToken).build();
     }
 

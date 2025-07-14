@@ -13,8 +13,9 @@ import aor.proj3t.dto.auth.TwoFactorSetupDTO;
 import aor.proj3t.dto.auth.TwoFactorStatusResponseDTO;
 import aor.proj3t.dto.auth.TwoFactorVerificationDTO;
 import aor.proj3t.exceptions.TwoFactorAuthException;
-import aor.proj3t.service.TwoFactorAuthService;
-import aor.proj3t.util.authutils.JwtUtil;
+import aor.proj3t.exceptions.UnauthorizedException;
+import aor.proj3t.service.ServiceFactory;
+import aor.proj3t.service.interfaces.TwoFactorAuthService;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
@@ -42,10 +43,7 @@ public class TwoFactorAuthResource {
     private static final Logger logger = LogManager.getLogger(TwoFactorAuthResource.class);
 
     @Inject
-    private TwoFactorAuthService twoFactorAuthService;
-
-    @Inject
-    private JwtUtil jwtUtil;
+    private ServiceFactory serviceFactory;
 
     /**
      * Initiates 2FA setup for the authenticated user.
@@ -58,11 +56,12 @@ public class TwoFactorAuthResource {
     @Path("/setup")
     public Response setupTwoFactorAuth(@HeaderParam("Authorization") String authHeader) {
         try {
-            // Extract user ID from JWT token
-            Long userId = getUserIdFromToken(authHeader);
+            // Extract user ID from JWT token using TokenService
+            Long userId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
 
             // Setup 2FA
-            TwoFactorAuthService.TwoFactorSetupData setupData = twoFactorAuthService.setupTwoFactorAuth(userId);
+            TwoFactorAuthService.TwoFactorSetupData setupData = serviceFactory.forTwoFactorAuth()
+                    .setupTwoFactorAuth(userId);
 
             // Create response DTO
             TwoFactorSetupDTO response = new TwoFactorSetupDTO(
@@ -73,6 +72,11 @@ public class TwoFactorAuthResource {
             logger.info("2FA setup initiated for user: {}", userId);
             return Response.ok(response).build();
 
+        } catch (UnauthorizedException e) {
+            logger.warn("Authentication failed during 2FA setup: {}", e.getUserMessage());
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity(new ErrorResponseDTO(e.getUserMessage()))
+                    .build();
         } catch (TwoFactorAuthException e) {
             logger.warn("2FA setup failed: {}", e.getUserMessage());
             return Response.status(Response.Status.BAD_REQUEST)
@@ -88,22 +92,23 @@ public class TwoFactorAuthResource {
 
     /**
      * Verifies a TOTP code and enables 2FA if verification is successful.
+     * This is for the initial setup process.
      * 
      * @param authHeader      the Authorization header containing JWT token
      * @param verificationDTO the verification request containing the TOTP code
      * @return success response if verification successful
      */
     @POST
-    @Path("/verify")
+    @Path("/setup/verify")
     public Response verifyAndEnableTwoFactorAuth(
             @HeaderParam("Authorization") String authHeader,
             TwoFactorVerificationDTO verificationDTO) {
         try {
-            // Extract user ID from JWT token
-            Long userId = getUserIdFromToken(authHeader);
+            // Extract user ID from JWT token using TokenService
+            Long userId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
 
             // Verify and enable 2FA
-            boolean success = twoFactorAuthService.verifyAndEnableTwoFactorAuth(
+            boolean success = serviceFactory.forTwoFactorAuth().verifyAndEnableTwoFactorAuth(
                     userId, verificationDTO.getCode());
 
             if (success) {
@@ -115,6 +120,11 @@ public class TwoFactorAuthResource {
                         .build();
             }
 
+        } catch (UnauthorizedException e) {
+            logger.warn("Authentication failed during 2FA verification: {}", e.getUserMessage());
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity(new ErrorResponseDTO(e.getUserMessage()))
+                    .build();
         } catch (TwoFactorAuthException e) {
             logger.warn("2FA verification failed: {}", e.getUserMessage());
             return Response.status(Response.Status.BAD_REQUEST)
@@ -129,9 +139,11 @@ public class TwoFactorAuthResource {
     }
 
     /**
-     * Verifies a 2FA code during login.
+     * Verifies a 2FA code during login process.
+     * This is for authenticating during the login flow.
      * 
-     * @param authHeader      the Authorization header containing JWT token
+     * @param authHeader      the Authorization header containing temporary JWT
+     *                        token
      * @param verificationDTO the verification request containing the TOTP code or
      *                        backup code
      * @return success response if verification successful
@@ -142,11 +154,11 @@ public class TwoFactorAuthResource {
             @HeaderParam("Authorization") String authHeader,
             TwoFactorVerificationDTO verificationDTO) {
         try {
-            // Extract user ID from JWT token
-            Long userId = getUserIdFromToken(authHeader);
+            // Extract user ID from JWT token using TokenService
+            Long userId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
 
             // Verify 2FA code
-            boolean success = twoFactorAuthService.verifyTwoFactorCode(
+            boolean success = serviceFactory.forTwoFactorAuth().verifyTwoFactorCode(
                     userId, verificationDTO.getCode());
 
             if (success) {
@@ -159,6 +171,11 @@ public class TwoFactorAuthResource {
                         .build();
             }
 
+        } catch (UnauthorizedException e) {
+            logger.warn("Authentication failed during 2FA login verification: {}", e.getUserMessage());
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity(new ErrorResponseDTO(e.getUserMessage()))
+                    .build();
         } catch (TwoFactorAuthException e) {
             logger.warn("2FA login verification failed: {}", e.getUserMessage());
             return Response.status(Response.Status.UNAUTHORIZED)
@@ -185,11 +202,11 @@ public class TwoFactorAuthResource {
             @HeaderParam("Authorization") String authHeader,
             DisableTwoFactorDTO disableRequest) {
         try {
-            // Extract user ID from JWT token
-            Long userId = getUserIdFromToken(authHeader);
+            // Extract user ID from JWT token using TokenService
+            Long userId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
 
             // Disable 2FA
-            boolean success = twoFactorAuthService.disableTwoFactorAuth(
+            boolean success = serviceFactory.forTwoFactorAuth().disableTwoFactorAuth(
                     userId, disableRequest.getPassword());
 
             if (success) {
@@ -201,6 +218,11 @@ public class TwoFactorAuthResource {
                         .build();
             }
 
+        } catch (UnauthorizedException e) {
+            logger.warn("Authentication failed during 2FA disable: {}", e.getUserMessage());
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity(new ErrorResponseDTO(e.getUserMessage()))
+                    .build();
         } catch (TwoFactorAuthException e) {
             logger.warn("2FA disable failed: {}", e.getUserMessage());
             return Response.status(Response.Status.BAD_REQUEST)
@@ -224,15 +246,20 @@ public class TwoFactorAuthResource {
     @Path("/backup-codes/regenerate")
     public Response regenerateBackupCodes(@HeaderParam("Authorization") String authHeader) {
         try {
-            // Extract user ID from JWT token
-            Long userId = getUserIdFromToken(authHeader);
+            // Extract user ID from JWT token using TokenService
+            Long userId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
 
             // Regenerate backup codes
-            List<String> backupCodes = twoFactorAuthService.regenerateBackupCodes(userId);
+            List<String> backupCodes = serviceFactory.forTwoFactorAuth().regenerateBackupCodes(userId);
 
             logger.info("Backup codes regenerated for user: {}", userId);
             return Response.ok(new BackupCodesResponseDTO(backupCodes)).build();
 
+        } catch (UnauthorizedException e) {
+            logger.warn("Authentication failed during backup codes regeneration: {}", e.getUserMessage());
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity(new ErrorResponseDTO(e.getUserMessage()))
+                    .build();
         } catch (TwoFactorAuthException e) {
             logger.warn("Backup codes regeneration failed: {}", e.getUserMessage());
             return Response.status(Response.Status.BAD_REQUEST)
@@ -256,39 +283,24 @@ public class TwoFactorAuthResource {
     @Path("/status")
     public Response getTwoFactorStatus(@HeaderParam("Authorization") String authHeader) {
         try {
-            // Extract user ID from JWT token
-            Long userId = getUserIdFromToken(authHeader);
+            // Extract user ID from JWT token using TokenService
+            Long userId = serviceFactory.forToken().getUserIdFromAuthHeader(authHeader);
 
             // Check 2FA status
-            boolean isEnabled = twoFactorAuthService.isTwoFactorEnabled(userId);
+            boolean isEnabled = serviceFactory.forTwoFactorAuth().isTwoFactorEnabled(userId);
 
             return Response.ok(new TwoFactorStatusResponseDTO(isEnabled)).build();
 
+        } catch (UnauthorizedException e) {
+            logger.warn("Authentication failed while checking 2FA status: {}", e.getUserMessage());
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity(new ErrorResponseDTO(e.getUserMessage()))
+                    .build();
         } catch (Exception e) {
             logger.error("Unexpected error checking 2FA status", e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(new ErrorResponseDTO("Internal server error"))
                     .build();
-        }
-    }
-
-    /**
-     * Extracts user ID from JWT token.
-     * 
-     * @param authHeader the Authorization header
-     * @return user ID
-     * @throws TwoFactorAuthException if token is invalid
-     */
-    private Long getUserIdFromToken(String authHeader) throws TwoFactorAuthException {
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            throw new TwoFactorAuthException("Invalid authorization header", "Authentication required");
-        }
-
-        String token = authHeader.substring(7);
-        try {
-            return jwtUtil.extractUserId(token);
-        } catch (Exception e) {
-            throw new TwoFactorAuthException("Invalid JWT token", "Authentication failed", e);
         }
     }
 }
