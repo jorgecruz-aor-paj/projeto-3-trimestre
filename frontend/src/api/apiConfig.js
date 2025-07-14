@@ -73,13 +73,13 @@ const API_ENDPOINTS = {
         url: `${AUTH_ENDPOINT}/2fa/setup`,
         requiresAuth: true,
       },
-      verify: {
-        url: `${AUTH_ENDPOINT}/2fa/verify`,
+      setupVerify: {
+        url: `${AUTH_ENDPOINT}/2fa/setup/verify`,
         requiresAuth: true,
       },
       loginVerify: {
-        url: `${AUTH_ENDPOINT}/2fa/login/verify`,
-        requiresAuth: true,
+        url: `${AUTH_ENDPOINT}/complete-2fa`,
+        requiresAuth: false,
       },
       disable: {
         url: `${AUTH_ENDPOINT}/2fa/disable`,
