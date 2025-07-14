@@ -343,33 +343,6 @@ export const EvaluationFilter = ({
           </Form.Group>
         </Col>
 
-        {/* Date Range */}
-        <Col md={6} lg={4}>
-          <Form.Group>
-            <Form.Label className="small fw-semibold">
-              {t('filters.startDate')}
-            </Form.Label>
-            <Form.Control
-              type="date"
-              value={filters.startDate || ''}
-              onChange={e => handleFilterChange('startDate', e.target.value)}
-            />
-          </Form.Group>
-        </Col>
-
-        <Col md={6} lg={4}>
-          <Form.Group>
-            <Form.Label className="small fw-semibold">
-              {t('filters.endDate')}
-            </Form.Label>
-            <Form.Control
-              type="date"
-              value={filters.endDate || ''}
-              onChange={e => handleFilterChange('endDate', e.target.value)}
-            />
-          </Form.Group>
-        </Col>
-
         {/* Sort */}
         <Col md={12} lg={4}>
           <Form.Group>
@@ -417,6 +390,75 @@ export const EvaluationFilter = ({
         </Col>
       </Row>
 
+      {/* Date Range Filter Box - now full width and separated below */}
+      <Row className="mt-4">
+        <Col xs={12}>
+          <div className="border rounded p-3 bg-light">
+            <h6 className="mb-3 text-muted">
+              <i className="bi bi-calendar-range me-2"></i>
+              {t(
+                'filters.rangeByCycleClosureDate',
+                'Range by evaluation cycle closure'
+              )}
+            </h6>
+            <Row className="g-2">
+              <Col md={6}>
+                <Form.Group>
+                  <Form.Label className="small fw-semibold">
+                    {t('filters.startDate')}
+                  </Form.Label>
+                  <Form.Control
+                    type="date"
+                    name="startDate"
+                    value={filters.startDateDisplay || ''}
+                    onChange={e => {
+                      const value = e.target.value;
+                      setFilters(prev => {
+                        const next = { ...prev };
+                        if (value) {
+                          next.startDate = `${value}T00:00:00.000Z`;
+                          next.startDateDisplay = value;
+                        } else {
+                          delete next.startDate;
+                          delete next.startDateDisplay;
+                        }
+                        return next;
+                      });
+                    }}
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group>
+                  <Form.Label className="small fw-semibold">
+                    {t('filters.endDate')}
+                  </Form.Label>
+                  <Form.Control
+                    type="date"
+                    name="endDate"
+                    value={filters.endDateDisplay || ''}
+                    onChange={e => {
+                      const value = e.target.value;
+                      setFilters(prev => {
+                        const next = { ...prev };
+                        if (value) {
+                          next.endDate = `${value}T23:59:59.999Z`;
+                          next.endDateDisplay = value;
+                        } else {
+                          delete next.endDate;
+                          delete next.endDateDisplay;
+                        }
+                        return next;
+                      });
+                    }}
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+          </div>
+        </Col>
+      </Row>
+
       {/* Active Filters Summary */}
       {hasActiveFilters && (
         <div className="mt-3 pt-3 border-top">
@@ -425,7 +467,10 @@ export const EvaluationFilter = ({
               {t('common.activeFilters')}:
             </small>
             {Object.entries(filters).map(([key, value]) => {
+              // Hide startDateDisplay and endDateDisplay from summary
               if (!value && value !== false) return null;
+              if (key === 'startDateDisplay' || key === 'endDateDisplay')
+                return null;
 
               let displayValue = value;
               if (key === 'status') {
@@ -446,6 +491,10 @@ export const EvaluationFilter = ({
                 displayValue = userItem
                   ? `${userItem.firstName} ${userItem.lastName}`
                   : value;
+              } else if (key === 'startDate') {
+                displayValue = filters.startDateDisplay || value;
+              } else if (key === 'endDate') {
+                displayValue = filters.endDateDisplay || value;
               }
 
               return (
