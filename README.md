@@ -24,7 +24,7 @@
 
 ### Wizard atribuir gestores:
 
-1. [] Opção seleccionar todos lança excepção "User not defined";
+1. [X] Opção seleccionar todos lança excepção "User not defined";
 
 ### Notificações:
 
@@ -48,7 +48,7 @@
 
 3. [x] Após marcar avaliações como fechadas página não faz refresh (Email Assincrono);
 
-4. [] Visão de lista de avaliações para o admin não dá para mostrar avaliações;
+4. [X] Visão de lista de avaliações para o admin não dá para mostrar avaliações;
 
 ---
 
