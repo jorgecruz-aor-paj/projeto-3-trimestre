@@ -796,7 +796,7 @@
       "trainingsList": "Trainings List",
       "trainingsCount": "trainings",
       "noTrainings": "No trainings available",
-      "noTrainingsDesc": "Start by creating your first training program",
+      "noTrainingsDesc": "No trainings match your current filters",
       "loading": "Loading trainings...",
       "fetchError": "Failed to load trainings",
       "success": "Success",
@@ -963,7 +963,7 @@
       "evaluationsList": "Evaluations List",
       "evaluationsCount": "evaluations",
       "noEvaluations": "No evaluations available",
-      "noEvaluationsDesc": "No evaluations have been created yet",
+      "noEvaluationsDesc": "No evaluations match your current filters",
       "loading": "Loading evaluations...",
       "fetchError": "Failed to load evaluations",
       "viewToggle": {
