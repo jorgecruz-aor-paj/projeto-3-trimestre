@@ -6,7 +6,6 @@ import aor.proj3t.daos.interfaces.TrainingParticipationDAO;
 import aor.proj3t.daos.interfaces.UserDAO;
 import aor.proj3t.dto.NewTrainingParticipationDTO;
 import aor.proj3t.dto.TrainingParticipationDTO;
-import aor.proj3t.entities.Notification;
 import aor.proj3t.entities.Training;
 import aor.proj3t.entities.TrainingParticipation;
 import aor.proj3t.entities.User;

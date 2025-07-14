@@ -60,7 +60,7 @@ public class TwoFactorAuthService {
             Optional<TwoFactorAuth> existingTwoFactor = twoFactorDAO.findByUser(user);
             if (existingTwoFactor.isPresent() && existingTwoFactor.get().getIsEnabled()) {
                 throw new TwoFactorAuthException("2FA already enabled",
-                        "Two-factor authentication is already enabled for this user");
+                        "Two-factor authentication is already enabled for user with id: " + userId);
             }
 
             // Generate secret key and backup codes

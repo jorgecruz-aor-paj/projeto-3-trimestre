@@ -2,7 +2,6 @@ package aor.proj3t.daos.impl;
 
 import aor.proj3t.daos.interfaces.ResetPasswordDAO;
 import aor.proj3t.entities.ResetPassword;
-import aor.proj3t.entities.Session;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.TypedQuery;
 

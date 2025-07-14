@@ -6,7 +6,6 @@ import aor.proj3t.dto.MessageDTO;
 import aor.proj3t.entities.Message;
 import aor.proj3t.entities.Notification;
 import aor.proj3t.entities.User;
-import aor.proj3t.enums.NotificationType;
 import aor.proj3t.exceptions.NotFoundException;
 import aor.proj3t.service.ServiceFactory;
 import aor.proj3t.service.impl.MessageServiceImpl;

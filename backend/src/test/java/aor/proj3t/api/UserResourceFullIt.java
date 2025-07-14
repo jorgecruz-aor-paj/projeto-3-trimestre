@@ -30,10 +30,7 @@ public class UserResourceFullIt {
     private static String testManagerEmail;
     private static String testUserEmail;
     private static String fullAdminInfo;
-    private static String fullManagerInfo;
     private static String fullUserInfo;
-    private static Long adminId = 1000L;
-    private static Long managerId = 1001L;
     private static Long userId = 1002L;
 
 
