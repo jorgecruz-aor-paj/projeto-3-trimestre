@@ -11,7 +11,7 @@ import jakarta.xml.bind.annotation.XmlRootElement;
  * DTO for Two-Factor Authentication setup response.
  * Contains the secret key, QR code URL, and backup codes for 2FA setup.
  * 
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  */
 @XmlRootElement(name = "twoFactorSetup")
 @XmlAccessorType(XmlAccessType.FIELD)

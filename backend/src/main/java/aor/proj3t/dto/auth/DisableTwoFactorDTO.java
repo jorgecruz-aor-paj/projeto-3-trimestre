@@ -8,7 +8,7 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 /**
  * DTO for disabling two-factor authentication request.
  * 
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  */
 @XmlRootElement(name = "disableTwoFactor")
 @XmlAccessorType(XmlAccessType.FIELD)

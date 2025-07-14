@@ -8,7 +8,7 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 /**
  * DTO for success response messages.
  * 
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  */
 @XmlRootElement(name = "success")
 @XmlAccessorType(XmlAccessType.FIELD)

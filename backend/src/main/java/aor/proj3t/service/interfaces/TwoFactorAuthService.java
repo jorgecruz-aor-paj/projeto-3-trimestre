@@ -32,7 +32,7 @@ import aor.proj3t.exceptions.TwoFactorAuthException;
  * 6238
  * standards, ensuring compatibility with popular authenticator applications.
  * 
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
  * @since 2025
  */

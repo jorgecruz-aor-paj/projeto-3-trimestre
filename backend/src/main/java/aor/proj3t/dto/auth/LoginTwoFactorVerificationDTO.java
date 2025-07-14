@@ -9,7 +9,7 @@ import jakarta.xml.bind.annotation.XmlRootElement;
  * DTO for 2FA verification during login process.
  * Contains the temporary token and the 2FA code.
  * 
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  */
 @XmlRootElement(name = "loginTwoFactorVerification")
 @XmlAccessorType(XmlAccessType.FIELD)

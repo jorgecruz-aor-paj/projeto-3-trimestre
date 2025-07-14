@@ -32,7 +32,7 @@ import jakarta.ws.rs.core.Response;
  * REST resource for Two-Factor Authentication operations.
  * Provides endpoints for 2FA setup, verification, and management.
  * 
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  */
 @RequestScoped
 @Path("/auth/2fa")

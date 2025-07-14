@@ -9,7 +9,7 @@ import jakarta.xml.bind.annotation.XmlRootElement;
  * DTO for login response that indicates 2FA is required.
  * Contains a temporary token that can only be used for 2FA verification.
  * 
- * @author Jorge Cruz
+ * @author Jorge Cruz & João Osório - Gr4
  */
 @XmlRootElement(name = "loginResponse")
 @XmlAccessorType(XmlAccessType.FIELD)
