@@ -338,7 +338,18 @@ export const TwoFactorSecuritySettings = () => {
           {setupStep === 'verify' && (
             <div>
               <h6 className="mb-3">{t('security.2fa.enterCode')}</h6>
-              <Form>
+              <Form
+                onSubmit={e => {
+                  e.preventDefault();
+                  if (
+                    verificationCode &&
+                    verificationCode.length === 6 &&
+                    !actionLoading
+                  ) {
+                    handleSetupVerify();
+                  }
+                }}
+              >
                 <Form.Group className="mb-3">
                   <Form.Label>{t('security.2fa.verificationCode')}</Form.Label>
                   <Form.Control
