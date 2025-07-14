@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
@@ -21,7 +22,11 @@ import jakarta.persistence.Table;
  * @since 1.0
  */
 @Entity
-@Table(name = "pending_registration")
+@Table(name = "pending_registration", indexes = {
+        @Index(name = "idx_pending_registration_email", columnList = "email"),
+        @Index(name = "idx_pending_registration_confirmation_token", columnList = "confirmation_token"),
+        @Index(name = "idx_pending_registration_expiration_date", columnList = "expiration_date")
+})
 
 public class PendingRegistration {
 

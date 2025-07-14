@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
@@ -24,7 +25,9 @@ import jakarta.persistence.Table;
  * @since 1.0
  */
 @Entity
-@Table(name = "settings")
+@Table(name = "settings", indexes = {
+        @Index(name = "idx_settings_created_at", columnList = "created_at")
+})
 
 @NamedQueries({
         @NamedQuery(name = "Settings.getLatestSettings", query = "SELECT s FROM Settings s ORDER BY s.createdAt DESC")
