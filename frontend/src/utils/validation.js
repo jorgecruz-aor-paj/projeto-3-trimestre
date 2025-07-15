@@ -1,11 +1,83 @@
+/**
+ * @fileoverview Comprehensive form validation utilities and rules
+ * @module utils/validation
+ * @requires react
+ */
+
 import { useState } from 'react';
 
 /**
- * Validates a value against a set of validation rules
+ * @typedef {Object} ValidationRule
+ * @property {boolean} [required] - Whether the field is required
+ * @property {number} [minLength] - Minimum length for string values
+ * @property {number} [maxLength] - Maximum length for string values
+ * @property {RegExp} [pattern] - Regular expression pattern to match
+ * @property {string} [patternError] - Custom error message for pattern mismatch
+ * @property {boolean} [url] - Whether the field should be a valid URL
+ * @property {function} [custom] - Custom validation function
+ */
+
+/**
+ * @typedef {Object} ValidationRules
+ * @property {ValidationRule} [fieldName] - Validation rules for each field
+ */
+
+/**
+ * @typedef {Object} ValidationError
+ * @property {string} key - Translation key for the error message
+ * @property {Object} [options] - Options for error message interpolation
+ */
+
+/**
+ * @typedef {Object} FormValidationHook
+ * @property {Object} formData - Current form data state
+ * @property {Object} errors - Current validation errors
+ * @property {function} handleChange - Function to handle form field changes
+ * @property {function} validateAll - Function to validate all form fields
+ * @property {function} resetForm - Function to reset form to initial state
+ * @property {function} setFormData - Function to directly set form data
+ */
+
+/**
+ * Validates a single field value against a set of validation rules
+ * 
+ * This function performs comprehensive validation including:
+ * - Required field validation
+ * - String length validation (min/max)
+ * - Pattern/regex validation
+ * - URL format validation
+ * - Custom validation functions
+ * 
+ * @function validateField
  * @param {*} value - The value to validate
- * @param {Object} rules - The validation rules
- * @param {Object} formData - The entire form data (for cross-field validation)
- * @returns {string|object|null} Error message/object or null if valid
+ * @param {ValidationRule} rules - The validation rules to apply
+ * @param {Object} [formData=null] - The entire form data (for cross-field validation)
+ * @returns {string|ValidationError|null} Error message/object or null if valid
+ * 
+ * @example
+ * // Basic required field validation
+ * const error = validateField('', { required: true });
+ * console.log(error); // 'validation.required'
+ * 
+ * @example
+ * // Pattern validation with custom error
+ * const emailError = validateField('invalid-email', {
+ *   pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+ *   patternError: 'validation.emailInvalid'
+ * });
+ * 
+ * @example
+ * // Custom validation with form data
+ * const passwordError = validateField('123', {
+ *   custom: (value, formData) => {
+ *     if (value !== formData.confirmPassword) {
+ *       return 'validation.passwordsDontMatch';
+ *     }
+ *     return null;
+ *   }
+ * }, { confirmPassword: '456' });
+ * 
+ * @since 1.0.0
  */
 export const validateField = (value, rules, formData = null) => {
   // Return null if no rules are defined for this field
@@ -55,9 +127,31 @@ export const validateField = (value, rules, formData = null) => {
 
 /**
  * Validates an entire form object against validation rules
- * @param {Object} formData - The form data object
- * @param {Object} validationRules - The validation rules for each field
+ * 
+ * This function validates all fields in a form object and returns
+ * an object containing validation errors for each field that fails validation.
+ * 
+ * @function validateForm
+ * @param {Object} formData - The form data object to validate
+ * @param {ValidationRules} validationRules - The validation rules for each field
  * @returns {Object} Object with field names as keys and error messages as values
+ * 
+ * @example
+ * // Validate a complete form
+ * const formData = {
+ *   email: 'invalid-email',
+ *   password: '123'
+ * };
+ * 
+ * const rules = {
+ *   email: { required: true, pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ },
+ *   password: { required: true, minLength: 8 }
+ * };
+ * 
+ * const errors = validateForm(formData, rules);
+ * // Returns: { email: 'validation.pattern', password: { key: 'validation.minLength', options: { min: 8 } } }
+ * 
+ * @since 1.0.0
  */
 export const validateForm = (formData, validationRules) => {
   try {
@@ -85,10 +179,61 @@ export const validateForm = (formData, validationRules) => {
 };
 
 /**
- * Custom hook for form validation
- * @param {Object} initialFormData - Initial form data
- * @param {Object} validationRules - Validation rules for the form
- * @returns {Object} Form validation utilities
+ * Custom React hook for form validation with real-time feedback
+ * 
+ * This hook provides a complete form validation solution with:
+ * - Real-time validation on field changes
+ * - Form-wide validation
+ * - Form state management
+ * - Reset functionality
+ * 
+ * @function useFormValidation
+ * @param {Object} initialFormData - Initial form data state
+ * @param {ValidationRules} validationRules - Validation rules for the form
+ * @returns {FormValidationHook} Form validation utilities and state
+ * 
+ * @example
+ * // Using the hook in a component
+ * function MyForm() {
+ *   const { formData, errors, handleChange, validateAll, resetForm } = useFormValidation(
+ *     { email: '', password: '' },
+ *     {
+ *       email: { required: true, pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ },
+ *       password: { required: true, minLength: 8 }
+ *     }
+ *   );
+ * 
+ *   const handleSubmit = (e) => {
+ *     e.preventDefault();
+ *     if (validateAll()) {
+ *       // Form is valid, submit data
+ *       console.log('Form submitted:', formData);
+ *     }
+ *   };
+ * 
+ *   return (
+ *     <form onSubmit={handleSubmit}>
+ *       <input
+ *         type="email"
+ *         value={formData.email}
+ *         onChange={(e) => handleChange('email', e.target.value)}
+ *       />
+ *       {errors.email && <span>{errors.email}</span>}
+ *       
+ *       <input
+ *         type="password"
+ *         value={formData.password}
+ *         onChange={(e) => handleChange('password', e.target.value)}
+ *       />
+ *       {errors.password && <span>{errors.password}</span>}
+ *       
+ *       <button type="submit">Submit</button>
+ *       <button type="button" onClick={resetForm}>Reset</button>
+ *     </form>
+ *   );
+ * }
+ * 
+ * @since 1.0.0
  */
 export const useFormValidation = (initialFormData, validationRules) => {
   const [formData, setFormData] = useState(initialFormData);
@@ -128,20 +273,31 @@ export const useFormValidation = (initialFormData, validationRules) => {
 };
 
 /**
- * Validation rules for training area form
+ * Validation rules for training area management forms
+ * 
+ * @constant {ValidationRules}
+ * @property {ValidationRule} name - Training area name validation
  */
 export const trainingAreaValidationRules = {
   name: {
     required: true,
     minLength: 2,
     maxLength: 50,
-    pattern: /^[a-zA-Z0-9\s\-]+$/,
+    pattern: /^[a-zA-Z0-9\s-]+$/,
     patternError: 'validation.trainingAreaNameFormat',
   },
 };
 
 /**
- * Validation rules for training forms
+ * Validation rules for training management forms
+ * 
+ * @constant {ValidationRules}
+ * @property {ValidationRule} title - Training title validation
+ * @property {ValidationRule} description - Training description validation
+ * @property {ValidationRule} duration - Training duration validation (15-3000 minutes)
+ * @property {ValidationRule} language - Training language validation
+ * @property {ValidationRule} link - Training link URL validation
+ * @property {ValidationRule} trainingArea - Training area selection validation
  */
 export const trainingValidationRules = {
   title: {
@@ -193,7 +349,11 @@ export const trainingValidationRules = {
 };
 
 /**
- * Validation rules for login forms
+ * Validation rules for user authentication (login) forms
+ * 
+ * @constant {ValidationRules}
+ * @property {ValidationRule} email - Email validation with format checking
+ * @property {ValidationRule} password - Password validation with security requirements
  */
 export const loginValidationRules = {
   email: {
@@ -212,7 +372,12 @@ export const loginValidationRules = {
 };
 
 /**
- * Validation rules for registration forms
+ * Validation rules for user registration forms
+ * 
+ * @constant {ValidationRules}
+ * @property {ValidationRule} email - Email validation with format checking
+ * @property {ValidationRule} password - Password validation with security requirements
+ * @property {ValidationRule} confirmPassword - Password confirmation validation
  */
 export const registerValidationRules = {
   email: {
@@ -223,7 +388,7 @@ export const registerValidationRules = {
   },
   password: {
     required: true,
-    pattern: /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!*])(?!.*[ \\t\\n\\r\\f\\u0000\\u00A0]).{8,}$/,
+    pattern: /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!*])(?!.*\s).{8,}$/,
     patternError: 'validation.passwordInvalid',
     minLength: 8,
   },
@@ -240,7 +405,16 @@ export const registerValidationRules = {
 };
 
 /**
- * Validation rules for user profile forms
+ * Validation rules for user profile management forms
+ * 
+ * @constant {ValidationRules}
+ * @property {ValidationRule} firstName - First name validation
+ * @property {ValidationRule} lastName - Last name validation
+ * @property {ValidationRule} phoneNumber - Phone number validation (9 digits)
+ * @property {ValidationRule} address - Address validation
+ * @property {ValidationRule} birthdate - Birthdate validation (age 13-120)
+ * @property {ValidationRule} biography - Biography validation (optional)
+ * @property {ValidationRule} workplaceId - Workplace selection validation
  */
 export const profileValidationRules = {
   firstName: {
@@ -296,6 +470,12 @@ export const profileValidationRules = {
 
 /**
  * Validation rules for evaluation forms
+ * 
+ * @constant {ValidationRules}
+ * @property {ValidationRule} title - Evaluation title validation
+ * @property {ValidationRule} feedback - Evaluation feedback validation
+ * @property {ValidationRule} status - Evaluation status validation
+ * @property {ValidationRule} scale - Evaluation scale validation
  */
 export const evaluationValidationRules = {
   title: {
@@ -317,7 +497,10 @@ export const evaluationValidationRules = {
 };
 
 /**
- * Validation rules for message forms
+ * Validation rules for messaging forms
+ * 
+ * @constant {ValidationRules}
+ * @property {ValidationRule} content - Message content validation
  */
 export const messageValidationRules = {
   content: {
@@ -327,7 +510,10 @@ export const messageValidationRules = {
 };
 
 /**
- * Validation rules for reset password request form
+ * Validation rules for password reset request forms
+ * 
+ * @constant {ValidationRules}
+ * @property {ValidationRule} email - Email validation for reset requests
  */
 export const resetPasswordRequestValidationRules = {
   email: {
@@ -339,10 +525,17 @@ export const resetPasswordRequestValidationRules = {
   },
 };
 
+/**
+ * Validation rules for setting new password forms
+ * 
+ * @constant {ValidationRules}
+ * @property {ValidationRule} password - New password validation with security requirements
+ * @property {ValidationRule} confirmPassword - Password confirmation validation
+ */
 export const setNewPasswordValidationRules = {
   password: {
     required: true,
-    pattern: /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!*])(?!.*[ \\t\\n\\r\\f\\u0000\\u00A0]).{8,}$/,
+    pattern: /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!*])(?!.*\s).{8,}$/,
     patternError: 'validation.passwordInvalid',
     minLength: 8,
   },
