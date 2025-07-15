@@ -277,7 +277,7 @@
     "forbiddenPage": {
       "title": "Acesso Proibido",
       "description": "Não tem permissão para aceder a este recurso. Contacte o seu administrador se acredita que deveria ter acesso.",
-      "goDashboard": "Ir para o Painel",
+      "goToLogin": "Ir para o Login",
       "goHome": "Ir para a Página Inicial",
       "goBack": "Voltar",
       "suggestions": {

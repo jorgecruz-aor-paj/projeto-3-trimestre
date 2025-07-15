@@ -17,8 +17,8 @@ export const ForbiddenPage = () => {
     navigate('/');
   };
 
-  const handleGoToDashboard = () => {
-    navigate('/dashboard');
+  const handleGoToLogin = () => {
+    navigate('/login');
   };
 
   const handleGoBack = () => {
@@ -54,13 +54,9 @@ export const ForbiddenPage = () => {
               </p>
 
               <div className="error-actions d-flex flex-wrap gap-3 justify-content-center">
-                <Button
-                  variant="primary"
-                  size="lg"
-                  onClick={handleGoToDashboard}
-                >
+                <Button variant="primary" size="lg" onClick={handleGoToLogin}>
                   <i className="bi bi-speedometer2 me-2"></i>
-                  {t('errors.forbiddenPage.goDashboard', 'Go to Dashboard')}
+                  {t('errors.forbiddenPage.goToLogin', 'Ir para o Login')}
                 </Button>
 
                 <Button

@@ -277,7 +277,7 @@
     "forbiddenPage": {
       "title": "Access Forbidden",
       "description": "You don't have permission to access this resource. Please contact your administrator if you believe you should have access.",
-      "goDashboard": "Go to Dashboard",
+      "goToLogin": "Go to Login",
       "goHome": "Go to Homepage",
       "goBack": "Go Back",
       "suggestions": {
