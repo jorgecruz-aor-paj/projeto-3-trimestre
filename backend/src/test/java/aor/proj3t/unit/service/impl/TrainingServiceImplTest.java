@@ -226,7 +226,6 @@ public class TrainingServiceImplTest {
         // Act & Assert
         ConflictException exception = assertThrows(ConflictException.class,
                 () -> trainingService.addTrainingArea(areaDto));
-        System.out.println(exception.getMessage());
         assertTrue(exception.getMessage().contains("duplicate"));
 
         // Verify
@@ -349,7 +348,6 @@ public class TrainingServiceImplTest {
         // Act & Assert
         ForbiddenException exception = assertThrows(ForbiddenException.class,
                 () -> trainingService.getUnparticipatedTrainingsByUserId(TEST_ID, 2L));
-        System.out.println(exception.getMessage());
         assertTrue(exception.getMessage().contains("not authorized"));
 
         // Verify
