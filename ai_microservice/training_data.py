@@ -60,7 +60,11 @@ training_conversations = [
     },
     {
         "input": "Como posso alterar a minha palavra-passe?",
-        "output": "Para alterar a sua palavra-passe, primeiro aceda à sua página de perfil e clique em 'Alterar Palavra-passe'. Receberá uma ligação para redefinir a palavra-passe por email. Clique na ligação e será levado para uma página segura onde pode definir uma nova palavra-passe."
+        "output": "Para alterar a sua palavra-passe, primeiro aceda à sua página de perfil e clique no separador 'Segurança'. Em seguida clique em 'Alterar Palavra-passe'. Receberá uma ligação para redefinir a palavra-passe por email. Clique na ligação e será levado para uma página segura onde pode definir uma nova palavra-passe."
+    },
+    {
+        "input": "Como posso alterar a minha password?",
+        "output": "Para alterar a sua palavra-passe, primeiro aceda à sua página de perfil e clique no separador 'Segurança'. Em seguida clique em 'Alterar Palavra-passe'. Receberá uma ligação para redefinir a palavra-passe por email. Clique na ligação e será levado para uma página segura onde pode definir uma nova palavra-passe."
     },
     {
         "input": "Posso repor a minha fotografia de perfil para a predefinida?",
