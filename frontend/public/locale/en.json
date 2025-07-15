@@ -74,7 +74,12 @@
     "noData": "No data available",
     "invalidDate": "Invalid date",
     "saving": "Saving",
-    "time": "Time"
+    "time": "Time",
+    "downloadExcel": "Download Excel",
+    "downloadCSV": "Download CSV",
+    "exportSuccess": "Export completed successfully",
+    "exportError": "Error exporting data. Please try again.",
+    "excelExportError": "Error downloading Excel file. Please try again."
   },
   "roles": {
     "admin": "Administrator",

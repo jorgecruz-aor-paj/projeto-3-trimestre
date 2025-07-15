@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Row, Col, Form, InputGroup } from 'react-bootstrap';
-import { exportService } from 'services/exportService';
+import { exportService, downloadBlob } from 'services/exportService';
 import { useTranslation } from 'react-i18next';
 import { useAlert } from 'contexts/AlertContext';
 import { SearchableUserSelect } from 'components/evaluations/filters/SearchableUserSelect';
@@ -53,11 +53,36 @@ export const ProfileEvaluationsFilter = ({
   };
 
   // Download all evaluations handler (Excel) - placeholder
-  const handleDownloadExcel = () => {
-    // TODO: Implement Excel export if needed
-    if (typeof window !== 'undefined' && window.alert) {
-      // eslint-disable-next-line no-alert
-      window.alert('Excel export not implemented.');
+  const handleDownloadExcel = async () => {
+    try {
+      // Prepare filters for export (remove display-only keys)
+      const exportFilters = { ...filters };
+      delete exportFilters.startDateDisplay;
+      delete exportFilters.endDateDisplay;
+
+      const blob = await exportService.evaluationsToXLSXFiltered(exportFilters);
+
+      const timestamp = new Date()
+        .toISOString()
+        .slice(0, 19)
+        .replace(/:/g, '-');
+      const filename = `evaluations_export_${timestamp}.xlsx`;
+
+      downloadBlob(
+        blob,
+        filename,
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      );
+    } catch (error) {
+      console.error('Error downloading Excel file:', error);
+      showAlert({
+        title: t('common.error', 'Error'),
+        message: t(
+          'common.excelExportError',
+          'Error downloading Excel file. Please try again.'
+        ),
+        variant: 'danger',
+      });
     }
   };
 

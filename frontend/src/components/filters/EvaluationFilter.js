@@ -4,8 +4,9 @@ import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { SearchableUserSelect } from 'components/evaluations/filters/SearchableUserSelect';
 import { useUserList } from 'hooks/useUserList';
-import { exportService } from 'services/exportService';
+import { exportService, downloadBlob } from 'services/exportService';
 import { translateEvaluationScale } from 'utils/evaluationScaleTranslations';
+import { useAlert } from 'contexts/AlertContext';
 
 /**
  * Modern evaluation filter component for filtering evaluation list
@@ -29,6 +30,7 @@ export const EvaluationFilter = ({
 }) => {
   const { t, i18n } = useTranslation();
   const { userList } = useUserList();
+  const { showAlert } = useAlert();
   const [searchTerm, setSearchTerm] = useState(filters.searchText || '');
 
   const handleFilterChange = (field, value) => {
@@ -156,19 +158,54 @@ export const EvaluationFilter = ({
       }, 200);
     } catch (error) {
       console.error('Error downloading evaluations CSV:', error);
-      if (typeof window !== 'undefined' && window.alert) {
-        // eslint-disable-next-line no-alert
-        window.alert('Failed to download evaluations CSV.');
-      }
+      showAlert({
+        title: t('common.error', 'Error'),
+        message: t(
+          'evaluations.downloadError',
+          'Failed to download evaluations CSV.'
+        ),
+        variant: 'danger',
+      });
     }
   };
 
   // Download all evaluations handler (Excel) - placeholder
-  const handleDownloadExcel = () => {
-    // TODO: Implement Excel export if needed
-    if (typeof window !== 'undefined' && window.alert) {
-      // eslint-disable-next-line no-alert
-      window.alert('Excel export not implemented.');
+  const handleDownloadExcel = async () => {
+    try {
+      const hasActiveFilters = Object.keys(filters).length > 0;
+
+      let blob;
+      if (hasActiveFilters) {
+        // Export filtered evaluations to XLSX
+        blob = await exportService.evaluationsToXLSXFiltered(filters);
+      } else {
+        // Export all evaluations to XLSX
+        blob = await exportService.evaluationsToXLSX();
+      }
+
+      const timestamp = new Date()
+        .toISOString()
+        .slice(0, 19)
+        .replace(/:/g, '-');
+      const filename = hasActiveFilters
+        ? `evaluations_filtered_export_${timestamp}.xlsx`
+        : `evaluations_export_${timestamp}.xlsx`;
+
+      downloadBlob(
+        blob,
+        filename,
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      );
+    } catch (error) {
+      console.error('Error downloading Excel file:', error);
+      showAlert({
+        title: t('common.error', 'Error'),
+        message: t(
+          'common.excelExportError',
+          'Error downloading Excel file. Please try again.'
+        ),
+        variant: 'danger',
+      });
     }
   };
 

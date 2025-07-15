@@ -2,7 +2,8 @@ import React from 'react';
 import { Form, Row, Col, Button, InputGroup } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
-import { exportService } from 'services/exportService';
+import { exportService, downloadBlob } from 'services/exportService';
+import { useAlert } from 'contexts/AlertContext';
 
 /**
  * Training filter component for filtering training list
@@ -18,6 +19,7 @@ export const TrainingFilter = ({
   trainingAreas = [],
 }) => {
   const { t } = useTranslation();
+  const { showAlert } = useAlert();
 
   const handleFilterChange = (field, value) => {
     const newFilters = { ...filters, [field]: value };
@@ -65,18 +67,53 @@ export const TrainingFilter = ({
       }, 200);
     } catch (error) {
       console.error('Error downloading trainings CSV:', error);
-      if (typeof window !== 'undefined' && window.alert) {
-        // eslint-disable-next-line no-alert
-        window.alert('Failed to download trainings CSV.');
-      }
+      showAlert({
+        title: t('common.error', 'Error'),
+        message: t(
+          'trainings.downloadError',
+          'Failed to download trainings CSV.'
+        ),
+        variant: 'danger',
+      });
     }
   };
   // Download all evaluations handler (Excel) - placeholder
-  const handleDownloadExcel = () => {
-    // TODO: Implement Excel export if needed
-    if (typeof window !== 'undefined' && window.alert) {
-      // eslint-disable-next-line no-alert
-      window.alert('Excel export not implemented.');
+  const handleDownloadExcel = async () => {
+    try {
+      const hasActiveFilters = Object.keys(filters).length > 0;
+
+      let blob;
+      if (hasActiveFilters) {
+        // Export filtered trainings to XLSX
+        blob = await exportService.trainingsToXLSXFiltered(filters);
+      } else {
+        // Export all trainings to XLSX
+        blob = await exportService.trainingsToXLSX();
+      }
+
+      const timestamp = new Date()
+        .toISOString()
+        .slice(0, 19)
+        .replace(/:/g, '-');
+      const filename = hasActiveFilters
+        ? `trainings_filtered_export_${timestamp}.xlsx`
+        : `trainings_export_${timestamp}.xlsx`;
+
+      downloadBlob(
+        blob,
+        filename,
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      );
+    } catch (error) {
+      console.error('Error downloading Excel file:', error);
+      showAlert({
+        title: t('common.error', 'Error'),
+        message: t(
+          'common.excelExportError',
+          'Error downloading Excel file. Please try again.'
+        ),
+        variant: 'danger',
+      });
     }
   };
 

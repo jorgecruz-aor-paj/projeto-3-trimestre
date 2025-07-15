@@ -227,6 +227,14 @@ const API_ENDPOINTS = {
       url: `${EXPORT_ENDPOINT}/users/csv/filtered`,
       requiresAuth: true,
     },
+    usersXLSX: {
+      url: `${EXPORT_ENDPOINT}/users/xlsx`,
+      requiresAuth: true,
+    },
+    usersXLSXFiltered: {
+      url: `${EXPORT_ENDPOINT}/users/xlsx/filtered`,
+      requiresAuth: true,
+    },
     trainingsCSV: {
       url: `${EXPORT_ENDPOINT}/trainings/csv`,
       requiresAuth: true,
@@ -235,12 +243,28 @@ const API_ENDPOINTS = {
       url: `${EXPORT_ENDPOINT}/trainings/csv/filtered`,
       requiresAuth: true,
     },
+    trainingsXLSX: {
+      url: `${EXPORT_ENDPOINT}/trainings/xlsx`,
+      requiresAuth: true,
+    },
+    trainingsXLSXFiltered: {
+      url: `${EXPORT_ENDPOINT}/trainings/xlsx/filtered`,
+      requiresAuth: true,
+    },
     evaluationsCSV: {
       url: `${EXPORT_ENDPOINT}/evaluations/csv`,
       requiresAuth: true,
     },
     evaluationsCSVFiltered: {
       url: `${EXPORT_ENDPOINT}/evaluations/csv/filtered`,
+      requiresAuth: true,
+    },
+    evaluationsXLSX: {
+      url: `${EXPORT_ENDPOINT}/evaluations/xlsx`,
+      requiresAuth: true,
+    },
+    evaluationsXLSXFiltered: {
+      url: `${EXPORT_ENDPOINT}/evaluations/xlsx/filtered`,
       requiresAuth: true,
     },
     evaluationPDF: evaluationId => ({

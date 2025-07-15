@@ -74,7 +74,12 @@
     "noData": "Nenhum dado disponível",
     "invalidDate": "Data inválida",
     "saving": "A guardar",
-    "time": "Hora"
+    "time": "Hora",
+    "downloadExcel": "Descarregar Excel",
+    "downloadCSV": "Descarregar CSV",
+    "exportSuccess": "Exportação concluída com sucesso",
+    "exportError": "Erro ao exportar dados. Tente novamente.",
+    "excelExportError": "Erro ao descarregar ficheiro Excel. Tente novamente."
   },
   "roles": {
     "admin": "Administrador",

@@ -31,6 +31,30 @@ export const exportService = {
     });
   },
 
+  /**
+   * Export all users to XLSX
+   * @returns {Promise} - XLSX data as blob
+   */
+  usersToXLSX: () => {
+    return apiRequest(API_ENDPOINTS.export.usersXLSX, {
+      method: 'GET',
+      responseType: 'blob',
+    });
+  },
+
+  /**
+   * Export filtered users to XLSX
+   * @param {Object} filters - Filter parameters for user export
+   * @returns {Promise} - XLSX data as blob
+   */
+  usersToXLSXFiltered: (filters = {}) => {
+    return apiRequest(API_ENDPOINTS.export.usersXLSXFiltered, {
+      method: 'GET',
+      params: filters,
+      responseType: 'blob',
+    });
+  },
+
   // Trainings exports
   /**
    * Export all trainings to CSV
@@ -56,6 +80,30 @@ export const exportService = {
     });
   },
 
+  /**
+   * Export all trainings to XLSX
+   * @returns {Promise} - XLSX data as blob
+   */
+  trainingsToXLSX: () => {
+    return apiRequest(API_ENDPOINTS.export.trainingsXLSX, {
+      method: 'GET',
+      responseType: 'blob',
+    });
+  },
+
+  /**
+   * Export filtered trainings to XLSX
+   * @param {Object} filters - Filter parameters for training export
+   * @returns {Promise} - XLSX data as blob
+   */
+  trainingsToXLSXFiltered: (filters = {}) => {
+    return apiRequest(API_ENDPOINTS.export.trainingsXLSXFiltered, {
+      method: 'GET',
+      params: filters,
+      responseType: 'blob',
+    });
+  },
+
   // Evaluations exports
   /**
    * Export all evaluations to CSV
@@ -75,6 +123,30 @@ export const exportService = {
    */
   evaluationsToCSVFiltered: (filters = {}) => {
     return apiRequest(API_ENDPOINTS.export.evaluationsCSVFiltered, {
+      method: 'GET',
+      params: filters,
+      responseType: 'blob',
+    });
+  },
+
+  /**
+   * Export all evaluations to XLSX
+   * @returns {Promise} - XLSX data as blob
+   */
+  evaluationsToXLSX: () => {
+    return apiRequest(API_ENDPOINTS.export.evaluationsXLSX, {
+      method: 'GET',
+      responseType: 'blob',
+    });
+  },
+
+  /**
+   * Export filtered evaluations to XLSX
+   * @param {Object} filters - Filter parameters for evaluation export
+   * @returns {Promise} - XLSX data as blob
+   */
+  evaluationsToXLSXFiltered: (filters = {}) => {
+    return apiRequest(API_ENDPOINTS.export.evaluationsXLSXFiltered, {
       method: 'GET',
       params: filters,
       responseType: 'blob',
