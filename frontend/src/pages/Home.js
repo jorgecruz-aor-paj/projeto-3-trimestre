@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import 'styles/pages/Home.css';
 
 /**
@@ -9,6 +10,16 @@ import 'styles/pages/Home.css';
  */
 export const Home = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const featuresRef = useRef(null);
+
+  const handleGetStarted = () => {
+    navigate('/login');
+  };
+
+  const handleLearnMore = () => {
+    featuresRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   return (
     <div className="home-page">
@@ -20,10 +31,14 @@ export const Home = () => {
               <h1 className="display-4 fw-bold mb-4">{t('app.title')}</h1>
               <p className="lead mb-4">{t('app.subtitle')}</p>
               <div className="d-flex flex-wrap gap-3">
-                <Button variant="primary" size="lg">
+                <Button variant="primary" size="lg" onClick={handleGetStarted}>
                   {t('home.getStarted')}
                 </Button>
-                <Button variant="outline-primary" size="lg">
+                <Button
+                  variant="outline-primary"
+                  size="lg"
+                  onClick={handleLearnMore}
+                >
                   {t('home.learnMore')}
                 </Button>
               </div>
@@ -45,7 +60,7 @@ export const Home = () => {
       </section>
 
       {/* Features section */}
-      <section className="features-section py-5">
+      <section className="features-section py-5" ref={featuresRef}>
         <Container>
           <h2 className="text-center mb-5">
             {t('home.features.title', 'Key Features')}
@@ -115,17 +130,17 @@ export const Home = () => {
           <h2 className="mb-4">
             {t(
               'home.cta.title',
-              'Ready to transform your performance management?'
+              'Preparado para transformar a gestão de desempenho?'
             )}
           </h2>
           <p className="lead mb-4">
             {t(
               'home.cta.description',
-              'Join thousands of companies already using our platform to improve team performance.'
+              'Junte-se a milhares de empresas que já utilizam a nossa plataforma para melhorar o desempenho das suas equipas.'
             )}
           </p>
-          <Button variant="light" size="lg">
-            {t('home.cta.button', 'Start Free Trial')}
+          <Button variant="light" size="lg" onClick={handleGetStarted}>
+            {t('home.cta.button', 'Começar Agora')}
           </Button>
         </Container>
       </section>

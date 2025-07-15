@@ -1,7 +1,7 @@
 {
   "app": {
     "title": "Sistema de Gestão de Desempenho",
-    "subtitle": "Monitorize o desempenho da sua equipa"
+    "subtitle": "Monitorize o seu desempenho e o da sua equipa!"
   },
   "languages": {
     "ENGLISH": "Inglês",
@@ -88,8 +88,8 @@
     "unknown": "Função Desconhecida"
   },
   "home": {
-    "getStarted": "Começar agora",
-    "learnMore": "Saber mais",
+    "getStarted": "Inicie Agora",
+    "learnMore": "Saber Mais",
     "features": {
       "title": "Principais Funcionalidades",
       "tracking": {
@@ -108,7 +108,7 @@
     "cta": {
       "title": "Preparado para transformar a gestão de desempenho?",
       "description": "Junte-se a milhares de empresas que já utilizam a nossa plataforma para melhorar o desempenho das suas equipas.",
-      "button": "Iniciar Teste Gratuito"
+      "button": "Inicie Agora"
     }
   },
   "nav": {
@@ -763,7 +763,7 @@
       "subtitle": "Desbloqueie o seu potencial com os nossos programas de formação abrangentes, concebidos para melhorar competências e acelerar o crescimento da carreira.",
       "exploreTrainings": "Explorar Formações",
       "viewProgress": "Ver o Meu Progresso",
-      "getStarted": "Começar",
+      "getStarted": "Inicie Agora",
       "learnMore": "Saber Mais"
     },
     "features": {
@@ -791,7 +791,7 @@
     "cta": {
       "title": "Pronto para avançar na sua carreira com formação profissional?",
       "description": "Junte-se a milhares de profissionais que melhoraram as suas competências e aceleraram as suas carreiras através dos nossos programas de formação.",
-      "button": "Começar a Aprender Hoje"
+      "button": "Inicie Agora"
     },
     "admin": {
       "title": "Gestão de Formações",
@@ -912,7 +912,9 @@
     "hero": {
       "subtitle": "Ferramentas abrangentes de avaliação de desempenho que impulsionam feedback significativo, crescimento e sucesso organizacional.",
       "viewEvaluations": "Ver Avaliações",
-      "learnProcess": "Conhecer o Processo"
+      "learnProcess": "Conhecer o Processo",
+      "getStarted": "Inicie Agora",
+      "learnMore": "Saber Mais"
     },
     "features": {
       "title": "Funcionalidades de Avaliação",
@@ -958,7 +960,7 @@
     "cta": {
       "title": "Pronto para transformar o seu processo de avaliação de desempenho?",
       "description": "Junte-se a organizações em todo o mundo que utilizam o nosso sistema de avaliação para construir equipas de alto desempenho e impulsionar o sucesso.",
-      "button": "Começar Agora"
+      "button": "Inicie Agora"
     },
     "admin": {
       "title": "Gestão de Avaliações",

@@ -14,7 +14,7 @@ export const TrainingTeaser = () => {
   const navigate = useNavigate();
 
   const handleGetStarted = () => {
-    navigate('/auth');
+    navigate('/login');
   };
 
   const handleLearnMore = () => {

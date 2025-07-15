@@ -1,7 +1,7 @@
 {
   "app": {
     "title": "Performance Management System",
-    "subtitle": "Monitor your team's performance"
+    "subtitle": "Monitor your's and your team's performance"
   },
   "languages": {
     "ENGLISH": "English",
@@ -88,7 +88,7 @@
     "unknown": "Unknown Role"
   },
   "home": {
-    "getStarted": "Get Started",
+    "getStarted": "Start Now",
     "learnMore": "Learn More",
     "features": {
       "title": "Key Features",
@@ -108,7 +108,7 @@
     "cta": {
       "title": "Ready to transform your performance management?",
       "description": "Join thousands of companies already using our platform to improve team performance.",
-      "button": "Start Free Trial"
+      "button": "Start Now"
     }
   },
   "nav": {
@@ -763,7 +763,7 @@
       "subtitle": "Unlock your potential with our comprehensive training programs designed to enhance skills and accelerate career growth.",
       "exploreTrainings": "Explore Trainings",
       "viewProgress": "View My Progress",
-      "getStarted": "Get Started",
+      "getStarted": "Start Now",
       "learnMore": "Learn More"
     },
     "features": {
@@ -791,7 +791,7 @@
     "cta": {
       "title": "Ready to advance your career with professional training?",
       "description": "Join thousands of professionals who have enhanced their skills and accelerated their careers through our training programs.",
-      "button": "Start Learning Today"
+      "button": "Start Now"
     },
     "admin": {
       "title": "Training Management",
@@ -912,7 +912,9 @@
     "hero": {
       "subtitle": "Comprehensive performance evaluation tools that drive meaningful feedback, growth, and organizational success.",
       "viewEvaluations": "View Evaluations",
-      "learnProcess": "Learn the Process"
+      "learnProcess": "Learn the Process",
+      "getStarted": "Start Now",
+      "learnMore": "Learn More"
     },
     "features": {
       "title": "Evaluation Features",
@@ -958,7 +960,7 @@
     "cta": {
       "title": "Ready to transform your performance evaluation process?",
       "description": "Join organizations worldwide using our evaluation system to build high-performing teams and drive success.",
-      "button": "Get Started"
+      "button": "Start Now"
     },
     "admin": {
       "title": "Evaluation Management",
