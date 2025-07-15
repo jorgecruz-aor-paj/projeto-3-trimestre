@@ -1,0 +1,2989 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Employee Management System - API Documentation api/apiConfig</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+             
+                <a href="index.html">
+                    <h1 class="navbar-item">Employee Management System</h1>
+                </a>
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-api_apiConfig.html">api/apiConfig</a></li><li><a href="module-config_i18n.html">config/i18n</a></li><li><a href="module-hooks_useErrorMessage.html">hooks/useErrorMessage</a></li><li><a href="module-services_userService.html">services/userService</a></li><li><a href="module-utils_FilterBuilder.html">utils/FilterBuilder</a></li><li><a href="module-utils_validation.html">utils/validation</a></li></ul><h3>Namespaces</h3><ul><li><a href="API_ENDPOINTS.ai.html">ai</a></li><li><a href="API_ENDPOINTS.auth.html">auth</a></li><li><a href="API_ENDPOINTS.auth.twoFactor.html">twoFactor</a></li><li><a href="API_ENDPOINTS.cycles.html">cycles</a></li><li><a href="API_ENDPOINTS.evaluations.html">evaluations</a></li><li><a href="API_ENDPOINTS.export.html">export</a></li><li><a href="API_ENDPOINTS.messages.html">messages</a></li><li><a href="API_ENDPOINTS.notifications.html">notifications</a></li><li><a href="API_ENDPOINTS.stats.html">stats</a></li><li><a href="API_ENDPOINTS.test.html">test</a></li><li><a href="API_ENDPOINTS.trainingParticipation.html">trainingParticipation</a></li><li><a href="API_ENDPOINTS.trainings.html">trainings</a></li><li><a href="API_ENDPOINTS.user.html">user</a></li><li><a href="API_ENDPOINTS.workplaces.html">workplaces</a></li><li><a href="EmployeeManagementSystem.html">EmployeeManagementSystem</a></li><li><a href="module-api_apiConfig-API_ENDPOINTS.html">API_ENDPOINTS</a></li><li><a href="module-services_userService-userService.html">userService</a></li></ul><h3>Classes</h3><ul><li><a href="ApiService.html">ApiService</a></li><li><a href="ErrorBoundary.html">ErrorBoundary</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AVAILABLE_LANGUAGES">AVAILABLE_LANGUAGES</a></li><li><a href="global.html#AddParticipationModal">AddParticipationModal</a></li><li><a href="global.html#AdminDashboard">AdminDashboard</a></li><li><a href="global.html#AdminEvaluationManagement">AdminEvaluationManagement</a></li><li><a href="global.html#AdminTrainingManagement">AdminTrainingManagement</a></li><li><a href="global.html#AppRouter">AppRouter</a></li><li><a href="global.html#ConfirmRegistrationForm">ConfirmRegistrationForm</a></li><li><a href="global.html#Dashboard">Dashboard</a></li><li><a href="global.html#DashboardHeader">DashboardHeader</a></li><li><a href="global.html#ErrorHandlingDemo">ErrorHandlingDemo</a></li><li><a href="global.html#EvaluationCycleBox">EvaluationCycleBox</a></li><li><a href="global.html#EvaluationFilter">EvaluationFilter</a></li><li><a href="global.html#EvaluationList">EvaluationList</a></li><li><a href="global.html#EvaluationTeaser">EvaluationTeaser</a></li><li><a href="global.html#EvaluationsPage">EvaluationsPage</a></li><li><a href="global.html#FloatingChatbot">FloatingChatbot</a></li><li><a href="global.html#Footer">Footer</a></li><li><a href="global.html#ForbiddenPage">ForbiddenPage</a></li><li><a href="global.html#ForbiddenRoute">ForbiddenRoute</a></li><li><a href="global.html#FormDropdownInput">FormDropdownInput</a></li><li><a href="global.html#FormInput">FormInput</a></li><li><a href="global.html#GenericErrorPage">GenericErrorPage</a></li><li><a href="global.html#GenericErrorRoute">GenericErrorRoute</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#Home">Home</a></li><li><a href="global.html#LanguageProvider">LanguageProvider</a></li><li><a href="global.html#LanguageSelector">LanguageSelector</a></li><li><a href="global.html#LoginForm">LoginForm</a></li><li><a href="global.html#MainLayout">MainLayout</a></li><li><a href="global.html#ManagerDashboard">ManagerDashboard</a></li><li><a href="global.html#NetworkErrorPage">NetworkErrorPage</a></li><li><a href="global.html#NetworkErrorRoute">NetworkErrorRoute</a></li><li><a href="global.html#NotFoundPage">NotFoundPage</a></li><li><a href="global.html#NotFoundRoute">NotFoundRoute</a></li><li><a href="global.html#NotificationOffcanvas">NotificationOffcanvas</a></li><li><a href="global.html#OfflinePage">OfflinePage</a></li><li><a href="global.html#PasswordStrengthMeter">PasswordStrengthMeter</a></li><li><a href="global.html#ProfilePage">ProfilePage</a></li><li><a href="global.html#ProfilePicture">ProfilePicture</a></li><li><a href="global.html#QuickActions">QuickActions</a></li><li><a href="global.html#RegisterForm">RegisterForm</a></li><li><a href="global.html#ResetPasswordForm">ResetPasswordForm</a></li><li><a href="global.html#ResetPasswordRequestForm">ResetPasswordRequestForm</a></li><li><a href="global.html#SUPPORTED_LANGUAGES">SUPPORTED_LANGUAGES</a></li><li><a href="global.html#SecuritySettings">SecuritySettings</a></li><li><a href="global.html#ServerErrorPage">ServerErrorPage</a></li><li><a href="global.html#ServerErrorRoute">ServerErrorRoute</a></li><li><a href="global.html#StatsCard">StatsCard</a></li><li><a href="global.html#SubmitButton">SubmitButton</a></li><li><a href="global.html#TeamPerformanceChart">TeamPerformanceChart</a></li><li><a href="global.html#TrainingFilter">TrainingFilter</a></li><li><a href="global.html#TrainingForm">TrainingForm</a></li><li><a href="global.html#TrainingTeaser">TrainingTeaser</a></li><li><a href="global.html#TrainingsPage">TrainingsPage</a></li><li><a href="global.html#TwoFactorRecommendationBanner">TwoFactorRecommendationBanner</a></li><li><a href="global.html#TwoFactorSecuritySettings">TwoFactorSecuritySettings</a></li><li><a href="global.html#TwoFactorVerificationModal">TwoFactorVerificationModal</a></li><li><a href="global.html#UserActivityOverviewChart">UserActivityOverviewChart</a></li><li><a href="global.html#UserDashboard">UserDashboard</a></li><li><a href="global.html#UserEvaluationView">UserEvaluationView</a></li><li><a href="global.html#UserFilters">UserFilters</a></li><li><a href="global.html#UserPerformanceTrendChart">UserPerformanceTrendChart</a></li><li><a href="global.html#UserTrainingProgressChart">UserTrainingProgressChart</a></li><li><a href="global.html#UserTrainingView">UserTrainingView</a></li><li><a href="global.html#VirtualAssistant">VirtualAssistant</a></li><li><a href="global.html#WelcomeCard">WelcomeCard</a></li><li><a href="global.html#apiRequest">apiRequest</a></li><li><a href="global.html#apiService">apiService</a></li><li><a href="global.html#chatbotService">chatbotService</a></li><li><a href="global.html#downloadBlob">downloadBlob</a></li><li><a href="global.html#formatDateToDDMMYYYY">formatDateToDDMMYYYY</a></li><li><a href="global.html#getProfilePictureUrl">getProfilePictureUrl</a></li><li><a href="global.html#handleApiError">handleApiError</a></li><li><a href="global.html#notificationService">notificationService</a></li><li><a href="global.html#preloadProfilePicture">preloadProfilePicture</a></li><li><a href="global.html#toApiDateTime">toApiDateTime</a></li><li><a href="global.html#triggerProfilePictureUpdate">triggerProfilePictureUpdate</a></li><li><a href="global.html#useApiService">useApiService</a></li><li><a href="global.html#useChatbotStore">useChatbotStore</a></li><li><a href="global.html#useErrorHandler">useErrorHandler</a></li><li><a href="global.html#useLanguage">useLanguage</a></li><li><a href="global.html#useManagerStats">useManagerStats</a></li><li><a href="global.html#useNotificationStore">useNotificationStore</a></li><li><a href="global.html#withErrorHandling">withErrorHandling</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Module</p>
+                    <h1>api/apiConfig</h1>
+                </header>
+                
+
+
+
+
+<section>
+
+<header>
+    
+        
+            
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>API Configuration - Centralized configuration for all API endpoints</p></div>
+        
+
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line1">line 1</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+    </div>
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Namespaces</h3>
+
+        <dl>
+            <dt><a href="module-api_apiConfig-API_ENDPOINTS.html">API_ENDPOINTS</a></dt>
+            <dd><p>Comprehensive API endpoints configuration object</p>
+<p>This object contains all API endpoint configurations organized by feature area.</p></dd>
+        </dl>
+    
+
+    
+        <div class='vertical-section'>
+            <h1>Members</h1>
+            <div class="members">
+            
+                <div class="member">
+
+<h4 class="name" id=".AI_ENDPOINT">
+    <a class="href-link" href="#.AI_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        AI_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>AI endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>AI endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line632">line 632</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id=".API_BASE_URL">
+    <a class="href-link" href="#.API_BASE_URL">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        API_BASE_URL
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Base API URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Base API URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line616">line 616</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id=".API_ENDPOINTS">
+    <a class="href-link" href="#.API_ENDPOINTS">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        API_ENDPOINTS
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Complete API endpoints configuration</p>.</p>
+
+
+
+<div class="description">
+    <p>Complete API endpoints configuration</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line620">line 620</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id=".AUTH_ENDPOINT">
+    <a class="href-link" href="#.AUTH_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        AUTH_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Authentication endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Authentication endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line622">line 622</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id=".CYCLES_ENDPOINT">
+    <a class="href-link" href="#.CYCLES_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        CYCLES_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Cycle endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Cycle endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line630">line 630</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id=".EVALUATIONS_ENDPOINT">
+    <a class="href-link" href="#.EVALUATIONS_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        EVALUATIONS_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Evaluation endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Evaluation endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line628">line 628</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id=".EXPORT_ENDPOINT">
+    <a class="href-link" href="#.EXPORT_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        EXPORT_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Export endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Export endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line634">line 634</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id=".MESSAGES_ENDPOINT">
+    <a class="href-link" href="#.MESSAGES_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        MESSAGES_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Message endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Message endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line642">line 642</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id=".NOTIFICATIONS_ENDPOINT">
+    <a class="href-link" href="#.NOTIFICATIONS_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        NOTIFICATIONS_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Notification endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Notification endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line644">line 644</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id=".STATS_ENDPOINT">
+    <a class="href-link" href="#.STATS_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        STATS_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Statistics endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Statistics endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line636">line 636</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id=".TEST_ENDPOINT">
+    <a class="href-link" href="#.TEST_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        TEST_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Test endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Test endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line638">line 638</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id=".TRAININGS_ENDPOINT">
+    <a class="href-link" href="#.TRAININGS_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        TRAININGS_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Training endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Training endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line626">line 626</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id=".USER_ENDPOINT">
+    <a class="href-link" href="#.USER_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        USER_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>User endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>User endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line624">line 624</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id=".WEBSOCKET_BASE_URL">
+    <a class="href-link" href="#.WEBSOCKET_BASE_URL">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        WEBSOCKET_BASE_URL
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Base WebSocket URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Base WebSocket URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line618">line 618</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id=".WORKPLACES_ENDPOINT">
+    <a class="href-link" href="#.WORKPLACES_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        WORKPLACES_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Workplace endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Workplace endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line640">line 640</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id="~AI_ENDPOINT">
+    <a class="href-link" href="#~AI_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>inner</span>
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        AI_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>AI services endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>AI services endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line93">line 93</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id="~API_BASE_URL">
+    <a class="href-link" href="#~API_BASE_URL">#</a>
+    
+        
+            <span class='tag'>inner</span>
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        API_BASE_URL
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Base API URL for HTTP requests</p>.</p>
+
+
+
+<div class="description">
+    <p>Base API URL for HTTP requests</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line51">line 51</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id="~AUTH_ENDPOINT">
+    <a class="href-link" href="#~AUTH_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>inner</span>
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        AUTH_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Authentication endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Authentication endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line63">line 63</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id="~CYCLES_ENDPOINT">
+    <a class="href-link" href="#~CYCLES_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>inner</span>
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        CYCLES_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Evaluation cycles endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Evaluation cycles endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line87">line 87</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id="~EVALUATIONS_ENDPOINT">
+    <a class="href-link" href="#~EVALUATIONS_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>inner</span>
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        EVALUATIONS_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Evaluation management endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Evaluation management endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line81">line 81</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id="~EXPORT_ENDPOINT">
+    <a class="href-link" href="#~EXPORT_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>inner</span>
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        EXPORT_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Export services endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Export services endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line99">line 99</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id="~MESSAGES_ENDPOINT">
+    <a class="href-link" href="#~MESSAGES_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>inner</span>
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        MESSAGES_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Messaging endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Messaging endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line123">line 123</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id="~NOTIFICATIONS_ENDPOINT">
+    <a class="href-link" href="#~NOTIFICATIONS_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>inner</span>
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        NOTIFICATIONS_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Notifications endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Notifications endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line129">line 129</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id="~STATS_ENDPOINT">
+    <a class="href-link" href="#~STATS_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>inner</span>
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        STATS_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Statistics endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Statistics endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line105">line 105</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id="~TEST_ENDPOINT">
+    <a class="href-link" href="#~TEST_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>inner</span>
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        TEST_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Test endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Test endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line111">line 111</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id="~TRAININGS_ENDPOINT">
+    <a class="href-link" href="#~TRAININGS_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>inner</span>
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        TRAININGS_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Training management endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Training management endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line75">line 75</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id="~USER_ENDPOINT">
+    <a class="href-link" href="#~USER_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>inner</span>
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        USER_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>User management endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>User management endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line69">line 69</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id="~WEBSOCKET_BASE_URL">
+    <a class="href-link" href="#~WEBSOCKET_BASE_URL">#</a>
+    
+        
+            <span class='tag'>inner</span>
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        WEBSOCKET_BASE_URL
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Base WebSocket URL for real-time connections</p>.</p>
+
+
+
+<div class="description">
+    <p>Base WebSocket URL for real-time connections</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line57">line 57</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id="~WORKPLACES_ENDPOINT">
+    <a class="href-link" href="#~WORKPLACES_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>inner</span>
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        WORKPLACES_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Workplace endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Workplace endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line117">line 117</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+            </div>
+        </div>
+    
+
+    
+
+    
+        <div class='vertical-section'>
+            <h1>Type Definitions</h1>
+            <div class="members">
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">Object</code>
+
+
+    </span>
+
+<h4 class="name" id="~EndpointConfig">
+    <a class="href-link" href="#~EndpointConfig">#</a>
+    
+    <span class="code-name">
+        EndpointConfig
+    </span>
+    
+</h4>
+
+
+
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+<div class="table-container">
+    <table class="props table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+            <th>Attributes</th>
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>url</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">string</code>
+
+
+    
+    </td>
+
+    
+        <td class="attributes">
+        
+
+        
+        </td>
+    
+
+    
+
+    <td class="description last"><p>The full endpoint URL</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>requiresAuth</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">boolean</code>
+
+
+    
+    </td>
+
+    
+        <td class="attributes">
+        
+
+        
+        </td>
+    
+
+    
+
+    <td class="description last"><p>Whether the endpoint requires authentication</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>adminOnly</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">boolean</code>
+
+
+    
+    </td>
+
+    
+        <td class="attributes">
+        
+            &lt;optional><br>
+        
+
+        
+        </td>
+    
+
+    
+
+    <td class="description last"><p>Whether the endpoint requires admin role</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>managerOrAdmin</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">boolean</code>
+
+
+    
+    </td>
+
+    
+        <td class="attributes">
+        
+            &lt;optional><br>
+        
+
+        
+        </td>
+    
+
+    
+
+    <td class="description last"><p>Whether the endpoint requires manager or admin role</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>methods</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">Array.&lt;string></code>
+
+
+    
+    </td>
+
+    
+        <td class="attributes">
+        
+            &lt;optional><br>
+        
+
+        
+        </td>
+    
+
+    
+
+    <td class="description last"><p>Available HTTP methods for this endpoint</p></td>
+</tr>
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line6">line 6</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~EndpointFunction">
+        <a class="href-link" href="#~EndpointFunction">#</a>
+        
+        <span class="code-name">
+            
+                EndpointFunction<span class="signature">(param)</span><span class="type-signature"> &rarr; {EndpointConfig}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>param</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">string</code>
+|
+
+<code class="param-type">number</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>Parameter to inject into URL</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line15">line 15</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>Endpoint configuration object</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">EndpointConfig</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+            </div>
+        </div>
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+            </div>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

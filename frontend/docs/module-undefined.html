@@ -1,0 +1,3601 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Employee Management System - API Documentation undefined</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+             
+                <a href="index.html">
+                    <h1 class="navbar-item">Employee Management System</h1>
+                </a>
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-api_apiConfig.html">api/apiConfig</a></li><li><a href="module-config_i18n.html">config/i18n</a></li><li><a href="module-hooks_useErrorMessage.html">hooks/useErrorMessage</a></li><li><a href="module-services_userService.html">services/userService</a></li><li><a href="module-undefined.html">undefined</a></li><li><a href="module-utils_FilterBuilder.html">utils/FilterBuilder</a></li><li><a href="module-utils_validation.html">utils/validation</a></li></ul><h3>Namespaces</h3><ul><li><a href="API_ENDPOINTS.ai.html">ai</a></li><li><a href="API_ENDPOINTS.auth.html">auth</a></li><li><a href="API_ENDPOINTS.auth.twoFactor.html">twoFactor</a></li><li><a href="API_ENDPOINTS.cycles.html">cycles</a></li><li><a href="API_ENDPOINTS.evaluations.html">evaluations</a></li><li><a href="API_ENDPOINTS.export.html">export</a></li><li><a href="API_ENDPOINTS.messages.html">messages</a></li><li><a href="API_ENDPOINTS.notifications.html">notifications</a></li><li><a href="API_ENDPOINTS.stats.html">stats</a></li><li><a href="API_ENDPOINTS.test.html">test</a></li><li><a href="API_ENDPOINTS.trainingParticipation.html">trainingParticipation</a></li><li><a href="API_ENDPOINTS.trainings.html">trainings</a></li><li><a href="API_ENDPOINTS.user.html">user</a></li><li><a href="API_ENDPOINTS.workplaces.html">workplaces</a></li><li><a href="EmployeeManagementSystem.html">EmployeeManagementSystem</a></li><li><a href="module-api_apiConfig-API_ENDPOINTS.html">API_ENDPOINTS</a></li><li><a href="module-services_userService-userService.html">userService</a></li></ul><h3>Classes</h3><ul><li><a href="ApiService.html">ApiService</a></li><li><a href="ErrorBoundary.html">ErrorBoundary</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AVAILABLE_LANGUAGES">AVAILABLE_LANGUAGES</a></li><li><a href="global.html#AddParticipationModal">AddParticipationModal</a></li><li><a href="global.html#AdminDashboard">AdminDashboard</a></li><li><a href="global.html#AdminEvaluationManagement">AdminEvaluationManagement</a></li><li><a href="global.html#AdminTrainingManagement">AdminTrainingManagement</a></li><li><a href="global.html#AppRouter">AppRouter</a></li><li><a href="global.html#ConfirmRegistrationForm">ConfirmRegistrationForm</a></li><li><a href="global.html#Dashboard">Dashboard</a></li><li><a href="global.html#DashboardHeader">DashboardHeader</a></li><li><a href="global.html#ErrorHandlingDemo">ErrorHandlingDemo</a></li><li><a href="global.html#EvaluationCycleBox">EvaluationCycleBox</a></li><li><a href="global.html#EvaluationFilter">EvaluationFilter</a></li><li><a href="global.html#EvaluationList">EvaluationList</a></li><li><a href="global.html#EvaluationTeaser">EvaluationTeaser</a></li><li><a href="global.html#EvaluationsPage">EvaluationsPage</a></li><li><a href="global.html#FloatingChatbot">FloatingChatbot</a></li><li><a href="global.html#Footer">Footer</a></li><li><a href="global.html#ForbiddenPage">ForbiddenPage</a></li><li><a href="global.html#ForbiddenRoute">ForbiddenRoute</a></li><li><a href="global.html#FormDropdownInput">FormDropdownInput</a></li><li><a href="global.html#FormInput">FormInput</a></li><li><a href="global.html#GenericErrorPage">GenericErrorPage</a></li><li><a href="global.html#GenericErrorRoute">GenericErrorRoute</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#Home">Home</a></li><li><a href="global.html#LanguageProvider">LanguageProvider</a></li><li><a href="global.html#LanguageSelector">LanguageSelector</a></li><li><a href="global.html#LoginForm">LoginForm</a></li><li><a href="global.html#MainLayout">MainLayout</a></li><li><a href="global.html#ManagerDashboard">ManagerDashboard</a></li><li><a href="global.html#NetworkErrorPage">NetworkErrorPage</a></li><li><a href="global.html#NetworkErrorRoute">NetworkErrorRoute</a></li><li><a href="global.html#NotFoundPage">NotFoundPage</a></li><li><a href="global.html#NotFoundRoute">NotFoundRoute</a></li><li><a href="global.html#NotificationOffcanvas">NotificationOffcanvas</a></li><li><a href="global.html#OfflinePage">OfflinePage</a></li><li><a href="global.html#PasswordStrengthMeter">PasswordStrengthMeter</a></li><li><a href="global.html#ProfilePage">ProfilePage</a></li><li><a href="global.html#ProfilePicture">ProfilePicture</a></li><li><a href="global.html#QuickActions">QuickActions</a></li><li><a href="global.html#RegisterForm">RegisterForm</a></li><li><a href="global.html#ResetPasswordForm">ResetPasswordForm</a></li><li><a href="global.html#ResetPasswordRequestForm">ResetPasswordRequestForm</a></li><li><a href="global.html#SUPPORTED_LANGUAGES">SUPPORTED_LANGUAGES</a></li><li><a href="global.html#SecuritySettings">SecuritySettings</a></li><li><a href="global.html#ServerErrorPage">ServerErrorPage</a></li><li><a href="global.html#ServerErrorRoute">ServerErrorRoute</a></li><li><a href="global.html#StatsCard">StatsCard</a></li><li><a href="global.html#SubmitButton">SubmitButton</a></li><li><a href="global.html#TeamPerformanceChart">TeamPerformanceChart</a></li><li><a href="global.html#TrainingFilter">TrainingFilter</a></li><li><a href="global.html#TrainingForm">TrainingForm</a></li><li><a href="global.html#TrainingTeaser">TrainingTeaser</a></li><li><a href="global.html#TrainingsPage">TrainingsPage</a></li><li><a href="global.html#TwoFactorRecommendationBanner">TwoFactorRecommendationBanner</a></li><li><a href="global.html#TwoFactorSecuritySettings">TwoFactorSecuritySettings</a></li><li><a href="global.html#TwoFactorVerificationModal">TwoFactorVerificationModal</a></li><li><a href="global.html#UserActivityOverviewChart">UserActivityOverviewChart</a></li><li><a href="global.html#UserDashboard">UserDashboard</a></li><li><a href="global.html#UserEvaluationView">UserEvaluationView</a></li><li><a href="global.html#UserFilters">UserFilters</a></li><li><a href="global.html#UserPerformanceTrendChart">UserPerformanceTrendChart</a></li><li><a href="global.html#UserTrainingProgressChart">UserTrainingProgressChart</a></li><li><a href="global.html#UserTrainingView">UserTrainingView</a></li><li><a href="global.html#VirtualAssistant">VirtualAssistant</a></li><li><a href="global.html#WelcomeCard">WelcomeCard</a></li><li><a href="global.html#apiRequest">apiRequest</a></li><li><a href="global.html#apiService">apiService</a></li><li><a href="global.html#chatbotService">chatbotService</a></li><li><a href="global.html#downloadBlob">downloadBlob</a></li><li><a href="global.html#formatDateToDDMMYYYY">formatDateToDDMMYYYY</a></li><li><a href="global.html#getProfilePictureUrl">getProfilePictureUrl</a></li><li><a href="global.html#handleApiError">handleApiError</a></li><li><a href="global.html#notificationService">notificationService</a></li><li><a href="global.html#preloadProfilePicture">preloadProfilePicture</a></li><li><a href="global.html#toApiDateTime">toApiDateTime</a></li><li><a href="global.html#triggerProfilePictureUpdate">triggerProfilePictureUpdate</a></li><li><a href="global.html#useApiService">useApiService</a></li><li><a href="global.html#useChatbotStore">useChatbotStore</a></li><li><a href="global.html#useErrorHandler">useErrorHandler</a></li><li><a href="global.html#useLanguage">useLanguage</a></li><li><a href="global.html#useManagerStats">useManagerStats</a></li><li><a href="global.html#useNotificationStore">useNotificationStore</a></li><li><a href="global.html#withErrorHandling">withErrorHandling</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Module</p>
+                    <h1>undefined</h1>
+                </header>
+                
+
+
+
+
+<section>
+
+<header>
+    
+        
+            
+        
+            
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Exported API configuration constants and endpoints</p></div>
+        
+
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line615">line 615</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="config_i18n.js.html" class="button">View Source</a>
+            <span>
+                <a href="config_i18n.js.html">config/i18n.js</a>, <a href="config_i18n.js.html#line35">line 35</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+    </div>
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class='vertical-section'>
+            <h1>Members</h1>
+            <div class="members">
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id=".AI_ENDPOINT">
+    <a class="href-link" href="#.AI_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        AI_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>AI endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>AI endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line633">line 633</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id=".API_BASE_URL">
+    <a class="href-link" href="#.API_BASE_URL">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        API_BASE_URL
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Base API URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Base API URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line617">line 617</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">Object</code>
+
+
+    </span>
+
+<h4 class="name" id=".API_ENDPOINTS">
+    <a class="href-link" href="#.API_ENDPOINTS">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        API_ENDPOINTS
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Complete API endpoints configuration</p>.</p>
+
+
+
+<div class="description">
+    <p>Complete API endpoints configuration</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line621">line 621</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id=".AUTH_ENDPOINT">
+    <a class="href-link" href="#.AUTH_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        AUTH_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Authentication endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Authentication endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line623">line 623</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id=".CYCLES_ENDPOINT">
+    <a class="href-link" href="#.CYCLES_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        CYCLES_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Cycle endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Cycle endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line631">line 631</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id=".EVALUATIONS_ENDPOINT">
+    <a class="href-link" href="#.EVALUATIONS_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        EVALUATIONS_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Evaluation endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Evaluation endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line629">line 629</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id=".EXPORT_ENDPOINT">
+    <a class="href-link" href="#.EXPORT_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        EXPORT_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Export endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Export endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line635">line 635</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id=".MESSAGES_ENDPOINT">
+    <a class="href-link" href="#.MESSAGES_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        MESSAGES_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Message endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Message endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line643">line 643</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id=".NOTIFICATIONS_ENDPOINT">
+    <a class="href-link" href="#.NOTIFICATIONS_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        NOTIFICATIONS_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Notification endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Notification endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line645">line 645</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id=".STATS_ENDPOINT">
+    <a class="href-link" href="#.STATS_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        STATS_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Statistics endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Statistics endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line637">line 637</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id=".TEST_ENDPOINT">
+    <a class="href-link" href="#.TEST_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        TEST_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Test endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Test endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line639">line 639</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id=".TRAININGS_ENDPOINT">
+    <a class="href-link" href="#.TRAININGS_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        TRAININGS_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Training endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Training endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line627">line 627</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id=".USER_ENDPOINT">
+    <a class="href-link" href="#.USER_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        USER_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>User endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>User endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line625">line 625</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id=".WEBSOCKET_BASE_URL">
+    <a class="href-link" href="#.WEBSOCKET_BASE_URL">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        WEBSOCKET_BASE_URL
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Base WebSocket URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Base WebSocket URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line619">line 619</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id=".WORKPLACES_ENDPOINT">
+    <a class="href-link" href="#.WORKPLACES_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        WORKPLACES_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Workplace endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Workplace endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line641">line 641</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+            </div>
+        </div>
+    
+
+    
+        <div class='vertical-section'>
+            <h1>Methods</h1>
+            <div class="members">
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~setupI18n">
+        <a class="href-link" href="#~setupI18n">#</a>
+        
+            
+                <span class='tag'>async</span>
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                setupI18n<span class="signature">(customConfig<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary"><p>Initialize and configure i18n for the application</p>
+<p>This function sets up the complete internationalization system with:</p>
+<ul>
+<li>Portuguese as the default fallback language</li>
+<li>HTTP backend for loading translation files from /locale/ directory</li>
+<li>Browser language detection with localStorage persistence</li>
+<li>React integration with suspense disabled for better control</li>
+<li>Debug mode enabled in development environment</li>
+</ul>
+<p>The function ensures the i18n instance is initialized only once,<br>
+making it safe to call multiple times.</br></p></p>
+    
+    
+    <div class="description">
+        <p>Initialize and configure i18n for the application</p>
+<p>This function sets up the complete internationalization system with:</p>
+<ul>
+<li>Portuguese as the default fallback language</li>
+<li>HTTP backend for loading translation files from /locale/ directory</li>
+<li>Browser language detection with localStorage persistence</li>
+<li>React integration with suspense disabled for better control</li>
+<li>Debug mode enabled in development environment</li>
+</ul>
+<p>The function ensures the i18n instance is initialized only once,<br>
+making it safe to call multiple times.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+            <th>Attributes</th>
+            
+
+            
+            <th>Default</th>
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>customConfig</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">I18nConfig</code>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+          &lt;optional><br>
+      
+
+      
+
+      
+      </td>
+  
+
+  
+      <td class="default">
+      
+          {}
+      
+      </td>
+  
+
+  <td class="description last"><p>Optional custom configuration to merge with defaults</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>1.0.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="config_i18n.js.html" class="button">View Source</a>
+            <span>
+                <a href="config_i18n.js.html">config/i18n.js</a>, <a href="config_i18n.js.html#line40">line 40</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Throws:</label></div>
+        <div class="column is-10">
+            
+                    
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>When i18n initialization fails</p></div>
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+<code class="param-type">Error</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>Promise that resolves to the configured i18next instance</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">Promise.&lt;Object></code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+    <h5>Examples</h5>
+    
+    
+        <pre class="prettyprint"><code>// Basic setup with default configuration
+import { setupI18n } from 'config/i18n';
+
+const i18n = await setupI18n();</code></pre>
+    
+
+    
+        <pre class="prettyprint"><code>// Setup with custom configuration
+const i18n = await setupI18n({
+  fallbackLng: 'en',
+  debug: true,
+  backend: {
+    loadPath: '/custom/locale/{{lng}}.json'
+  }
+});</code></pre>
+    
+
+    
+        <pre class="prettyprint"><code>// Using in a React component
+import { useEffect } from 'react';
+import { setupI18n } from 'config/i18n';
+
+function App() {
+  useEffect(() => {
+    setupI18n().then(() => {
+      console.log('i18n initialized');
+    });
+  }, []);
+
+  return &lt;div>...&lt;/div>;
+}</code></pre>
+    
+
+
+</div>
+            
+            </div>
+        </div>
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        
+            
+        
+            
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Singleton i18n instance that will be initialized once<br>
+This instance is configured with:</p>
+<ul>
+<li>HTTP backend for loading translation files</li>
+<li>Browser language detector for automatic language detection</li>
+<li>React integration for component rendering</li>
+</ul></div>
+        
+
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line615">line 615</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="config_i18n.js.html" class="button">View Source</a>
+            <span>
+                <a href="config_i18n.js.html">config/i18n.js</a>, <a href="config_i18n.js.html#line35">line 35</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+    </div>
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class='vertical-section'>
+            <h1>Members</h1>
+            <div class="members">
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id=".AI_ENDPOINT">
+    <a class="href-link" href="#.AI_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        AI_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>AI endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>AI endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line633">line 633</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id=".API_BASE_URL">
+    <a class="href-link" href="#.API_BASE_URL">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        API_BASE_URL
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Base API URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Base API URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line617">line 617</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">Object</code>
+
+
+    </span>
+
+<h4 class="name" id=".API_ENDPOINTS">
+    <a class="href-link" href="#.API_ENDPOINTS">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        API_ENDPOINTS
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Complete API endpoints configuration</p>.</p>
+
+
+
+<div class="description">
+    <p>Complete API endpoints configuration</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line621">line 621</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id=".AUTH_ENDPOINT">
+    <a class="href-link" href="#.AUTH_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        AUTH_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Authentication endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Authentication endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line623">line 623</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id=".CYCLES_ENDPOINT">
+    <a class="href-link" href="#.CYCLES_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        CYCLES_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Cycle endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Cycle endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line631">line 631</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id=".EVALUATIONS_ENDPOINT">
+    <a class="href-link" href="#.EVALUATIONS_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        EVALUATIONS_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Evaluation endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Evaluation endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line629">line 629</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id=".EXPORT_ENDPOINT">
+    <a class="href-link" href="#.EXPORT_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        EXPORT_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Export endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Export endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line635">line 635</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id=".MESSAGES_ENDPOINT">
+    <a class="href-link" href="#.MESSAGES_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        MESSAGES_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Message endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Message endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line643">line 643</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id=".NOTIFICATIONS_ENDPOINT">
+    <a class="href-link" href="#.NOTIFICATIONS_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        NOTIFICATIONS_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Notification endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Notification endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line645">line 645</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id=".STATS_ENDPOINT">
+    <a class="href-link" href="#.STATS_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        STATS_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Statistics endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Statistics endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line637">line 637</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id=".TEST_ENDPOINT">
+    <a class="href-link" href="#.TEST_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        TEST_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Test endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Test endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line639">line 639</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id=".TRAININGS_ENDPOINT">
+    <a class="href-link" href="#.TRAININGS_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        TRAININGS_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Training endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Training endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line627">line 627</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id=".USER_ENDPOINT">
+    <a class="href-link" href="#.USER_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        USER_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>User endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>User endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line625">line 625</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id=".WEBSOCKET_BASE_URL">
+    <a class="href-link" href="#.WEBSOCKET_BASE_URL">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        WEBSOCKET_BASE_URL
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Base WebSocket URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Base WebSocket URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line619">line 619</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id=".WORKPLACES_ENDPOINT">
+    <a class="href-link" href="#.WORKPLACES_ENDPOINT">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+    
+    <span class="code-name">
+        WORKPLACES_ENDPOINT
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Workplace endpoints base URL</p>.</p>
+
+
+
+<div class="description">
+    <p>Workplace endpoints base URL</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="api_apiConfig.js.html" class="button">View Source</a>
+            <span>
+                <a href="api_apiConfig.js.html">api/apiConfig.js</a>, <a href="api_apiConfig.js.html#line641">line 641</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+            </div>
+        </div>
+    
+
+    
+        <div class='vertical-section'>
+            <h1>Methods</h1>
+            <div class="members">
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~setupI18n">
+        <a class="href-link" href="#~setupI18n">#</a>
+        
+            
+                <span class='tag'>async</span>
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                setupI18n<span class="signature">(customConfig<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary"><p>Initialize and configure i18n for the application</p>
+<p>This function sets up the complete internationalization system with:</p>
+<ul>
+<li>Portuguese as the default fallback language</li>
+<li>HTTP backend for loading translation files from /locale/ directory</li>
+<li>Browser language detection with localStorage persistence</li>
+<li>React integration with suspense disabled for better control</li>
+<li>Debug mode enabled in development environment</li>
+</ul>
+<p>The function ensures the i18n instance is initialized only once,<br>
+making it safe to call multiple times.</br></p></p>
+    
+    
+    <div class="description">
+        <p>Initialize and configure i18n for the application</p>
+<p>This function sets up the complete internationalization system with:</p>
+<ul>
+<li>Portuguese as the default fallback language</li>
+<li>HTTP backend for loading translation files from /locale/ directory</li>
+<li>Browser language detection with localStorage persistence</li>
+<li>React integration with suspense disabled for better control</li>
+<li>Debug mode enabled in development environment</li>
+</ul>
+<p>The function ensures the i18n instance is initialized only once,<br>
+making it safe to call multiple times.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+            <th>Attributes</th>
+            
+
+            
+            <th>Default</th>
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>customConfig</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">I18nConfig</code>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+          &lt;optional><br>
+      
+
+      
+
+      
+      </td>
+  
+
+  
+      <td class="default">
+      
+          {}
+      
+      </td>
+  
+
+  <td class="description last"><p>Optional custom configuration to merge with defaults</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>1.0.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="config_i18n.js.html" class="button">View Source</a>
+            <span>
+                <a href="config_i18n.js.html">config/i18n.js</a>, <a href="config_i18n.js.html#line40">line 40</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Throws:</label></div>
+        <div class="column is-10">
+            
+                    
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>When i18n initialization fails</p></div>
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+<code class="param-type">Error</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>Promise that resolves to the configured i18next instance</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">Promise.&lt;Object></code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+    <h5>Examples</h5>
+    
+    
+        <pre class="prettyprint"><code>// Basic setup with default configuration
+import { setupI18n } from 'config/i18n';
+
+const i18n = await setupI18n();</code></pre>
+    
+
+    
+        <pre class="prettyprint"><code>// Setup with custom configuration
+const i18n = await setupI18n({
+  fallbackLng: 'en',
+  debug: true,
+  backend: {
+    loadPath: '/custom/locale/{{lng}}.json'
+  }
+});</code></pre>
+    
+
+    
+        <pre class="prettyprint"><code>// Using in a React component
+import { useEffect } from 'react';
+import { setupI18n } from 'config/i18n';
+
+function App() {
+  useEffect(() => {
+    setupI18n().then(() => {
+      console.log('i18n initialized');
+    });
+  }, []);
+
+  return &lt;div>...&lt;/div>;
+}</code></pre>
+    
+
+
+</div>
+            
+            </div>
+        </div>
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+            </div>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

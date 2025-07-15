@@ -1,0 +1,401 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Employee Management System - API Documentation components/evaluations/EvaluationTeaser.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+             
+                <a href="index.html">
+                    <h1 class="navbar-item">Employee Management System</h1>
+                </a>
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-api_apiConfig.html">api/apiConfig</a></li><li><a href="module-config_i18n.html">config/i18n</a></li><li><a href="module-hooks_useErrorMessage.html">hooks/useErrorMessage</a></li><li><a href="module-services_userService.html">services/userService</a></li><li><a href="module-utils_FilterBuilder.html">utils/FilterBuilder</a></li><li><a href="module-utils_validation.html">utils/validation</a></li></ul><h3>Namespaces</h3><ul><li><a href="API_ENDPOINTS.ai.html">ai</a></li><li><a href="API_ENDPOINTS.auth.html">auth</a></li><li><a href="API_ENDPOINTS.auth.twoFactor.html">twoFactor</a></li><li><a href="API_ENDPOINTS.cycles.html">cycles</a></li><li><a href="API_ENDPOINTS.evaluations.html">evaluations</a></li><li><a href="API_ENDPOINTS.export.html">export</a></li><li><a href="API_ENDPOINTS.messages.html">messages</a></li><li><a href="API_ENDPOINTS.notifications.html">notifications</a></li><li><a href="API_ENDPOINTS.stats.html">stats</a></li><li><a href="API_ENDPOINTS.test.html">test</a></li><li><a href="API_ENDPOINTS.trainingParticipation.html">trainingParticipation</a></li><li><a href="API_ENDPOINTS.trainings.html">trainings</a></li><li><a href="API_ENDPOINTS.user.html">user</a></li><li><a href="API_ENDPOINTS.workplaces.html">workplaces</a></li><li><a href="EmployeeManagementSystem.html">EmployeeManagementSystem</a></li><li><a href="module-api_apiConfig-API_ENDPOINTS.html">API_ENDPOINTS</a></li><li><a href="module-services_userService-userService.html">userService</a></li></ul><h3>Classes</h3><ul><li><a href="ApiService.html">ApiService</a></li><li><a href="ErrorBoundary.html">ErrorBoundary</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AVAILABLE_LANGUAGES">AVAILABLE_LANGUAGES</a></li><li><a href="global.html#AddParticipationModal">AddParticipationModal</a></li><li><a href="global.html#AdminDashboard">AdminDashboard</a></li><li><a href="global.html#AdminEvaluationManagement">AdminEvaluationManagement</a></li><li><a href="global.html#AdminTrainingManagement">AdminTrainingManagement</a></li><li><a href="global.html#AppRouter">AppRouter</a></li><li><a href="global.html#ConfirmRegistrationForm">ConfirmRegistrationForm</a></li><li><a href="global.html#Dashboard">Dashboard</a></li><li><a href="global.html#DashboardHeader">DashboardHeader</a></li><li><a href="global.html#ErrorHandlingDemo">ErrorHandlingDemo</a></li><li><a href="global.html#EvaluationCycleBox">EvaluationCycleBox</a></li><li><a href="global.html#EvaluationFilter">EvaluationFilter</a></li><li><a href="global.html#EvaluationList">EvaluationList</a></li><li><a href="global.html#EvaluationTeaser">EvaluationTeaser</a></li><li><a href="global.html#EvaluationsPage">EvaluationsPage</a></li><li><a href="global.html#FloatingChatbot">FloatingChatbot</a></li><li><a href="global.html#Footer">Footer</a></li><li><a href="global.html#ForbiddenPage">ForbiddenPage</a></li><li><a href="global.html#ForbiddenRoute">ForbiddenRoute</a></li><li><a href="global.html#FormDropdownInput">FormDropdownInput</a></li><li><a href="global.html#FormInput">FormInput</a></li><li><a href="global.html#GenericErrorPage">GenericErrorPage</a></li><li><a href="global.html#GenericErrorRoute">GenericErrorRoute</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#Home">Home</a></li><li><a href="global.html#LanguageProvider">LanguageProvider</a></li><li><a href="global.html#LanguageSelector">LanguageSelector</a></li><li><a href="global.html#LoginForm">LoginForm</a></li><li><a href="global.html#MainLayout">MainLayout</a></li><li><a href="global.html#ManagerDashboard">ManagerDashboard</a></li><li><a href="global.html#NetworkErrorPage">NetworkErrorPage</a></li><li><a href="global.html#NetworkErrorRoute">NetworkErrorRoute</a></li><li><a href="global.html#NotFoundPage">NotFoundPage</a></li><li><a href="global.html#NotFoundRoute">NotFoundRoute</a></li><li><a href="global.html#NotificationOffcanvas">NotificationOffcanvas</a></li><li><a href="global.html#OfflinePage">OfflinePage</a></li><li><a href="global.html#PasswordStrengthMeter">PasswordStrengthMeter</a></li><li><a href="global.html#ProfilePage">ProfilePage</a></li><li><a href="global.html#ProfilePicture">ProfilePicture</a></li><li><a href="global.html#QuickActions">QuickActions</a></li><li><a href="global.html#RegisterForm">RegisterForm</a></li><li><a href="global.html#ResetPasswordForm">ResetPasswordForm</a></li><li><a href="global.html#ResetPasswordRequestForm">ResetPasswordRequestForm</a></li><li><a href="global.html#SUPPORTED_LANGUAGES">SUPPORTED_LANGUAGES</a></li><li><a href="global.html#SecuritySettings">SecuritySettings</a></li><li><a href="global.html#ServerErrorPage">ServerErrorPage</a></li><li><a href="global.html#ServerErrorRoute">ServerErrorRoute</a></li><li><a href="global.html#StatsCard">StatsCard</a></li><li><a href="global.html#SubmitButton">SubmitButton</a></li><li><a href="global.html#TeamPerformanceChart">TeamPerformanceChart</a></li><li><a href="global.html#TrainingFilter">TrainingFilter</a></li><li><a href="global.html#TrainingForm">TrainingForm</a></li><li><a href="global.html#TrainingTeaser">TrainingTeaser</a></li><li><a href="global.html#TrainingsPage">TrainingsPage</a></li><li><a href="global.html#TwoFactorRecommendationBanner">TwoFactorRecommendationBanner</a></li><li><a href="global.html#TwoFactorSecuritySettings">TwoFactorSecuritySettings</a></li><li><a href="global.html#TwoFactorVerificationModal">TwoFactorVerificationModal</a></li><li><a href="global.html#UserActivityOverviewChart">UserActivityOverviewChart</a></li><li><a href="global.html#UserDashboard">UserDashboard</a></li><li><a href="global.html#UserEvaluationView">UserEvaluationView</a></li><li><a href="global.html#UserFilters">UserFilters</a></li><li><a href="global.html#UserPerformanceTrendChart">UserPerformanceTrendChart</a></li><li><a href="global.html#UserTrainingProgressChart">UserTrainingProgressChart</a></li><li><a href="global.html#UserTrainingView">UserTrainingView</a></li><li><a href="global.html#VirtualAssistant">VirtualAssistant</a></li><li><a href="global.html#WelcomeCard">WelcomeCard</a></li><li><a href="global.html#apiRequest">apiRequest</a></li><li><a href="global.html#apiService">apiService</a></li><li><a href="global.html#chatbotService">chatbotService</a></li><li><a href="global.html#downloadBlob">downloadBlob</a></li><li><a href="global.html#formatDateToDDMMYYYY">formatDateToDDMMYYYY</a></li><li><a href="global.html#getProfilePictureUrl">getProfilePictureUrl</a></li><li><a href="global.html#handleApiError">handleApiError</a></li><li><a href="global.html#notificationService">notificationService</a></li><li><a href="global.html#preloadProfilePicture">preloadProfilePicture</a></li><li><a href="global.html#toApiDateTime">toApiDateTime</a></li><li><a href="global.html#triggerProfilePictureUpdate">triggerProfilePictureUpdate</a></li><li><a href="global.html#useApiService">useApiService</a></li><li><a href="global.html#useChatbotStore">useChatbotStore</a></li><li><a href="global.html#useErrorHandler">useErrorHandler</a></li><li><a href="global.html#useLanguage">useLanguage</a></li><li><a href="global.html#useManagerStats">useManagerStats</a></li><li><a href="global.html#useNotificationStore">useNotificationStore</a></li><li><a href="global.html#withErrorHandling">withErrorHandling</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>components/evaluations/EvaluationTeaser.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from 'react';
+import { Container, Row, Col, Card, Button } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import 'styles/pages/EvaluationsPage.css';
+
+/**
+ * Evaluation teaser component for non-authenticated users
+ * Showcases evaluation capabilities and benefits
+ * @returns {React.Component} Evaluation teaser page
+ */
+export const EvaluationTeaser = () => {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+
+  const handleGetStarted = () => {
+    navigate('/auth');
+  };
+
+  const handleLearnMore = () => {
+    // Could scroll to features section or redirect to documentation
+    document.getElementById('features-section')?.scrollIntoView({
+      behavior: 'smooth',
+    });
+  };
+
+  return (
+    &lt;div className="evaluations-page">
+      {/* Hero section */}
+      &lt;section className="hero-section">
+        &lt;Container>
+          &lt;Row className="align-items-center">
+            &lt;Col lg={6} className="mb-5 mb-lg-0">
+              &lt;h1 className="display-4 fw-bold mb-4">
+                {t('evaluations.title', 'Performance Evaluation System')}
+              &lt;/h1>
+              &lt;p className="lead mb-4">
+                {t(
+                  'evaluations.hero.subtitle',
+                  'Comprehensive performance evaluation tools that drive meaningful feedback, growth, and organizational success.'
+                )}
+              &lt;/p>
+              &lt;div className="d-flex flex-wrap gap-3">
+                &lt;Button variant="primary" size="lg" onClick={handleGetStarted}>
+                  {t('evaluations.hero.viewEvaluations', 'View Evaluations')}
+                &lt;/Button>
+                &lt;Button
+                  variant="outline-primary"
+                  size="lg"
+                  onClick={handleLearnMore}
+                >
+                  {t('evaluations.hero.learnProcess', 'Learn the Process')}
+                &lt;/Button>
+              &lt;/div>
+            &lt;/Col>
+            &lt;Col lg={6}>
+              &lt;div className="d-flex justify-content-center">
+                &lt;div className="hero-icon text-primary">
+                  &lt;i
+                    className="bi bi-clipboard-check"
+                    style={{ fontSize: '12rem' }}
+                  >&lt;/i>
+                &lt;/div>
+              &lt;/div>
+            &lt;/Col>
+          &lt;/Row>
+        &lt;/Container>
+      &lt;/section>
+
+      {/* Features section */}
+      &lt;section id="features-section" className="features-section py-5">
+        &lt;Container>
+          &lt;h2 className="text-center mb-5">
+            {t('evaluations.features.title', 'Evaluation Features')}
+          &lt;/h2>
+          &lt;Row>
+            &lt;Col md={4} className="mb-4">
+              &lt;Card className="h-100 feature-card">
+                &lt;Card.Body className="text-center">
+                  &lt;div className="feature-icon mb-3">
+                    &lt;i className="bi bi-clipboard-check">&lt;/i>
+                  &lt;/div>
+                  &lt;Card.Title>
+                    {t(
+                      'evaluations.features.comprehensive.title',
+                      '360° Assessment'
+                    )}
+                  &lt;/Card.Title>
+                  &lt;Card.Text>
+                    {t(
+                      'evaluations.features.comprehensive.description',
+                      'Multi-dimensional evaluations including self-assessment, peer feedback, and manager reviews for complete insights.'
+                    )}
+                  &lt;/Card.Text>
+                &lt;/Card.Body>
+              &lt;/Card>
+            &lt;/Col>
+            &lt;Col md={4} className="mb-4">
+              &lt;Card className="h-100 feature-card">
+                &lt;Card.Body className="text-center">
+                  &lt;div className="feature-icon mb-3">
+                    &lt;i className="bi bi-bar-chart">&lt;/i>
+                  &lt;/div>
+                  &lt;Card.Title>
+                    {t(
+                      'evaluations.features.analytics.title',
+                      'Performance Analytics'
+                    )}
+                  &lt;/Card.Title>
+                  &lt;Card.Text>
+                    {t(
+                      'evaluations.features.analytics.description',
+                      'Detailed analytics and reporting to identify strengths, areas for improvement, and performance trends.'
+                    )}
+                  &lt;/Card.Text>
+                &lt;/Card.Body>
+              &lt;/Card>
+            &lt;/Col>
+            &lt;Col md={4} className="mb-4">
+              &lt;Card className="h-100 feature-card">
+                &lt;Card.Body className="text-center">
+                  &lt;div className="feature-icon mb-3">
+                    &lt;i className="bi bi-target">&lt;/i>
+                  &lt;/div>
+                  &lt;Card.Title>
+                    {t('evaluations.features.goals.title', 'Goal-Oriented')}
+                  &lt;/Card.Title>
+                  &lt;Card.Text>
+                    {t(
+                      'evaluations.features.goals.description',
+                      'Link evaluations to specific goals and objectives, ensuring alignment with organizational priorities.'
+                    )}
+                  &lt;/Card.Text>
+                &lt;/Card.Body>
+              &lt;/Card>
+            &lt;/Col>
+          &lt;/Row>
+        &lt;/Container>
+      &lt;/section>
+
+      {/* Process section */}
+      &lt;section className="process-section py-5">
+        &lt;Container>
+          &lt;h2 className="text-center mb-5">
+            {t('evaluations.process.title', 'Evaluation Process')}
+          &lt;/h2>
+          &lt;Row>
+            &lt;Col md={3} className="mb-4">
+              &lt;div className="process-step text-center">
+                &lt;div className="step-number mb-3">1&lt;/div>
+                &lt;h5>
+                  {t('evaluations.process.step1.title', 'Set Objectives')}
+                &lt;/h5>
+                &lt;p className="text-muted">
+                  {t(
+                    'evaluations.process.step1.description',
+                    'Define clear performance objectives and key results for the evaluation period.'
+                  )}
+                &lt;/p>
+              &lt;/div>
+            &lt;/Col>
+            &lt;Col md={3} className="mb-4">
+              &lt;div className="process-step text-center">
+                &lt;div className="step-number mb-3">2&lt;/div>
+                &lt;h5>
+                  {t('evaluations.process.step2.title', 'Continuous Feedback')}
+                &lt;/h5>
+                &lt;p className="text-muted">
+                  {t(
+                    'evaluations.process.step2.description',
+                    'Provide ongoing feedback and support throughout the evaluation period.'
+                  )}
+                &lt;/p>
+              &lt;/div>
+            &lt;/Col>
+            &lt;Col md={3} className="mb-4">
+              &lt;div className="process-step text-center">
+                &lt;div className="step-number mb-3">3&lt;/div>
+                &lt;h5>{t('evaluations.process.step3.title', 'Formal Review')}&lt;/h5>
+                &lt;p className="text-muted">
+                  {t(
+                    'evaluations.process.step3.description',
+                    'Conduct comprehensive evaluation sessions with structured assessments.'
+                  )}
+                &lt;/p>
+              &lt;/div>
+            &lt;/Col>
+            &lt;Col md={3} className="mb-4">
+              &lt;div className="process-step text-center">
+                &lt;div className="step-number mb-3">4&lt;/div>
+                &lt;h5>
+                  {t('evaluations.process.step4.title', 'Development Plan')}
+                &lt;/h5>
+                &lt;p className="text-muted">
+                  {t(
+                    'evaluations.process.step4.description',
+                    'Create personalized development plans based on evaluation results.'
+                  )}
+                &lt;/p>
+              &lt;/div>
+            &lt;/Col>
+          &lt;/Row>
+        &lt;/Container>
+      &lt;/section>
+
+      {/* Benefits section */}
+      &lt;section className="benefits-section py-5">
+        &lt;Container>
+          &lt;Row className="align-items-center">
+            &lt;Col lg={6}>
+              &lt;h3 className="mb-4">
+                {t(
+                  'evaluations.benefits.title',
+                  'Benefits of Regular Evaluations'
+                )}
+              &lt;/h3>
+              &lt;div className="benefit-item mb-3">
+                &lt;i className="bi bi-check-circle-fill text-success me-3">&lt;/i>
+                &lt;span>
+                  {t(
+                    'evaluations.benefits.growth',
+                    'Accelerated professional growth and skill development'
+                  )}
+                &lt;/span>
+              &lt;/div>
+              &lt;div className="benefit-item mb-3">
+                &lt;i className="bi bi-check-circle-fill text-success me-3">&lt;/i>
+                &lt;span>
+                  {t(
+                    'evaluations.benefits.clarity',
+                    'Clear understanding of expectations and performance standards'
+                  )}
+                &lt;/span>
+              &lt;/div>
+              &lt;div className="benefit-item mb-3">
+                &lt;i className="bi bi-check-circle-fill text-success me-3">&lt;/i>
+                &lt;span>
+                  {t(
+                    'evaluations.benefits.recognition',
+                    'Recognition of achievements and contributions'
+                  )}
+                &lt;/span>
+              &lt;/div>
+              &lt;div className="benefit-item mb-3">
+                &lt;i className="bi bi-check-circle-fill text-success me-3">&lt;/i>
+                &lt;span>
+                  {t(
+                    'evaluations.benefits.alignment',
+                    'Better alignment between individual and organizational goals'
+                  )}
+                &lt;/span>
+              &lt;/div>
+            &lt;/Col>
+            &lt;Col lg={6} className="mb-5 mb-lg-0">
+              &lt;div className="d-flex justify-content-center">
+                &lt;div className="benefits-icon text-primary">
+                  &lt;i
+                    className="bi bi-graph-up-arrow"
+                    style={{ fontSize: '8rem' }}
+                  >&lt;/i>
+                &lt;/div>
+              &lt;/div>
+            &lt;/Col>
+          &lt;/Row>
+        &lt;/Container>
+      &lt;/section>
+
+      {/* Call to action section */}
+      &lt;section className="cta-section py-5 text-center text-white">
+        &lt;Container>
+          &lt;h2 className="mb-4">
+            {t(
+              'evaluations.cta.title',
+              'Ready to transform your performance evaluation process?'
+            )}
+          &lt;/h2>
+          &lt;p className="lead mb-4">
+            {t(
+              'evaluations.cta.description',
+              'Join organizations worldwide using our evaluation system to build high-performing teams and drive success.'
+            )}
+          &lt;/p>
+          &lt;Button variant="light" size="lg" onClick={handleGetStarted}>
+            {t('evaluations.cta.button', 'Get Started')}
+          &lt;/Button>
+        &lt;/Container>
+      &lt;/section>
+    &lt;/div>
+  );
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

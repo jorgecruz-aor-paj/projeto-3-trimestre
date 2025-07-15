@@ -1,0 +1,196 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Employee Management System - API Documentation components/evaluationCycles/EvaluationCycleBox.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+             
+                <a href="index.html">
+                    <h1 class="navbar-item">Employee Management System</h1>
+                </a>
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-api_apiConfig.html">api/apiConfig</a></li><li><a href="module-config_i18n.html">config/i18n</a></li><li><a href="module-hooks_useErrorMessage.html">hooks/useErrorMessage</a></li><li><a href="module-services_userService.html">services/userService</a></li><li><a href="module-utils_FilterBuilder.html">utils/FilterBuilder</a></li><li><a href="module-utils_validation.html">utils/validation</a></li></ul><h3>Namespaces</h3><ul><li><a href="API_ENDPOINTS.ai.html">ai</a></li><li><a href="API_ENDPOINTS.auth.html">auth</a></li><li><a href="API_ENDPOINTS.auth.twoFactor.html">twoFactor</a></li><li><a href="API_ENDPOINTS.cycles.html">cycles</a></li><li><a href="API_ENDPOINTS.evaluations.html">evaluations</a></li><li><a href="API_ENDPOINTS.export.html">export</a></li><li><a href="API_ENDPOINTS.messages.html">messages</a></li><li><a href="API_ENDPOINTS.notifications.html">notifications</a></li><li><a href="API_ENDPOINTS.stats.html">stats</a></li><li><a href="API_ENDPOINTS.test.html">test</a></li><li><a href="API_ENDPOINTS.trainingParticipation.html">trainingParticipation</a></li><li><a href="API_ENDPOINTS.trainings.html">trainings</a></li><li><a href="API_ENDPOINTS.user.html">user</a></li><li><a href="API_ENDPOINTS.workplaces.html">workplaces</a></li><li><a href="EmployeeManagementSystem.html">EmployeeManagementSystem</a></li><li><a href="module-api_apiConfig-API_ENDPOINTS.html">API_ENDPOINTS</a></li><li><a href="module-services_userService-userService.html">userService</a></li></ul><h3>Classes</h3><ul><li><a href="ApiService.html">ApiService</a></li><li><a href="ErrorBoundary.html">ErrorBoundary</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AVAILABLE_LANGUAGES">AVAILABLE_LANGUAGES</a></li><li><a href="global.html#AddParticipationModal">AddParticipationModal</a></li><li><a href="global.html#AdminDashboard">AdminDashboard</a></li><li><a href="global.html#AdminEvaluationManagement">AdminEvaluationManagement</a></li><li><a href="global.html#AdminTrainingManagement">AdminTrainingManagement</a></li><li><a href="global.html#AppRouter">AppRouter</a></li><li><a href="global.html#ConfirmRegistrationForm">ConfirmRegistrationForm</a></li><li><a href="global.html#Dashboard">Dashboard</a></li><li><a href="global.html#DashboardHeader">DashboardHeader</a></li><li><a href="global.html#ErrorHandlingDemo">ErrorHandlingDemo</a></li><li><a href="global.html#EvaluationCycleBox">EvaluationCycleBox</a></li><li><a href="global.html#EvaluationFilter">EvaluationFilter</a></li><li><a href="global.html#EvaluationList">EvaluationList</a></li><li><a href="global.html#EvaluationTeaser">EvaluationTeaser</a></li><li><a href="global.html#EvaluationsPage">EvaluationsPage</a></li><li><a href="global.html#FloatingChatbot">FloatingChatbot</a></li><li><a href="global.html#Footer">Footer</a></li><li><a href="global.html#ForbiddenPage">ForbiddenPage</a></li><li><a href="global.html#ForbiddenRoute">ForbiddenRoute</a></li><li><a href="global.html#FormDropdownInput">FormDropdownInput</a></li><li><a href="global.html#FormInput">FormInput</a></li><li><a href="global.html#GenericErrorPage">GenericErrorPage</a></li><li><a href="global.html#GenericErrorRoute">GenericErrorRoute</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#Home">Home</a></li><li><a href="global.html#LanguageProvider">LanguageProvider</a></li><li><a href="global.html#LanguageSelector">LanguageSelector</a></li><li><a href="global.html#LoginForm">LoginForm</a></li><li><a href="global.html#MainLayout">MainLayout</a></li><li><a href="global.html#ManagerDashboard">ManagerDashboard</a></li><li><a href="global.html#NetworkErrorPage">NetworkErrorPage</a></li><li><a href="global.html#NetworkErrorRoute">NetworkErrorRoute</a></li><li><a href="global.html#NotFoundPage">NotFoundPage</a></li><li><a href="global.html#NotFoundRoute">NotFoundRoute</a></li><li><a href="global.html#NotificationOffcanvas">NotificationOffcanvas</a></li><li><a href="global.html#OfflinePage">OfflinePage</a></li><li><a href="global.html#PasswordStrengthMeter">PasswordStrengthMeter</a></li><li><a href="global.html#ProfilePage">ProfilePage</a></li><li><a href="global.html#ProfilePicture">ProfilePicture</a></li><li><a href="global.html#QuickActions">QuickActions</a></li><li><a href="global.html#RegisterForm">RegisterForm</a></li><li><a href="global.html#ResetPasswordForm">ResetPasswordForm</a></li><li><a href="global.html#ResetPasswordRequestForm">ResetPasswordRequestForm</a></li><li><a href="global.html#SUPPORTED_LANGUAGES">SUPPORTED_LANGUAGES</a></li><li><a href="global.html#SecuritySettings">SecuritySettings</a></li><li><a href="global.html#ServerErrorPage">ServerErrorPage</a></li><li><a href="global.html#ServerErrorRoute">ServerErrorRoute</a></li><li><a href="global.html#StatsCard">StatsCard</a></li><li><a href="global.html#SubmitButton">SubmitButton</a></li><li><a href="global.html#TeamPerformanceChart">TeamPerformanceChart</a></li><li><a href="global.html#TrainingFilter">TrainingFilter</a></li><li><a href="global.html#TrainingForm">TrainingForm</a></li><li><a href="global.html#TrainingTeaser">TrainingTeaser</a></li><li><a href="global.html#TrainingsPage">TrainingsPage</a></li><li><a href="global.html#TwoFactorRecommendationBanner">TwoFactorRecommendationBanner</a></li><li><a href="global.html#TwoFactorSecuritySettings">TwoFactorSecuritySettings</a></li><li><a href="global.html#TwoFactorVerificationModal">TwoFactorVerificationModal</a></li><li><a href="global.html#UserActivityOverviewChart">UserActivityOverviewChart</a></li><li><a href="global.html#UserDashboard">UserDashboard</a></li><li><a href="global.html#UserEvaluationView">UserEvaluationView</a></li><li><a href="global.html#UserFilters">UserFilters</a></li><li><a href="global.html#UserPerformanceTrendChart">UserPerformanceTrendChart</a></li><li><a href="global.html#UserTrainingProgressChart">UserTrainingProgressChart</a></li><li><a href="global.html#UserTrainingView">UserTrainingView</a></li><li><a href="global.html#VirtualAssistant">VirtualAssistant</a></li><li><a href="global.html#WelcomeCard">WelcomeCard</a></li><li><a href="global.html#apiRequest">apiRequest</a></li><li><a href="global.html#apiService">apiService</a></li><li><a href="global.html#chatbotService">chatbotService</a></li><li><a href="global.html#downloadBlob">downloadBlob</a></li><li><a href="global.html#formatDateToDDMMYYYY">formatDateToDDMMYYYY</a></li><li><a href="global.html#getProfilePictureUrl">getProfilePictureUrl</a></li><li><a href="global.html#handleApiError">handleApiError</a></li><li><a href="global.html#notificationService">notificationService</a></li><li><a href="global.html#preloadProfilePicture">preloadProfilePicture</a></li><li><a href="global.html#toApiDateTime">toApiDateTime</a></li><li><a href="global.html#triggerProfilePictureUpdate">triggerProfilePictureUpdate</a></li><li><a href="global.html#useApiService">useApiService</a></li><li><a href="global.html#useChatbotStore">useChatbotStore</a></li><li><a href="global.html#useErrorHandler">useErrorHandler</a></li><li><a href="global.html#useLanguage">useLanguage</a></li><li><a href="global.html#useManagerStats">useManagerStats</a></li><li><a href="global.html#useNotificationStore">useNotificationStore</a></li><li><a href="global.html#withErrorHandling">withErrorHandling</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>components/evaluationCycles/EvaluationCycleBox.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from 'react';
+import PropTypes from 'prop-types';
+import { EvaluationCard } from '../evaluations/EvaluationCard';
+import { formatDateToDDMMYYYY } from 'utils/dateUtils';
+import { useLanguage } from 'contexts/LanguageContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
+
+/**
+ * Collapsible box for displaying an evaluation cycle (current or closed)
+ * @param {Object} props
+ * @param {Object} props.cycle - The evaluation cycle object
+ * @param {boolean} props.isClosed - Whether the cycle is closed
+ * @param {Function} props.onEvaluationEdit - Callback function called when an evaluation is edited
+ */
+export const EvaluationCycleBox = ({
+  cycle,
+  isClosed,
+  onEvaluationEdit,
+  expanded,
+  onToggleExpand,
+}) => {
+  const { formatInstant } = useLanguage();
+  if (!cycle) return null;
+  return (
+    &lt;div
+      className={`evaluation-cycle-box mb-4 border rounded shadow-sm${
+        isClosed ? ' bg-light' : ''
+      }`}
+    >
+      &lt;div
+        className="d-flex justify-content-between align-items-center p-3 bg-light border-bottom"
+        style={{ cursor: 'pointer' }}
+        onClick={onToggleExpand}
+      >
+        &lt;div>
+          &lt;strong>Start Date:&lt;/strong> {formatDateToDDMMYYYY(cycle.startDate)}
+          {'  '}
+          {isClosed ? (
+            &lt;>
+              &lt;strong>Closure Date:&lt;/strong>{' '}
+              {cycle.closureDate ? formatInstant(cycle.closureDate) : 'N/A'}
+            &lt;/>
+          ) : (
+            &lt;>
+              &lt;strong>End Date:&lt;/strong> {formatDateToDDMMYYYY(cycle.endDate)}
+            &lt;/>
+          )}
+          {'  '}
+          &lt;span className="badge bg-secondary ms-2" style={{ fontSize: '1em' }}>
+            Status: {cycle.status}
+          &lt;/span>
+        &lt;/div>
+        &lt;FontAwesomeIcon
+          icon={faChevronRight}
+          style={{
+            fontSize: '1.2rem',
+            transition: 'transform 0.2s',
+            transform: expanded ? 'rotate(90deg)' : 'rotate(0deg)',
+            color: '#6c757d',
+          }}
+        />
+      &lt;/div>
+      {expanded &amp;&amp; (
+        &lt;div className="p-3">
+          {cycle.evaluations &amp;&amp; cycle.evaluations.length > 0 ? (
+            cycle.evaluations.map(ev => (
+              &lt;EvaluationCard key={ev.id} evaluation={ev} />
+            ))
+          ) : (
+            &lt;div>No evaluations in this cycle.&lt;/div>
+          )}
+        &lt;/div>
+      )}
+    &lt;/div>
+  );
+};
+
+EvaluationCycleBox.propTypes = {
+  cycle: PropTypes.object,
+  isClosed: PropTypes.bool,
+  onEvaluationEdit: PropTypes.func,
+  expanded: PropTypes.bool,
+  onToggleExpand: PropTypes.func,
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

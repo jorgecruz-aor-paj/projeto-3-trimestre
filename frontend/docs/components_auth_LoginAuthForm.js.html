@@ -1,0 +1,318 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Employee Management System - API Documentation components/auth/LoginAuthForm.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+             
+                <a href="index.html">
+                    <h1 class="navbar-item">Employee Management System</h1>
+                </a>
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-api_apiConfig.html">api/apiConfig</a></li><li><a href="module-config_i18n.html">config/i18n</a></li><li><a href="module-hooks_useErrorMessage.html">hooks/useErrorMessage</a></li><li><a href="module-services_userService.html">services/userService</a></li><li><a href="module-utils_FilterBuilder.html">utils/FilterBuilder</a></li><li><a href="module-utils_validation.html">utils/validation</a></li></ul><h3>Namespaces</h3><ul><li><a href="API_ENDPOINTS.ai.html">ai</a></li><li><a href="API_ENDPOINTS.auth.html">auth</a></li><li><a href="API_ENDPOINTS.auth.twoFactor.html">twoFactor</a></li><li><a href="API_ENDPOINTS.cycles.html">cycles</a></li><li><a href="API_ENDPOINTS.evaluations.html">evaluations</a></li><li><a href="API_ENDPOINTS.export.html">export</a></li><li><a href="API_ENDPOINTS.messages.html">messages</a></li><li><a href="API_ENDPOINTS.notifications.html">notifications</a></li><li><a href="API_ENDPOINTS.stats.html">stats</a></li><li><a href="API_ENDPOINTS.test.html">test</a></li><li><a href="API_ENDPOINTS.trainingParticipation.html">trainingParticipation</a></li><li><a href="API_ENDPOINTS.trainings.html">trainings</a></li><li><a href="API_ENDPOINTS.user.html">user</a></li><li><a href="API_ENDPOINTS.workplaces.html">workplaces</a></li><li><a href="EmployeeManagementSystem.html">EmployeeManagementSystem</a></li><li><a href="module-api_apiConfig-API_ENDPOINTS.html">API_ENDPOINTS</a></li><li><a href="module-services_userService-userService.html">userService</a></li></ul><h3>Classes</h3><ul><li><a href="ApiService.html">ApiService</a></li><li><a href="ErrorBoundary.html">ErrorBoundary</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AVAILABLE_LANGUAGES">AVAILABLE_LANGUAGES</a></li><li><a href="global.html#AddParticipationModal">AddParticipationModal</a></li><li><a href="global.html#AdminDashboard">AdminDashboard</a></li><li><a href="global.html#AdminEvaluationManagement">AdminEvaluationManagement</a></li><li><a href="global.html#AdminTrainingManagement">AdminTrainingManagement</a></li><li><a href="global.html#AppRouter">AppRouter</a></li><li><a href="global.html#ConfirmRegistrationForm">ConfirmRegistrationForm</a></li><li><a href="global.html#Dashboard">Dashboard</a></li><li><a href="global.html#DashboardHeader">DashboardHeader</a></li><li><a href="global.html#ErrorHandlingDemo">ErrorHandlingDemo</a></li><li><a href="global.html#EvaluationCycleBox">EvaluationCycleBox</a></li><li><a href="global.html#EvaluationFilter">EvaluationFilter</a></li><li><a href="global.html#EvaluationList">EvaluationList</a></li><li><a href="global.html#EvaluationTeaser">EvaluationTeaser</a></li><li><a href="global.html#EvaluationsPage">EvaluationsPage</a></li><li><a href="global.html#FloatingChatbot">FloatingChatbot</a></li><li><a href="global.html#Footer">Footer</a></li><li><a href="global.html#ForbiddenPage">ForbiddenPage</a></li><li><a href="global.html#ForbiddenRoute">ForbiddenRoute</a></li><li><a href="global.html#FormDropdownInput">FormDropdownInput</a></li><li><a href="global.html#FormInput">FormInput</a></li><li><a href="global.html#GenericErrorPage">GenericErrorPage</a></li><li><a href="global.html#GenericErrorRoute">GenericErrorRoute</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#Home">Home</a></li><li><a href="global.html#LanguageProvider">LanguageProvider</a></li><li><a href="global.html#LanguageSelector">LanguageSelector</a></li><li><a href="global.html#LoginForm">LoginForm</a></li><li><a href="global.html#MainLayout">MainLayout</a></li><li><a href="global.html#ManagerDashboard">ManagerDashboard</a></li><li><a href="global.html#NetworkErrorPage">NetworkErrorPage</a></li><li><a href="global.html#NetworkErrorRoute">NetworkErrorRoute</a></li><li><a href="global.html#NotFoundPage">NotFoundPage</a></li><li><a href="global.html#NotFoundRoute">NotFoundRoute</a></li><li><a href="global.html#NotificationOffcanvas">NotificationOffcanvas</a></li><li><a href="global.html#OfflinePage">OfflinePage</a></li><li><a href="global.html#PasswordStrengthMeter">PasswordStrengthMeter</a></li><li><a href="global.html#ProfilePage">ProfilePage</a></li><li><a href="global.html#ProfilePicture">ProfilePicture</a></li><li><a href="global.html#QuickActions">QuickActions</a></li><li><a href="global.html#RegisterForm">RegisterForm</a></li><li><a href="global.html#ResetPasswordForm">ResetPasswordForm</a></li><li><a href="global.html#ResetPasswordRequestForm">ResetPasswordRequestForm</a></li><li><a href="global.html#SUPPORTED_LANGUAGES">SUPPORTED_LANGUAGES</a></li><li><a href="global.html#SecuritySettings">SecuritySettings</a></li><li><a href="global.html#ServerErrorPage">ServerErrorPage</a></li><li><a href="global.html#ServerErrorRoute">ServerErrorRoute</a></li><li><a href="global.html#StatsCard">StatsCard</a></li><li><a href="global.html#SubmitButton">SubmitButton</a></li><li><a href="global.html#TeamPerformanceChart">TeamPerformanceChart</a></li><li><a href="global.html#TrainingFilter">TrainingFilter</a></li><li><a href="global.html#TrainingForm">TrainingForm</a></li><li><a href="global.html#TrainingTeaser">TrainingTeaser</a></li><li><a href="global.html#TrainingsPage">TrainingsPage</a></li><li><a href="global.html#TwoFactorRecommendationBanner">TwoFactorRecommendationBanner</a></li><li><a href="global.html#TwoFactorSecuritySettings">TwoFactorSecuritySettings</a></li><li><a href="global.html#TwoFactorVerificationModal">TwoFactorVerificationModal</a></li><li><a href="global.html#UserActivityOverviewChart">UserActivityOverviewChart</a></li><li><a href="global.html#UserDashboard">UserDashboard</a></li><li><a href="global.html#UserEvaluationView">UserEvaluationView</a></li><li><a href="global.html#UserFilters">UserFilters</a></li><li><a href="global.html#UserPerformanceTrendChart">UserPerformanceTrendChart</a></li><li><a href="global.html#UserTrainingProgressChart">UserTrainingProgressChart</a></li><li><a href="global.html#UserTrainingView">UserTrainingView</a></li><li><a href="global.html#VirtualAssistant">VirtualAssistant</a></li><li><a href="global.html#WelcomeCard">WelcomeCard</a></li><li><a href="global.html#apiRequest">apiRequest</a></li><li><a href="global.html#apiService">apiService</a></li><li><a href="global.html#chatbotService">chatbotService</a></li><li><a href="global.html#downloadBlob">downloadBlob</a></li><li><a href="global.html#formatDateToDDMMYYYY">formatDateToDDMMYYYY</a></li><li><a href="global.html#getProfilePictureUrl">getProfilePictureUrl</a></li><li><a href="global.html#handleApiError">handleApiError</a></li><li><a href="global.html#notificationService">notificationService</a></li><li><a href="global.html#preloadProfilePicture">preloadProfilePicture</a></li><li><a href="global.html#toApiDateTime">toApiDateTime</a></li><li><a href="global.html#triggerProfilePictureUpdate">triggerProfilePictureUpdate</a></li><li><a href="global.html#useApiService">useApiService</a></li><li><a href="global.html#useChatbotStore">useChatbotStore</a></li><li><a href="global.html#useErrorHandler">useErrorHandler</a></li><li><a href="global.html#useLanguage">useLanguage</a></li><li><a href="global.html#useManagerStats">useManagerStats</a></li><li><a href="global.html#useNotificationStore">useNotificationStore</a></li><li><a href="global.html#withErrorHandling">withErrorHandling</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>components/auth/LoginAuthForm.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { authService, twoFactorService } from 'services';
+import { userService } from 'services/userService';
+import { useAuthStore } from 'stores/AuthStore';
+import { LoginForm } from 'components/forms/LoginForm';
+import { TwoFactorVerificationModal } from 'components/auth/TwoFactorVerificationModal';
+import { Alert } from 'react-bootstrap';
+import { useFormValidation, loginValidationRules } from 'utils/validation';
+import { useErrorMessage } from 'hooks/useErrorMessage';
+import { useAlert } from 'contexts/AlertContext';
+
+export const LoginAuthForm = () => {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { setToken, setUserInfo } = useAuthStore();
+  const { getErrorMessage } = useErrorMessage();
+  const { showAlert } = useAlert();
+
+  // Check for expired session message
+  useEffect(() => {
+    const sessionExpired = sessionStorage.getItem('sessionExpired');
+    if (sessionExpired === 'true') {
+      // Small delay to ensure the AlertContext is fully initialized
+      setTimeout(() => {
+        // Get the translated strings
+        const title = t('auth.sessionExpired');
+        const message = t('auth.sessionExpiredMessage');
+        
+        // Show alert to user explaining why they were redirected
+        showAlert({
+          title,
+          message,
+          variant: 'warning',
+        });
+
+        // Clear the flag
+        sessionStorage.removeItem('sessionExpired');
+      }, 300); // Increased delay for better reliability
+    }
+  }, [showAlert, t]);
+
+  const {
+    formData,
+    errors = {},
+    handleChange,
+    validateAll,
+  } = useFormValidation({ email: '', password: '' }, loginValidationRules);
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  // 2FA states
+  const [showTwoFactorModal, setShowTwoFactorModal] = useState(false);
+  const [twoFactorLoading, setTwoFactorLoading] = useState(false);
+  const [twoFactorError, setTwoFactorError] = useState(null);
+
+  const handleInputChange = e => {
+    const { name, value } = e.target;
+    // Only update the form data without validation
+    handleChange(name, value);
+
+    // If the form has been submitted once, we validate again to provide feedback
+    if (isSubmitted) {
+      validateAll();
+    }
+  };
+
+  const safeGetErrorMessage = errorMessage => {
+    // Only show errors if the form has been submitted
+    if (!isSubmitted || !errorMessage) return null;
+    return getErrorMessage(errorMessage);
+  };
+
+  /**
+   * Complete the login process by fetching user info and redirecting
+   */
+  const completeLogin = async () => {
+    try {
+      const userResponse = await userService.getMe();
+      setUserInfo(userResponse);
+      navigate('/dashboard');
+    } catch (err) {
+      console.error('Failed to fetch user info:', err);
+      setError(t('auth.loginFailed'));
+      showAlert({
+        title: t('auth.loginErrorTitle'),
+        message: t('auth.userInfoFailed'),
+        variant: 'danger',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  /**
+   * Handle 2FA verification
+   */
+  const handleTwoFactorVerification = async code => {
+    setTwoFactorLoading(true);
+    setTwoFactorError(null);
+
+    try {
+      // Get the temporary token from the current token state
+      const currentToken = useAuthStore.getState().token;
+
+      // Verify the 2FA code with the temporary token
+      const sessionToken = await twoFactorService.verifyLogin(
+        currentToken,
+        code
+      );
+
+      // Hide modal and complete login
+      setShowTwoFactorModal(false);
+
+      // Update the token to the full session token
+      setToken(sessionToken);
+      await completeLogin();
+    } catch (err) {
+      console.error('2FA verification error:', err);
+      const errorMessage = getErrorMessage(
+        err.message || 'Invalid verification code'
+      );
+      setTwoFactorError(errorMessage);
+    } finally {
+      setTwoFactorLoading(false);
+    }
+  };
+
+  /**
+   * Handle 2FA modal close
+   */
+  const handleTwoFactorClose = () => {
+    setShowTwoFactorModal(false);
+    setTwoFactorError(null);
+    setToken(null); // Clear the temporary token
+    setLoading(false);
+  };
+
+  const handleSubmit = async e => {
+    e.preventDefault();
+    setError(null);
+    setIsSubmitted(true);
+
+    // Validate all fields
+    const isValid = validateAll();
+    if (!isValid) return;
+
+    setLoading(true);
+    try {
+      // Step 1: Login with credentials
+      const loginResponse = await authService.login(formData);
+
+      // Step 2: Check if 2FA is required
+      if (loginResponse.requiresTwoFactor) {
+        // Store the temporary token
+        setToken(loginResponse.temporaryToken);
+
+        // Show 2FA verification modal
+        setShowTwoFactorModal(true);
+        setLoading(false);
+        return;
+      }
+
+      // Step 3: Complete login (no 2FA required)
+      setToken(loginResponse.sessionToken);
+      await completeLogin();
+    } catch (err) {
+      console.error('Login error:', err);
+      setError(t('auth.loginFailed'));
+      showAlert({
+        title: t('auth.loginErrorTitle'),
+        message: t('auth.loginFailed'),
+        variant: 'danger',
+      });
+      setLoading(false);
+    }
+  };
+
+  return (
+    &lt;>
+      &lt;h2 className="fw-bold mb-3 text-center">{t('auth.loginTitle')}&lt;/h2>
+      &lt;p className="text-muted text-center mb-4">{t('auth.loginSubtitle')}&lt;/p>
+      {error &amp;&amp; &lt;Alert variant="danger">{error}&lt;/Alert>}
+      &lt;LoginForm
+        formData={formData}
+        onChange={handleInputChange}
+        onSubmit={handleSubmit}
+        errors={errors}
+        loading={loading}
+        getErrorMessage={safeGetErrorMessage}
+        isSubmitted={isSubmitted}
+      />
+
+      {/* Two-Factor Authentication Verification Modal */}
+      &lt;TwoFactorVerificationModal
+        show={showTwoFactorModal}
+        onHide={handleTwoFactorClose}
+        onVerify={handleTwoFactorVerification}
+        loading={twoFactorLoading}
+        error={twoFactorError}
+      />
+    &lt;/>
+  );
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

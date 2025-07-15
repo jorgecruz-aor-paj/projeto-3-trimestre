@@ -1,0 +1,668 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Employee Management System - API Documentation components/evaluations/AdminEvaluationManagement.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+             
+                <a href="index.html">
+                    <h1 class="navbar-item">Employee Management System</h1>
+                </a>
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-api_apiConfig.html">api/apiConfig</a></li><li><a href="module-config_i18n.html">config/i18n</a></li><li><a href="module-hooks_useErrorMessage.html">hooks/useErrorMessage</a></li><li><a href="module-services_userService.html">services/userService</a></li><li><a href="module-utils_FilterBuilder.html">utils/FilterBuilder</a></li><li><a href="module-utils_validation.html">utils/validation</a></li></ul><h3>Namespaces</h3><ul><li><a href="API_ENDPOINTS.ai.html">ai</a></li><li><a href="API_ENDPOINTS.auth.html">auth</a></li><li><a href="API_ENDPOINTS.auth.twoFactor.html">twoFactor</a></li><li><a href="API_ENDPOINTS.cycles.html">cycles</a></li><li><a href="API_ENDPOINTS.evaluations.html">evaluations</a></li><li><a href="API_ENDPOINTS.export.html">export</a></li><li><a href="API_ENDPOINTS.messages.html">messages</a></li><li><a href="API_ENDPOINTS.notifications.html">notifications</a></li><li><a href="API_ENDPOINTS.stats.html">stats</a></li><li><a href="API_ENDPOINTS.test.html">test</a></li><li><a href="API_ENDPOINTS.trainingParticipation.html">trainingParticipation</a></li><li><a href="API_ENDPOINTS.trainings.html">trainings</a></li><li><a href="API_ENDPOINTS.user.html">user</a></li><li><a href="API_ENDPOINTS.workplaces.html">workplaces</a></li><li><a href="EmployeeManagementSystem.html">EmployeeManagementSystem</a></li><li><a href="module-api_apiConfig-API_ENDPOINTS.html">API_ENDPOINTS</a></li><li><a href="module-services_userService-userService.html">userService</a></li></ul><h3>Classes</h3><ul><li><a href="ApiService.html">ApiService</a></li><li><a href="ErrorBoundary.html">ErrorBoundary</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AVAILABLE_LANGUAGES">AVAILABLE_LANGUAGES</a></li><li><a href="global.html#AddParticipationModal">AddParticipationModal</a></li><li><a href="global.html#AdminDashboard">AdminDashboard</a></li><li><a href="global.html#AdminEvaluationManagement">AdminEvaluationManagement</a></li><li><a href="global.html#AdminTrainingManagement">AdminTrainingManagement</a></li><li><a href="global.html#AppRouter">AppRouter</a></li><li><a href="global.html#ConfirmRegistrationForm">ConfirmRegistrationForm</a></li><li><a href="global.html#Dashboard">Dashboard</a></li><li><a href="global.html#DashboardHeader">DashboardHeader</a></li><li><a href="global.html#ErrorHandlingDemo">ErrorHandlingDemo</a></li><li><a href="global.html#EvaluationCycleBox">EvaluationCycleBox</a></li><li><a href="global.html#EvaluationFilter">EvaluationFilter</a></li><li><a href="global.html#EvaluationList">EvaluationList</a></li><li><a href="global.html#EvaluationTeaser">EvaluationTeaser</a></li><li><a href="global.html#EvaluationsPage">EvaluationsPage</a></li><li><a href="global.html#FloatingChatbot">FloatingChatbot</a></li><li><a href="global.html#Footer">Footer</a></li><li><a href="global.html#ForbiddenPage">ForbiddenPage</a></li><li><a href="global.html#ForbiddenRoute">ForbiddenRoute</a></li><li><a href="global.html#FormDropdownInput">FormDropdownInput</a></li><li><a href="global.html#FormInput">FormInput</a></li><li><a href="global.html#GenericErrorPage">GenericErrorPage</a></li><li><a href="global.html#GenericErrorRoute">GenericErrorRoute</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#Home">Home</a></li><li><a href="global.html#LanguageProvider">LanguageProvider</a></li><li><a href="global.html#LanguageSelector">LanguageSelector</a></li><li><a href="global.html#LoginForm">LoginForm</a></li><li><a href="global.html#MainLayout">MainLayout</a></li><li><a href="global.html#ManagerDashboard">ManagerDashboard</a></li><li><a href="global.html#NetworkErrorPage">NetworkErrorPage</a></li><li><a href="global.html#NetworkErrorRoute">NetworkErrorRoute</a></li><li><a href="global.html#NotFoundPage">NotFoundPage</a></li><li><a href="global.html#NotFoundRoute">NotFoundRoute</a></li><li><a href="global.html#NotificationOffcanvas">NotificationOffcanvas</a></li><li><a href="global.html#OfflinePage">OfflinePage</a></li><li><a href="global.html#PasswordStrengthMeter">PasswordStrengthMeter</a></li><li><a href="global.html#ProfilePage">ProfilePage</a></li><li><a href="global.html#ProfilePicture">ProfilePicture</a></li><li><a href="global.html#QuickActions">QuickActions</a></li><li><a href="global.html#RegisterForm">RegisterForm</a></li><li><a href="global.html#ResetPasswordForm">ResetPasswordForm</a></li><li><a href="global.html#ResetPasswordRequestForm">ResetPasswordRequestForm</a></li><li><a href="global.html#SUPPORTED_LANGUAGES">SUPPORTED_LANGUAGES</a></li><li><a href="global.html#SecuritySettings">SecuritySettings</a></li><li><a href="global.html#ServerErrorPage">ServerErrorPage</a></li><li><a href="global.html#ServerErrorRoute">ServerErrorRoute</a></li><li><a href="global.html#StatsCard">StatsCard</a></li><li><a href="global.html#SubmitButton">SubmitButton</a></li><li><a href="global.html#TeamPerformanceChart">TeamPerformanceChart</a></li><li><a href="global.html#TrainingFilter">TrainingFilter</a></li><li><a href="global.html#TrainingForm">TrainingForm</a></li><li><a href="global.html#TrainingTeaser">TrainingTeaser</a></li><li><a href="global.html#TrainingsPage">TrainingsPage</a></li><li><a href="global.html#TwoFactorRecommendationBanner">TwoFactorRecommendationBanner</a></li><li><a href="global.html#TwoFactorSecuritySettings">TwoFactorSecuritySettings</a></li><li><a href="global.html#TwoFactorVerificationModal">TwoFactorVerificationModal</a></li><li><a href="global.html#UserActivityOverviewChart">UserActivityOverviewChart</a></li><li><a href="global.html#UserDashboard">UserDashboard</a></li><li><a href="global.html#UserEvaluationView">UserEvaluationView</a></li><li><a href="global.html#UserFilters">UserFilters</a></li><li><a href="global.html#UserPerformanceTrendChart">UserPerformanceTrendChart</a></li><li><a href="global.html#UserTrainingProgressChart">UserTrainingProgressChart</a></li><li><a href="global.html#UserTrainingView">UserTrainingView</a></li><li><a href="global.html#VirtualAssistant">VirtualAssistant</a></li><li><a href="global.html#WelcomeCard">WelcomeCard</a></li><li><a href="global.html#apiRequest">apiRequest</a></li><li><a href="global.html#apiService">apiService</a></li><li><a href="global.html#chatbotService">chatbotService</a></li><li><a href="global.html#downloadBlob">downloadBlob</a></li><li><a href="global.html#formatDateToDDMMYYYY">formatDateToDDMMYYYY</a></li><li><a href="global.html#getProfilePictureUrl">getProfilePictureUrl</a></li><li><a href="global.html#handleApiError">handleApiError</a></li><li><a href="global.html#notificationService">notificationService</a></li><li><a href="global.html#preloadProfilePicture">preloadProfilePicture</a></li><li><a href="global.html#toApiDateTime">toApiDateTime</a></li><li><a href="global.html#triggerProfilePictureUpdate">triggerProfilePictureUpdate</a></li><li><a href="global.html#useApiService">useApiService</a></li><li><a href="global.html#useChatbotStore">useChatbotStore</a></li><li><a href="global.html#useErrorHandler">useErrorHandler</a></li><li><a href="global.html#useLanguage">useLanguage</a></li><li><a href="global.html#useManagerStats">useManagerStats</a></li><li><a href="global.html#useNotificationStore">useNotificationStore</a></li><li><a href="global.html#withErrorHandling">withErrorHandling</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>components/evaluations/AdminEvaluationManagement.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState, useEffect } from 'react';
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Button,
+  Table,
+  Badge,
+  Spinner,
+  Alert,
+  OverlayTrigger,
+  Tooltip,
+  Modal,
+} from 'react-bootstrap';
+import { EvaluationFilter } from 'components/filters';
+import { EvaluationList } from './EvaluationList';
+import { useEvaluationStore } from 'stores/EvaluationStore';
+import { useAuthStore } from 'stores/AuthStore';
+import { useTranslation } from 'react-i18next';
+import { useAlert } from 'contexts/AlertContext';
+import { translateEvaluationScale } from 'utils/evaluationScaleTranslations';
+import { EvaluationCard } from './EvaluationCard';
+import { EditableEvaluationCard } from './EditableEvaluationCard';
+import { evaluationService } from 'services/evaluationService';
+import 'styles/pages/EvaluationsPage.css';
+
+/**
+ * Admin evaluation management component
+ * Provides comprehensive evaluation management tools for administrators
+ * @returns {React.Component} Admin evaluation management interface
+ */
+export const AdminEvaluationManagement = () => {
+  const { t, i18n } = useTranslation();
+  const [filters, setFilters] = useState({});
+  const [selectedEvaluations, setSelectedEvaluations] = useState([]); // array of evaluation ids
+  const [viewMode, setViewMode] = useState('cards'); // 'table' or 'cards'
+  const [showModal, setShowModal] = useState(false);
+  const [modalEvaluation, setModalEvaluation] = useState(null);
+  const user = useAuthStore(state => state.user);
+  const { evaluations, fetchEvaluations, loading, error } =
+    useEvaluationStore();
+  const { showAlert, showConfirm } = useAlert();
+
+  useEffect(() => {
+    fetchEvaluations(filters);
+  }, [JSON.stringify(filters)]);
+
+  // Handler for toggling selection
+  const handleSelectEvaluation = (evaluationId, checked) => {
+    setSelectedEvaluations(prev =>
+      checked ? [...prev, evaluationId] : prev.filter(id => id !== evaluationId)
+    );
+  };
+
+  // Handler for closing selected evaluations
+  const handleCloseSelected = async () => {
+    if (!selectedEvaluations.length) return;
+
+    // Show confirmation dialog
+    showConfirm({
+      title: t(
+        'evaluations.admin.confirmCloseTitle',
+        'Confirm Close Evaluations'
+      ),
+      message: t(
+        'evaluations.admin.confirmCloseMessage',
+        `Are you sure you want to close ${selectedEvaluations.length} selected evaluation(s)? This action cannot be undone.`
+      ),
+      confirmLabel: t(
+        'evaluations.admin.confirmCloseButton',
+        'Close Evaluations'
+      ),
+      variant: 'danger',
+      onConfirm: async () => {
+        // Find the cycleId from the first selected evaluation (assuming all are from the same cycle)
+        const selected = evaluations.find(e => e.id === selectedEvaluations[0]);
+        const cycleId = selected?.evaluationCycle?.id;
+        if (!cycleId) {
+          showAlert({
+            title: t('common.error', 'Error'),
+            message: t(
+              'evaluations.admin.noCycleError',
+              'Could not determine evaluation cycle.'
+            ),
+            variant: 'danger',
+          });
+          return;
+        }
+        try {
+          await evaluationService.closeEvaluation({
+            cycleId,
+            evaluationIds: selectedEvaluations,
+          });
+          showAlert({
+            title: t('common.success', 'Success'),
+            message: t(
+              'evaluations.admin.closeSuccess',
+              'Selected evaluations closed successfully.'
+            ),
+            variant: 'success',
+          });
+          setSelectedEvaluations([]);
+          fetchEvaluations(filters);
+        } catch (err) {
+          showAlert({
+            title: t('common.error', 'Error'),
+            message:
+              err?.message ||
+              t('evaluations.admin.closeError', 'Failed to close evaluations.'),
+            variant: 'danger',
+          });
+        }
+      },
+    });
+  };
+
+  const renderEvaluationTable = () => {
+    if (loading) {
+      return (
+        &lt;div className="text-center py-5">
+          &lt;Spinner animation="border" variant="primary" className="mb-3" />
+          &lt;p>{t('common.loading')}&lt;/p>
+        &lt;/div>
+      );
+    }
+
+    if (evaluations.length === 0) {
+      return (
+        &lt;div className="text-center py-5">
+          &lt;i className="bi bi-clipboard-check display-4 text-muted">&lt;/i>
+          &lt;h5 className="mt-3 text-muted">
+            {t('evaluations.noResults', 'No evaluations found')}
+          &lt;/h5>
+          &lt;p className="text-muted">
+            {t(
+              'evaluations.admin.noEvaluationsDesc',
+              'No evaluations match your current filters'
+            )}
+          &lt;/p>
+        &lt;/div>
+      );
+    }
+
+    return (
+      &lt;>
+        &lt;div className="table-responsive">
+          &lt;Table hover className="mb-0">
+            &lt;thead className="table-light">
+              &lt;tr>
+                {viewMode === 'table' &amp;&amp; (
+                  &lt;th width="40">
+                    &lt;input
+                      type="checkbox"
+                      className="form-check-input evaluation-selection-checkbox"
+                      onChange={e => {
+                        if (e.target.checked) {
+                          setSelectedEvaluations(
+                            evaluations.map(evaluation => evaluation.id)
+                          );
+                        } else {
+                          setSelectedEvaluations([]);
+                        }
+                      }}
+                      checked={
+                        selectedEvaluations.length === evaluations.length &amp;&amp;
+                        evaluations.length > 0
+                      }
+                      style={{
+                        width: '20px',
+                        height: '20px',
+                        cursor: 'pointer',
+                      }}
+                    />
+                  &lt;/th>
+                )}
+                &lt;th>{t('profile.sortFields.id', 'ID')}&lt;/th>
+                &lt;th>{t('filters.evaluatee', 'Evaluatee')}&lt;/th>
+                &lt;th>{t('filters.evaluator', 'Evaluator')}&lt;/th>
+                &lt;th>{t('common.status', 'Status')}&lt;/th>
+                &lt;th>{t('evaluationScale.title', 'Scale')}&lt;/th>
+                &lt;th>{t('filters.creationDate', 'Date')}&lt;/th>
+                &lt;th className="text-center">
+                  {t('common.actions', 'Actions')}
+                &lt;/th>
+              &lt;/tr>
+            &lt;/thead>
+            &lt;tbody>
+              {evaluations.map(evaluation => (
+                &lt;tr
+                  key={evaluation.id}
+                  className={
+                    selectedEvaluations.includes(evaluation.id)
+                      ? 'selected-evaluation-row'
+                      : ''
+                  }
+                >
+                  {viewMode === 'table' &amp;&amp; (
+                    &lt;td>
+                      &lt;input
+                        type="checkbox"
+                        className="form-check-input evaluation-selection-checkbox"
+                        checked={selectedEvaluations.includes(evaluation.id)}
+                        onChange={e =>
+                          handleSelectEvaluation(
+                            evaluation.id,
+                            e.target.checked
+                          )
+                        }
+                        style={{
+                          width: '20px',
+                          height: '20px',
+                          cursor: 'pointer',
+                          backgroundColor: selectedEvaluations.includes(
+                            evaluation.id
+                          )
+                            ? '#0d6efd'
+                            : 'white',
+                          border: selectedEvaluations.includes(evaluation.id)
+                            ? '2px solid #0d6efd'
+                            : '2px solid #dee2e6',
+                        }}
+                      />
+                    &lt;/td>
+                  )}
+                  &lt;td>#{evaluation.id}&lt;/td>
+                  &lt;td>
+                    {evaluation.evaluatee
+                      ? `${evaluation.evaluatee.firstName} ${evaluation.evaluatee.lastName}`
+                      : '-'}
+                  &lt;/td>
+                  &lt;td>
+                    {evaluation.evaluator
+                      ? `${evaluation.evaluator.firstName} ${evaluation.evaluator.lastName}`
+                      : '-'}
+                  &lt;/td>
+                  &lt;td>
+                    &lt;Badge
+                      bg={
+                        evaluation.status === 'COMPLETED'
+                          ? 'success'
+                          : evaluation.status === 'ONGOING'
+                          ? 'warning'
+                          : evaluation.status === 'CLOSED'
+                          ? 'danger'
+                          : 'secondary'
+                      }
+                    >
+                      {t(
+                        `evaluationStatus.${evaluation.status}`,
+                        evaluation.status
+                      )}
+                    &lt;/Badge>
+                  &lt;/td>
+                  &lt;td>
+                    {evaluation.scale ? (
+                      &lt;Badge bg="info">
+                        {translateEvaluationScale(
+                          evaluation.scale,
+                          i18n.language
+                        )}
+                      &lt;/Badge>
+                    ) : (
+                      &lt;span className="text-muted">-&lt;/span>
+                    )}
+                  &lt;/td>
+                  &lt;td>
+                    {evaluation.evaluationCycle?.closureDate
+                      ? new Date(
+                          evaluation.evaluationCycle.closureDate
+                        ).toLocaleDateString()
+                      : '-'}
+                  &lt;/td>
+                  &lt;td className="text-center">
+                    &lt;OverlayTrigger
+                      placement="top"
+                      overlay={&lt;Tooltip>{t('common.view', 'View')}&lt;/Tooltip>}
+                    >
+                      &lt;Button
+                        variant="outline-primary"
+                        size="sm"
+                        className="me-1"
+                        onClick={() => {
+                          setModalEvaluation(evaluation);
+                          setShowModal(true);
+                        }}
+                      >
+                        &lt;i className="bi bi-eye">&lt;/i>
+                      &lt;/Button>
+                    &lt;/OverlayTrigger>
+                  &lt;/td>
+                &lt;/tr>
+              ))}
+            &lt;/tbody>
+          &lt;/Table>
+        &lt;/div>
+        {/* Modal for viewing evaluation */}
+        {showModal &amp;&amp; modalEvaluation &amp;&amp; (
+          &lt;Modal
+            show={showModal}
+            onHide={() => setShowModal(false)}
+            size="lg"
+            centered
+          >
+            &lt;Modal.Header closeButton>
+              &lt;Modal.Title>{t('common.view', 'View Evaluation')}&lt;/Modal.Title>
+            &lt;/Modal.Header>
+            &lt;Modal.Body>
+              {modalEvaluation.status === 'CLOSED' ? (
+                &lt;EvaluationCard evaluation={modalEvaluation} />
+              ) : (
+                &lt;EditableEvaluationCard evaluation={modalEvaluation} />
+              )}
+            &lt;/Modal.Body>
+          &lt;/Modal>
+        )}
+      &lt;/>
+    );
+  };
+
+  if (loading) {
+    return (
+      &lt;div className="text-center py-5">
+        &lt;Spinner animation="border" variant="primary" className="mb-3" />
+        &lt;p>{t('common.loading')}&lt;/p>
+      &lt;/div>
+    );
+  }
+
+  return (
+    &lt;Container fluid className="py-4">
+      {/* Header */}
+      &lt;Row className="mb-4">
+        &lt;Col>
+          &lt;div className="d-flex justify-content-between align-items-center">
+            &lt;div>
+              &lt;h2>{t('evaluations.admin.title', 'Evaluation Management')}&lt;/h2>
+              &lt;p className="text-muted mb-0">
+                {t(
+                  'evaluations.admin.subtitle',
+                  'Manage and oversee all organizational evaluations'
+                )}
+              &lt;/p>
+            &lt;/div>
+            &lt;div className="d-flex gap-2">&lt;/div>
+          &lt;/div>
+        &lt;/Col>
+      &lt;/Row>
+
+      {/* Statistics cards */}
+      &lt;Row className="mb-4">
+        &lt;Col md={3} className="mb-3">
+          &lt;Card className="stats-card h-100">
+            &lt;Card.Body className="text-center">
+              &lt;div className="stats-icon text-primary mb-2">
+                &lt;i
+                  className="bi bi-clipboard-check"
+                  style={{ fontSize: '2rem' }}
+                >&lt;/i>
+              &lt;/div>
+              &lt;h5 className="card-title">{evaluations?.length || 0}&lt;/h5>
+              &lt;p className="card-text text-muted">
+                {t('evaluations.stats.total', 'Total Evaluations')}
+              &lt;/p>
+            &lt;/Card.Body>
+          &lt;/Card>
+        &lt;/Col>
+        &lt;Col md={3} className="mb-3">
+          &lt;Card className="stats-card h-100">
+            &lt;Card.Body className="text-center">
+              &lt;div className="stats-icon text-warning mb-2">
+                &lt;i className="bi bi-clock" style={{ fontSize: '2rem' }}>&lt;/i>
+              &lt;/div>
+              &lt;h5 className="card-title">
+                {evaluations?.filter(e => e.status === 'ONGOING')?.length || 0}
+              &lt;/h5>
+              &lt;p className="card-text text-muted">
+                {t('evaluations.stats.ongoing', 'Ongoing')}
+              &lt;/p>
+            &lt;/Card.Body>
+          &lt;/Card>
+        &lt;/Col>
+        &lt;Col md={3} className="mb-3">
+          &lt;Card className="stats-card h-100">
+            &lt;Card.Body className="text-center">
+              &lt;div className="stats-icon text-success mb-2">
+                &lt;i
+                  className="bi bi-check-circle"
+                  style={{ fontSize: '2rem' }}
+                >&lt;/i>
+              &lt;/div>
+              &lt;h5 className="card-title">
+                {evaluations?.filter(e => e.status === 'COMPLETED')?.length ||
+                  0}
+              &lt;/h5>
+              &lt;p className="card-text text-muted">
+                {t('evaluations.stats.completed', 'Completed')}
+              &lt;/p>
+            &lt;/Card.Body>
+          &lt;/Card>
+        &lt;/Col>
+        &lt;Col md={3} className="mb-3">
+          &lt;Card className="stats-card h-100">
+            &lt;Card.Body className="text-center">
+              &lt;div className="stats-icon text-danger mb-2">
+                &lt;i className="bi bi-x-circle" style={{ fontSize: '2rem' }}>&lt;/i>
+              &lt;/div>
+              &lt;h5 className="card-title">
+                {evaluations?.filter(e => e.status === 'CLOSED')?.length || 0}
+              &lt;/h5>
+              &lt;p className="card-text text-muted">
+                {t('evaluations.stats.closed', 'Closed')}
+              &lt;/p>
+            &lt;/Card.Body>
+          &lt;/Card>
+        &lt;/Col>
+      &lt;/Row>
+
+      {/* Filters */}
+      &lt;Row className="mb-4">
+        &lt;Col>
+          &lt;Card>
+            &lt;Card.Body>
+              &lt;EvaluationFilter
+                filters={filters}
+                setFilters={setFilters}
+                user={user}
+              />
+            &lt;/Card.Body>
+          &lt;/Card>
+        &lt;/Col>
+      &lt;/Row>
+
+      {/* Error Alert */}
+      {error &amp;&amp; (
+        &lt;Row className="mb-4">
+          &lt;Col>
+            &lt;Alert variant="danger">
+              &lt;Alert.Heading>{t('common.error', 'Error')}&lt;/Alert.Heading>
+              &lt;p>{error}&lt;/p>
+              &lt;Button
+                variant="outline-danger"
+                onClick={() => fetchEvaluations(filters)}
+              >
+                {t('common.retry')}
+              &lt;/Button>
+            &lt;/Alert>
+          &lt;/Col>
+        &lt;/Row>
+      )}
+
+      {/* Evaluations List/Table */}
+      &lt;Row>
+        &lt;Col>
+          &lt;Card>
+            &lt;Card.Header className="d-flex justify-content-between align-items-center">
+              &lt;div className="d-flex align-items-center">
+                &lt;h5 className="mb-0 me-3">
+                  {t('evaluations.title', 'Evaluations')}
+                &lt;/h5>
+                &lt;Badge bg="secondary">
+                  {evaluations.length}{' '}
+                  {t('evaluations.stats.total', 'evaluations')}
+                &lt;/Badge>
+              &lt;/div>
+              &lt;div className="d-flex align-items-center gap-2">
+                {/* Select All / Deselect All Button - visible when there are evaluations or any selected */}
+                {evaluations.length > 0 &amp;&amp; (
+                  &lt;>
+                    {selectedEvaluations.length > 0 ? (
+                      &lt;Button
+                        variant="outline-secondary"
+                        size="sm"
+                        onClick={() => setSelectedEvaluations([])}
+                      >
+                        {t('evaluations.admin.deselectAll', 'Deselect All')}
+                      &lt;/Button>
+                    ) : (
+                      &lt;Button
+                        variant="outline-secondary"
+                        size="sm"
+                        onClick={() => setSelectedEvaluations(evaluations.map(e => e.id))}
+                      >
+                        {t('evaluations.admin.selectAll', 'Select All')}
+                      &lt;/Button>
+                    )}
+                  &lt;/>
+                )}
+
+                {/* Bulk Actions */}
+                {selectedEvaluations.length > 0 &amp;&amp; (
+                  &lt;div className="me-3 bulk-actions">
+                    &lt;Button
+                      variant="danger"
+                      size="sm"
+                      onClick={handleCloseSelected}
+                      className="me-2"
+                    >
+                      &lt;i className="bi bi-x-circle me-1">&lt;/i>
+                      {t('evaluations.admin.closeSelected', 'Close Selected')}
+                    &lt;/Button>
+                    &lt;Badge bg="primary" className="py-2 px-3">
+                      &lt;i className="bi bi-check-circle me-1">&lt;/i>
+                      {selectedEvaluations.length}{' '}
+                      {t('evaluations.admin.selected', 'selected')}
+                    &lt;/Badge>
+                  &lt;/div>
+                )}
+
+                {/* View Toggle */}
+                &lt;div className="btn-group" role="group">
+                  &lt;Button
+                    variant={
+                      viewMode === 'table' ? 'primary' : 'outline-secondary'
+                    }
+                    size="sm"
+                    onClick={() => setViewMode('table')}
+                    title={t('common.list', 'List View')}
+                  >
+                    &lt;i className="bi bi-list">&lt;/i>
+                  &lt;/Button>
+                  &lt;Button
+                    variant={
+                      viewMode === 'cards' ? 'primary' : 'outline-secondary'
+                    }
+                    size="sm"
+                    onClick={() => setViewMode('cards')}
+                    title={t('common.cards', 'Card View')}
+                  >
+                    &lt;i className="bi bi-grid-3x3-gap">&lt;/i>
+                  &lt;/Button>
+                &lt;/div>
+              &lt;/div>
+            &lt;/Card.Header>
+            &lt;Card.Body className="p-0">
+              {viewMode === 'table' ? (
+                renderEvaluationTable()
+              ) : (
+                &lt;div className="p-3">
+                  &lt;EvaluationList
+                    evaluations={evaluations}
+                    loading={loading}
+                    error={error}
+                    renderCheckbox={true}
+                    selectedEvaluations={selectedEvaluations}
+                    onSelectEvaluation={handleSelectEvaluation}
+                    userRole={user?.role}
+                  />
+                &lt;/div>
+              )}
+            &lt;/Card.Body>
+          &lt;/Card>
+        &lt;/Col>
+      &lt;/Row>
+    &lt;/Container>
+  );
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

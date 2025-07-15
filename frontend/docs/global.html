@@ -1,0 +1,6884 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Employee Management System - API Documentation Global</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+             
+                <a href="index.html">
+                    <h1 class="navbar-item">Employee Management System</h1>
+                </a>
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-api_apiConfig.html">api/apiConfig</a></li><li><a href="module-config_i18n.html">config/i18n</a></li><li><a href="module-hooks_useErrorMessage.html">hooks/useErrorMessage</a></li><li><a href="module-services_userService.html">services/userService</a></li><li><a href="module-utils_FilterBuilder.html">utils/FilterBuilder</a></li><li><a href="module-utils_validation.html">utils/validation</a></li></ul><h3>Namespaces</h3><ul><li><a href="API_ENDPOINTS.ai.html">ai</a></li><li><a href="API_ENDPOINTS.auth.html">auth</a></li><li><a href="API_ENDPOINTS.auth.twoFactor.html">twoFactor</a></li><li><a href="API_ENDPOINTS.cycles.html">cycles</a></li><li><a href="API_ENDPOINTS.evaluations.html">evaluations</a></li><li><a href="API_ENDPOINTS.export.html">export</a></li><li><a href="API_ENDPOINTS.messages.html">messages</a></li><li><a href="API_ENDPOINTS.notifications.html">notifications</a></li><li><a href="API_ENDPOINTS.stats.html">stats</a></li><li><a href="API_ENDPOINTS.test.html">test</a></li><li><a href="API_ENDPOINTS.trainingParticipation.html">trainingParticipation</a></li><li><a href="API_ENDPOINTS.trainings.html">trainings</a></li><li><a href="API_ENDPOINTS.user.html">user</a></li><li><a href="API_ENDPOINTS.workplaces.html">workplaces</a></li><li><a href="EmployeeManagementSystem.html">EmployeeManagementSystem</a></li><li><a href="module-api_apiConfig-API_ENDPOINTS.html">API_ENDPOINTS</a></li><li><a href="module-services_userService-userService.html">userService</a></li></ul><h3>Classes</h3><ul><li><a href="ApiService.html">ApiService</a></li><li><a href="ErrorBoundary.html">ErrorBoundary</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AVAILABLE_LANGUAGES">AVAILABLE_LANGUAGES</a></li><li><a href="global.html#AddParticipationModal">AddParticipationModal</a></li><li><a href="global.html#AdminDashboard">AdminDashboard</a></li><li><a href="global.html#AdminEvaluationManagement">AdminEvaluationManagement</a></li><li><a href="global.html#AdminTrainingManagement">AdminTrainingManagement</a></li><li><a href="global.html#AppRouter">AppRouter</a></li><li><a href="global.html#ConfirmRegistrationForm">ConfirmRegistrationForm</a></li><li><a href="global.html#Dashboard">Dashboard</a></li><li><a href="global.html#DashboardHeader">DashboardHeader</a></li><li><a href="global.html#ErrorHandlingDemo">ErrorHandlingDemo</a></li><li><a href="global.html#EvaluationCycleBox">EvaluationCycleBox</a></li><li><a href="global.html#EvaluationFilter">EvaluationFilter</a></li><li><a href="global.html#EvaluationList">EvaluationList</a></li><li><a href="global.html#EvaluationTeaser">EvaluationTeaser</a></li><li><a href="global.html#EvaluationsPage">EvaluationsPage</a></li><li><a href="global.html#FloatingChatbot">FloatingChatbot</a></li><li><a href="global.html#Footer">Footer</a></li><li><a href="global.html#ForbiddenPage">ForbiddenPage</a></li><li><a href="global.html#ForbiddenRoute">ForbiddenRoute</a></li><li><a href="global.html#FormDropdownInput">FormDropdownInput</a></li><li><a href="global.html#FormInput">FormInput</a></li><li><a href="global.html#GenericErrorPage">GenericErrorPage</a></li><li><a href="global.html#GenericErrorRoute">GenericErrorRoute</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#Home">Home</a></li><li><a href="global.html#LanguageProvider">LanguageProvider</a></li><li><a href="global.html#LanguageSelector">LanguageSelector</a></li><li><a href="global.html#LoginForm">LoginForm</a></li><li><a href="global.html#MainLayout">MainLayout</a></li><li><a href="global.html#ManagerDashboard">ManagerDashboard</a></li><li><a href="global.html#NetworkErrorPage">NetworkErrorPage</a></li><li><a href="global.html#NetworkErrorRoute">NetworkErrorRoute</a></li><li><a href="global.html#NotFoundPage">NotFoundPage</a></li><li><a href="global.html#NotFoundRoute">NotFoundRoute</a></li><li><a href="global.html#NotificationOffcanvas">NotificationOffcanvas</a></li><li><a href="global.html#OfflinePage">OfflinePage</a></li><li><a href="global.html#PasswordStrengthMeter">PasswordStrengthMeter</a></li><li><a href="global.html#ProfilePage">ProfilePage</a></li><li><a href="global.html#ProfilePicture">ProfilePicture</a></li><li><a href="global.html#QuickActions">QuickActions</a></li><li><a href="global.html#RegisterForm">RegisterForm</a></li><li><a href="global.html#ResetPasswordForm">ResetPasswordForm</a></li><li><a href="global.html#ResetPasswordRequestForm">ResetPasswordRequestForm</a></li><li><a href="global.html#SUPPORTED_LANGUAGES">SUPPORTED_LANGUAGES</a></li><li><a href="global.html#SecuritySettings">SecuritySettings</a></li><li><a href="global.html#ServerErrorPage">ServerErrorPage</a></li><li><a href="global.html#ServerErrorRoute">ServerErrorRoute</a></li><li><a href="global.html#StatsCard">StatsCard</a></li><li><a href="global.html#SubmitButton">SubmitButton</a></li><li><a href="global.html#TeamPerformanceChart">TeamPerformanceChart</a></li><li><a href="global.html#TrainingFilter">TrainingFilter</a></li><li><a href="global.html#TrainingForm">TrainingForm</a></li><li><a href="global.html#TrainingTeaser">TrainingTeaser</a></li><li><a href="global.html#TrainingsPage">TrainingsPage</a></li><li><a href="global.html#TwoFactorRecommendationBanner">TwoFactorRecommendationBanner</a></li><li><a href="global.html#TwoFactorSecuritySettings">TwoFactorSecuritySettings</a></li><li><a href="global.html#TwoFactorVerificationModal">TwoFactorVerificationModal</a></li><li><a href="global.html#UserActivityOverviewChart">UserActivityOverviewChart</a></li><li><a href="global.html#UserDashboard">UserDashboard</a></li><li><a href="global.html#UserEvaluationView">UserEvaluationView</a></li><li><a href="global.html#UserFilters">UserFilters</a></li><li><a href="global.html#UserPerformanceTrendChart">UserPerformanceTrendChart</a></li><li><a href="global.html#UserTrainingProgressChart">UserTrainingProgressChart</a></li><li><a href="global.html#UserTrainingView">UserTrainingView</a></li><li><a href="global.html#VirtualAssistant">VirtualAssistant</a></li><li><a href="global.html#WelcomeCard">WelcomeCard</a></li><li><a href="global.html#apiRequest">apiRequest</a></li><li><a href="global.html#apiService">apiService</a></li><li><a href="global.html#chatbotService">chatbotService</a></li><li><a href="global.html#downloadBlob">downloadBlob</a></li><li><a href="global.html#formatDateToDDMMYYYY">formatDateToDDMMYYYY</a></li><li><a href="global.html#getProfilePictureUrl">getProfilePictureUrl</a></li><li><a href="global.html#handleApiError">handleApiError</a></li><li><a href="global.html#notificationService">notificationService</a></li><li><a href="global.html#preloadProfilePicture">preloadProfilePicture</a></li><li><a href="global.html#toApiDateTime">toApiDateTime</a></li><li><a href="global.html#triggerProfilePictureUpdate">triggerProfilePictureUpdate</a></li><li><a href="global.html#useApiService">useApiService</a></li><li><a href="global.html#useChatbotStore">useChatbotStore</a></li><li><a href="global.html#useErrorHandler">useErrorHandler</a></li><li><a href="global.html#useLanguage">useLanguage</a></li><li><a href="global.html#useManagerStats">useManagerStats</a></li><li><a href="global.html#useNotificationStore">useNotificationStore</a></li><li><a href="global.html#withErrorHandling">withErrorHandling</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p></p>
+                    <h1>Global</h1>
+                </header>
+                
+
+
+
+
+<section>
+
+<header>
+    
+        <h2></h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class='vertical-section'>
+            <h1>Members</h1>
+            <div class="members">
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">Array.&lt;{code: string, name: string}></code>
+
+
+    </span>
+
+<h4 class="name" id="AVAILABLE_LANGUAGES">
+    <a class="href-link" href="#AVAILABLE_LANGUAGES">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        AVAILABLE_LANGUAGES
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Available languages in the application</p>.</p>
+
+
+
+<div class="description">
+    <p>Available languages in the application</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_LanguageSelector.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_LanguageSelector.js.html">components/LanguageSelector.js</a>, <a href="components_LanguageSelector.js.html#line12">line 12</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="AddParticipationModal">
+    <a class="href-link" href="#AddParticipationModal">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        AddParticipationModal
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Modal for adding a participation to a training</p>.</p>
+
+
+
+<div class="description">
+    <p>Modal for adding a participation to a training</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_profile_AddParticipationModal.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_profile_AddParticipationModal.js.html">components/profile/AddParticipationModal.js</a>, <a href="components_profile_AddParticipationModal.js.html#line18">line 18</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="AdminDashboard">
+    <a class="href-link" href="#AdminDashboard">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        AdminDashboard
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Admin dashboard component with admin-specific widgets</p>.</p>
+
+
+
+<div class="description">
+    <p>Admin dashboard component with admin-specific widgets</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_dashboard_AdminDashboard.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_dashboard_AdminDashboard.js.html">components/dashboard/AdminDashboard.js</a>, <a href="components_dashboard_AdminDashboard.js.html#line14">line 14</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="AdminEvaluationManagement">
+    <a class="href-link" href="#AdminEvaluationManagement">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        AdminEvaluationManagement
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Admin evaluation management component<br>
+Provides comprehensive evaluation management tools for administrators</p>.</p></p>
+
+
+
+<div class="description">
+    <p>Admin evaluation management component<br>
+Provides comprehensive evaluation management tools for administrators</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_evaluations_AdminEvaluationManagement.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_evaluations_AdminEvaluationManagement.js.html">components/evaluations/AdminEvaluationManagement.js</a>, <a href="components_evaluations_AdminEvaluationManagement.js.html#line33">line 33</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="AdminTrainingManagement">
+    <a class="href-link" href="#AdminTrainingManagement">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        AdminTrainingManagement
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Admin Training Management component<br>
+Allows admins to list, create, edit and manage trainings</p>.</p></p>
+
+
+
+<div class="description">
+    <p>Admin Training Management component<br>
+Allows admins to list, create, edit and manage trainings</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_trainings_AdminTrainingManagement.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_trainings_AdminTrainingManagement.js.html">components/trainings/AdminTrainingManagement.js</a>, <a href="components_trainings_AdminTrainingManagement.js.html#line29">line 29</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="AppRouter">
+    <a class="href-link" href="#AppRouter">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        AppRouter
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>AppRouter component that defines all application routes</p>
+<p>This component sets up all the routes for the application, including:</p>
+<ul>
+<li>Public routes (home, registration, reset password)</li>
+<li>User routes (profile, messages)</li>
+<li>Admin routes (user management)</li>
+<li>Authentication routes (password reset, account confirmation)</li>
+<li>Error routes (not found, forbidden)</li>
+</ul>.</p>
+
+
+
+<div class="description">
+    <p>AppRouter component that defines all application routes</p>
+<p>This component sets up all the routes for the application, including:</p>
+<ul>
+<li>Public routes (home, registration, reset password)</li>
+<li>User routes (profile, messages)</li>
+<li>Admin routes (user management)</li>
+<li>Authentication routes (password reset, account confirmation)</li>
+<li>Error routes (not found, forbidden)</li>
+</ul>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="routes_AppRouter.js.html" class="button">View Source</a>
+            <span>
+                <a href="routes_AppRouter.js.html">routes/AppRouter.js</a>, <a href="routes_AppRouter.js.html#line45">line 45</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+    <h5>Example</h5>
+    
+    
+        <pre class="prettyprint"><code>&lt;BrowserRouter>  &lt;AppRouter />&lt;/BrowserRouter></code></pre>
+    
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="ConfirmRegistrationForm">
+    <a class="href-link" href="#ConfirmRegistrationForm">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        ConfirmRegistrationForm
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Confirm Registration form component (presentational)</p>.</p>
+
+
+
+<div class="description">
+    <p>Confirm Registration form component (presentational)</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_forms_ConfirmRegistrationForm.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_forms_ConfirmRegistrationForm.js.html">components/forms/ConfirmRegistrationForm.js</a>, <a href="components_forms_ConfirmRegistrationForm.js.html#line15">line 15</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="Dashboard">
+    <a class="href-link" href="#Dashboard">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        Dashboard
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Dashboard page component that renders different content based on user role</p>.</p>
+
+
+
+<div class="description">
+    <p>Dashboard page component that renders different content based on user role</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="pages_Dashboard.js.html" class="button">View Source</a>
+            <span>
+                <a href="pages_Dashboard.js.html">pages/Dashboard.js</a>, <a href="pages_Dashboard.js.html#line18">line 18</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="DashboardHeader">
+    <a class="href-link" href="#DashboardHeader">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        DashboardHeader
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Dashboard header component with user info and role badge</p>.</p>
+
+
+
+<div class="description">
+    <p>Dashboard header component with user info and role badge</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_dashboard_DashboardHeader.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_dashboard_DashboardHeader.js.html">components/dashboard/DashboardHeader.js</a>, <a href="components_dashboard_DashboardHeader.js.html#line12">line 12</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="ErrorHandlingDemo">
+    <a class="href-link" href="#ErrorHandlingDemo">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        ErrorHandlingDemo
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Demo component showing how to use the error handling system<br>
+This component demonstrates various error scenarios and how to handle them</p>.</p></p>
+
+
+
+<div class="description">
+    <p>Demo component showing how to use the error handling system<br>
+This component demonstrates various error scenarios and how to handle them</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_demo_ErrorHandlingDemo.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_demo_ErrorHandlingDemo.js.html">components/demo/ErrorHandlingDemo.js</a>, <a href="components_demo_ErrorHandlingDemo.js.html#line10">line 10</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="EvaluationCycleBox">
+    <a class="href-link" href="#EvaluationCycleBox">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        EvaluationCycleBox
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Collapsible box for displaying an evaluation cycle (current or closed)</p>.</p>
+
+
+
+<div class="description">
+    <p>Collapsible box for displaying an evaluation cycle (current or closed)</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_evaluationCycles_EvaluationCycleBox.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_evaluationCycles_EvaluationCycleBox.js.html">components/evaluationCycles/EvaluationCycleBox.js</a>, <a href="components_evaluationCycles_EvaluationCycleBox.js.html#line16">line 16</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="EvaluationFilter">
+    <a class="href-link" href="#EvaluationFilter">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        EvaluationFilter
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Modern evaluation filter component for filtering evaluation list<br>
+Unified component with modern design, searchable dropdowns, and export features</p>.</p></p>
+
+
+
+<div class="description">
+    <p>Modern evaluation filter component for filtering evaluation list<br>
+Unified component with modern design, searchable dropdowns, and export features</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_filters_EvaluationFilter.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_filters_EvaluationFilter.js.html">components/filters/EvaluationFilter.js</a>, <a href="components_filters_EvaluationFilter.js.html#line23">line 23</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="EvaluationList">
+    <a class="href-link" href="#EvaluationList">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        EvaluationList
+    </span>
+    
+</h4>
+
+
+<p class="summary">EvaluationList fetches and displays a list of evaluations based on filter props.</p>
+
+
+
+<div class="description">
+    <p>EvaluationList fetches and displays a list of evaluations based on filter props.<br>
+It supports loading, error, and empty states, and renders either EvaluationCard or EditableEvaluationCard.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_evaluations_EvaluationList.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_evaluations_EvaluationList.js.html">components/evaluations/EvaluationList.js</a>, <a href="components_evaluations_EvaluationList.js.html#line12">line 12</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="EvaluationTeaser">
+    <a class="href-link" href="#EvaluationTeaser">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        EvaluationTeaser
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Evaluation teaser component for non-authenticated users<br>
+Showcases evaluation capabilities and benefits</p>.</p></p>
+
+
+
+<div class="description">
+    <p>Evaluation teaser component for non-authenticated users<br>
+Showcases evaluation capabilities and benefits</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_evaluations_EvaluationTeaser.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_evaluations_EvaluationTeaser.js.html">components/evaluations/EvaluationTeaser.js</a>, <a href="components_evaluations_EvaluationTeaser.js.html#line12">line 12</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="EvaluationsPage">
+    <a class="href-link" href="#EvaluationsPage">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        EvaluationsPage
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Main Evaluations page component<br>
+Shows different content based on user authentication and role:</p>
+<ul>
+<li>Non-authenticated users: Evaluation teaser/marketing page</li>
+<li>Admin users: Evaluation management interface</li>
+<li>Regular users: Evaluation list/browsing view</li>
+</ul>.</p></p>
+
+
+
+<div class="description">
+    <p>Main Evaluations page component<br>
+Shows different content based on user authentication and role:</p>
+<ul>
+<li>Non-authenticated users: Evaluation teaser/marketing page</li>
+<li>Admin users: Evaluation management interface</li>
+<li>Regular users: Evaluation list/browsing view</li>
+</ul>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="pages_EvaluationsPage.js.html" class="button">View Source</a>
+            <span>
+                <a href="pages_EvaluationsPage.js.html">pages/EvaluationsPage.js</a>, <a href="pages_EvaluationsPage.js.html#line17">line 17</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="FloatingChatbot">
+    <a class="href-link" href="#FloatingChatbot">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        FloatingChatbot
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Floating chatbot widget component</p>.</p>
+
+
+
+<div class="description">
+    <p>Floating chatbot widget component</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_chatbot_FloatingChatbot.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_chatbot_FloatingChatbot.js.html">components/chatbot/FloatingChatbot.js</a>, <a href="components_chatbot_FloatingChatbot.js.html#line10">line 10</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="Footer">
+    <a class="href-link" href="#Footer">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        Footer
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Footer component with links, social media and copyright information</p>.</p>
+
+
+
+<div class="description">
+    <p>Footer component with links, social media and copyright information</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_common_Footer.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_common_Footer.js.html">components/common/Footer.js</a>, <a href="components_common_Footer.js.html#line19">line 19</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="ForbiddenPage">
+    <a class="href-link" href="#ForbiddenPage">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        ForbiddenPage
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>403 Forbidden error page component<br>
+Displays when a user tries to access a resource they don't have permission to view</p>.</p></p>
+
+
+
+<div class="description">
+    <p>403 Forbidden error page component<br>
+Displays when a user tries to access a resource they don't have permission to view</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="pages_errors_ForbiddenPage.js.html" class="button">View Source</a>
+            <span>
+                <a href="pages_errors_ForbiddenPage.js.html">pages/errors/ForbiddenPage.js</a>, <a href="pages_errors_ForbiddenPage.js.html#line12">line 12</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="ForbiddenRoute">
+    <a class="href-link" href="#ForbiddenRoute">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        ForbiddenRoute
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Route wrapper for 403 errors</p>.</p>
+
+
+
+<div class="description">
+    <p>Route wrapper for 403 errors</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="pages_errors_ErrorRoutes.js.html" class="button">View Source</a>
+            <span>
+                <a href="pages_errors_ErrorRoutes.js.html">pages/errors/ErrorRoutes.js</a>, <a href="pages_errors_ErrorRoutes.js.html#line21">line 21</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="FormDropdownInput">
+    <a class="href-link" href="#FormDropdownInput">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        FormDropdownInput
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Reusable dropdown/select input for forms</p>.</p>
+
+
+
+<div class="description">
+    <p>Reusable dropdown/select input for forms</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_forms_FormDropdownInput.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_forms_FormDropdownInput.js.html">components/forms/FormDropdownInput.js</a>, <a href="components_forms_FormDropdownInput.js.html#line16">line 16</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="FormInput">
+    <a class="href-link" href="#FormInput">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        FormInput
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>A reusable form input with validation feedback</p>.</p>
+
+
+
+<div class="description">
+    <p>A reusable form input with validation feedback</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_forms_FormInput.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_forms_FormInput.js.html">components/forms/FormInput.js</a>, <a href="components_forms_FormInput.js.html#line20">line 20</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="GenericErrorPage">
+    <a class="href-link" href="#GenericErrorPage">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        GenericErrorPage
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Generic Error page component<br>
+Displays when an unexpected error occurs</p>.</p></p>
+
+
+
+<div class="description">
+    <p>Generic Error page component<br>
+Displays when an unexpected error occurs</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="pages_errors_GenericErrorPage.js.html" class="button">View Source</a>
+            <span>
+                <a href="pages_errors_GenericErrorPage.js.html">pages/errors/GenericErrorPage.js</a>, <a href="pages_errors_GenericErrorPage.js.html#line17">line 17</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="GenericErrorRoute">
+    <a class="href-link" href="#GenericErrorRoute">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        GenericErrorRoute
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Route wrapper for generic errors that can receive state from navigation</p>.</p>
+
+
+
+<div class="description">
+    <p>Route wrapper for generic errors that can receive state from navigation</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="pages_errors_ErrorRoutes.js.html" class="button">View Source</a>
+            <span>
+                <a href="pages_errors_ErrorRoutes.js.html">pages/errors/ErrorRoutes.js</a>, <a href="pages_errors_ErrorRoutes.js.html#line42">line 42</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="Header">
+    <a class="href-link" href="#Header">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        Header
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Header component with responsive navigation</p>.</p>
+
+
+
+<div class="description">
+    <p>Header component with responsive navigation</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_common_Header.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_common_Header.js.html">components/common/Header.js</a>, <a href="components_common_Header.js.html#line20">line 20</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="Home">
+    <a class="href-link" href="#Home">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        Home
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Home page component</p>.</p>
+
+
+
+<div class="description">
+    <p>Home page component</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="pages_Home.js.html" class="button">View Source</a>
+            <span>
+                <a href="pages_Home.js.html">pages/Home.js</a>, <a href="pages_Home.js.html#line10">line 10</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="LanguageProvider">
+    <a class="href-link" href="#LanguageProvider">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        LanguageProvider
+    </span>
+    
+</h4>
+
+
+<p class="summary">Custom Language Provider component that wraps i18next's Provider.</p>
+
+
+
+<div class="description">
+    <p>Custom Language Provider component that wraps i18next's Provider.<br>
+This component leverages i18next's built-in language detection and storage<br>
+while providing additional utility functions for formatting.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="contexts_LanguageContext.js.html" class="button">View Source</a>
+            <span>
+                <a href="contexts_LanguageContext.js.html">contexts/LanguageContext.js</a>, <a href="contexts_LanguageContext.js.html#line30">line 30</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+    <h5>Example</h5>
+    
+    
+        <pre class="prettyprint"><code>&lt;LanguageProvider>  &lt;App />&lt;/LanguageProvider></code></pre>
+    
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="LanguageSelector">
+    <a class="href-link" href="#LanguageSelector">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        LanguageSelector
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Language selector component that allows users to switch languages</p>.</p>
+
+
+
+<div class="description">
+    <p>Language selector component that allows users to switch languages</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_LanguageSelector.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_LanguageSelector.js.html">components/LanguageSelector.js</a>, <a href="components_LanguageSelector.js.html#line23">line 23</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="LoginForm">
+    <a class="href-link" href="#LoginForm">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        LoginForm
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Login form component (presentational)</p>.</p>
+
+
+
+<div class="description">
+    <p>Login form component (presentational)</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_forms_LoginForm.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_forms_LoginForm.js.html">components/forms/LoginForm.js</a>, <a href="components_forms_LoginForm.js.html#line14">line 14</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="MainLayout">
+    <a class="href-link" href="#MainLayout">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        MainLayout
+    </span>
+    
+</h4>
+
+
+<p class="summary">Main layout component that wraps all pages with common header and footer.</p>
+
+
+
+<div class="description">
+    <p>Main layout component that wraps all pages with common header and footer.<br>
+Uses React Router's Outlet component to render child route components dynamically<br>
+while maintaining consistent layout structure across all pages.</p>
+<p>The Outlet acts as a placeholder that renders the component associated with the<br>
+current route (e.g., HomePage for /home, AboutPage for /about), allowing this<br>
+layout to serve as a wrapper that provides consistent header and footer elements<br>
+without duplicating them in each page component.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_layout_MainLayout.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_layout_MainLayout.js.html">components/layout/MainLayout.js</a>, <a href="components_layout_MainLayout.js.html#line25">line 25</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+    <h5>Example</h5>
+    
+    
+        <pre class="prettyprint"><code>// Route: /home → Outlet renders &lt;HomePage />// Route: /about → Outlet renders &lt;AboutPage />// Result: [Header] [Page Content] [Footer]</code></pre>
+    
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="ManagerDashboard">
+    <a class="href-link" href="#ManagerDashboard">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        ManagerDashboard
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Manager Dashboard Component<br>
+Displays manager-specific dashboard with team statistics, team actions, and recent activity</p>.</p></p>
+
+
+
+<div class="description">
+    <p>Manager Dashboard Component<br>
+Displays manager-specific dashboard with team statistics, team actions, and recent activity</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_dashboard_ManagerDashboard.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_dashboard_ManagerDashboard.js.html">components/dashboard/ManagerDashboard.js</a>, <a href="components_dashboard_ManagerDashboard.js.html#line18">line 18</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="NetworkErrorPage">
+    <a class="href-link" href="#NetworkErrorPage">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        NetworkErrorPage
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Network Error page component<br>
+Displays when there's a connection or network issue</p>.</p></p>
+
+
+
+<div class="description">
+    <p>Network Error page component<br>
+Displays when there's a connection or network issue</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="pages_errors_NetworkErrorPage.js.html" class="button">View Source</a>
+            <span>
+                <a href="pages_errors_NetworkErrorPage.js.html">pages/errors/NetworkErrorPage.js</a>, <a href="pages_errors_NetworkErrorPage.js.html#line12">line 12</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="NetworkErrorRoute">
+    <a class="href-link" href="#NetworkErrorRoute">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        NetworkErrorRoute
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Route wrapper for network errors</p>.</p>
+
+
+
+<div class="description">
+    <p>Route wrapper for network errors</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="pages_errors_ErrorRoutes.js.html" class="button">View Source</a>
+            <span>
+                <a href="pages_errors_ErrorRoutes.js.html">pages/errors/ErrorRoutes.js</a>, <a href="pages_errors_ErrorRoutes.js.html#line35">line 35</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="NotFoundPage">
+    <a class="href-link" href="#NotFoundPage">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        NotFoundPage
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>404 Not Found error page component<br>
+Displays when a user tries to access a route that doesn't exist</p>.</p></p>
+
+
+
+<div class="description">
+    <p>404 Not Found error page component<br>
+Displays when a user tries to access a route that doesn't exist</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="pages_errors_NotFoundPage.js.html" class="button">View Source</a>
+            <span>
+                <a href="pages_errors_NotFoundPage.js.html">pages/errors/NotFoundPage.js</a>, <a href="pages_errors_NotFoundPage.js.html#line12">line 12</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="NotFoundRoute">
+    <a class="href-link" href="#NotFoundRoute">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        NotFoundRoute
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Route wrapper for 404 errors</p>.</p>
+
+
+
+<div class="description">
+    <p>Route wrapper for 404 errors</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="pages_errors_ErrorRoutes.js.html" class="button">View Source</a>
+            <span>
+                <a href="pages_errors_ErrorRoutes.js.html">pages/errors/ErrorRoutes.js</a>, <a href="pages_errors_ErrorRoutes.js.html#line14">line 14</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="NotificationOffcanvas">
+    <a class="href-link" href="#NotificationOffcanvas">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        NotificationOffcanvas
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Notification Offcanvas Component<br>
+Displays notifications in a sliding panel</p>.</p></p>
+
+
+
+<div class="description">
+    <p>Notification Offcanvas Component<br>
+Displays notifications in a sliding panel</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_common_NotificationOffcanvas.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_common_NotificationOffcanvas.js.html">components/common/NotificationOffcanvas.js</a>, <a href="components_common_NotificationOffcanvas.js.html#line21">line 21</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="OfflinePage">
+    <a class="href-link" href="#OfflinePage">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        OfflinePage
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Offline page component<br>
+Displays when the application is in offline mode</p>.</p></p>
+
+
+
+<div class="description">
+    <p>Offline page component<br>
+Displays when the application is in offline mode</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="pages_errors_OfflinePage.js.html" class="button">View Source</a>
+            <span>
+                <a href="pages_errors_OfflinePage.js.html">pages/errors/OfflinePage.js</a>, <a href="pages_errors_OfflinePage.js.html#line12">line 12</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="PasswordStrengthMeter">
+    <a class="href-link" href="#PasswordStrengthMeter">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        PasswordStrengthMeter
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>A component that displays password strength as the user types</p>.</p>
+
+
+
+<div class="description">
+    <p>A component that displays password strength as the user types</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_forms_PasswordStrengthMeter.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_forms_PasswordStrengthMeter.js.html">components/forms/PasswordStrengthMeter.js</a>, <a href="components_forms_PasswordStrengthMeter.js.html#line10">line 10</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="ProfilePage">
+    <a class="href-link" href="#ProfilePage">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        ProfilePage
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Main Profile page component<br>
+Shows user profile with evaluations and trainings sections</p>
+<ul>
+<li>/profile shows authenticated user's own profile</li>
+<li>/profile?userId=12 shows another user's profile (if permissions allow)</li>
+</ul>.</p></p>
+
+
+
+<div class="description">
+    <p>Main Profile page component<br>
+Shows user profile with evaluations and trainings sections</p>
+<ul>
+<li>/profile shows authenticated user's own profile</li>
+<li>/profile?userId=12 shows another user's profile (if permissions allow)</li>
+</ul>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="pages_ProfilePage.js.html" class="button">View Source</a>
+            <span>
+                <a href="pages_ProfilePage.js.html">pages/ProfilePage.js</a>, <a href="pages_ProfilePage.js.html#line18">line 18</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="ProfilePicture">
+    <a class="href-link" href="#ProfilePicture">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        ProfilePicture
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Reusable ProfilePicture component that handles user profile pictures<br>
+with automatic cache management and fallback support</p>.</p></p>
+
+
+
+<div class="description">
+    <p>Reusable ProfilePicture component that handles user profile pictures<br>
+with automatic cache management and fallback support</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_common_ProfilePicture.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_common_ProfilePicture.js.html">components/common/ProfilePicture.js</a>, <a href="components_common_ProfilePicture.js.html#line12">line 12</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="QuickActions">
+    <a class="href-link" href="#QuickActions">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        QuickActions
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Quick actions component for dashboard shortcuts</p>.</p>
+
+
+
+<div class="description">
+    <p>Quick actions component for dashboard shortcuts</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_dashboard_QuickActions.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_dashboard_QuickActions.js.html">components/dashboard/QuickActions.js</a>, <a href="components_dashboard_QuickActions.js.html#line14">line 14</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="RegisterForm">
+    <a class="href-link" href="#RegisterForm">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        RegisterForm
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>RegisterForm component for user registration</p>.</p>
+
+
+
+<div class="description">
+    <p>RegisterForm component for user registration</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_forms_RegisterForm.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_forms_RegisterForm.js.html">components/forms/RegisterForm.js</a>, <a href="components_forms_RegisterForm.js.html#line20">line 20</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="ResetPasswordForm">
+    <a class="href-link" href="#ResetPasswordForm">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        ResetPasswordForm
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Set New Password form component (presentational)</p>.</p>
+
+
+
+<div class="description">
+    <p>Set New Password form component (presentational)</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_forms_ResetPasswordForm.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_forms_ResetPasswordForm.js.html">components/forms/ResetPasswordForm.js</a>, <a href="components_forms_ResetPasswordForm.js.html#line13">line 13</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="ResetPasswordRequestForm">
+    <a class="href-link" href="#ResetPasswordRequestForm">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        ResetPasswordRequestForm
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Reset Password Request form component (presentational)</p>.</p>
+
+
+
+<div class="description">
+    <p>Reset Password Request form component (presentational)</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_forms_ResetPasswordRequestForm.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_forms_ResetPasswordRequestForm.js.html">components/forms/ResetPasswordRequestForm.js</a>, <a href="components_forms_ResetPasswordRequestForm.js.html#line12">line 12</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">Array.&lt;string></code>
+
+
+    </span>
+
+<h4 class="name" id="SUPPORTED_LANGUAGES">
+    <a class="href-link" href="#SUPPORTED_LANGUAGES">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        SUPPORTED_LANGUAGES
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Array of supported language codes</p>.</p>
+
+
+
+<div class="description">
+    <p>Array of supported language codes</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="contexts_LanguageContext.js.html" class="button">View Source</a>
+            <span>
+                <a href="contexts_LanguageContext.js.html">contexts/LanguageContext.js</a>, <a href="contexts_LanguageContext.js.html#line13">line 13</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="SecuritySettings">
+    <a class="href-link" href="#SecuritySettings">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        SecuritySettings
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Security Settings Component for Profile Page<br>
+Contains all security-related settings including 2FA</p>.</p></p>
+
+
+
+<div class="description">
+    <p>Security Settings Component for Profile Page<br>
+Contains all security-related settings including 2FA</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_profile_SecuritySettings.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_profile_SecuritySettings.js.html">components/profile/SecuritySettings.js</a>, <a href="components_profile_SecuritySettings.js.html#line12">line 12</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="ServerErrorPage">
+    <a class="href-link" href="#ServerErrorPage">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        ServerErrorPage
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>500 Internal Server Error page component<br>
+Displays when there's a server-side error</p>.</p></p>
+
+
+
+<div class="description">
+    <p>500 Internal Server Error page component<br>
+Displays when there's a server-side error</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="pages_errors_ServerErrorPage.js.html" class="button">View Source</a>
+            <span>
+                <a href="pages_errors_ServerErrorPage.js.html">pages/errors/ServerErrorPage.js</a>, <a href="pages_errors_ServerErrorPage.js.html#line12">line 12</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="ServerErrorRoute">
+    <a class="href-link" href="#ServerErrorRoute">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        ServerErrorRoute
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Route wrapper for 500 errors</p>.</p>
+
+
+
+<div class="description">
+    <p>Route wrapper for 500 errors</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="pages_errors_ErrorRoutes.js.html" class="button">View Source</a>
+            <span>
+                <a href="pages_errors_ErrorRoutes.js.html">pages/errors/ErrorRoutes.js</a>, <a href="pages_errors_ErrorRoutes.js.html#line28">line 28</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="StatsCard">
+    <a class="href-link" href="#StatsCard">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        StatsCard
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Statistics card component for displaying metrics</p>.</p>
+
+
+
+<div class="description">
+    <p>Statistics card component for displaying metrics</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_dashboard_StatsCard.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_dashboard_StatsCard.js.html">components/dashboard/StatsCard.js</a>, <a href="components_dashboard_StatsCard.js.html#line16">line 16</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="SubmitButton">
+    <a class="href-link" href="#SubmitButton">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        SubmitButton
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>A submit button with optional loading spinner</p>.</p>
+
+
+
+<div class="description">
+    <p>A submit button with optional loading spinner</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_forms_SubmitButton.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_forms_SubmitButton.js.html">components/forms/SubmitButton.js</a>, <a href="components_forms_SubmitButton.js.html#line14">line 14</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="TeamPerformanceChart">
+    <a class="href-link" href="#TeamPerformanceChart">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        TeamPerformanceChart
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Team Performance Chart Component<br>
+Displays team performance metrics in a donut chart</p>.</p></p>
+
+
+
+<div class="description">
+    <p>Team Performance Chart Component<br>
+Displays team performance metrics in a donut chart</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_dashboard_TeamPerformanceChart.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_dashboard_TeamPerformanceChart.js.html">components/dashboard/TeamPerformanceChart.js</a>, <a href="components_dashboard_TeamPerformanceChart.js.html#line19">line 19</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="TrainingFilter">
+    <a class="href-link" href="#TrainingFilter">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        TrainingFilter
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Training filter component for filtering training list</p>.</p>
+
+
+
+<div class="description">
+    <p>Training filter component for filtering training list</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_filters_TrainingFilter.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_filters_TrainingFilter.js.html">components/filters/TrainingFilter.js</a>, <a href="components_filters_TrainingFilter.js.html#line16">line 16</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="TrainingForm">
+    <a class="href-link" href="#TrainingForm">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        TrainingForm
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Training form component for creating and editing trainings</p>.</p>
+
+
+
+<div class="description">
+    <p>Training form component for creating and editing trainings</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_forms_TrainingForm.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_forms_TrainingForm.js.html">components/forms/TrainingForm.js</a>, <a href="components_forms_TrainingForm.js.html#line22">line 22</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="TrainingTeaser">
+    <a class="href-link" href="#TrainingTeaser">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        TrainingTeaser
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Training teaser component for non-authenticated users<br>
+Showcases training capabilities and benefits</p>.</p></p>
+
+
+
+<div class="description">
+    <p>Training teaser component for non-authenticated users<br>
+Showcases training capabilities and benefits</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_trainings_TrainingTeaser.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_trainings_TrainingTeaser.js.html">components/trainings/TrainingTeaser.js</a>, <a href="components_trainings_TrainingTeaser.js.html#line12">line 12</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="TrainingsPage">
+    <a class="href-link" href="#TrainingsPage">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        TrainingsPage
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Main Trainings page component<br>
+Shows different content based on user authentication and role:</p>
+<ul>
+<li>Non-authenticated users: Training teaser/marketing page</li>
+<li>Admin users: Training management interface</li>
+<li>Regular users: Training list/browsing view</li>
+</ul>.</p></p>
+
+
+
+<div class="description">
+    <p>Main Trainings page component<br>
+Shows different content based on user authentication and role:</p>
+<ul>
+<li>Non-authenticated users: Training teaser/marketing page</li>
+<li>Admin users: Training management interface</li>
+<li>Regular users: Training list/browsing view</li>
+</ul>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="pages_TrainingsPage.js.html" class="button">View Source</a>
+            <span>
+                <a href="pages_TrainingsPage.js.html">pages/TrainingsPage.js</a>, <a href="pages_TrainingsPage.js.html#line17">line 17</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="TwoFactorRecommendationBanner">
+    <a class="href-link" href="#TwoFactorRecommendationBanner">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        TwoFactorRecommendationBanner
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Two-Factor Authentication Recommendation Banner<br>
+Shows a subtle prompt encouraging users to enable 2FA</p>.</p></p>
+
+
+
+<div class="description">
+    <p>Two-Factor Authentication Recommendation Banner<br>
+Shows a subtle prompt encouraging users to enable 2FA</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_security_TwoFactorRecommendationBanner.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_security_TwoFactorRecommendationBanner.js.html">components/security/TwoFactorRecommendationBanner.js</a>, <a href="components_security_TwoFactorRecommendationBanner.js.html#line10">line 10</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="TwoFactorSecuritySettings">
+    <a class="href-link" href="#TwoFactorSecuritySettings">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        TwoFactorSecuritySettings
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Two-Factor Authentication Security Settings Component<br>
+Allows users to enable/disable 2FA, view backup codes, and manage 2FA settings</p>.</p></p>
+
+
+
+<div class="description">
+    <p>Two-Factor Authentication Security Settings Component<br>
+Allows users to enable/disable 2FA, view backup codes, and manage 2FA settings</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_security_TwoFactorSecuritySettings.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_security_TwoFactorSecuritySettings.js.html">components/security/TwoFactorSecuritySettings.js</a>, <a href="components_security_TwoFactorSecuritySettings.js.html#line23">line 23</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="TwoFactorVerificationModal">
+    <a class="href-link" href="#TwoFactorVerificationModal">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        TwoFactorVerificationModal
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Two-Factor Authentication Verification Modal<br>
+Used during login to verify 2FA codes</p>.</p></p>
+
+
+
+<div class="description">
+    <p>Two-Factor Authentication Verification Modal<br>
+Used during login to verify 2FA codes</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_auth_TwoFactorVerificationModal.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_auth_TwoFactorVerificationModal.js.html">components/auth/TwoFactorVerificationModal.js</a>, <a href="components_auth_TwoFactorVerificationModal.js.html#line10">line 10</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="UserActivityOverviewChart">
+    <a class="href-link" href="#UserActivityOverviewChart">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        UserActivityOverviewChart
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>User Activity Overview Chart Component<br>
+Displays user activity overview in a donut chart format</p>.</p></p>
+
+
+
+<div class="description">
+    <p>User Activity Overview Chart Component<br>
+Displays user activity overview in a donut chart format</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_dashboard_UserActivityOverviewChart.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_dashboard_UserActivityOverviewChart.js.html">components/dashboard/UserActivityOverviewChart.js</a>, <a href="components_dashboard_UserActivityOverviewChart.js.html#line19">line 19</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="UserDashboard">
+    <a class="href-link" href="#UserDashboard">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        UserDashboard
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>User Dashboard Component<br>
+Displays user-specific dashboard with personal statistics, quick actions, and recent activity</p>.</p></p>
+
+
+
+<div class="description">
+    <p>User Dashboard Component<br>
+Displays user-specific dashboard with personal statistics, quick actions, and recent activity</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_dashboard_UserDashboard.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_dashboard_UserDashboard.js.html">components/dashboard/UserDashboard.js</a>, <a href="components_dashboard_UserDashboard.js.html#line19">line 19</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="UserEvaluationView">
+    <a class="href-link" href="#UserEvaluationView">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        UserEvaluationView
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>User evaluation view component for regular authenticated users<br>
+Displays user's evaluations with appropriate filtering options</p>.</p></p>
+
+
+
+<div class="description">
+    <p>User evaluation view component for regular authenticated users<br>
+Displays user's evaluations with appropriate filtering options</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_evaluations_UserEvaluationView.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_evaluations_UserEvaluationView.js.html">components/evaluations/UserEvaluationView.js</a>, <a href="components_evaluations_UserEvaluationView.js.html#line15">line 15</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="UserFilters">
+    <a class="href-link" href="#UserFilters">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        UserFilters
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Modern user filter component for filtering user list</p>.</p>
+
+
+
+<div class="description">
+    <p>Modern user filter component for filtering user list</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_users_UserFilters.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_users_UserFilters.js.html">components/users/UserFilters.js</a>, <a href="components_users_UserFilters.js.html#line24">line 24</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="UserPerformanceTrendChart">
+    <a class="href-link" href="#UserPerformanceTrendChart">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        UserPerformanceTrendChart
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>User Performance Trend Chart Component<br>
+Displays user performance evaluation trend over time</p>.</p></p>
+
+
+
+<div class="description">
+    <p>User Performance Trend Chart Component<br>
+Displays user performance evaluation trend over time</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_dashboard_UserPerformanceTrendChart.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_dashboard_UserPerformanceTrendChart.js.html">components/dashboard/UserPerformanceTrendChart.js</a>, <a href="components_dashboard_UserPerformanceTrendChart.js.html#line36">line 36</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="UserTrainingProgressChart">
+    <a class="href-link" href="#UserTrainingProgressChart">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        UserTrainingProgressChart
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>User Training Progress Chart Component<br>
+Displays user training progress over time in a bar chart</p>.</p></p>
+
+
+
+<div class="description">
+    <p>User Training Progress Chart Component<br>
+Displays user training progress over time in a bar chart</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_dashboard_UserTrainingProgressChart.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_dashboard_UserTrainingProgressChart.js.html">components/dashboard/UserTrainingProgressChart.js</a>, <a href="components_dashboard_UserTrainingProgressChart.js.html#line34">line 34</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="UserTrainingView">
+    <a class="href-link" href="#UserTrainingView">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        UserTrainingView
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>User Training View component<br>
+Allows regular users to view and browse available trainings</p>.</p></p>
+
+
+
+<div class="description">
+    <p>User Training View component<br>
+Allows regular users to view and browse available trainings</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_trainings_UserTrainingView.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_trainings_UserTrainingView.js.html">components/trainings/UserTrainingView.js</a>, <a href="components_trainings_UserTrainingView.js.html#line22">line 22</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="VirtualAssistant">
+    <a class="href-link" href="#VirtualAssistant">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        VirtualAssistant
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Virtual Assistant conversation item for the Messages page</p>.</p>
+
+
+
+<div class="description">
+    <p>Virtual Assistant conversation item for the Messages page</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_chatbot_VirtualAssistant.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_chatbot_VirtualAssistant.js.html">components/chatbot/VirtualAssistant.js</a>, <a href="components_chatbot_VirtualAssistant.js.html#line9">line 9</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="WelcomeCard">
+    <a class="href-link" href="#WelcomeCard">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        WelcomeCard
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Welcome card component for dashboard</p>.</p>
+
+
+
+<div class="description">
+    <p>Welcome card component for dashboard</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_dashboard_WelcomeCard.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_dashboard_WelcomeCard.js.html">components/dashboard/WelcomeCard.js</a>, <a href="components_dashboard_WelcomeCard.js.html#line12">line 12</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="apiRequest">
+    <a class="href-link" href="#apiRequest">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        apiRequest
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Makes an API request using the axios instance</p>.</p>
+
+
+
+<div class="description">
+    <p>Makes an API request using the axios instance</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="services_apiService.js.html" class="button">View Source</a>
+            <span>
+                <a href="services_apiService.js.html">services/apiService.js</a>, <a href="services_apiService.js.html#line14">line 14</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="apiService">
+    <a class="href-link" href="#apiService">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        apiService
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Generic CRUD operations</p>.</p>
+
+
+
+<div class="description">
+    <p>Generic CRUD operations</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="services_apiService.js.html" class="button">View Source</a>
+            <span>
+                <a href="services_apiService.js.html">services/apiService.js</a>, <a href="services_apiService.js.html#line28">line 28</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="chatbotService">
+    <a class="href-link" href="#chatbotService">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        chatbotService
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Service for chatbot interactions</p>.</p>
+
+
+
+<div class="description">
+    <p>Service for chatbot interactions</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="services_chatbotService.js.html" class="button">View Source</a>
+            <span>
+                <a href="services_chatbotService.js.html">services/chatbotService.js</a>, <a href="services_chatbotService.js.html#line7">line 7</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="downloadBlob">
+    <a class="href-link" href="#downloadBlob">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        downloadBlob
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Utility function to download a blob as a file</p>.</p>
+
+
+
+<div class="description">
+    <p>Utility function to download a blob as a file</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="services_exportService.js.html" class="button">View Source</a>
+            <span>
+                <a href="services_exportService.js.html">services/exportService.js</a>, <a href="services_exportService.js.html#line176">line 176</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="getProfilePictureUrl">
+    <a class="href-link" href="#getProfilePictureUrl">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        getProfilePictureUrl
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Get profile picture URL for a user</p>.</p>
+
+
+
+<div class="description">
+    <p>Get profile picture URL for a user</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="utils_profilePictureUtils.js.html" class="button">View Source</a>
+            <span>
+                <a href="utils_profilePictureUtils.js.html">utils/profilePictureUtils.js</a>, <a href="utils_profilePictureUtils.js.html#line46">line 46</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="handleApiError">
+    <a class="href-link" href="#handleApiError">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        handleApiError
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Utility function to handle different types of errors</p>.</p>
+
+
+
+<div class="description">
+    <p>Utility function to handle different types of errors</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="services_apiErrorService.js.html" class="button">View Source</a>
+            <span>
+                <a href="services_apiErrorService.js.html">services/apiErrorService.js</a>, <a href="services_apiErrorService.js.html#line100">line 100</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="notificationService">
+    <a class="href-link" href="#notificationService">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        notificationService
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Service for notification operations</p>.</p>
+
+
+
+<div class="description">
+    <p>Service for notification operations</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="services_notificationService.js.html" class="button">View Source</a>
+            <span>
+                <a href="services_notificationService.js.html">services/notificationService.js</a>, <a href="services_notificationService.js.html#line7">line 7</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="preloadProfilePicture">
+    <a class="href-link" href="#preloadProfilePicture">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        preloadProfilePicture
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Preload a profile picture for better UX</p>.</p>
+
+
+
+<div class="description">
+    <p>Preload a profile picture for better UX</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="utils_profilePictureUtils.js.html" class="button">View Source</a>
+            <span>
+                <a href="utils_profilePictureUtils.js.html">utils/profilePictureUtils.js</a>, <a href="utils_profilePictureUtils.js.html#line26">line 26</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="triggerProfilePictureUpdate">
+    <a class="href-link" href="#triggerProfilePictureUpdate">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        triggerProfilePictureUpdate
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Trigger a profile picture update event<br>
+This will cause all ProfilePicture components to refresh for the specified user</p>.</p></p>
+
+
+
+<div class="description">
+    <p>Trigger a profile picture update event<br>
+This will cause all ProfilePicture components to refresh for the specified user</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="utils_profilePictureUtils.js.html" class="button">View Source</a>
+            <span>
+                <a href="utils_profilePictureUtils.js.html">utils/profilePictureUtils.js</a>, <a href="utils_profilePictureUtils.js.html#line13">line 13</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="useApiService">
+    <a class="href-link" href="#useApiService">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        useApiService
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>React hook for using the API service with error handling</p>.</p>
+
+
+
+<div class="description">
+    <p>React hook for using the API service with error handling</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="services_apiErrorService.js.html" class="button">View Source</a>
+            <span>
+                <a href="services_apiErrorService.js.html">services/apiErrorService.js</a>, <a href="services_apiErrorService.js.html#line70">line 70</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="useChatbotStore">
+    <a class="href-link" href="#useChatbotStore">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        useChatbotStore
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Zustand store for chatbot functionality</p>.</p>
+
+
+
+<div class="description">
+    <p>Zustand store for chatbot functionality</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="stores_ChatbotStore.js.html" class="button">View Source</a>
+            <span>
+                <a href="stores_ChatbotStore.js.html">stores/ChatbotStore.js</a>, <a href="stores_ChatbotStore.js.html#line7">line 7</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="useErrorHandler">
+    <a class="href-link" href="#useErrorHandler">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        useErrorHandler
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Custom hook for handling different types of errors<br>
+Provides navigation to appropriate error pages based on error type</p>.</p></p>
+
+
+
+<div class="description">
+    <p>Custom hook for handling different types of errors<br>
+Provides navigation to appropriate error pages based on error type</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="hooks_useErrorHandler.js.html" class="button">View Source</a>
+            <span>
+                <a href="hooks_useErrorHandler.js.html">hooks/useErrorHandler.js</a>, <a href="hooks_useErrorHandler.js.html#line9">line 9</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="useLanguage">
+    <a class="href-link" href="#useLanguage">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        useLanguage
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Custom hook to access the language context for utility functions</p>.</p>
+
+
+
+<div class="description">
+    <p>Custom hook to access the language context for utility functions</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="contexts_LanguageContext.js.html" class="button">View Source</a>
+            <span>
+                <a href="contexts_LanguageContext.js.html">contexts/LanguageContext.js</a>, <a href="contexts_LanguageContext.js.html#line175">line 175</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="useManagerStats">
+    <a class="href-link" href="#useManagerStats">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        useManagerStats
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Custom hook for fetching manager dashboard statistics</p>.</p>
+
+
+
+<div class="description">
+    <p>Custom hook for fetching manager dashboard statistics</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="hooks_useManagerStats.js.html" class="button">View Source</a>
+            <span>
+                <a href="hooks_useManagerStats.js.html">hooks/useManagerStats.js</a>, <a href="hooks_useManagerStats.js.html#line11">line 11</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="useNotificationStore">
+    <a class="href-link" href="#useNotificationStore">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        useNotificationStore
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Zustand store for notification management</p>.</p>
+
+
+
+<div class="description">
+    <p>Zustand store for notification management</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="stores_NotificationStore.js.html" class="button">View Source</a>
+            <span>
+                <a href="stores_NotificationStore.js.html">stores/NotificationStore.js</a>, <a href="stores_NotificationStore.js.html#line7">line 7</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="withErrorHandling">
+    <a class="href-link" href="#withErrorHandling">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        withErrorHandling
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Higher-order function to wrap API calls with error handling</p>.</p>
+
+
+
+<div class="description">
+    <p>Higher-order function to wrap API calls with error handling</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="services_apiErrorService.js.html" class="button">View Source</a>
+            <span>
+                <a href="services_apiErrorService.js.html">services/apiErrorService.js</a>, <a href="services_apiErrorService.js.html#line85">line 85</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+            </div>
+        </div>
+    
+
+    
+        <div class='vertical-section'>
+            <h1>Methods</h1>
+            <div class="members">
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="formatDateToDDMMYYYY">
+        <a class="href-link" href="#formatDateToDDMMYYYY">#</a>
+        
+        <span class="code-name">
+            
+                formatDateToDDMMYYYY<span class="signature">(instant)</span><span class="type-signature"> &rarr; {string}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary">Converts an ISO instant string or epoch seconds to dd/mm/yyyy format.</p>
+    
+    
+    <div class="description">
+        <p>Converts an ISO instant string or epoch seconds to dd/mm/yyyy format.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>instant</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">string</code>
+|
+
+<code class="param-type">number</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>ISO string or epoch seconds</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="utils_dateUtils.js.html" class="button">View Source</a>
+            <span>
+                <a href="utils_dateUtils.js.html">utils/dateUtils.js</a>, <a href="utils_dateUtils.js.html#line26">line 26</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><ul>
+<li>Formatted date string</li>
+</ul></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">string</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="toApiDateTime">
+        <a class="href-link" href="#toApiDateTime">#</a>
+        
+        <span class="code-name">
+            
+                toApiDateTime<span class="signature">(date, isEndOfDay)</span><span class="type-signature"> &rarr; {string}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary">Converts a date string (yyyy-mm-dd) or Date object to ISO8601 string in UTC (e.g.</p>
+    
+    
+    <div class="description">
+        <p>Converts a date string (yyyy-mm-dd) or Date object to ISO8601 string in UTC (e.g. 2025-06-01T00:00:00Z).<br>
+If isEndOfDay is true, sets time to 23:59:59, else to 00:00:00.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>date</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">string</code>
+|
+
+<code class="param-type">Date</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>Date string (yyyy-mm-dd) or Date object</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>isEndOfDay</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">boolean</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>Whether to set time to end of day</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="utils_dateUtils.js.html" class="button">View Source</a>
+            <span>
+                <a href="utils_dateUtils.js.html">utils/dateUtils.js</a>, <a href="utils_dateUtils.js.html#line8">line 8</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><ul>
+<li>ISO8601 string in UTC</li>
+</ul></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">string</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+            </div>
+        </div>
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+            </div>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

@@ -1,0 +1,311 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Employee Management System - API Documentation utils/FilterBuilder.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+             
+                <a href="index.html">
+                    <h1 class="navbar-item">Employee Management System</h1>
+                </a>
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-api_apiConfig.html">api/apiConfig</a></li><li><a href="module-config_i18n.html">config/i18n</a></li><li><a href="module-hooks_useErrorMessage.html">hooks/useErrorMessage</a></li><li><a href="module-services_userService.html">services/userService</a></li><li><a href="module-utils_FilterBuilder.html">utils/FilterBuilder</a></li><li><a href="module-utils_validation.html">utils/validation</a></li></ul><h3>Namespaces</h3><ul><li><a href="API_ENDPOINTS.ai.html">ai</a></li><li><a href="API_ENDPOINTS.auth.html">auth</a></li><li><a href="API_ENDPOINTS.auth.twoFactor.html">twoFactor</a></li><li><a href="API_ENDPOINTS.cycles.html">cycles</a></li><li><a href="API_ENDPOINTS.evaluations.html">evaluations</a></li><li><a href="API_ENDPOINTS.export.html">export</a></li><li><a href="API_ENDPOINTS.messages.html">messages</a></li><li><a href="API_ENDPOINTS.notifications.html">notifications</a></li><li><a href="API_ENDPOINTS.stats.html">stats</a></li><li><a href="API_ENDPOINTS.test.html">test</a></li><li><a href="API_ENDPOINTS.trainingParticipation.html">trainingParticipation</a></li><li><a href="API_ENDPOINTS.trainings.html">trainings</a></li><li><a href="API_ENDPOINTS.user.html">user</a></li><li><a href="API_ENDPOINTS.workplaces.html">workplaces</a></li><li><a href="EmployeeManagementSystem.html">EmployeeManagementSystem</a></li><li><a href="module-api_apiConfig-API_ENDPOINTS.html">API_ENDPOINTS</a></li><li><a href="module-services_userService-userService.html">userService</a></li></ul><h3>Classes</h3><ul><li><a href="ApiService.html">ApiService</a></li><li><a href="ErrorBoundary.html">ErrorBoundary</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AVAILABLE_LANGUAGES">AVAILABLE_LANGUAGES</a></li><li><a href="global.html#AddParticipationModal">AddParticipationModal</a></li><li><a href="global.html#AdminDashboard">AdminDashboard</a></li><li><a href="global.html#AdminEvaluationManagement">AdminEvaluationManagement</a></li><li><a href="global.html#AdminTrainingManagement">AdminTrainingManagement</a></li><li><a href="global.html#AppRouter">AppRouter</a></li><li><a href="global.html#ConfirmRegistrationForm">ConfirmRegistrationForm</a></li><li><a href="global.html#Dashboard">Dashboard</a></li><li><a href="global.html#DashboardHeader">DashboardHeader</a></li><li><a href="global.html#ErrorHandlingDemo">ErrorHandlingDemo</a></li><li><a href="global.html#EvaluationCycleBox">EvaluationCycleBox</a></li><li><a href="global.html#EvaluationFilter">EvaluationFilter</a></li><li><a href="global.html#EvaluationList">EvaluationList</a></li><li><a href="global.html#EvaluationTeaser">EvaluationTeaser</a></li><li><a href="global.html#EvaluationsPage">EvaluationsPage</a></li><li><a href="global.html#FloatingChatbot">FloatingChatbot</a></li><li><a href="global.html#Footer">Footer</a></li><li><a href="global.html#ForbiddenPage">ForbiddenPage</a></li><li><a href="global.html#ForbiddenRoute">ForbiddenRoute</a></li><li><a href="global.html#FormDropdownInput">FormDropdownInput</a></li><li><a href="global.html#FormInput">FormInput</a></li><li><a href="global.html#GenericErrorPage">GenericErrorPage</a></li><li><a href="global.html#GenericErrorRoute">GenericErrorRoute</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#Home">Home</a></li><li><a href="global.html#LanguageProvider">LanguageProvider</a></li><li><a href="global.html#LanguageSelector">LanguageSelector</a></li><li><a href="global.html#LoginForm">LoginForm</a></li><li><a href="global.html#MainLayout">MainLayout</a></li><li><a href="global.html#ManagerDashboard">ManagerDashboard</a></li><li><a href="global.html#NetworkErrorPage">NetworkErrorPage</a></li><li><a href="global.html#NetworkErrorRoute">NetworkErrorRoute</a></li><li><a href="global.html#NotFoundPage">NotFoundPage</a></li><li><a href="global.html#NotFoundRoute">NotFoundRoute</a></li><li><a href="global.html#NotificationOffcanvas">NotificationOffcanvas</a></li><li><a href="global.html#OfflinePage">OfflinePage</a></li><li><a href="global.html#PasswordStrengthMeter">PasswordStrengthMeter</a></li><li><a href="global.html#ProfilePage">ProfilePage</a></li><li><a href="global.html#ProfilePicture">ProfilePicture</a></li><li><a href="global.html#QuickActions">QuickActions</a></li><li><a href="global.html#RegisterForm">RegisterForm</a></li><li><a href="global.html#ResetPasswordForm">ResetPasswordForm</a></li><li><a href="global.html#ResetPasswordRequestForm">ResetPasswordRequestForm</a></li><li><a href="global.html#SUPPORTED_LANGUAGES">SUPPORTED_LANGUAGES</a></li><li><a href="global.html#SecuritySettings">SecuritySettings</a></li><li><a href="global.html#ServerErrorPage">ServerErrorPage</a></li><li><a href="global.html#ServerErrorRoute">ServerErrorRoute</a></li><li><a href="global.html#StatsCard">StatsCard</a></li><li><a href="global.html#SubmitButton">SubmitButton</a></li><li><a href="global.html#TeamPerformanceChart">TeamPerformanceChart</a></li><li><a href="global.html#TrainingFilter">TrainingFilter</a></li><li><a href="global.html#TrainingForm">TrainingForm</a></li><li><a href="global.html#TrainingTeaser">TrainingTeaser</a></li><li><a href="global.html#TrainingsPage">TrainingsPage</a></li><li><a href="global.html#TwoFactorRecommendationBanner">TwoFactorRecommendationBanner</a></li><li><a href="global.html#TwoFactorSecuritySettings">TwoFactorSecuritySettings</a></li><li><a href="global.html#TwoFactorVerificationModal">TwoFactorVerificationModal</a></li><li><a href="global.html#UserActivityOverviewChart">UserActivityOverviewChart</a></li><li><a href="global.html#UserDashboard">UserDashboard</a></li><li><a href="global.html#UserEvaluationView">UserEvaluationView</a></li><li><a href="global.html#UserFilters">UserFilters</a></li><li><a href="global.html#UserPerformanceTrendChart">UserPerformanceTrendChart</a></li><li><a href="global.html#UserTrainingProgressChart">UserTrainingProgressChart</a></li><li><a href="global.html#UserTrainingView">UserTrainingView</a></li><li><a href="global.html#VirtualAssistant">VirtualAssistant</a></li><li><a href="global.html#WelcomeCard">WelcomeCard</a></li><li><a href="global.html#apiRequest">apiRequest</a></li><li><a href="global.html#apiService">apiService</a></li><li><a href="global.html#chatbotService">chatbotService</a></li><li><a href="global.html#downloadBlob">downloadBlob</a></li><li><a href="global.html#formatDateToDDMMYYYY">formatDateToDDMMYYYY</a></li><li><a href="global.html#getProfilePictureUrl">getProfilePictureUrl</a></li><li><a href="global.html#handleApiError">handleApiError</a></li><li><a href="global.html#notificationService">notificationService</a></li><li><a href="global.html#preloadProfilePicture">preloadProfilePicture</a></li><li><a href="global.html#toApiDateTime">toApiDateTime</a></li><li><a href="global.html#triggerProfilePictureUpdate">triggerProfilePictureUpdate</a></li><li><a href="global.html#useApiService">useApiService</a></li><li><a href="global.html#useChatbotStore">useChatbotStore</a></li><li><a href="global.html#useErrorHandler">useErrorHandler</a></li><li><a href="global.html#useLanguage">useLanguage</a></li><li><a href="global.html#useManagerStats">useManagerStats</a></li><li><a href="global.html#useNotificationStore">useNotificationStore</a></li><li><a href="global.html#withErrorHandling">withErrorHandling</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>utils/FilterBuilder.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @fileoverview Functional utility for building search filters with fluent API
+ * @module utils/FilterBuilder
+ */
+
+/**
+ * @typedef {Object} FilterBuilder
+ * @property {function} with - Add a filter parameter if value is not null/undefined
+ * @property {function} build - Build and return the completed filters object
+ */
+
+/**
+ * A functional utility for building search filters in a fluent API style.
+ * 
+ * This approach mirrors the backend FilterBuilder pattern but uses a more
+ * modern functional approach instead of classes. It provides a clean, chainable
+ * API for building complex filter objects while automatically handling null/undefined
+ * values to prevent unnecessary parameters in API calls.
+ * 
+ * The FilterBuilder uses closure to maintain state and provides methods for:
+ * - Adding conditional filters (only if value is not null/undefined)
+ * - Building the final filter object
+ * - Chaining multiple filter conditions
+ * 
+ * @function createFilterBuilder
+ * @returns {FilterBuilder} Filter builder object with chainable methods
+ * 
+ * @example
+ * // Basic usage with simple filters
+ * import { createFilterBuilder } from 'utils/FilterBuilder';
+ * 
+ * const filters = createFilterBuilder()
+ *   .with('search', 'john')
+ *   .with('role', 'MANAGER')
+ *   .with('active', true)
+ *   .build();
+ * 
+ * console.log(filters); // { search: 'john', role: 'MANAGER', active: true }
+ * 
+ * @example
+ * // Conditional filters (null/undefined values are ignored)
+ * const searchTerm = ''; // Empty string
+ * const selectedRole = null; // Null value
+ * const isActive = true;
+ * 
+ * const filters = createFilterBuilder()
+ *   .with('search', searchTerm || null) // Will be ignored
+ *   .with('role', selectedRole) // Will be ignored
+ *   .with('active', isActive) // Will be included
+ *   .build();
+ * 
+ * console.log(filters); // { active: true }
+ * 
+ * @example
+ * // Building complex filters for API calls
+ * import { userService } from 'services';
+ * 
+ * function searchUsers(searchParams) {
+ *   const filters = createFilterBuilder()
+ *     .with('search', searchParams.query)
+ *     .with('role', searchParams.role)
+ *     .with('workplace', searchParams.workplace)
+ *     .with('managerId', searchParams.managerId)
+ *     .with('active', searchParams.includeInactive ? undefined : true)
+ *     .with('page', searchParams.page || 0)
+ *     .with('size', searchParams.size || 10)
+ *     .build();
+ * 
+ *   return userService.getAll(filters);
+ * }
+ * 
+ * @example
+ * // Reusable filter builder for different contexts
+ * function createUserFilters(params) {
+ *   return createFilterBuilder()
+ *     .with('search', params.search)
+ *     .with('role', params.role)
+ *     .with('workplace', params.workplace)
+ *     .with('active', params.active)
+ *     .build();
+ * }
+ * 
+ * // Usage in different components
+ * const adminFilters = createUserFilters({ role: 'ADMIN', active: true });
+ * const managerFilters = createUserFilters({ role: 'MANAGER', workplace: 'HQ' });
+ * 
+ * @example
+ * // Integration with form state
+ * import { useState } from 'react';
+ * 
+ * function UserSearchForm() {
+ *   const [searchForm, setSearchForm] = useState({
+ *     query: '',
+ *     role: '',
+ *     workplace: '',
+ *     active: true
+ *   });
+ * 
+ *   const handleSearch = () => {
+ *     const filters = createFilterBuilder()
+ *       .with('search', searchForm.query)
+ *       .with('role', searchForm.role)
+ *       .with('workplace', searchForm.workplace)
+ *       .with('active', searchForm.active)
+ *       .build();
+ * 
+ *     // Use filters in API call
+ *     userService.getAll(filters).then(handleResults);
+ *   };
+ * 
+ *   return (
+ *     &lt;form onSubmit={handleSearch}>
+ *       // Form fields would go here
+ *     &lt;/form>
+ *   );
+ * }
+ * 
+ * @since 1.0.0
+ * @author Development Team
+ */
+export const createFilterBuilder = () => {
+  // Use closure to store the filter state
+  const filters = {};
+
+  return {
+    /**
+     * Adds a filter parameter if the value is not null or undefined
+     * 
+     * This method provides conditional filtering - it only adds the parameter
+     * to the filter object if the value is meaningful (not null or undefined).
+     * This prevents sending unnecessary parameters to the API.
+     * 
+     * @method with
+     * @memberof FilterBuilder
+     * @param {string} key - The filter key/parameter name
+     * @param {*} value - The filter value (added only if not null/undefined)
+     * @returns {FilterBuilder} The filter builder instance for method chaining
+     * 
+     * @example
+     * // Values that will be included
+     * builder.with('search', 'john'); // ✓ Included
+     * builder.with('active', true); // ✓ Included
+     * builder.with('count', 0); // ✓ Included (0 is valid)
+     * builder.with('empty', ''); // ✓ Included (empty string is valid)
+     * 
+     * @example
+     * // Values that will be ignored
+     * builder.with('optional', null); // ✗ Ignored
+     * builder.with('missing', undefined); // ✗ Ignored
+     * 
+     * @example
+     * // Conditional inclusion
+     * const searchTerm = user.query || null;
+     * builder.with('search', searchTerm); // Only included if query exists
+     */
+    with(key, value) {
+      if (value !== null &amp;&amp; value !== undefined) {
+        filters[key] = value;
+      }
+      return this;
+    },
+
+    /**
+     * Builds and returns the completed filters object
+     * 
+     * This method finalizes the filter building process and returns
+     * a new object containing all the added filters. The returned object
+     * is a copy, so the original builder state is preserved.
+     * 
+     * @method build
+     * @memberof FilterBuilder
+     * @returns {Object} The completed filters object with all added parameters
+     * 
+     * @example
+     * // Basic build
+     * const filters = createFilterBuilder()
+     *   .with('search', 'john')
+     *   .with('role', 'ADMIN')
+     *   .build();
+     * 
+     * console.log(filters); // { search: 'john', role: 'ADMIN' }
+     * 
+     * @example
+     * // Empty filters (no parameters added)
+     * const emptyFilters = createFilterBuilder().build();
+     * console.log(emptyFilters); // {}
+     * 
+     * @example
+     * // Reusing builder after build
+     * const builder = createFilterBuilder().with('base', 'value');
+     * const filters1 = builder.with('extra1', 'value1').build();
+     * const filters2 = builder.with('extra2', 'value2').build();
+     * 
+     * // Both filters contain the base parameter plus their extras
+     */
+    build() {
+      return { ...filters };
+    },
+  };
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

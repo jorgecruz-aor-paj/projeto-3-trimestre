@@ -4,10 +4,16 @@
       "src"
     ],
     "includePattern": ".+\\.js(x)?$",
-    "excludePattern": "(node_modules/|docs)"
+    "exclude": [
+      "node_modules",
+      "build",
+      "dist"
+    ],
+    "excludePattern": "(node_modules/|docs/|build/|dist/|\\.test\\.|\\__tests__/)"
   },
   "plugins": [
-    "plugins/markdown"
+    "plugins/markdown",
+    "plugins/summarize"
   ],
   "opts": {
     "recurse": true,
@@ -15,10 +21,26 @@
     "template": "node_modules/better-docs"
   },
   "tags": {
-    "allowUnknownTags": true
+    "allowUnknownTags": true,
+    "dictionaries": ["jsdoc", "closure"]
   },
   "templates": {
     "cleverLinks": true,
-    "monospaceLinks": false
+    "monospaceLinks": false,
+    "better-docs": {
+      "name": "Employee Management System",
+      "title": "Employee Management System - API Documentation",
+      "hideGenerator": true,
+      "navigation": [
+        {
+          "label": "GitHub",
+          "href": "https://github.com/jorgecruz-aor-paj/projeto-3-trimestre"
+        }
+      ]
+    }
+  },
+  "markdown": {
+    "hardwrap": true,
+    "idInHeadings": true
   }
 }

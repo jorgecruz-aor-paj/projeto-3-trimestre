@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Employee Management System - API Documentation EmployeeManagementSystem</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+             
+                <a href="index.html">
+                    <h1 class="navbar-item">Employee Management System</h1>
+                </a>
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-api_apiConfig.html">api/apiConfig</a></li><li><a href="module-config_i18n.html">config/i18n</a></li><li><a href="module-hooks_useErrorMessage.html">hooks/useErrorMessage</a></li><li><a href="module-services_userService.html">services/userService</a></li><li><a href="module-utils_FilterBuilder.html">utils/FilterBuilder</a></li><li><a href="module-utils_validation.html">utils/validation</a></li></ul><h3>Namespaces</h3><ul><li><a href="API_ENDPOINTS.ai.html">ai</a></li><li><a href="API_ENDPOINTS.auth.html">auth</a></li><li><a href="API_ENDPOINTS.auth.twoFactor.html">twoFactor</a></li><li><a href="API_ENDPOINTS.cycles.html">cycles</a></li><li><a href="API_ENDPOINTS.evaluations.html">evaluations</a></li><li><a href="API_ENDPOINTS.export.html">export</a></li><li><a href="API_ENDPOINTS.messages.html">messages</a></li><li><a href="API_ENDPOINTS.notifications.html">notifications</a></li><li><a href="API_ENDPOINTS.stats.html">stats</a></li><li><a href="API_ENDPOINTS.test.html">test</a></li><li><a href="API_ENDPOINTS.trainingParticipation.html">trainingParticipation</a></li><li><a href="API_ENDPOINTS.trainings.html">trainings</a></li><li><a href="API_ENDPOINTS.user.html">user</a></li><li><a href="API_ENDPOINTS.workplaces.html">workplaces</a></li><li><a href="EmployeeManagementSystem.html">EmployeeManagementSystem</a></li><li><a href="module-api_apiConfig-API_ENDPOINTS.html">API_ENDPOINTS</a></li><li><a href="module-services_userService-userService.html">userService</a></li></ul><h3>Classes</h3><ul><li><a href="ApiService.html">ApiService</a></li><li><a href="ErrorBoundary.html">ErrorBoundary</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AVAILABLE_LANGUAGES">AVAILABLE_LANGUAGES</a></li><li><a href="global.html#AddParticipationModal">AddParticipationModal</a></li><li><a href="global.html#AdminDashboard">AdminDashboard</a></li><li><a href="global.html#AdminEvaluationManagement">AdminEvaluationManagement</a></li><li><a href="global.html#AdminTrainingManagement">AdminTrainingManagement</a></li><li><a href="global.html#AppRouter">AppRouter</a></li><li><a href="global.html#ConfirmRegistrationForm">ConfirmRegistrationForm</a></li><li><a href="global.html#Dashboard">Dashboard</a></li><li><a href="global.html#DashboardHeader">DashboardHeader</a></li><li><a href="global.html#ErrorHandlingDemo">ErrorHandlingDemo</a></li><li><a href="global.html#EvaluationCycleBox">EvaluationCycleBox</a></li><li><a href="global.html#EvaluationFilter">EvaluationFilter</a></li><li><a href="global.html#EvaluationList">EvaluationList</a></li><li><a href="global.html#EvaluationTeaser">EvaluationTeaser</a></li><li><a href="global.html#EvaluationsPage">EvaluationsPage</a></li><li><a href="global.html#FloatingChatbot">FloatingChatbot</a></li><li><a href="global.html#Footer">Footer</a></li><li><a href="global.html#ForbiddenPage">ForbiddenPage</a></li><li><a href="global.html#ForbiddenRoute">ForbiddenRoute</a></li><li><a href="global.html#FormDropdownInput">FormDropdownInput</a></li><li><a href="global.html#FormInput">FormInput</a></li><li><a href="global.html#GenericErrorPage">GenericErrorPage</a></li><li><a href="global.html#GenericErrorRoute">GenericErrorRoute</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#Home">Home</a></li><li><a href="global.html#LanguageProvider">LanguageProvider</a></li><li><a href="global.html#LanguageSelector">LanguageSelector</a></li><li><a href="global.html#LoginForm">LoginForm</a></li><li><a href="global.html#MainLayout">MainLayout</a></li><li><a href="global.html#ManagerDashboard">ManagerDashboard</a></li><li><a href="global.html#NetworkErrorPage">NetworkErrorPage</a></li><li><a href="global.html#NetworkErrorRoute">NetworkErrorRoute</a></li><li><a href="global.html#NotFoundPage">NotFoundPage</a></li><li><a href="global.html#NotFoundRoute">NotFoundRoute</a></li><li><a href="global.html#NotificationOffcanvas">NotificationOffcanvas</a></li><li><a href="global.html#OfflinePage">OfflinePage</a></li><li><a href="global.html#PasswordStrengthMeter">PasswordStrengthMeter</a></li><li><a href="global.html#ProfilePage">ProfilePage</a></li><li><a href="global.html#ProfilePicture">ProfilePicture</a></li><li><a href="global.html#QuickActions">QuickActions</a></li><li><a href="global.html#RegisterForm">RegisterForm</a></li><li><a href="global.html#ResetPasswordForm">ResetPasswordForm</a></li><li><a href="global.html#ResetPasswordRequestForm">ResetPasswordRequestForm</a></li><li><a href="global.html#SUPPORTED_LANGUAGES">SUPPORTED_LANGUAGES</a></li><li><a href="global.html#SecuritySettings">SecuritySettings</a></li><li><a href="global.html#ServerErrorPage">ServerErrorPage</a></li><li><a href="global.html#ServerErrorRoute">ServerErrorRoute</a></li><li><a href="global.html#StatsCard">StatsCard</a></li><li><a href="global.html#SubmitButton">SubmitButton</a></li><li><a href="global.html#TeamPerformanceChart">TeamPerformanceChart</a></li><li><a href="global.html#TrainingFilter">TrainingFilter</a></li><li><a href="global.html#TrainingForm">TrainingForm</a></li><li><a href="global.html#TrainingTeaser">TrainingTeaser</a></li><li><a href="global.html#TrainingsPage">TrainingsPage</a></li><li><a href="global.html#TwoFactorRecommendationBanner">TwoFactorRecommendationBanner</a></li><li><a href="global.html#TwoFactorSecuritySettings">TwoFactorSecuritySettings</a></li><li><a href="global.html#TwoFactorVerificationModal">TwoFactorVerificationModal</a></li><li><a href="global.html#UserActivityOverviewChart">UserActivityOverviewChart</a></li><li><a href="global.html#UserDashboard">UserDashboard</a></li><li><a href="global.html#UserEvaluationView">UserEvaluationView</a></li><li><a href="global.html#UserFilters">UserFilters</a></li><li><a href="global.html#UserPerformanceTrendChart">UserPerformanceTrendChart</a></li><li><a href="global.html#UserTrainingProgressChart">UserTrainingProgressChart</a></li><li><a href="global.html#UserTrainingView">UserTrainingView</a></li><li><a href="global.html#VirtualAssistant">VirtualAssistant</a></li><li><a href="global.html#WelcomeCard">WelcomeCard</a></li><li><a href="global.html#apiRequest">apiRequest</a></li><li><a href="global.html#apiService">apiService</a></li><li><a href="global.html#chatbotService">chatbotService</a></li><li><a href="global.html#downloadBlob">downloadBlob</a></li><li><a href="global.html#formatDateToDDMMYYYY">formatDateToDDMMYYYY</a></li><li><a href="global.html#getProfilePictureUrl">getProfilePictureUrl</a></li><li><a href="global.html#handleApiError">handleApiError</a></li><li><a href="global.html#notificationService">notificationService</a></li><li><a href="global.html#preloadProfilePicture">preloadProfilePicture</a></li><li><a href="global.html#toApiDateTime">toApiDateTime</a></li><li><a href="global.html#triggerProfilePictureUpdate">triggerProfilePictureUpdate</a></li><li><a href="global.html#useApiService">useApiService</a></li><li><a href="global.html#useChatbotStore">useChatbotStore</a></li><li><a href="global.html#useErrorHandler">useErrorHandler</a></li><li><a href="global.html#useLanguage">useLanguage</a></li><li><a href="global.html#useManagerStats">useManagerStats</a></li><li><a href="global.html#useNotificationStore">useNotificationStore</a></li><li><a href="global.html#withErrorHandling">withErrorHandling</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Namespace</p>
+                    <h1>EmployeeManagementSystem</h1>
+                </header>
+                
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>EmployeeManagementSystem</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>A comprehensive employee management system built with React that provides<br>
+functionality for managing employees, trainings, evaluations, and organizational<br>
+hierarchy with multi-language support and real-time communication.</p>
+<h2 id="architecture-overview">Architecture Overview</h2>
+<p>The application follows a modern React architecture with:</p>
+<ul>
+<li><strong>Component-based structure</strong> for reusable UI elements</li>
+<li><strong>Context API</strong> for global state management</li>
+<li><strong>Custom hooks</strong> for business logic abstraction</li>
+<li><strong>Service layer</strong> for API communication</li>
+<li><strong>Utility functions</strong> for common operations</li>
+</ul>
+<h2 id="core-features">Core Features</h2>
+<h3 id="user-management">User Management</h3>
+<ul>
+<li>Employee registration and authentication</li>
+<li>Profile management with picture uploads</li>
+<li>Role-based access control (Admin, Manager, Employee)</li>
+<li>Manager-employee relationship management</li>
+</ul>
+<h3 id="training-system">Training System</h3>
+<ul>
+<li>Training creation and management</li>
+<li>Training area categorization</li>
+<li>Participation tracking</li>
+<li>Recommendation system</li>
+</ul>
+<h3 id="evaluation-system">Evaluation System</h3>
+<ul>
+<li>Performance evaluation cycles</li>
+<li>Feedback collection and analysis</li>
+<li>Sentiment analysis integration</li>
+<li>Export capabilities (PDF, CSV, XLSX)</li>
+</ul>
+<h3 id="communication">Communication</h3>
+<ul>
+<li>Real-time messaging system</li>
+<li>Notification system</li>
+<li>WebSocket integration</li>
+<li>AI-powered chatbot assistance</li>
+</ul>
+<h3 id="internationalization">Internationalization</h3>
+<ul>
+<li>Multi-language support (Portuguese, English)</li>
+<li>Dynamic language switching</li>
+<li>Localized date and number formatting</li>
+</ul>
+<h2 id="technical-stack">Technical Stack</h2>
+<ul>
+<li><strong>Frontend</strong>: React 18, React Router, Bootstrap</li>
+<li><strong>State Management</strong>: React Context API, Zustand</li>
+<li><strong>HTTP Client</strong>: Axios with interceptors</li>
+<li><strong>Real-time</strong>: WebSocket</li>
+<li><strong>Internationalization</strong>: i18next</li>
+<li><strong>Testing</strong>: Jest, React Testing Library</li>
+<li><strong>Build Tool</strong>: Create React App</li>
+</ul>
+<h2 id="project-structure">Project Structure</h2>
+<pre class="prettyprint source"><code>src/
+├── api/                 # API configuration and instances
+├── components/          # Reusable UI components
+├── contexts/            # React Context providers
+├── hooks/               # Custom React hooks
+├── pages/               # Page components
+├── routes/              # Routing configuration
+├── services/            # API service layer
+├── stores/              # State management
+├── styles/              # CSS and styling
+├── utils/               # Utility functions
+└── App.js               # Main application component
+</code></pre>
+<h2 id="key-modules">Key Modules</h2>
+<h3 id="services">Services</h3>
+<ul>
+<li><a href="module-services_userService.html"><code>module:services/userService</code></a> - User management operations</li>
+<li><code>module:services/trainingService</code> - Training management</li>
+<li><code>module:services/evaluationService</code> - Evaluation operations</li>
+<li><code>module:services/aiService</code> - AI-powered features</li>
+<li><code>module:services/authService</code> - Authentication</li>
+</ul>
+<h3 id="utilities">Utilities</h3>
+<ul>
+<li><a href="module-utils_validation.html"><code>module:utils/validation</code></a> - Form validation system</li>
+<li><code>module:utils/dateUtils</code> - Date formatting utilities</li>
+<li><a href="module-utils_FilterBuilder.html"><code>module:utils/FilterBuilder</code></a> - Query filter builder</li>
+</ul>
+<h3 id="configuration">Configuration</h3>
+<ul>
+<li><a href="module-api_apiConfig.html"><code>module:api/apiConfig</code></a> - API endpoint configuration</li>
+<li><a href="module-config_i18n.html"><code>module:config/i18n</code></a> - Internationalization setup</li>
+</ul>
+<h2 id="getting-started">Getting Started</h2>
+<h3 id="installation">Installation</h3>
+<pre class="prettyprint source lang-bash"><code>npm install
+</code></pre>
+<h3 id="development">Development</h3>
+<pre class="prettyprint source lang-bash"><code>npm start
+</code></pre>
+<h3 id="build">Build</h3>
+<pre class="prettyprint source lang-bash"><code>npm run build
+</code></pre>
+<h3 id="testing">Testing</h3>
+<pre class="prettyprint source lang-bash"><code>npm test
+</code></pre>
+<h3 id="documentation-generation">Documentation Generation</h3>
+<pre class="prettyprint source lang-bash"><code>npm run docs
+</code></pre>
+<h2 id="api-integration">API Integration</h2>
+<p>The application integrates with a REST API backend that provides:</p>
+<ul>
+<li>User authentication and authorization</li>
+<li>CRUD operations for all entities</li>
+<li>File upload capabilities</li>
+<li>Real-time WebSocket connections</li>
+<li>AI-powered features (sentiment analysis, recommendations)</li>
+</ul>
+<h2 id="security-features">Security Features</h2>
+<ul>
+<li>JWT token-based authentication</li>
+<li>Role-based access control</li>
+<li>Two-factor authentication support</li>
+<li>Secure file upload handling</li>
+<li>CORS and CSRF protection</li>
+</ul>
+<h2 id="performance-considerations">Performance Considerations</h2>
+<ul>
+<li>Lazy loading for components</li>
+<li>Optimized re-renders with React.memo</li>
+<li>Efficient state management</li>
+<li>Caching strategies for API calls</li>
+<li>Bundle splitting and code optimization</li>
+</ul>
+<h2 id="contributing">Contributing</h2>
+<p>When contributing to this project, please:</p>
+<ol>
+<li>Follow the existing code style and patterns</li>
+<li>Add comprehensive JSDoc documentation</li>
+<li>Include unit tests for new features</li>
+<li>Update this documentation as needed</li>
+</ol></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="module-App.html"><code>module:App</code></a> Main application component</li>
+        
+            <li><code>module:routes/AppRouter</code> Application routing</li>
+        
+            <li><code>module:services/index</code> Service layer index</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="index.jsdoc.js.html" class="button">View Source</a>
+            <span>
+                <a href="index.jsdoc.js.html">index.jsdoc.js</a>, <a href="index.jsdoc.js.html#line8">line 8</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+        
+            <h3>Examples</h3>
+            
+    
+        <pre class="prettyprint"><code>// Basic usage of the main application
+import { App } from './App';
+import { createRoot } from 'react-dom/client';
+
+const root = createRoot(document.getElementById('root'));
+root.render(&lt;App />);</code></pre>
+    
+
+    
+        <pre class="prettyprint"><code>// Using a service in a component
+import { userService } from 'services';
+
+function UserProfile() {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    userService.getMe().then(setUser);
+  }, []);
+
+  return &lt;div>{user?.firstName}&lt;/div>;
+}</code></pre>
+    
+
+        
+    
+    </div>
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+            </div>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

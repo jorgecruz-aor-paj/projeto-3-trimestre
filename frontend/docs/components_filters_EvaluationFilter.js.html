@@ -1,0 +1,681 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Employee Management System - API Documentation components/filters/EvaluationFilter.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+             
+                <a href="index.html">
+                    <h1 class="navbar-item">Employee Management System</h1>
+                </a>
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-api_apiConfig.html">api/apiConfig</a></li><li><a href="module-config_i18n.html">config/i18n</a></li><li><a href="module-hooks_useErrorMessage.html">hooks/useErrorMessage</a></li><li><a href="module-services_userService.html">services/userService</a></li><li><a href="module-utils_FilterBuilder.html">utils/FilterBuilder</a></li><li><a href="module-utils_validation.html">utils/validation</a></li></ul><h3>Namespaces</h3><ul><li><a href="API_ENDPOINTS.ai.html">ai</a></li><li><a href="API_ENDPOINTS.auth.html">auth</a></li><li><a href="API_ENDPOINTS.auth.twoFactor.html">twoFactor</a></li><li><a href="API_ENDPOINTS.cycles.html">cycles</a></li><li><a href="API_ENDPOINTS.evaluations.html">evaluations</a></li><li><a href="API_ENDPOINTS.export.html">export</a></li><li><a href="API_ENDPOINTS.messages.html">messages</a></li><li><a href="API_ENDPOINTS.notifications.html">notifications</a></li><li><a href="API_ENDPOINTS.stats.html">stats</a></li><li><a href="API_ENDPOINTS.test.html">test</a></li><li><a href="API_ENDPOINTS.trainingParticipation.html">trainingParticipation</a></li><li><a href="API_ENDPOINTS.trainings.html">trainings</a></li><li><a href="API_ENDPOINTS.user.html">user</a></li><li><a href="API_ENDPOINTS.workplaces.html">workplaces</a></li><li><a href="EmployeeManagementSystem.html">EmployeeManagementSystem</a></li><li><a href="module-api_apiConfig-API_ENDPOINTS.html">API_ENDPOINTS</a></li><li><a href="module-services_userService-userService.html">userService</a></li></ul><h3>Classes</h3><ul><li><a href="ApiService.html">ApiService</a></li><li><a href="ErrorBoundary.html">ErrorBoundary</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AVAILABLE_LANGUAGES">AVAILABLE_LANGUAGES</a></li><li><a href="global.html#AddParticipationModal">AddParticipationModal</a></li><li><a href="global.html#AdminDashboard">AdminDashboard</a></li><li><a href="global.html#AdminEvaluationManagement">AdminEvaluationManagement</a></li><li><a href="global.html#AdminTrainingManagement">AdminTrainingManagement</a></li><li><a href="global.html#AppRouter">AppRouter</a></li><li><a href="global.html#ConfirmRegistrationForm">ConfirmRegistrationForm</a></li><li><a href="global.html#Dashboard">Dashboard</a></li><li><a href="global.html#DashboardHeader">DashboardHeader</a></li><li><a href="global.html#ErrorHandlingDemo">ErrorHandlingDemo</a></li><li><a href="global.html#EvaluationCycleBox">EvaluationCycleBox</a></li><li><a href="global.html#EvaluationFilter">EvaluationFilter</a></li><li><a href="global.html#EvaluationList">EvaluationList</a></li><li><a href="global.html#EvaluationTeaser">EvaluationTeaser</a></li><li><a href="global.html#EvaluationsPage">EvaluationsPage</a></li><li><a href="global.html#FloatingChatbot">FloatingChatbot</a></li><li><a href="global.html#Footer">Footer</a></li><li><a href="global.html#ForbiddenPage">ForbiddenPage</a></li><li><a href="global.html#ForbiddenRoute">ForbiddenRoute</a></li><li><a href="global.html#FormDropdownInput">FormDropdownInput</a></li><li><a href="global.html#FormInput">FormInput</a></li><li><a href="global.html#GenericErrorPage">GenericErrorPage</a></li><li><a href="global.html#GenericErrorRoute">GenericErrorRoute</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#Home">Home</a></li><li><a href="global.html#LanguageProvider">LanguageProvider</a></li><li><a href="global.html#LanguageSelector">LanguageSelector</a></li><li><a href="global.html#LoginForm">LoginForm</a></li><li><a href="global.html#MainLayout">MainLayout</a></li><li><a href="global.html#ManagerDashboard">ManagerDashboard</a></li><li><a href="global.html#NetworkErrorPage">NetworkErrorPage</a></li><li><a href="global.html#NetworkErrorRoute">NetworkErrorRoute</a></li><li><a href="global.html#NotFoundPage">NotFoundPage</a></li><li><a href="global.html#NotFoundRoute">NotFoundRoute</a></li><li><a href="global.html#NotificationOffcanvas">NotificationOffcanvas</a></li><li><a href="global.html#OfflinePage">OfflinePage</a></li><li><a href="global.html#PasswordStrengthMeter">PasswordStrengthMeter</a></li><li><a href="global.html#ProfilePage">ProfilePage</a></li><li><a href="global.html#ProfilePicture">ProfilePicture</a></li><li><a href="global.html#QuickActions">QuickActions</a></li><li><a href="global.html#RegisterForm">RegisterForm</a></li><li><a href="global.html#ResetPasswordForm">ResetPasswordForm</a></li><li><a href="global.html#ResetPasswordRequestForm">ResetPasswordRequestForm</a></li><li><a href="global.html#SUPPORTED_LANGUAGES">SUPPORTED_LANGUAGES</a></li><li><a href="global.html#SecuritySettings">SecuritySettings</a></li><li><a href="global.html#ServerErrorPage">ServerErrorPage</a></li><li><a href="global.html#ServerErrorRoute">ServerErrorRoute</a></li><li><a href="global.html#StatsCard">StatsCard</a></li><li><a href="global.html#SubmitButton">SubmitButton</a></li><li><a href="global.html#TeamPerformanceChart">TeamPerformanceChart</a></li><li><a href="global.html#TrainingFilter">TrainingFilter</a></li><li><a href="global.html#TrainingForm">TrainingForm</a></li><li><a href="global.html#TrainingTeaser">TrainingTeaser</a></li><li><a href="global.html#TrainingsPage">TrainingsPage</a></li><li><a href="global.html#TwoFactorRecommendationBanner">TwoFactorRecommendationBanner</a></li><li><a href="global.html#TwoFactorSecuritySettings">TwoFactorSecuritySettings</a></li><li><a href="global.html#TwoFactorVerificationModal">TwoFactorVerificationModal</a></li><li><a href="global.html#UserActivityOverviewChart">UserActivityOverviewChart</a></li><li><a href="global.html#UserDashboard">UserDashboard</a></li><li><a href="global.html#UserEvaluationView">UserEvaluationView</a></li><li><a href="global.html#UserFilters">UserFilters</a></li><li><a href="global.html#UserPerformanceTrendChart">UserPerformanceTrendChart</a></li><li><a href="global.html#UserTrainingProgressChart">UserTrainingProgressChart</a></li><li><a href="global.html#UserTrainingView">UserTrainingView</a></li><li><a href="global.html#VirtualAssistant">VirtualAssistant</a></li><li><a href="global.html#WelcomeCard">WelcomeCard</a></li><li><a href="global.html#apiRequest">apiRequest</a></li><li><a href="global.html#apiService">apiService</a></li><li><a href="global.html#chatbotService">chatbotService</a></li><li><a href="global.html#downloadBlob">downloadBlob</a></li><li><a href="global.html#formatDateToDDMMYYYY">formatDateToDDMMYYYY</a></li><li><a href="global.html#getProfilePictureUrl">getProfilePictureUrl</a></li><li><a href="global.html#handleApiError">handleApiError</a></li><li><a href="global.html#notificationService">notificationService</a></li><li><a href="global.html#preloadProfilePicture">preloadProfilePicture</a></li><li><a href="global.html#toApiDateTime">toApiDateTime</a></li><li><a href="global.html#triggerProfilePictureUpdate">triggerProfilePictureUpdate</a></li><li><a href="global.html#useApiService">useApiService</a></li><li><a href="global.html#useChatbotStore">useChatbotStore</a></li><li><a href="global.html#useErrorHandler">useErrorHandler</a></li><li><a href="global.html#useLanguage">useLanguage</a></li><li><a href="global.html#useManagerStats">useManagerStats</a></li><li><a href="global.html#useNotificationStore">useNotificationStore</a></li><li><a href="global.html#withErrorHandling">withErrorHandling</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>components/filters/EvaluationFilter.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState, useEffect } from 'react';
+import { Form, Row, Col, Button, InputGroup } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+import PropTypes from 'prop-types';
+import { SearchableUserSelect } from 'components/evaluations/filters/SearchableUserSelect';
+import { useUserList } from 'hooks/useUserList';
+import { exportService, downloadBlob } from 'services/exportService';
+import { translateEvaluationScale } from 'utils/evaluationScaleTranslations';
+import { useAlert } from 'contexts/AlertContext';
+
+/**
+ * Modern evaluation filter component for filtering evaluation list
+ * Unified component with modern design, searchable dropdowns, and export features
+ * @param {Object} props
+ * @param {Object} props.filters - Current filter values
+ * @param {Function} props.onFiltersChange - Filter change handler (legacy)
+ * @param {Function} props.setFilters - Filter change handler (new)
+ * @param {Object} props.user - Current user object
+ * @param {string|number} props.displayedUserId - User ID to exclude from dropdown
+ * @param {React.ReactNode} props.extraFields - Additional filter fields
+ * @returns {React.Component} Modern evaluation filter form
+ */
+export const EvaluationFilter = ({
+  filters,
+  onFiltersChange,
+  setFilters,
+  user,
+  displayedUserId,
+  extraFields,
+}) => {
+  const { t, i18n } = useTranslation();
+  const { userList } = useUserList();
+  const { showAlert } = useAlert();
+  const [searchTerm, setSearchTerm] = useState(filters.searchText || '');
+
+  const handleFilterChange = (field, value) => {
+    // Handle special case for search term with debouncing
+    if (field === 'searchText') {
+      setSearchTerm(value);
+      return;
+    }
+
+    if (setFilters) {
+      setFilters(prev => {
+        const next = { ...prev };
+        if (value === '' || value === null || value === undefined) {
+          delete next[field];
+        } else {
+          next[field] = value;
+        }
+        return next;
+      });
+    } else {
+      // Legacy pattern: use onFiltersChange
+      const newFilters = { ...filters, [field]: value };
+
+      // Remove empty filters
+      Object.keys(newFilters).forEach(key => {
+        if (
+          newFilters[key] === '' ||
+          newFilters[key] === null ||
+          newFilters[key] === undefined
+        ) {
+          delete newFilters[key];
+        }
+      });
+
+      onFiltersChange(newFilters);
+    }
+  };
+
+  // Handle changes from SearchableUserSelect
+  const handleUserSelectChange = e => {
+    const { name, value } = e.target;
+    handleFilterChange(name, value);
+  };
+
+  // Debounce search input to prevent immediate refresh
+  useEffect(() => {
+    const delayedSearch = setTimeout(() => {
+      if (searchTerm !== filters.searchText) {
+        if (setFilters) {
+          setFilters(prev => ({ ...prev, searchText: searchTerm }));
+        } else if (onFiltersChange) {
+          // Use the legacy method without circular call
+          const newFilters = { ...filters, searchText: searchTerm };
+          Object.keys(newFilters).forEach(key => {
+            if (
+              newFilters[key] === '' ||
+              newFilters[key] === null ||
+              newFilters[key] === undefined
+            ) {
+              delete newFilters[key];
+            }
+          });
+          onFiltersChange(newFilters);
+        }
+      }
+    }, 750); // 750ms delay for search
+
+    return () => clearTimeout(delayedSearch);
+  }, [searchTerm, setFilters, onFiltersChange, filters.searchText]);
+
+  // Update local search term when filters change externally (only if not actively typing)
+  useEffect(() => {
+    if (
+      filters.searchText !== searchTerm &amp;&amp;
+      document.activeElement?.name !== 'searchText'
+    ) {
+      setSearchTerm(filters.searchText || '');
+    }
+  }, [filters.searchText]);
+
+  // If manager, always set evaluatorId to himself
+  useEffect(() => {
+    if (
+      user?.role === 'MANAGER' &amp;&amp;
+      user?.id &amp;&amp;
+      filters.evaluatorId !== user.id
+    ) {
+      if (setFilters) {
+        setFilters(prev => ({ ...prev, evaluatorId: user.id }));
+      }
+    }
+  }, [user?.role, user?.id, setFilters, filters.evaluatorId]);
+
+  // Download all evaluations handler (CSV)
+  const handleDownloadAll = async () => {
+    try {
+      const exportFilters = { ...filters };
+      delete exportFilters.startDateDisplay;
+      delete exportFilters.endDateDisplay;
+      const response = await exportService.evaluationsToCSVFiltered(
+        exportFilters
+      );
+      let filename = 'evaluations.csv';
+      if (
+        response &amp;&amp;
+        response.headers &amp;&amp;
+        response.headers['content-disposition']
+      ) {
+        const match = response.headers['content-disposition'].match(
+          /filename="?([^";]+)"?/
+        );
+        if (match &amp;&amp; match[1]) filename = match[1];
+      }
+      const blob = response.data instanceof Blob ? response.data : response;
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      a.setAttribute('download', filename);
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => {
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      }, 200);
+    } catch (error) {
+      console.error('Error downloading evaluations CSV:', error);
+      showAlert({
+        title: t('common.error', 'Error'),
+        message: t(
+          'evaluations.downloadError',
+          'Failed to download evaluations CSV.'
+        ),
+        variant: 'danger',
+      });
+    }
+  };
+
+  // Download all evaluations handler (Excel) - placeholder
+  const handleDownloadExcel = async () => {
+    try {
+      const hasActiveFilters = Object.keys(filters).length > 0;
+
+      let blob;
+      if (hasActiveFilters) {
+        // Export filtered evaluations to XLSX
+        blob = await exportService.evaluationsToXLSXFiltered(filters);
+      } else {
+        // Export all evaluations to XLSX
+        blob = await exportService.evaluationsToXLSX();
+      }
+
+      const timestamp = new Date()
+        .toISOString()
+        .slice(0, 19)
+        .replace(/:/g, '-');
+      const filename = hasActiveFilters
+        ? `evaluations_filtered_export_${timestamp}.xlsx`
+        : `evaluations_export_${timestamp}.xlsx`;
+
+      downloadBlob(
+        blob,
+        filename,
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      );
+    } catch (error) {
+      console.error('Error downloading Excel file:', error);
+      showAlert({
+        title: t('common.error', 'Error'),
+        message: t(
+          'common.excelExportError',
+          'Error downloading Excel file. Please try again.'
+        ),
+        variant: 'danger',
+      });
+    }
+  };
+
+  const handleClearFilters = () => {
+    setSearchTerm('');
+    if (setFilters) {
+      setFilters({});
+    } else {
+      onFiltersChange({});
+    }
+  };
+
+  const statusOptions = [
+    { value: 'ONGOING', label: t('evaluationStatus.ONGOING') },
+    { value: 'CLOSED', label: t('evaluationStatus.CLOSED') },
+    { value: 'COMPLETED', label: t('evaluationStatus.COMPLETED') },
+  ];
+
+  const scaleOptions = [
+    { value: 'LOW_CONTRIBUTION', label: t('evaluationScale.low') },
+    { value: 'PARCIAL_CONTRIBUTION', label: t('evaluationScale.partial') },
+    { value: 'EXPECTED_CONTRIBUTION', label: t('evaluationScale.expected') },
+    { value: 'EXCEED_CONTRIBUTION', label: t('evaluationScale.exceed') },
+  ];
+
+  const sortOptions = [
+    { value: 'EVALUATION_ID', label: t('profile.sortFields.id') },
+    { value: 'EVALUATED_ID', label: t('profile.sortFields.evaluated') },
+    { value: 'EVALUATOR_ID', label: t('profile.sortFields.evaluator') },
+    { value: 'STATUS', label: t('profile.sortFields.status') },
+    { value: 'DATE', label: t('filters.creationDate') },
+    { value: 'SCALE', label: t('filters.scale') },
+  ];
+
+  const hasActiveFilters = Object.keys(filters).length > 0;
+
+  return (
+    &lt;div>
+      {/* Export buttons */}
+      &lt;div className="d-flex justify-content-end gap-2 mb-3">
+        &lt;Button
+          variant="outline-primary"
+          size="sm"
+          onClick={handleDownloadAll}
+          title={t('evaluations.title') + ' CSV'}
+        >
+          &lt;i className="fas fa-file-csv me-1" />
+          CSV
+        &lt;/Button>
+        &lt;Button
+          variant="outline-success"
+          size="sm"
+          onClick={handleDownloadExcel}
+          title={t('evaluations.title') + ' Excel'}
+        >
+          &lt;i className="fas fa-file-excel me-1" />
+          Excel
+        &lt;/Button>
+      &lt;/div>
+
+      &lt;div className="d-flex justify-content-between align-items-center mb-3">
+        &lt;h6 className="mb-0">
+          &lt;i className="bi bi-funnel me-2">&lt;/i>
+          {t('common.filters')}
+        &lt;/h6>
+        {hasActiveFilters &amp;&amp; (
+          &lt;Button
+            variant="outline-secondary"
+            size="sm"
+            onClick={handleClearFilters}
+          >
+            &lt;i className="bi bi-x-circle me-1">&lt;/i>
+            {t('common.clearFilters')}
+          &lt;/Button>
+        )}
+      &lt;/div>
+
+      &lt;Row className="g-3">
+        {/* Search Text */}
+        &lt;Col md={6} lg={4}>
+          &lt;Form.Group>
+            &lt;Form.Label className="small fw-semibold">
+              {t('evaluations.searchFeedback', 'Search in Feedback')}
+            &lt;/Form.Label>
+            &lt;InputGroup>
+              &lt;InputGroup.Text>
+                &lt;i className="bi bi-search">&lt;/i>
+              &lt;/InputGroup.Text>
+              &lt;Form.Control
+                type="text"
+                name="searchText"
+                placeholder={t(
+                  'evaluations.searchFeedbackPlaceholder',
+                  'Search evaluation feedback...'
+                )}
+                value={searchTerm}
+                onChange={e => setSearchTerm(e.target.value)}
+              />
+            &lt;/InputGroup>
+          &lt;/Form.Group>
+        &lt;/Col>
+
+        {/* Evaluator (only for admin) */}
+        {user?.role === 'ADMIN' &amp;&amp; (
+          &lt;Col md={6} lg={4}>
+            &lt;Form.Group>
+              &lt;SearchableUserSelect
+                value={filters.evaluatorId || ''}
+                onChange={handleUserSelectChange}
+                excludeUserId={displayedUserId}
+                label={t('filters.evaluator')}
+                name="evaluatorId"
+                placeholder={t('common.all')}
+              />
+            &lt;/Form.Group>
+          &lt;/Col>
+        )}
+
+        {/* Evaluatee */}
+        &lt;Col md={6} lg={4}>
+          &lt;Form.Group>
+            &lt;SearchableUserSelect
+              value={filters.evaluatedId || ''}
+              onChange={handleUserSelectChange}
+              excludeUserId={null}
+              label={t('filters.evaluatee')}
+              name="evaluatedId"
+              placeholder={t('common.all')}
+            />
+          &lt;/Form.Group>
+        &lt;/Col>
+
+        {/* Status */}
+        &lt;Col md={6} lg={4}>
+          &lt;Form.Group>
+            &lt;Form.Label className="small fw-semibold">
+              {t('evaluationStatus.title')}
+            &lt;/Form.Label>
+            &lt;Form.Select
+              value={filters.status || ''}
+              onChange={e => handleFilterChange('status', e.target.value)}
+            >
+              &lt;option value="">{t('common.all')}&lt;/option>
+              {statusOptions.map(option => (
+                &lt;option key={option.value} value={option.value}>
+                  {option.label}
+                &lt;/option>
+              ))}
+            &lt;/Form.Select>
+          &lt;/Form.Group>
+        &lt;/Col>
+
+        {/* Scale */}
+        &lt;Col md={6} lg={4}>
+          &lt;Form.Group>
+            &lt;Form.Label className="small fw-semibold">
+              {t('evaluationScale.title')}
+            &lt;/Form.Label>
+            &lt;Form.Select
+              value={filters.evaluationScale || ''}
+              onChange={e =>
+                handleFilterChange('evaluationScale', e.target.value)
+              }
+            >
+              &lt;option value="">{t('evaluationScale.any')}&lt;/option>
+              {scaleOptions.map(option => (
+                &lt;option key={option.value} value={option.value}>
+                  {option.label}
+                &lt;/option>
+              ))}
+            &lt;/Form.Select>
+          &lt;/Form.Group>
+        &lt;/Col>
+
+        {/* Sort */}
+        &lt;Col md={12} lg={4}>
+          &lt;Form.Group>
+            &lt;Form.Label className="small fw-semibold">
+              {t('common.sortBy')}
+            &lt;/Form.Label>
+            &lt;Row className="g-2">
+              &lt;Col>
+                &lt;Form.Select
+                  value={filters.evaluationSortField || 'DATE'}
+                  onChange={e =>
+                    handleFilterChange('evaluationSortField', e.target.value)
+                  }
+                >
+                  {sortOptions.map(option => (
+                    &lt;option key={option.value} value={option.value}>
+                      {option.label}
+                    &lt;/option>
+                  ))}
+                &lt;/Form.Select>
+              &lt;/Col>
+              &lt;Col xs="auto">
+                &lt;Button
+                  variant={
+                    filters.ascending ? 'outline-primary' : 'outline-secondary'
+                  }
+                  onClick={() =>
+                    handleFilterChange('ascending', !filters.ascending)
+                  }
+                  title={
+                    filters.ascending
+                      ? t('common.ascending')
+                      : t('common.descending')
+                  }
+                >
+                  &lt;i
+                    className={`bi bi-sort-${
+                      filters.ascending ? 'up' : 'down'
+                    }`}
+                  >&lt;/i>
+                &lt;/Button>
+              &lt;/Col>
+            &lt;/Row>
+          &lt;/Form.Group>
+        &lt;/Col>
+      &lt;/Row>
+
+      {/* Date Range Filter Box - now full width and separated below */}
+      &lt;Row className="mt-4">
+        &lt;Col xs={12}>
+          &lt;div className="border rounded p-3 bg-light">
+            &lt;h6 className="mb-3 text-muted">
+              &lt;i className="bi bi-calendar-range me-2">&lt;/i>
+              {t(
+                'filters.rangeByCycleClosureDate',
+                'Range by evaluation cycle closure'
+              )}
+            &lt;/h6>
+            &lt;Row className="g-2">
+              &lt;Col md={6}>
+                &lt;Form.Group>
+                  &lt;Form.Label className="small fw-semibold">
+                    {t('filters.startDate')}
+                  &lt;/Form.Label>
+                  &lt;Form.Control
+                    type="date"
+                    name="startDate"
+                    value={filters.startDateDisplay || ''}
+                    onChange={e => {
+                      const value = e.target.value;
+                      setFilters(prev => {
+                        const next = { ...prev };
+                        if (value) {
+                          next.startDate = `${value}T00:00:00.000Z`;
+                          next.startDateDisplay = value;
+                        } else {
+                          delete next.startDate;
+                          delete next.startDateDisplay;
+                        }
+                        return next;
+                      });
+                    }}
+                  />
+                &lt;/Form.Group>
+              &lt;/Col>
+              &lt;Col md={6}>
+                &lt;Form.Group>
+                  &lt;Form.Label className="small fw-semibold">
+                    {t('filters.endDate')}
+                  &lt;/Form.Label>
+                  &lt;Form.Control
+                    type="date"
+                    name="endDate"
+                    value={filters.endDateDisplay || ''}
+                    onChange={e => {
+                      const value = e.target.value;
+                      setFilters(prev => {
+                        const next = { ...prev };
+                        if (value) {
+                          next.endDate = `${value}T23:59:59.999Z`;
+                          next.endDateDisplay = value;
+                        } else {
+                          delete next.endDate;
+                          delete next.endDateDisplay;
+                        }
+                        return next;
+                      });
+                    }}
+                  />
+                &lt;/Form.Group>
+              &lt;/Col>
+            &lt;/Row>
+          &lt;/div>
+        &lt;/Col>
+      &lt;/Row>
+
+      {/* Active Filters Summary */}
+      {hasActiveFilters &amp;&amp; (
+        &lt;div className="mt-3 pt-3 border-top">
+          &lt;div className="d-flex flex-wrap gap-2">
+            &lt;small className="text-muted align-self-center">
+              {t('common.activeFilters')}:
+            &lt;/small>
+            {Object.entries(filters).map(([key, value]) => {
+              // Hide startDateDisplay and endDateDisplay from summary
+              if (!value &amp;&amp; value !== false) return null;
+              if (key === 'startDateDisplay' || key === 'endDateDisplay')
+                return null;
+
+              let displayValue = value;
+              if (key === 'status') {
+                displayValue = t(`evaluationStatus.${value}`, value);
+              } else if (key === 'evaluationScale') {
+                displayValue = translateEvaluationScale(value, i18n.language);
+              } else if (key === 'evaluatorId' &amp;&amp; userList) {
+                const userItem = userList.find(
+                  u => String(u.id) === String(value)
+                );
+                displayValue = userItem
+                  ? `${userItem.firstName} ${userItem.lastName}`
+                  : value;
+              } else if (key === 'evaluatedId' &amp;&amp; userList) {
+                const userItem = userList.find(
+                  u => String(u.id) === String(value)
+                );
+                displayValue = userItem
+                  ? `${userItem.firstName} ${userItem.lastName}`
+                  : value;
+              } else if (key === 'startDate') {
+                displayValue = filters.startDateDisplay || value;
+              } else if (key === 'endDate') {
+                displayValue = filters.endDateDisplay || value;
+              }
+
+              return (
+                &lt;span key={key} className="badge bg-light text-dark border">
+                  {t(`filters.${key}`, key)}: {displayValue}
+                  &lt;button
+                    type="button"
+                    className="btn-close btn-close-sm ms-1"
+                    aria-label="Remove filter"
+                    onClick={() => handleFilterChange(key, '')}
+                    style={{ fontSize: '0.7em' }}
+                  >&lt;/button>
+                &lt;/span>
+              );
+            })}
+          &lt;/div>
+        &lt;/div>
+      )}
+
+      {/* Extra fields */}
+      {extraFields}
+    &lt;/div>
+  );
+};
+
+EvaluationFilter.propTypes = {
+  filters: PropTypes.object.isRequired,
+  onFiltersChange: PropTypes.func, // Legacy prop
+  setFilters: PropTypes.func, // New prop
+  user: PropTypes.shape({
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    role: PropTypes.string,
+  }),
+  displayedUserId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  extraFields: PropTypes.node,
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

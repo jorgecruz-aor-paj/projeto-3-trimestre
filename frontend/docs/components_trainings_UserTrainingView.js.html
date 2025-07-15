@@ -1,0 +1,479 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Employee Management System - API Documentation components/trainings/UserTrainingView.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+             
+                <a href="index.html">
+                    <h1 class="navbar-item">Employee Management System</h1>
+                </a>
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-api_apiConfig.html">api/apiConfig</a></li><li><a href="module-config_i18n.html">config/i18n</a></li><li><a href="module-hooks_useErrorMessage.html">hooks/useErrorMessage</a></li><li><a href="module-services_userService.html">services/userService</a></li><li><a href="module-utils_FilterBuilder.html">utils/FilterBuilder</a></li><li><a href="module-utils_validation.html">utils/validation</a></li></ul><h3>Namespaces</h3><ul><li><a href="API_ENDPOINTS.ai.html">ai</a></li><li><a href="API_ENDPOINTS.auth.html">auth</a></li><li><a href="API_ENDPOINTS.auth.twoFactor.html">twoFactor</a></li><li><a href="API_ENDPOINTS.cycles.html">cycles</a></li><li><a href="API_ENDPOINTS.evaluations.html">evaluations</a></li><li><a href="API_ENDPOINTS.export.html">export</a></li><li><a href="API_ENDPOINTS.messages.html">messages</a></li><li><a href="API_ENDPOINTS.notifications.html">notifications</a></li><li><a href="API_ENDPOINTS.stats.html">stats</a></li><li><a href="API_ENDPOINTS.test.html">test</a></li><li><a href="API_ENDPOINTS.trainingParticipation.html">trainingParticipation</a></li><li><a href="API_ENDPOINTS.trainings.html">trainings</a></li><li><a href="API_ENDPOINTS.user.html">user</a></li><li><a href="API_ENDPOINTS.workplaces.html">workplaces</a></li><li><a href="EmployeeManagementSystem.html">EmployeeManagementSystem</a></li><li><a href="module-api_apiConfig-API_ENDPOINTS.html">API_ENDPOINTS</a></li><li><a href="module-services_userService-userService.html">userService</a></li></ul><h3>Classes</h3><ul><li><a href="ApiService.html">ApiService</a></li><li><a href="ErrorBoundary.html">ErrorBoundary</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AVAILABLE_LANGUAGES">AVAILABLE_LANGUAGES</a></li><li><a href="global.html#AddParticipationModal">AddParticipationModal</a></li><li><a href="global.html#AdminDashboard">AdminDashboard</a></li><li><a href="global.html#AdminEvaluationManagement">AdminEvaluationManagement</a></li><li><a href="global.html#AdminTrainingManagement">AdminTrainingManagement</a></li><li><a href="global.html#AppRouter">AppRouter</a></li><li><a href="global.html#ConfirmRegistrationForm">ConfirmRegistrationForm</a></li><li><a href="global.html#Dashboard">Dashboard</a></li><li><a href="global.html#DashboardHeader">DashboardHeader</a></li><li><a href="global.html#ErrorHandlingDemo">ErrorHandlingDemo</a></li><li><a href="global.html#EvaluationCycleBox">EvaluationCycleBox</a></li><li><a href="global.html#EvaluationFilter">EvaluationFilter</a></li><li><a href="global.html#EvaluationList">EvaluationList</a></li><li><a href="global.html#EvaluationTeaser">EvaluationTeaser</a></li><li><a href="global.html#EvaluationsPage">EvaluationsPage</a></li><li><a href="global.html#FloatingChatbot">FloatingChatbot</a></li><li><a href="global.html#Footer">Footer</a></li><li><a href="global.html#ForbiddenPage">ForbiddenPage</a></li><li><a href="global.html#ForbiddenRoute">ForbiddenRoute</a></li><li><a href="global.html#FormDropdownInput">FormDropdownInput</a></li><li><a href="global.html#FormInput">FormInput</a></li><li><a href="global.html#GenericErrorPage">GenericErrorPage</a></li><li><a href="global.html#GenericErrorRoute">GenericErrorRoute</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#Home">Home</a></li><li><a href="global.html#LanguageProvider">LanguageProvider</a></li><li><a href="global.html#LanguageSelector">LanguageSelector</a></li><li><a href="global.html#LoginForm">LoginForm</a></li><li><a href="global.html#MainLayout">MainLayout</a></li><li><a href="global.html#ManagerDashboard">ManagerDashboard</a></li><li><a href="global.html#NetworkErrorPage">NetworkErrorPage</a></li><li><a href="global.html#NetworkErrorRoute">NetworkErrorRoute</a></li><li><a href="global.html#NotFoundPage">NotFoundPage</a></li><li><a href="global.html#NotFoundRoute">NotFoundRoute</a></li><li><a href="global.html#NotificationOffcanvas">NotificationOffcanvas</a></li><li><a href="global.html#OfflinePage">OfflinePage</a></li><li><a href="global.html#PasswordStrengthMeter">PasswordStrengthMeter</a></li><li><a href="global.html#ProfilePage">ProfilePage</a></li><li><a href="global.html#ProfilePicture">ProfilePicture</a></li><li><a href="global.html#QuickActions">QuickActions</a></li><li><a href="global.html#RegisterForm">RegisterForm</a></li><li><a href="global.html#ResetPasswordForm">ResetPasswordForm</a></li><li><a href="global.html#ResetPasswordRequestForm">ResetPasswordRequestForm</a></li><li><a href="global.html#SUPPORTED_LANGUAGES">SUPPORTED_LANGUAGES</a></li><li><a href="global.html#SecuritySettings">SecuritySettings</a></li><li><a href="global.html#ServerErrorPage">ServerErrorPage</a></li><li><a href="global.html#ServerErrorRoute">ServerErrorRoute</a></li><li><a href="global.html#StatsCard">StatsCard</a></li><li><a href="global.html#SubmitButton">SubmitButton</a></li><li><a href="global.html#TeamPerformanceChart">TeamPerformanceChart</a></li><li><a href="global.html#TrainingFilter">TrainingFilter</a></li><li><a href="global.html#TrainingForm">TrainingForm</a></li><li><a href="global.html#TrainingTeaser">TrainingTeaser</a></li><li><a href="global.html#TrainingsPage">TrainingsPage</a></li><li><a href="global.html#TwoFactorRecommendationBanner">TwoFactorRecommendationBanner</a></li><li><a href="global.html#TwoFactorSecuritySettings">TwoFactorSecuritySettings</a></li><li><a href="global.html#TwoFactorVerificationModal">TwoFactorVerificationModal</a></li><li><a href="global.html#UserActivityOverviewChart">UserActivityOverviewChart</a></li><li><a href="global.html#UserDashboard">UserDashboard</a></li><li><a href="global.html#UserEvaluationView">UserEvaluationView</a></li><li><a href="global.html#UserFilters">UserFilters</a></li><li><a href="global.html#UserPerformanceTrendChart">UserPerformanceTrendChart</a></li><li><a href="global.html#UserTrainingProgressChart">UserTrainingProgressChart</a></li><li><a href="global.html#UserTrainingView">UserTrainingView</a></li><li><a href="global.html#VirtualAssistant">VirtualAssistant</a></li><li><a href="global.html#WelcomeCard">WelcomeCard</a></li><li><a href="global.html#apiRequest">apiRequest</a></li><li><a href="global.html#apiService">apiService</a></li><li><a href="global.html#chatbotService">chatbotService</a></li><li><a href="global.html#downloadBlob">downloadBlob</a></li><li><a href="global.html#formatDateToDDMMYYYY">formatDateToDDMMYYYY</a></li><li><a href="global.html#getProfilePictureUrl">getProfilePictureUrl</a></li><li><a href="global.html#handleApiError">handleApiError</a></li><li><a href="global.html#notificationService">notificationService</a></li><li><a href="global.html#preloadProfilePicture">preloadProfilePicture</a></li><li><a href="global.html#toApiDateTime">toApiDateTime</a></li><li><a href="global.html#triggerProfilePictureUpdate">triggerProfilePictureUpdate</a></li><li><a href="global.html#useApiService">useApiService</a></li><li><a href="global.html#useChatbotStore">useChatbotStore</a></li><li><a href="global.html#useErrorHandler">useErrorHandler</a></li><li><a href="global.html#useLanguage">useLanguage</a></li><li><a href="global.html#useManagerStats">useManagerStats</a></li><li><a href="global.html#useNotificationStore">useNotificationStore</a></li><li><a href="global.html#withErrorHandling">withErrorHandling</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>components/trainings/UserTrainingView.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState, useEffect } from 'react';
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Badge,
+  Spinner,
+  Alert,
+  Button,
+  Form,
+  InputGroup,
+} from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+import { trainingService } from 'services/trainingService';
+
+/**
+ * User Training View component
+ * Allows regular users to view and browse available trainings
+ * @returns {React.Component} User training view interface
+ */
+export const UserTrainingView = () => {
+  const { t } = useTranslation();
+
+  // State management
+  const [trainings, setTrainings] = useState([]);
+  const [trainingAreas, setTrainingAreas] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Filter states
+  const [searchText, setSearchText] = useState('');
+  const [selectedArea, setSelectedArea] = useState('');
+  const [selectedLanguage, setSelectedLanguage] = useState('');
+
+  const fetchTrainings = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const filters = {
+        activeOnly: true, // Only show active trainings to users
+      };
+
+      if (searchText) filters.searchText = searchText;
+      if (selectedArea) filters.trainingAreaId = selectedArea;
+      if (selectedLanguage) filters.language = selectedLanguage;
+
+      const data = await trainingService.getAll(filters);
+      setTrainings(data);
+    } catch (err) {
+      setError(err.message || t('trainings.fetchError'));
+      console.error('Failed to fetch trainings:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchTrainingAreas = async () => {
+    try {
+      const areas = await trainingService.getAllAreas();
+      setTrainingAreas(areas);
+    } catch (err) {
+      console.error('Failed to fetch training areas:', err);
+    }
+  };
+
+  // Fetch data on component mount
+  useEffect(() => {
+    fetchTrainings();
+    fetchTrainingAreas();
+  }, []);
+
+  // Refetch when filters change
+  useEffect(() => {
+    const delayedFetch = setTimeout(() => {
+      fetchTrainings();
+    }, 750); // Debounce search
+
+    return () => clearTimeout(delayedFetch);
+  }, [searchText, selectedArea, selectedLanguage]);
+
+  const formatDuration = minutes => {
+    if (minutes &lt; 60) return `${minutes}m`;
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    return mins > 0 ? `${hours}h ${mins}m` : `${hours}h`;
+  };
+
+  const getLanguageBadgeVariant = language => {
+    const variants = {
+      ENGLISH: 'primary',
+      PORTUGUESE: 'success',
+      SPANISH: 'info',
+      FRENCH: 'warning',
+      GERMAN: 'secondary',
+      ITALIAN: 'danger',
+      DUTCH: 'dark',
+    };
+    return variants[language] || 'outline-dark';
+  };
+
+  const commonLanguages = [
+    'ENGLISH',
+    'PORTUGUESE',
+    'SPANISH',
+    'FRENCH',
+    'GERMAN',
+    'ITALIAN',
+    'DUTCH',
+  ];
+
+  const clearFilters = () => {
+    setSearchText('');
+    setSelectedArea('');
+    setSelectedLanguage('');
+  };
+
+  const hasActiveFilters = searchText || selectedArea || selectedLanguage;
+
+  if (loading) {
+    return (
+      &lt;div className="text-center py-5">
+        &lt;Spinner animation="border" variant="primary" className="mb-3" />
+        &lt;p>{t('trainings.loading')}&lt;/p>
+      &lt;/div>
+    );
+  }
+
+  return (
+    &lt;Container fluid className="py-4">
+      {/* Header */}
+      &lt;Row className="mb-4">
+        &lt;Col>
+          &lt;div className="text-center">
+            &lt;h2>
+              {t('trainings.availableTrainings', 'Available Training Programs')}
+            &lt;/h2>
+            &lt;p className="text-muted">
+              {t(
+                'trainings.user.subtitle',
+                'Discover and explore professional development opportunities'
+              )}
+            &lt;/p>
+          &lt;/div>
+        &lt;/Col>
+      &lt;/Row>
+
+      {/* Filters */}
+      &lt;Row className="mb-4">
+        &lt;Col>
+          &lt;Card>
+            &lt;Card.Body>
+              &lt;Row className="g-3">
+                &lt;Col md={6} lg={4}>
+                  &lt;Form.Group>
+                    &lt;Form.Label className="small fw-semibold">
+                      {t('common.search')}
+                    &lt;/Form.Label>
+                    &lt;InputGroup>
+                      &lt;InputGroup.Text>
+                        &lt;i className="bi bi-search">&lt;/i>
+                      &lt;/InputGroup.Text>
+                      &lt;Form.Control
+                        type="text"
+                        placeholder={t('trainings.filter.searchPlaceholder')}
+                        value={searchText}
+                        onChange={e => setSearchText(e.target.value)}
+                      />
+                    &lt;/InputGroup>
+                  &lt;/Form.Group>
+                &lt;/Col>
+
+                &lt;Col md={6} lg={3}>
+                  &lt;Form.Group>
+                    &lt;Form.Label className="small fw-semibold">
+                      {t('trainings.fields.area')}
+                    &lt;/Form.Label>
+                    &lt;Form.Select
+                      value={selectedArea}
+                      onChange={e => setSelectedArea(e.target.value)}
+                    >
+                      &lt;option value="">{t('common.all')}&lt;/option>
+                      {trainingAreas.map(area => (
+                        &lt;option key={area.id} value={area.id}>
+                          {area.name}
+                        &lt;/option>
+                      ))}
+                    &lt;/Form.Select>
+                  &lt;/Form.Group>
+                &lt;/Col>
+
+                &lt;Col md={6} lg={3}>
+                  &lt;Form.Group>
+                    &lt;Form.Label className="small fw-semibold">
+                      {t('trainings.fields.language')}
+                    &lt;/Form.Label>
+                    &lt;Form.Select
+                      value={selectedLanguage}
+                      onChange={e => setSelectedLanguage(e.target.value)}
+                    >
+                      &lt;option value="">{t('common.all')}&lt;/option>
+                      {commonLanguages.map(lang => (
+                        &lt;option key={lang} value={lang}>
+                          {t(`languages.${lang}`)}
+                        &lt;/option>
+                      ))}
+                    &lt;/Form.Select>
+                  &lt;/Form.Group>
+                &lt;/Col>
+
+                &lt;Col md={6} lg={2} className="d-flex align-items-end">
+                  {hasActiveFilters &amp;&amp; (
+                    &lt;Button
+                      variant="outline-secondary"
+                      onClick={clearFilters}
+                      className="w-100"
+                    >
+                      &lt;i className="bi bi-x-circle me-1">&lt;/i>
+                      {t('common.clearFilters')}
+                    &lt;/Button>
+                  )}
+                &lt;/Col>
+              &lt;/Row>
+            &lt;/Card.Body>
+          &lt;/Card>
+        &lt;/Col>
+      &lt;/Row>
+
+      {/* Error Alert */}
+      {error &amp;&amp; (
+        &lt;Row className="mb-4">
+          &lt;Col>
+            &lt;Alert variant="danger">
+              &lt;Alert.Heading>{t('common.error')}&lt;/Alert.Heading>
+              &lt;p>{error}&lt;/p>
+              &lt;Button variant="outline-danger" onClick={fetchTrainings}>
+                {t('common.retry')}
+              &lt;/Button>
+            &lt;/Alert>
+          &lt;/Col>
+        &lt;/Row>
+      )}
+
+      {/* Training Cards */}
+      &lt;Row>
+        {trainings.length === 0 ? (
+          &lt;Col>
+            &lt;div className="text-center py-5">
+              &lt;i className="bi bi-book display-4 text-muted">&lt;/i>
+              &lt;h5 className="mt-3 text-muted">
+                {hasActiveFilters
+                  ? t(
+                      'trainings.user.noMatchingTrainings',
+                      'No trainings match your criteria'
+                    )
+                  : t('trainings.noTrainings', 'No trainings available')}
+              &lt;/h5>
+              &lt;p className="text-muted">
+                {hasActiveFilters
+                  ? t(
+                      'trainings.user.tryDifferentFilters',
+                      'Try adjusting your filters'
+                    )
+                  : t(
+                      'trainings.user.checkBackLater',
+                      'Check back later for new training programs'
+                    )}
+              &lt;/p>
+              {hasActiveFilters &amp;&amp; (
+                &lt;Button variant="primary" onClick={clearFilters}>
+                  {t('common.clearFilters')}
+                &lt;/Button>
+              )}
+            &lt;/div>
+          &lt;/Col>
+        ) : (
+          trainings.map(training => (
+            &lt;Col key={training.id} md={6} lg={4} className="mb-4">
+              &lt;Card className="h-100 shadow-sm training-card">
+                &lt;Card.Body className="d-flex flex-column">
+                  &lt;div className="mb-3">
+                    &lt;div className="d-flex justify-content-between align-items-start mb-2">
+                      &lt;h5 className="card-title mb-0">{training.title}&lt;/h5>
+                      &lt;Badge bg={getLanguageBadgeVariant(training.language)}>
+                        {t(`languages.${training.language}`)}
+                      &lt;/Badge>
+                    &lt;/div>
+
+                    &lt;div className="d-flex gap-2 mb-2">
+                      &lt;Badge bg="light" text="dark">
+                        &lt;i className="bi bi-folder me-1">&lt;/i>
+                        {training.trainingArea?.name}
+                      &lt;/Badge>
+                      &lt;Badge bg="light" text="dark">
+                        &lt;i className="bi bi-clock me-1">&lt;/i>
+                        {formatDuration(training.duration)}
+                      &lt;/Badge>
+                    &lt;/div>
+                  &lt;/div>
+
+                  &lt;Card.Text className="flex-grow-1 text-muted">
+                    {training.description}
+                  &lt;/Card.Text>
+
+                  {training.link &amp;&amp; (
+                    &lt;div className="mt-auto">
+                      &lt;Button
+                        variant="primary"
+                        as="a"
+                        href={training.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-100"
+                      >
+                        &lt;i className="bi bi-arrow-up-right-square me-2">&lt;/i>
+                        {t('trainings.user.accessTraining', 'Access Training')}
+                      &lt;/Button>
+                    &lt;/div>
+                  )}
+                &lt;/Card.Body>
+
+                &lt;Card.Footer className="text-muted small">
+                  &lt;i className="bi bi-calendar3 me-1">&lt;/i>
+                  {t('trainings.user.addedOn', 'Added')}{' '}
+                  {new Date(training.createdAt).toLocaleDateString()}
+                &lt;/Card.Footer>
+              &lt;/Card>
+            &lt;/Col>
+          ))
+        )}
+      &lt;/Row>
+
+      {/* Results Summary */}
+      {trainings.length > 0 &amp;&amp; (
+        &lt;Row className="mt-4">
+          &lt;Col>
+            &lt;div className="text-center text-muted">
+              &lt;small>
+                {t(
+                  'trainings.user.showingResults',
+                  'Showing {{count}} training(s)',
+                  {
+                    count: trainings.length,
+                  }
+                )}
+                {hasActiveFilters &amp;&amp; (
+                  &lt;span>
+                    {' '}
+                    •{' '}
+                    &lt;Button
+                      variant="link"
+                      size="sm"
+                      className="p-0"
+                      onClick={clearFilters}
+                    >
+                      {t('common.clearFilters')}
+                    &lt;/Button>
+                  &lt;/span>
+                )}
+              &lt;/small>
+            &lt;/div>
+          &lt;/Col>
+        &lt;/Row>
+      )}
+    &lt;/Container>
+  );
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

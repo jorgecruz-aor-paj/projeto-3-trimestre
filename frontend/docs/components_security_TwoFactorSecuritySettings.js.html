@@ -1,0 +1,627 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Employee Management System - API Documentation components/security/TwoFactorSecuritySettings.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+             
+                <a href="index.html">
+                    <h1 class="navbar-item">Employee Management System</h1>
+                </a>
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-api_apiConfig.html">api/apiConfig</a></li><li><a href="module-config_i18n.html">config/i18n</a></li><li><a href="module-hooks_useErrorMessage.html">hooks/useErrorMessage</a></li><li><a href="module-services_userService.html">services/userService</a></li><li><a href="module-utils_FilterBuilder.html">utils/FilterBuilder</a></li><li><a href="module-utils_validation.html">utils/validation</a></li></ul><h3>Namespaces</h3><ul><li><a href="API_ENDPOINTS.ai.html">ai</a></li><li><a href="API_ENDPOINTS.auth.html">auth</a></li><li><a href="API_ENDPOINTS.auth.twoFactor.html">twoFactor</a></li><li><a href="API_ENDPOINTS.cycles.html">cycles</a></li><li><a href="API_ENDPOINTS.evaluations.html">evaluations</a></li><li><a href="API_ENDPOINTS.export.html">export</a></li><li><a href="API_ENDPOINTS.messages.html">messages</a></li><li><a href="API_ENDPOINTS.notifications.html">notifications</a></li><li><a href="API_ENDPOINTS.stats.html">stats</a></li><li><a href="API_ENDPOINTS.test.html">test</a></li><li><a href="API_ENDPOINTS.trainingParticipation.html">trainingParticipation</a></li><li><a href="API_ENDPOINTS.trainings.html">trainings</a></li><li><a href="API_ENDPOINTS.user.html">user</a></li><li><a href="API_ENDPOINTS.workplaces.html">workplaces</a></li><li><a href="EmployeeManagementSystem.html">EmployeeManagementSystem</a></li><li><a href="module-api_apiConfig-API_ENDPOINTS.html">API_ENDPOINTS</a></li><li><a href="module-services_userService-userService.html">userService</a></li></ul><h3>Classes</h3><ul><li><a href="ApiService.html">ApiService</a></li><li><a href="ErrorBoundary.html">ErrorBoundary</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AVAILABLE_LANGUAGES">AVAILABLE_LANGUAGES</a></li><li><a href="global.html#AddParticipationModal">AddParticipationModal</a></li><li><a href="global.html#AdminDashboard">AdminDashboard</a></li><li><a href="global.html#AdminEvaluationManagement">AdminEvaluationManagement</a></li><li><a href="global.html#AdminTrainingManagement">AdminTrainingManagement</a></li><li><a href="global.html#AppRouter">AppRouter</a></li><li><a href="global.html#ConfirmRegistrationForm">ConfirmRegistrationForm</a></li><li><a href="global.html#Dashboard">Dashboard</a></li><li><a href="global.html#DashboardHeader">DashboardHeader</a></li><li><a href="global.html#ErrorHandlingDemo">ErrorHandlingDemo</a></li><li><a href="global.html#EvaluationCycleBox">EvaluationCycleBox</a></li><li><a href="global.html#EvaluationFilter">EvaluationFilter</a></li><li><a href="global.html#EvaluationList">EvaluationList</a></li><li><a href="global.html#EvaluationTeaser">EvaluationTeaser</a></li><li><a href="global.html#EvaluationsPage">EvaluationsPage</a></li><li><a href="global.html#FloatingChatbot">FloatingChatbot</a></li><li><a href="global.html#Footer">Footer</a></li><li><a href="global.html#ForbiddenPage">ForbiddenPage</a></li><li><a href="global.html#ForbiddenRoute">ForbiddenRoute</a></li><li><a href="global.html#FormDropdownInput">FormDropdownInput</a></li><li><a href="global.html#FormInput">FormInput</a></li><li><a href="global.html#GenericErrorPage">GenericErrorPage</a></li><li><a href="global.html#GenericErrorRoute">GenericErrorRoute</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#Home">Home</a></li><li><a href="global.html#LanguageProvider">LanguageProvider</a></li><li><a href="global.html#LanguageSelector">LanguageSelector</a></li><li><a href="global.html#LoginForm">LoginForm</a></li><li><a href="global.html#MainLayout">MainLayout</a></li><li><a href="global.html#ManagerDashboard">ManagerDashboard</a></li><li><a href="global.html#NetworkErrorPage">NetworkErrorPage</a></li><li><a href="global.html#NetworkErrorRoute">NetworkErrorRoute</a></li><li><a href="global.html#NotFoundPage">NotFoundPage</a></li><li><a href="global.html#NotFoundRoute">NotFoundRoute</a></li><li><a href="global.html#NotificationOffcanvas">NotificationOffcanvas</a></li><li><a href="global.html#OfflinePage">OfflinePage</a></li><li><a href="global.html#PasswordStrengthMeter">PasswordStrengthMeter</a></li><li><a href="global.html#ProfilePage">ProfilePage</a></li><li><a href="global.html#ProfilePicture">ProfilePicture</a></li><li><a href="global.html#QuickActions">QuickActions</a></li><li><a href="global.html#RegisterForm">RegisterForm</a></li><li><a href="global.html#ResetPasswordForm">ResetPasswordForm</a></li><li><a href="global.html#ResetPasswordRequestForm">ResetPasswordRequestForm</a></li><li><a href="global.html#SUPPORTED_LANGUAGES">SUPPORTED_LANGUAGES</a></li><li><a href="global.html#SecuritySettings">SecuritySettings</a></li><li><a href="global.html#ServerErrorPage">ServerErrorPage</a></li><li><a href="global.html#ServerErrorRoute">ServerErrorRoute</a></li><li><a href="global.html#StatsCard">StatsCard</a></li><li><a href="global.html#SubmitButton">SubmitButton</a></li><li><a href="global.html#TeamPerformanceChart">TeamPerformanceChart</a></li><li><a href="global.html#TrainingFilter">TrainingFilter</a></li><li><a href="global.html#TrainingForm">TrainingForm</a></li><li><a href="global.html#TrainingTeaser">TrainingTeaser</a></li><li><a href="global.html#TrainingsPage">TrainingsPage</a></li><li><a href="global.html#TwoFactorRecommendationBanner">TwoFactorRecommendationBanner</a></li><li><a href="global.html#TwoFactorSecuritySettings">TwoFactorSecuritySettings</a></li><li><a href="global.html#TwoFactorVerificationModal">TwoFactorVerificationModal</a></li><li><a href="global.html#UserActivityOverviewChart">UserActivityOverviewChart</a></li><li><a href="global.html#UserDashboard">UserDashboard</a></li><li><a href="global.html#UserEvaluationView">UserEvaluationView</a></li><li><a href="global.html#UserFilters">UserFilters</a></li><li><a href="global.html#UserPerformanceTrendChart">UserPerformanceTrendChart</a></li><li><a href="global.html#UserTrainingProgressChart">UserTrainingProgressChart</a></li><li><a href="global.html#UserTrainingView">UserTrainingView</a></li><li><a href="global.html#VirtualAssistant">VirtualAssistant</a></li><li><a href="global.html#WelcomeCard">WelcomeCard</a></li><li><a href="global.html#apiRequest">apiRequest</a></li><li><a href="global.html#apiService">apiService</a></li><li><a href="global.html#chatbotService">chatbotService</a></li><li><a href="global.html#downloadBlob">downloadBlob</a></li><li><a href="global.html#formatDateToDDMMYYYY">formatDateToDDMMYYYY</a></li><li><a href="global.html#getProfilePictureUrl">getProfilePictureUrl</a></li><li><a href="global.html#handleApiError">handleApiError</a></li><li><a href="global.html#notificationService">notificationService</a></li><li><a href="global.html#preloadProfilePicture">preloadProfilePicture</a></li><li><a href="global.html#toApiDateTime">toApiDateTime</a></li><li><a href="global.html#triggerProfilePictureUpdate">triggerProfilePictureUpdate</a></li><li><a href="global.html#useApiService">useApiService</a></li><li><a href="global.html#useChatbotStore">useChatbotStore</a></li><li><a href="global.html#useErrorHandler">useErrorHandler</a></li><li><a href="global.html#useLanguage">useLanguage</a></li><li><a href="global.html#useManagerStats">useManagerStats</a></li><li><a href="global.html#useNotificationStore">useNotificationStore</a></li><li><a href="global.html#withErrorHandling">withErrorHandling</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>components/security/TwoFactorSecuritySettings.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState, useEffect } from 'react';
+import {
+  Card,
+  Row,
+  Col,
+  Button,
+  Alert,
+  Modal,
+  Form,
+  Badge,
+  Spinner,
+} from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+import { twoFactorService } from 'services';
+import { useAlert } from 'contexts/AlertContext';
+import { useErrorMessage } from 'hooks/useErrorMessage';
+import QRCode from 'react-qr-code';
+
+/**
+ * Two-Factor Authentication Security Settings Component
+ * Allows users to enable/disable 2FA, view backup codes, and manage 2FA settings
+ */
+export const TwoFactorSecuritySettings = () => {
+  const { t } = useTranslation();
+  const { showAlert } = useAlert();
+  const { getErrorMessage } = useErrorMessage();
+
+  // State management
+  const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [actionLoading, setActionLoading] = useState(false);
+
+  // Setup modal states
+  const [showSetupModal, setShowSetupModal] = useState(false);
+  const [setupData, setSetupData] = useState(null);
+  const [verificationCode, setVerificationCode] = useState('');
+  const [setupStep, setSetupStep] = useState('qr'); // 'qr' | 'verify' | 'backup'
+
+  // Disable modal states
+  const [showDisableModal, setShowDisableModal] = useState(false);
+  const [disablePassword, setDisablePassword] = useState('');
+
+  // Backup codes modal
+  const [showBackupCodesModal, setShowBackupCodesModal] = useState(false);
+  const [backupCodes, setBackupCodes] = useState([]);
+
+  /**
+   * Load the current 2FA status for the user
+   */
+  const loadTwoFactorStatus = async () => {
+    try {
+      setLoading(true);
+      const response = await twoFactorService.getStatus();
+      setTwoFactorEnabled(response.enabled || false);
+    } catch (error) {
+      console.error('Failed to load 2FA status:', error);
+      showAlert({
+        title: t('security.2fa.error'),
+        message: getErrorMessage(error.message || 'Failed to load 2FA status'),
+        variant: 'danger',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Load 2FA status on component mount
+  useEffect(() => {
+    loadTwoFactorStatus();
+  }, []);
+
+  /**
+   * Start the 2FA setup process
+   */
+  const handleSetupStart = async () => {
+    try {
+      setActionLoading(true);
+      const response = await twoFactorService.setup();
+      setSetupData(response);
+      setSetupStep('qr');
+      setShowSetupModal(true);
+    } catch (error) {
+      console.error('Failed to start 2FA setup:', error);
+      showAlert({
+        title: t('security.2fa.setupError'),
+        message: getErrorMessage(error.message || 'Failed to start 2FA setup'),
+        variant: 'danger',
+      });
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  /**
+   * Verify the TOTP code and complete 2FA setup
+   */
+  const handleSetupVerify = async () => {
+    if (!verificationCode || verificationCode.length !== 6) {
+      showAlert({
+        title: t('security.2fa.verificationError'),
+        message: t('security.2fa.invalidCode'),
+        variant: 'warning',
+      });
+      return;
+    }
+
+    try {
+      setActionLoading(true);
+      await twoFactorService.verifyAndEnable(verificationCode);
+
+      setSetupStep('backup');
+      setBackupCodes(setupData.backupCodes || []);
+      setTwoFactorEnabled(true);
+
+      showAlert({
+        title: t('security.2fa.enabledTitle'),
+        message: t('security.2fa.enabledMessage'),
+        variant: 'success',
+      });
+    } catch (error) {
+      console.error('Failed to verify 2FA code:', error);
+      showAlert({
+        title: t('security.2fa.verificationError'),
+        message: getErrorMessage(error.message || 'Invalid verification code'),
+        variant: 'danger',
+      });
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  /**
+   * Disable 2FA with password confirmation
+   */
+  const handleDisable = async () => {
+    if (!disablePassword) {
+      showAlert({
+        title: t('security.2fa.disableError'),
+        message: t('security.2fa.passwordRequired'),
+        variant: 'warning',
+      });
+      return;
+    }
+
+    try {
+      setActionLoading(true);
+      await twoFactorService.disable(disablePassword);
+
+      setTwoFactorEnabled(false);
+      setShowDisableModal(false);
+      setDisablePassword('');
+
+      showAlert({
+        title: t('security.2fa.disabledTitle'),
+        message: t('security.2fa.disabledMessage'),
+        variant: 'success',
+      });
+    } catch (error) {
+      console.error('Failed to disable 2FA:', error);
+      showAlert({
+        title: t('security.2fa.disableError'),
+        message: getErrorMessage(error.message || 'Failed to disable 2FA'),
+        variant: 'danger',
+      });
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  /**
+   * Regenerate backup codes
+   */
+  const handleRegenerateBackupCodes = async () => {
+    try {
+      setActionLoading(true);
+      const response = await twoFactorService.regenerateBackupCodes();
+      setBackupCodes(response.backupCodes || []);
+      setShowBackupCodesModal(true);
+
+      showAlert({
+        title: t('security.2fa.backupCodesRegenerated'),
+        message: t('security.2fa.backupCodesRegeneratedMessage'),
+        variant: 'success',
+      });
+    } catch (error) {
+      console.error('Failed to regenerate backup codes:', error);
+      showAlert({
+        title: t('security.2fa.backupCodesError'),
+        message: getErrorMessage(
+          error.message || 'Failed to regenerate backup codes'
+        ),
+        variant: 'danger',
+      });
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  /**
+   * Close setup modal and reset state
+   */
+  const closeSetupModal = () => {
+    setShowSetupModal(false);
+    setSetupData(null);
+    setVerificationCode('');
+    setSetupStep('qr');
+  };
+
+  /**
+   * Close disable modal and reset state
+   */
+  const closeDisableModal = () => {
+    setShowDisableModal(false);
+    setDisablePassword('');
+  };
+
+  if (loading) {
+    return (
+      &lt;Card className="h-100">
+        &lt;Card.Header>
+          &lt;h5 className="mb-0">{t('security.2fa.title')}&lt;/h5>
+        &lt;/Card.Header>
+        &lt;Card.Body className="d-flex align-items-center justify-content-center">
+          &lt;Spinner animation="border" size="sm" />
+        &lt;/Card.Body>
+      &lt;/Card>
+    );
+  }
+
+  return (
+    &lt;>
+      &lt;Card className="h-100">
+        &lt;Card.Header className="d-flex align-items-center justify-content-between">
+          &lt;h5 className="mb-0">{t('security.2fa.title')}&lt;/h5>
+          &lt;Badge bg={twoFactorEnabled ? 'success' : 'secondary'}>
+            {twoFactorEnabled
+              ? t('security.2fa.enabled')
+              : t('security.2fa.disabled')}
+          &lt;/Badge>
+        &lt;/Card.Header>
+        &lt;Card.Body>
+          &lt;Row>
+            &lt;Col>
+              &lt;p className="text-muted mb-3">{t('security.2fa.description')}&lt;/p>
+
+              {!twoFactorEnabled ? (
+                &lt;Alert variant="info" className="mb-3">
+                  &lt;Alert.Heading as="h6">
+                    {t('security.2fa.recommendationTitle')}
+                  &lt;/Alert.Heading>
+                  &lt;p className="mb-0">
+                    {t('security.2fa.recommendationMessage')}
+                  &lt;/p>
+                &lt;/Alert>
+              ) : (
+                &lt;Alert variant="success" className="mb-3">
+                  &lt;Alert.Heading as="h6">
+                    {t('security.2fa.protectedTitle')}
+                  &lt;/Alert.Heading>
+                  &lt;p className="mb-0">{t('security.2fa.protectedMessage')}&lt;/p>
+                &lt;/Alert>
+              )}
+
+              &lt;div className="d-grid gap-2 d-md-flex">
+                {!twoFactorEnabled ? (
+                  &lt;Button
+                    variant="primary"
+                    onClick={handleSetupStart}
+                    disabled={actionLoading}
+                  >
+                    {actionLoading &amp;&amp; (
+                      &lt;Spinner
+                        as="span"
+                        animation="border"
+                        size="sm"
+                        className="me-2"
+                      />
+                    )}
+                    {t('security.2fa.enable')}
+                  &lt;/Button>
+                ) : (
+                  &lt;>
+                    &lt;Button
+                      variant="outline-primary"
+                      onClick={handleRegenerateBackupCodes}
+                      disabled={actionLoading}
+                    >
+                      {actionLoading &amp;&amp; (
+                        &lt;Spinner
+                          as="span"
+                          animation="border"
+                          size="sm"
+                          className="me-2"
+                        />
+                      )}
+                      {t('security.2fa.regenerateBackupCodes')}
+                    &lt;/Button>
+                    &lt;Button
+                      variant="outline-danger"
+                      onClick={() => setShowDisableModal(true)}
+                      disabled={actionLoading}
+                    >
+                      {t('security.2fa.disable')}
+                    &lt;/Button>
+                  &lt;/>
+                )}
+              &lt;/div>
+            &lt;/Col>
+          &lt;/Row>
+        &lt;/Card.Body>
+      &lt;/Card>
+
+      {/* Setup Modal */}
+      &lt;Modal show={showSetupModal} onHide={closeSetupModal} size="lg" centered>
+        &lt;Modal.Header closeButton>
+          &lt;Modal.Title>{t('security.2fa.setupTitle')}&lt;/Modal.Title>
+        &lt;/Modal.Header>
+        &lt;Modal.Body>
+          {setupStep === 'qr' &amp;&amp; setupData &amp;&amp; (
+            &lt;div className="text-center">
+              &lt;h6 className="mb-3">{t('security.2fa.scanQR')}&lt;/h6>
+              &lt;div className="mb-3 d-flex justify-content-center">
+                &lt;QRCode value={setupData.qrCodeUrl} size={200} />
+              &lt;/div>
+              &lt;Alert variant="info">
+                &lt;small>
+                  &lt;strong>{t('security.2fa.secretKey')}:&lt;/strong>
+                  &lt;br />
+                  &lt;code className="text-break">{setupData.secretKey}&lt;/code>
+                &lt;/small>
+              &lt;/Alert>
+              &lt;p className="text-muted small">
+                {t('security.2fa.setupInstructions')}
+              &lt;/p>
+            &lt;/div>
+          )}
+
+          {setupStep === 'verify' &amp;&amp; (
+            &lt;div>
+              &lt;h6 className="mb-3">{t('security.2fa.enterCode')}&lt;/h6>
+              &lt;Form
+                onSubmit={e => {
+                  e.preventDefault();
+                  if (
+                    verificationCode &amp;&amp;
+                    verificationCode.length === 6 &amp;&amp;
+                    !actionLoading
+                  ) {
+                    handleSetupVerify();
+                  }
+                }}
+              >
+                &lt;Form.Group className="mb-3">
+                  &lt;Form.Label>{t('security.2fa.verificationCode')}&lt;/Form.Label>
+                  &lt;Form.Control
+                    type="text"
+                    maxLength={6}
+                    value={verificationCode}
+                    onChange={e =>
+                      setVerificationCode(e.target.value.replace(/\D/g, ''))
+                    }
+                    placeholder="123456"
+                    className="text-center"
+                    style={{ fontSize: '1.2rem', letterSpacing: '0.2rem' }}
+                  />
+                  &lt;Form.Text className="text-muted">
+                    {t('security.2fa.codeInstructions')}
+                  &lt;/Form.Text>
+                &lt;/Form.Group>
+              &lt;/Form>
+            &lt;/div>
+          )}
+
+          {setupStep === 'backup' &amp;&amp; (
+            &lt;div>
+              &lt;Alert variant="warning">
+                &lt;Alert.Heading as="h6">
+                  {t('security.2fa.backupCodesTitle')}
+                &lt;/Alert.Heading>
+                &lt;p>{t('security.2fa.backupCodesMessage')}&lt;/p>
+              &lt;/Alert>
+              &lt;div className="row">
+                {backupCodes.map((code, index) => (
+                  &lt;div key={index} className="col-6 mb-2">
+                    &lt;code className="d-block text-center p-2 bg-light rounded">
+                      {code}
+                    &lt;/code>
+                  &lt;/div>
+                ))}
+              &lt;/div>
+            &lt;/div>
+          )}
+        &lt;/Modal.Body>
+        &lt;Modal.Footer>
+          {setupStep === 'qr' &amp;&amp; (
+            &lt;>
+              &lt;Button variant="secondary" onClick={closeSetupModal}>
+                {t('common.cancel')}
+              &lt;/Button>
+              &lt;Button variant="primary" onClick={() => setSetupStep('verify')}>
+                {t('security.2fa.continue')}
+              &lt;/Button>
+            &lt;/>
+          )}
+          {setupStep === 'verify' &amp;&amp; (
+            &lt;>
+              &lt;Button variant="secondary" onClick={() => setSetupStep('qr')}>
+                {t('common.back')}
+              &lt;/Button>
+              &lt;Button
+                variant="primary"
+                onClick={handleSetupVerify}
+                disabled={
+                  actionLoading ||
+                  !verificationCode ||
+                  verificationCode.length !== 6
+                }
+              >
+                {actionLoading &amp;&amp; (
+                  &lt;Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    className="me-2"
+                  />
+                )}
+                {t('security.2fa.verify')}
+              &lt;/Button>
+            &lt;/>
+          )}
+          {setupStep === 'backup' &amp;&amp; (
+            &lt;Button variant="primary" onClick={closeSetupModal}>
+              {t('security.2fa.finish')}
+            &lt;/Button>
+          )}
+        &lt;/Modal.Footer>
+      &lt;/Modal>
+
+      {/* Disable Modal */}
+      &lt;Modal show={showDisableModal} onHide={closeDisableModal} centered>
+        &lt;Modal.Header closeButton>
+          &lt;Modal.Title>{t('security.2fa.disableTitle')}&lt;/Modal.Title>
+        &lt;/Modal.Header>
+        &lt;Modal.Body>
+          &lt;Alert variant="warning">{t('security.2fa.disableWarning')}&lt;/Alert>
+          &lt;Form>
+            &lt;Form.Group>
+              &lt;Form.Label>{t('security.2fa.confirmPassword')}&lt;/Form.Label>
+              &lt;Form.Control
+                type="password"
+                value={disablePassword}
+                onChange={e => setDisablePassword(e.target.value)}
+                placeholder={t('security.2fa.enterPassword')}
+              />
+            &lt;/Form.Group>
+          &lt;/Form>
+        &lt;/Modal.Body>
+        &lt;Modal.Footer>
+          &lt;Button variant="secondary" onClick={closeDisableModal}>
+            {t('common.cancel')}
+          &lt;/Button>
+          &lt;Button
+            variant="danger"
+            onClick={handleDisable}
+            disabled={actionLoading || !disablePassword}
+          >
+            {actionLoading &amp;&amp; (
+              &lt;Spinner
+                as="span"
+                animation="border"
+                size="sm"
+                className="me-2"
+              />
+            )}
+            {t('security.2fa.disable')}
+          &lt;/Button>
+        &lt;/Modal.Footer>
+      &lt;/Modal>
+
+      {/* Backup Codes Modal */}
+      &lt;Modal
+        show={showBackupCodesModal}
+        onHide={() => setShowBackupCodesModal(false)}
+        centered
+      >
+        &lt;Modal.Header closeButton>
+          &lt;Modal.Title>{t('security.2fa.backupCodesTitle')}&lt;/Modal.Title>
+        &lt;/Modal.Header>
+        &lt;Modal.Body>
+          &lt;Alert variant="info">
+            {t('security.2fa.newBackupCodesMessage')}
+          &lt;/Alert>
+          &lt;div className="row">
+            {backupCodes.map((code, index) => (
+              &lt;div key={index} className="col-6 mb-2">
+                &lt;code className="d-block text-center p-2 bg-light rounded">
+                  {code}
+                &lt;/code>
+              &lt;/div>
+            ))}
+          &lt;/div>
+        &lt;/Modal.Body>
+        &lt;Modal.Footer>
+          &lt;Button
+            variant="primary"
+            onClick={() => setShowBackupCodesModal(false)}
+          >
+            {t('common.close')}
+          &lt;/Button>
+        &lt;/Modal.Footer>
+      &lt;/Modal>
+    &lt;/>
+  );
+};
+
+// No propTypes needed - component manages its own state
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>
