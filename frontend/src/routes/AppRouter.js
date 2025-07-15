@@ -1,5 +1,6 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
+import PrivateRoute from 'components/common/PrivateRoute';
 import { Home } from 'pages/Home';
 import { TrainingsPage } from 'pages/TrainingsPage';
 import { EvaluationsPage } from 'pages/EvaluationsPage';
@@ -48,8 +49,20 @@ export const AppRouter = () => {
       <Route element={<MainLayout />}>
         {/* General Routes */}
         <Route path="/" element={<Home />} />
-        <Route path="/trainings" element={<TrainingsPage />} />
-        <Route path="/messages" element={<Messages />} />
+        {/* Protected Routes */}
+        <Route element={<PrivateRoute />}>
+          <Route path="/messages" element={<Messages />} />
+          <Route path="/users" element={<UsersPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/evaluation-cycles" element={<EvaluationCyclesPage />} />
+        </Route>
+
+        {/* Training and Evaluation Routes
+            contain return statements for unauthenticated users */}
+          <Route path="/trainings" element={<TrainingsPage />} />
+          <Route path="/evaluations" element={<EvaluationsPage />} />
+
 
         {/* Authentication Routes */}
         <Route path="/auth" element={<AuthTogglePage />} />
@@ -58,15 +71,6 @@ export const AppRouter = () => {
         <Route path="/reset-password" element={<ResetPasswordRequestPage />} />
         <Route path="/reset-password/confirm" element={<ResetPasswordPage />} />
         <Route path="/register/confirm" element={<ConfirmRegistrationPage />} />
-
-        {/* User Routes */}
-        <Route path="/users" element={<UsersPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-
-        {/* Evaluation Cycles Routes */}
-        <Route path="/evaluations" element={<EvaluationsPage />} />
-        <Route path="/evaluation-cycles" element={<EvaluationCyclesPage />} />
 
         {/* Error Routes */}
         <Route path="/error/404" element={<NotFoundRoute />} />
