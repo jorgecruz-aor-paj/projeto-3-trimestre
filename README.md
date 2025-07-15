@@ -1,11 +1,11 @@
 ## Missing features
 
-1. [] 2FA - Two factor authenticator;
+1. [X] 2FA - Two factor authenticator;
 2. [] Exportar para .xlsx;
 3. [] Integração do LLM nas restantes funcionalidades de geração de relatórios e sugestões de melhoria;
 4. [x/-] JavaDoc e JsDoc;
 5. [] Alterar os textos das paǵinas para parecer uma aplicação e não um produto vendido em separado.
-6. [] na ativação do processo de 2FA o botão enter interrompe o processo;
+6. [X] na ativação do processo de 2FA o botão enter interrompe o processo;
 
 ## Known bugs:
 
