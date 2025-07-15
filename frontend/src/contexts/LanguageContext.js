@@ -50,9 +50,15 @@ export const LanguageProvider = ({ children }) => {
         saveMissing: true,
         saveMissingTo: 'all',
 
-        // Configure missing key handling
+        // Configure missing key handling - only log after resources are loaded
         missingKeyHandler: (lng, ns, key) => {
-          console.warn(`Missing translation: "${key}" for language: ${lng}`);
+          // Only log missing keys after initial resources are loaded
+          if (
+            i18n.hasResourceBundle(lng, ns) ||
+            i18n.hasResourceBundle(i18n.options.fallbackLng[0] || 'pt', ns)
+          ) {
+            console.warn(`Missing translation: "${key}" for language: ${lng}`);
+          }
         },
 
         // Optional: Add placeholder text for missing translations
@@ -60,6 +66,21 @@ export const LanguageProvider = ({ children }) => {
           return `➤ ${key} ➤`;
         },
       });
+
+      // Wait for resources to be loaded before marking as initialized
+      await new Promise(resolve => {
+        if (
+          i18n.hasResourceBundle(
+            i18n.language,
+            i18n.options.defaultNS || 'translation'
+          )
+        ) {
+          resolve();
+        } else {
+          i18n.on('loaded', resolve);
+        }
+      });
+
       setIsInitialized(true);
     };
 

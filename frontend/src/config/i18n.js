@@ -90,7 +90,9 @@ export const setupI18n = async (customConfig = {}) => {
   if (!i18n.isInitialized) {
     await i18n.init({
       fallbackLng: 'pt', // Default language (Portuguese)
-      debug: process.env.NODE_ENV === 'development',
+      // Comment out debug mode to prevent i18next logs in browser console
+      // Uncomment the line below for debugging translation issues
+      // debug: process.env.NODE_ENV === 'development',
 
       interpolation: {
         escapeValue: false, // React already escapes values
