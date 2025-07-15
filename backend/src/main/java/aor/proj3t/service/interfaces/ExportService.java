@@ -103,4 +103,57 @@ public interface ExportService {
      * @return a byte array containing the PDF data.
      */
     byte[] exportEvaluationToPDF(Long requesterId, Long evaluationId);
+
+    // XLSX Export Methods
+
+    /**
+     * Exports all users to an XLSX format file.
+     *
+     * @param requesterId the ID of the user requesting the export.
+     * @return a byte array containing the XLSX data.
+     */
+    byte[] exportUsersToXLSX(Long requesterId);
+
+    /**
+     * Exports filtered users to an XLSX format file.
+     *
+     * @param requesterId the ID of the user requesting the export.
+     * @param filters     the filters to apply to the user list.
+     * @return a byte array containing the XLSX data.
+     */
+    byte[] exportFilteredUsersToXLSX(Long requesterId, UserFilter filters);
+
+    /**
+     * Exports all evaluations to an XLSX format file.
+     *
+     * @param requesterId the ID of the user requesting the export.
+     * @return a byte array containing the XLSX data.
+     */
+    byte[] exportEvaluationsToXLSX(Long requesterId);
+
+    /**
+     * Exports filtered evaluations to an XLSX format file.
+     *
+     * @param requesterId the ID of the user requesting the export.
+     * @param filters     the filters to apply to the evaluation list.
+     * @return a byte array containing the XLSX data.
+     */
+    byte[] exportFilteredEvaluationsToXLSX(Long requesterId, EvaluationFilter filters);
+
+    /**
+     * Exports all trainings to an XLSX format file.
+     *
+     * @param requesterId the ID of the user requesting the export.
+     * @return a byte array containing the XLSX data.
+     */
+    byte[] exportTrainingsToXLSX(Long requesterId);
+
+    /**
+     * Exports filtered trainings to an XLSX format file.
+     *
+     * @param requesterId the ID of the user requesting the export.
+     * @param filters     the filters to apply to the training list.
+     * @return a byte array containing the XLSX data.
+     */
+    byte[] exportFilteredTrainingsToXLSX(Long requesterId, TrainingFilter filters);
 }

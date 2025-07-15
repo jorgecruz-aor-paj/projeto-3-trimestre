@@ -285,4 +285,49 @@ public final class AppConstants {
         public static final int MAX_URL_LENGTH = 500;
     }
 
+    /**
+     * Constants for export file types and MIME types.
+     * 
+     * This class provides constants related to file export functionality,
+     * including MIME types for various export formats.
+     * 
+     * @author Jorge Cruz & João Osório - Gr4
+     * @version 1.0
+     */
+    public static final class Export {
+        private Export() {
+            // Prevent instantiation
+        }
+
+        /**
+         * MIME type for CSV files
+         */
+        public static final String CSV_MIME_TYPE = "text/csv";
+
+        /**
+         * MIME type for XLSX files
+         */
+        public static final String XLSX_MIME_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
+        /**
+         * MIME type for PDF files
+         */
+        public static final String PDF_MIME_TYPE = "application/pdf";
+
+        /**
+         * File extension for CSV files
+         */
+        public static final String CSV_EXTENSION = ".csv";
+
+        /**
+         * File extension for XLSX files
+         */
+        public static final String XLSX_EXTENSION = ".xlsx";
+
+        /**
+         * File extension for PDF files
+         */
+        public static final String PDF_EXTENSION = ".pdf";
+    }
+
 }
