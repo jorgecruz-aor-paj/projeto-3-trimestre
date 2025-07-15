@@ -42,6 +42,7 @@ gerenciamento de dependências -->
         <opencsv.version>5.5</opencsv.version>
         <apachePOI.version>5.4.1</apachePOI.version>
         <itext.version>9.2.0</itext.version>
+        <commons-io.version>2.17.0</commons-io.version>
 
         <!-- Maven related configurations -->
 
@@ -202,6 +203,13 @@ gerenciamento de dependências -->
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
             <version>${apachePOI.version}</version>
+        </dependency>
+
+        <!-- Dependência do Apache Commons IO para suporte ao Apache POI -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io.version}</version>
         </dependency>
 
         <!-- Dependência do iText para manipulação de arquivos PDF -->
