@@ -114,9 +114,7 @@ export const ProfileEvaluationsFilter = ({
 
   const sortOptions = [
     { value: 'EVALUATION_ID', label: t('profile.sortFields.id') },
-    { value: 'EVALUATED_ID', label: t('profile.sortFields.evaluated') },
     { value: 'EVALUATOR_ID', label: t('profile.sortFields.evaluator') },
-    { value: 'STATUS', label: t('profile.sortFields.status') },
     { value: 'SCALE', label: t('filters.scale') },
   ];
 
@@ -142,7 +140,8 @@ export const ProfileEvaluationsFilter = ({
           <i className="fas fa-file-csv me-1" />
           CSV
         </Button>
-        <Button
+        {/* Excell export button }
+                <Button
           variant="outline-success"
           size="sm"
           title={t('evaluations.title') + ' Excel'}
@@ -150,7 +149,7 @@ export const ProfileEvaluationsFilter = ({
         >
           <i className="fas fa-file-excel me-1" />
           Excel
-        </Button>
+        </Button> */}
       </div>
 
       <div className="d-flex justify-content-between align-items-center mb-3">

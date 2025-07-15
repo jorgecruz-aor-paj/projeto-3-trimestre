@@ -39,15 +39,15 @@ export const EvaluationFilter = ({
     }
 
     if (setFilters) {
-      // New pattern: use setFilters function
-      if (field === 'startDate' || field === 'endDate') {
-        setFilters(prev => ({ ...prev, [field]: value }));
-      } else {
-        setFilters(prev => ({
-          ...prev,
-          [field]: typeof value === 'boolean' ? value : value,
-        }));
-      }
+      setFilters(prev => {
+        const next = { ...prev };
+        if (value === '' || value === null || value === undefined) {
+          delete next[field];
+        } else {
+          next[field] = value;
+        }
+        return next;
+      });
     } else {
       // Legacy pattern: use onFiltersChange
       const newFilters = { ...filters, [field]: value };
@@ -163,6 +163,8 @@ export const EvaluationFilter = ({
     }
   };
 
+  // TODO: Implement Excel export if needed
+/*
   // Download all evaluations handler (Excel) - placeholder
   const handleDownloadExcel = () => {
     // TODO: Implement Excel export if needed
@@ -171,6 +173,7 @@ export const EvaluationFilter = ({
       window.alert('Excel export not implemented.');
     }
   };
+*/
 
   const handleClearFilters = () => {
     setSearchTerm('');
@@ -218,6 +221,7 @@ export const EvaluationFilter = ({
           <i className="fas fa-file-csv me-1" />
           CSV
         </Button>
+        {/* Excel download button 
         <Button
           variant="outline-success"
           size="sm"
@@ -227,6 +231,7 @@ export const EvaluationFilter = ({
           <i className="fas fa-file-excel me-1" />
           Excel
         </Button>
+        */}
       </div>
 
       <div className="d-flex justify-content-between align-items-center mb-3">

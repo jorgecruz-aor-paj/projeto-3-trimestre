@@ -55,11 +55,6 @@ public class AuthorizationServiceImpl extends BaseService implements Authorizati
                 throw new ForbiddenException("Permission denied",
                         "User with id " + requester.getId() + " cannot access evaluations for user " + evaluatedId);
             }
-
-            if (evaluatorId != null && !isUserManagerOfRequester(evaluatorId, requester.getId())) {
-                throw new ForbiddenException("Permission denied",
-                        "User with id " + requester.getId() + " cannot access evaluations by evaluator " + evaluatorId);
-            }
         }
 
         // Managers can see evaluations where they are evaluated or where they are the
@@ -72,13 +67,6 @@ public class AuthorizationServiceImpl extends BaseService implements Authorizati
                     !isRequesterManagerOf(requester.getId(), evaluatedId)) {
                 throw new ForbiddenException("Permission denied",
                         "Manager with id " + requester.getId() + " cannot access evaluations for user " + evaluatedId);
-            }
-
-            // If evaluatorId specified, must be the requester
-            if (evaluatorId != null && !evaluatorId.equals(requester.getId())) {
-                throw new ForbiddenException("Permission denied",
-                        "Manager with id " + requester.getId() + " cannot access evaluations by evaluator "
-                                + evaluatorId);
             }
         }
     }
