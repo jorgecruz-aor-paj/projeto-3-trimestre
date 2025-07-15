@@ -472,7 +472,17 @@ public class ExportServiceImpl extends BaseService implements ExportService {
     }
 
     /**
-     * Creates a table with basic information about the evaluation
+     * Creates a table with basic information about the evaluation.
+     * <p>
+     * This method generates a two-column table containing essential evaluation
+     * details
+     * including ID, status, scale, creation date, and last modification date.
+     * The table includes a header row with gray background for better visual
+     * presentation.
+     * </p>
+     * 
+     * @param evaluation The evaluation entity containing the data to display
+     * @return Table with formatted evaluation information
      */
     private Table createBasicInfoTable(Evaluation evaluation) {
         Table table = new Table(UnitValue.createPercentArray(new float[] { 50, 50 }));
@@ -504,7 +514,19 @@ public class ExportServiceImpl extends BaseService implements ExportService {
     }
 
     /**
-     * Creates a table with information about the evaluator and evaluated
+     * Creates a table with information about the evaluator and evaluated users.
+     * <p>
+     * This method generates a comprehensive table displaying information about both
+     * the evaluator and the evaluated user, including their IDs, full names,
+     * emails,
+     * and roles. The table is divided into two sections with appropriate headers
+     * for clear organization.
+     * </p>
+     * 
+     * @param evaluator The user who performed the evaluation
+     * @param evaluated The user who was evaluated
+     * @return Table with formatted user information for both evaluator and
+     *         evaluated
      */
     private Table createUserInfoTable(User evaluator, User evaluated) {
         Table table = new Table(UnitValue.createPercentArray(new float[] { 50, 50 }));
@@ -538,7 +560,17 @@ public class ExportServiceImpl extends BaseService implements ExportService {
     }
 
     /**
-     * Creates a table with detailed evaluation information
+     * Creates a table with detailed evaluation status information.
+     * <p>
+     * This method generates a single-column table that displays status-specific
+     * information about the evaluation. The content varies based on the
+     * evaluation's
+     * current status (ONGOING, COMPLETED, or CLOSED) to provide contextual
+     * information.
+     * </p>
+     * 
+     * @param evaluation The evaluation entity containing status information
+     * @return Table with formatted evaluation status details
      */
     private Table createEvaluationDetailsTable(Evaluation evaluation) {
         Table table = new Table(1);
@@ -569,7 +601,16 @@ public class ExportServiceImpl extends BaseService implements ExportService {
     }
 
     /**
-     * Creates a section for the evaluation feedback
+     * Creates a section for displaying evaluation feedback.
+     * <p>
+     * This method generates a single-column table specifically designed to display
+     * evaluation feedback text. The table includes a header row with gray
+     * background
+     * and a content cell containing the feedback text.
+     * </p>
+     * 
+     * @param feedback The feedback text to display in the table
+     * @return Table with formatted feedback section
      */
     private Table createFeedbackSection(String feedback) {
         Table table = new Table(1);
@@ -589,7 +630,16 @@ public class ExportServiceImpl extends BaseService implements ExportService {
     }
 
     /**
-     * Utility method to add a row to a table with label and value
+     * Utility method to add a row to a table with label and value.
+     * <p>
+     * This helper method creates a two-cell row in a table, with the first cell
+     * containing a label and the second cell containing the corresponding value.
+     * Null values are automatically converted to "N/A" for better presentation.
+     * </p>
+     * 
+     * @param table The table to add the row to
+     * @param label The label text for the first cell
+     * @param value The value text for the second cell (null values become "N/A")
      */
     private void addTableRow(Table table, String label, String value) {
         Cell labelCell = new Cell();
@@ -653,6 +703,14 @@ public class ExportServiceImpl extends BaseService implements ExportService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Retrieves all users from the database and exports them to XLSX format.
+     * This method generates a comprehensive Excel spreadsheet containing all user
+     * information with proper formatting and styling.
+     * </p>
+     */
     @Override
     public byte[] exportUsersToXLSX(Long requesterId) {
         logger.info("Processing request to export all users to XLSX from user ID: {}", requesterId);
@@ -672,6 +730,15 @@ public class ExportServiceImpl extends BaseService implements ExportService {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Retrieves filtered users from the database and exports them to XLSX format.
+     * This method generates a comprehensive Excel spreadsheet containing filtered
+     * user
+     * information with proper formatting and styling based on the provided filters.
+     * </p>
+     */
     @Override
     public byte[] exportFilteredUsersToXLSX(Long requesterId, UserFilter filters) {
         logger.info("Processing request to export filtered users to XLSX from user ID: {}", requesterId);
@@ -692,6 +759,15 @@ public class ExportServiceImpl extends BaseService implements ExportService {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Retrieves all evaluations from the database and exports them to XLSX format.
+     * This method generates a comprehensive Excel spreadsheet containing all
+     * evaluation
+     * information with proper formatting and styling.
+     * </p>
+     */
     @Override
     public byte[] exportEvaluationsToXLSX(Long requesterId) {
         logger.info("Processing request to export all evaluations to XLSX from user ID: {}", requesterId);
@@ -711,6 +787,16 @@ public class ExportServiceImpl extends BaseService implements ExportService {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Retrieves filtered evaluations from the database and exports them to XLSX
+     * format.
+     * This method generates a comprehensive Excel spreadsheet containing filtered
+     * evaluation
+     * information with proper formatting and styling based on the provided filters.
+     * </p>
+     */
     @Override
     public byte[] exportFilteredEvaluationsToXLSX(Long requesterId, EvaluationFilter filters) {
         logger.info("Processing request to export filtered evaluations to XLSX from user ID: {}", requesterId);
@@ -731,6 +817,15 @@ public class ExportServiceImpl extends BaseService implements ExportService {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Retrieves all trainings from the database and exports them to XLSX format.
+     * This method generates a comprehensive Excel spreadsheet containing all
+     * training
+     * information with proper formatting and styling.
+     * </p>
+     */
     @Override
     public byte[] exportTrainingsToXLSX(Long requesterId) {
         logger.info("Processing request to export all trainings to XLSX from user ID: {}", requesterId);
@@ -750,6 +845,16 @@ public class ExportServiceImpl extends BaseService implements ExportService {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Retrieves filtered trainings from the database and exports them to XLSX
+     * format.
+     * This method generates a comprehensive Excel spreadsheet containing filtered
+     * training
+     * information with proper formatting and styling based on the provided filters.
+     * </p>
+     */
     @Override
     public byte[] exportFilteredTrainingsToXLSX(Long requesterId, TrainingFilter filters) {
         logger.info("Processing request to export filtered trainings to XLSX from user ID: {}", requesterId);
