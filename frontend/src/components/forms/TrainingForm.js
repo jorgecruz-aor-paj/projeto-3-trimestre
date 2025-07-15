@@ -26,6 +26,7 @@ export const TrainingForm = ({
   trainingAreas = [],
   loading = false,
   isEditing = false,
+  readOnly = false,
 }) => {
   const { t } = useTranslation();
   const { getErrorMessage } = useErrorMessage();
@@ -101,6 +102,7 @@ export const TrainingForm = ({
             onChange={handleInputChange}
             placeholder={t('trainings.form.titlePlaceholder')}
             error={getErrorMessage(errors.title)}
+            disabled={readOnly}
           />
         </Col>
 
@@ -121,6 +123,7 @@ export const TrainingForm = ({
             }))}
             error={getErrorMessage(errors.trainingArea)}
             placeholder={t('trainings.form.selectArea')}
+            disabled={readOnly}
           />
         </Col>
       </Row>
@@ -135,6 +138,7 @@ export const TrainingForm = ({
             onChange={handleInputChange}
             placeholder={t('trainings.form.durationPlaceholder')}
             error={getErrorMessage(errors.duration)}
+            disabled={readOnly}
           />
         </Col>
 
@@ -150,6 +154,7 @@ export const TrainingForm = ({
             }))}
             error={getErrorMessage(errors.language)}
             placeholder={t('trainings.form.selectLanguage')}
+            disabled={readOnly}
           />
         </Col>
       </Row>
@@ -162,6 +167,7 @@ export const TrainingForm = ({
         onChange={handleInputChange}
         placeholder={t('trainings.form.descriptionPlaceholder')}
         error={getErrorMessage(errors.description)}
+        disabled={readOnly}
       />
       <Form.Text className="text-muted d-block mb-3">
         {t('trainings.form.descriptionHint')} ({formData.description.length}
@@ -176,6 +182,7 @@ export const TrainingForm = ({
         onChange={handleInputChange}
         placeholder={t('trainings.form.linkPlaceholder')}
         error={getErrorMessage(errors.link)}
+        disabled={readOnly}
       />
       <Form.Text className="text-muted d-block mb-4">
         {t('trainings.form.linkHint')}
@@ -185,10 +192,14 @@ export const TrainingForm = ({
         <Button variant="secondary" onClick={onCancel} disabled={loading}>
           {t('common.cancel')}
         </Button>
-        <Button variant="primary" type="submit" disabled={loading}>
-          {loading && <Spinner animation="border" size="sm" className="me-2" />}
-          {isEditing ? t('common.update') : t('common.create')}
-        </Button>
+        {!readOnly && (
+          <Button variant="primary" type="submit" disabled={loading}>
+            {loading && (
+              <Spinner animation="border" size="sm" className="me-2" />
+            )}
+            {isEditing ? t('common.update') : t('common.create')}
+          </Button>
+        )}
       </div>
     </Form>
   );

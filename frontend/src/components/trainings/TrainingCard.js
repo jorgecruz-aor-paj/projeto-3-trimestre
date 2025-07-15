@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 export const TrainingCard = ({
   training,
   onEdit,
+  onView,
   onDeactivate,
   showActions = true,
 }) => {
@@ -67,20 +68,36 @@ export const TrainingCard = ({
 
         {showActions && (
           <div className="d-flex gap-2 justify-content-end mt-3">
-            <OverlayTrigger
-              placement="top"
-              overlay={<Tooltip>{t('common.edit')}</Tooltip>}
-            >
-              <Button
-                variant="outline-primary"
-                size="sm"
-                onClick={() => onEdit(training)}
+            {onEdit && (
+              <OverlayTrigger
+                placement="top"
+                overlay={<Tooltip>{t('common.edit')}</Tooltip>}
               >
-                <i className="bi bi-pencil"></i>
-              </Button>
-            </OverlayTrigger>
-
-            {training.active && (
+                <Button
+                  variant="outline-primary"
+                  size="sm"
+                  onClick={() => training.active && onEdit(training)}
+                  disabled={!training.active}
+                >
+                  <i className="bi bi-pencil"></i>
+                </Button>
+              </OverlayTrigger>
+            )}
+            {!training.active && onView && (
+              <OverlayTrigger
+                placement="top"
+                overlay={<Tooltip>{t('common.view')}</Tooltip>}
+              >
+                <Button
+                  variant="outline-secondary"
+                  size="sm"
+                  onClick={() => onView(training)}
+                >
+                  <i className="bi bi-eye"></i>
+                </Button>
+              </OverlayTrigger>
+            )}
+            {training.active && onDeactivate && (
               <OverlayTrigger
                 placement="top"
                 overlay={<Tooltip>{t('trainings.admin.deactivate')}</Tooltip>}
@@ -94,7 +111,6 @@ export const TrainingCard = ({
                 </Button>
               </OverlayTrigger>
             )}
-
             {training.link && (
               <OverlayTrigger
                 placement="top"
@@ -138,6 +154,7 @@ TrainingCard.propTypes = {
     }),
   }).isRequired,
   onEdit: PropTypes.func,
+  onView: PropTypes.func,
   onDeactivate: PropTypes.func,
   showActions: PropTypes.bool,
 };

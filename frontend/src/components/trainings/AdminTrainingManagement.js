@@ -319,10 +319,22 @@ export const AdminTrainingManagement = () => {
                     <Col key={training.id}>
                       <TrainingCard
                         training={training}
-                        onEdit={() => {
-                          setSelectedTraining(training);
-                          setShowEditModal(true);
-                        }}
+                        onEdit={
+                          training.active === false
+                            ? undefined
+                            : () => {
+                                setSelectedTraining(training);
+                                setShowEditModal(true);
+                              }
+                        }
+                        onView={
+                          training.active === false
+                            ? () => {
+                                setSelectedTraining(training);
+                                setShowEditModal(true);
+                              }
+                            : undefined
+                        }
                         onDeactivate={handleDeactivateTraining}
                       />
                     </Col>
@@ -377,6 +389,7 @@ export const AdminTrainingManagement = () => {
               trainingAreas={trainingAreas}
               loading={formLoading}
               isEditing={true}
+              readOnly={selectedTraining.active === false}
             />
           )}
         </Modal.Body>
