@@ -3,6 +3,8 @@
     "required": "Este campo é obrigatório",
     "minLength": "Este campo deve ter pelo menos {{min}} caracteres",
     "maxLength": "Este campo não pode ter mais de {{max}} caracteres",
+    "minValue": "O valor mínimo é {{min}}",
+    "maxValue": "O valor máximo é {{max}}",
     "pattern": "O valor inserido não é válido",
     "url": "Por favor, insira um URL válido",
     "numberOnly": "Por favor, insira apenas números",

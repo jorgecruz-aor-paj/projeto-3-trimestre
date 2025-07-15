@@ -3,6 +3,8 @@
     "required": "This field is required",
     "minLength": "This field must have at least {min} characters",
     "maxLength": "This field cannot have more than {max} characters",
+    "minValue": "Minimum value is {{min}}",
+    "maxValue": "Maximum value is {{max}}",
     "pattern": "The entered value is not valid",
     "url": "Please enter a valid URL",
     "numberOnly": "Please enter numbers only",

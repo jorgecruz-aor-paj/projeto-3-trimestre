@@ -217,6 +217,8 @@
     "required": "Este campo é obrigatório",
     "minLength": "Mínimo {{min}} caracteres necessários",
     "maxLength": "Máximo {{max}} caracteres permitidos",
+    "minValue": "O valor mínimo é {{min}}",
+    "maxValue": "O valor máximo é {{max}}",
     "emailInvalid": "Por favor, introduza um endereço de email válido",
     "passwordRequired": "A palavra-passe é obrigatória",
     "passwordMinLength": "A palavra-passe deve ter pelo menos 6 caracteres",

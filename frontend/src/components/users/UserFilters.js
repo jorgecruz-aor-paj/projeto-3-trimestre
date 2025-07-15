@@ -49,6 +49,15 @@ export const UserFilters = ({ filters, setFilters }) => {
     return () => clearTimeout(delayedSearch);
   }, [searchTerm, setFilters, filters.searchText]);
 
+  // Download all evaluations handler (Excel) - placeholder
+  const handleDownloadExcel = () => {
+    // TODO: Implement Excel export if needed
+    if (typeof window !== 'undefined' && window.alert) {
+      // eslint-disable-next-line no-alert
+      window.alert('Excel export not implemented.');
+    }
+  };
+
   // Update local search term when filters change externally (only if not actively typing)
   useEffect(() => {
     if (
@@ -110,6 +119,15 @@ export const UserFilters = ({ filters, setFilters }) => {
         >
           <i className="fas fa-file-csv me-1" />
           CSV
+        </Button>
+        <Button
+          variant="outline-success"
+          size="sm"
+          onClick={handleDownloadExcel}
+          title={t('evaluations.title') + ' Excel'}
+        >
+          <i className="fas fa-file-excel me-1" />
+          Excel
         </Button>
       </div>
 

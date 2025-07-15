@@ -459,7 +459,6 @@ export const EditableEvaluationCard = ({
                 value={form.scale || ''}
                 onChange={handleChange}
                 options={[
-                  { value: '', label: t('evaluationScale.notEvaluated') },
                   {
                     value: 'LOW_CONTRIBUTION',
                     label: `1 - ${translateEvaluationScale(

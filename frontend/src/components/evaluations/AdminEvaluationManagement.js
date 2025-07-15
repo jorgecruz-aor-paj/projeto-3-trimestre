@@ -288,16 +288,6 @@ export const AdminEvaluationManagement = () => {
                         <i className="bi bi-eye"></i>
                       </Button>
                     </OverlayTrigger>
-                    {evaluation.status !== 'CLOSED' && (
-                      <OverlayTrigger
-                        placement="top"
-                        overlay={<Tooltip>{t('common.edit', 'Edit')}</Tooltip>}
-                      >
-                        <Button variant="outline-secondary" size="sm">
-                          <i className="bi bi-pencil"></i>
-                        </Button>
-                      </OverlayTrigger>
-                    )}
                   </td>
                 </tr>
               ))}
@@ -474,23 +464,27 @@ export const AdminEvaluationManagement = () => {
                 </Badge>
               </div>
               <div className="d-flex align-items-center gap-2">
-                {/* Select All Button - always visible when there are evaluations */}
+                {/* Select All / Deselect All Button - visible when there are evaluations or any selected */}
                 {evaluations.length > 0 && (
-                  <Button
-                    variant="outline-secondary"
-                    size="sm"
-                    onClick={() => {
-                      if (selectedEvaluations.length === evaluations.length) {
-                        setSelectedEvaluations([]);
-                      } else {
-                        setSelectedEvaluations(evaluations.map(e => e.id));
-                      }
-                    }}
-                  >
-                    {selectedEvaluations.length === evaluations.length
-                      ? t('evaluations.admin.deselectAll', 'Deselect All')
-                      : t('evaluations.admin.selectAll', 'Select All')}
-                  </Button>
+                  <>
+                    {selectedEvaluations.length > 0 ? (
+                      <Button
+                        variant="outline-secondary"
+                        size="sm"
+                        onClick={() => setSelectedEvaluations([])}
+                      >
+                        {t('evaluations.admin.deselectAll', 'Deselect All')}
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="outline-secondary"
+                        size="sm"
+                        onClick={() => setSelectedEvaluations(evaluations.map(e => e.id))}
+                      >
+                        {t('evaluations.admin.selectAll', 'Select All')}
+                      </Button>
+                    )}
+                  </>
                 )}
 
                 {/* Bulk Actions */}

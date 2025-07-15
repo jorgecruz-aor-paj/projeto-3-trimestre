@@ -101,7 +101,7 @@ export const EvaluationCyclesPage = () => {
       // Fetch unmanaged users and available managers
       const [unmanagedUsersData, managersData] = await Promise.all([
         userService.getUnmanagedUsers(),
-        userService.getManagers(),
+        userService.getMiniUsers(),
       ]);
       console.log('Unmanaged users:', unmanagedUsersData);
       console.log('Managers:', managersData);

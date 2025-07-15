@@ -199,10 +199,10 @@ public class EvaluationServiceImpl extends BaseService implements EvaluationServ
                         "Evaluation already closed",
                         "Evaluation ID " + eval.getId() + " is already part of a closed cycle");
             }
-            if (eval.getStatus().equals(EvaluationStatus.ONGOING)) {
+            if (eval.getScale() == null || eval.getFeedback() == null) {
                 throw new ForbiddenException(
-                        "Evaluation is still ongoing",
-                        "User with id " + requesterId + "closing ongoing evaluation with id " + eval.getId());
+                        "Evaluation is still unfilled",
+                        "User with id " + requesterId + "closing ongoing and unfilled evaluation with id " + eval.getId());
             }
             eval.setStatus(EvaluationStatus.CLOSED);
             daoFactory.forEvaluation().update(eval);

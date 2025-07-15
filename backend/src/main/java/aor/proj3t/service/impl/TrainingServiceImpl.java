@@ -140,17 +140,19 @@ public class TrainingServiceImpl extends BaseService implements TrainingService 
      */
     @Override
     public TrainingAreaDTO addTrainingArea(TrainingAreaDTO trainingAreaDTO) {
+        String normalizedName = trainingAreaDTO.getName().trim().toLowerCase();
         daoFactory.forTrainingArea()
-                .findByName(trainingAreaDTO.getName().toLowerCase())
+                .findByName(normalizedName)
                 .ifPresent(existing -> {
                     throw new ConflictException(
                             "Training area already exists",
                             "Adding new training area with duplicate name: " + trainingAreaDTO.getName());
                 });
-        TrainingArea trainingArea = new TrainingArea(trainingAreaDTO.getName());
+        TrainingArea trainingArea = new TrainingArea(normalizedName);
         daoFactory.forTrainingArea().create(trainingArea);
         return converterFactory.forTrainingArea().toDTO(trainingArea);
     }
+
 
     /**
      * {@inheritDoc}

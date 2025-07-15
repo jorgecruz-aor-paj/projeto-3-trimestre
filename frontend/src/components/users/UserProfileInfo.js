@@ -197,6 +197,8 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
     }
   };
 
+  const [saving, setSaving] = useState(false);
+
   const handleSave = async () => {
     // Mark all fields as touched for validation feedback
     const allFieldsTouched = Object.keys(formData).reduce((acc, field) => {
@@ -217,9 +219,10 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
         message: t('validation.pleaseFixErrors'),
         variant: 'danger',
       });
-
       return; // Don't save if validation fails
     }
+
+    setSaving(true);
 
     // Upload profile picture if selected
     if (selectedFile && user.id) {
@@ -283,6 +286,7 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
           variant: 'danger',
         });
         setUploadingProfilePicture(false);
+        setSaving(false);
         return; // Don't continue if profile picture upload fails
       }
       setUploadingProfilePicture(false);
@@ -374,10 +378,10 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
           t('profile.updateError', 'Failed to update user profile'),
         variant: 'danger',
       });
-      return; // Don't close edit mode if there was an error
+      setSaving(false);
+      return;
     }
-
-    // Edit mode is closed in the success case
+    setSaving(false);
   };
 
   return (
@@ -462,9 +466,9 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
                       variant="success"
                       className="me-2"
                       onClick={handleSave}
-                      disabled={uploadingProfilePicture}
+                      disabled={uploadingProfilePicture || saving}
                     >
-                      {uploadingProfilePicture ? (
+                      {saving ? (
                         <>
                           <Spinner
                             as="span"
@@ -608,7 +612,6 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
                       value: w.id,
                       label: w.name,
                     }))}
-                    placeholder={t('profile.selectWorkplace')}
                     error={
                       touched.workplace && errors.workplace
                         ? getErrorMessage(errors.workplace)

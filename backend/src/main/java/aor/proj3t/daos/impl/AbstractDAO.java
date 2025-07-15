@@ -9,6 +9,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 
 /**
@@ -353,13 +354,20 @@ public abstract class AbstractDAO<T, ID> implements BasicDAO<T, ID> {
             CriteriaQuery<T> cq = cb.createQuery(getEntityClass());
             Root<T> root = cq.from(getEntityClass());
             cq.select(root);
-            cq.where(cb.equal(root.get(propertyName), value));
+
+            // Convert both the DB field and input value to lowercase
+            Predicate matchIgnoreCase = cb.equal(
+                    cb.lower(root.get(propertyName)),
+                    value.toString().toLowerCase()
+            );
+            cq.where(matchIgnoreCase);
 
             return Optional.ofNullable(em.createQuery(cq).getSingleResult());
         } catch (Exception e) {
             return Optional.empty();
         }
     }
+
 
     /**
      * Find entities by a related entity's property.

@@ -71,6 +71,14 @@ export const TrainingFilter = ({
       }
     }
   };
+  // Download all evaluations handler (Excel) - placeholder
+  const handleDownloadExcel = () => {
+    // TODO: Implement Excel export if needed
+    if (typeof window !== 'undefined' && window.alert) {
+      // eslint-disable-next-line no-alert
+      window.alert('Excel export not implemented.');
+    }
+  };
 
   const commonLanguages = [
     'ENGLISH',
@@ -104,6 +112,15 @@ export const TrainingFilter = ({
         >
           <i className="fas fa-file-csv me-1" />
           CSV
+        </Button>
+        <Button
+          variant="outline-success"
+          size="sm"
+          onClick={handleDownloadExcel}
+          title={t('evaluations.title') + ' Excel'}
+        >
+          <i className="fas fa-file-excel me-1" />
+          Excel
         </Button>
       </div>
 
