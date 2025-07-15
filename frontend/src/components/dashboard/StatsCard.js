@@ -22,7 +22,7 @@ export const StatsCard = ({
   trendPositive,
 }) => {
   return (
-    <Card className="stats-card h-100">
+    <Card className="h-100 border-0">
       <Card.Body>
         <div className="d-flex justify-content-between align-items-start">
           <div>

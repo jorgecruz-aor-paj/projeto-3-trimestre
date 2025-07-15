@@ -350,7 +350,7 @@ export const AdminEvaluationManagement = () => {
       {/* Statistics cards */}
       <Row className="mb-4">
         <Col md={3} className="mb-3">
-          <Card className="stats-card h-100">
+          <Card className="h-100 border-0">
             <Card.Body className="text-center">
               <div className="stats-icon text-primary mb-2">
                 <i
@@ -366,7 +366,7 @@ export const AdminEvaluationManagement = () => {
           </Card>
         </Col>
         <Col md={3} className="mb-3">
-          <Card className="stats-card h-100">
+          <Card className="h-100 border-0">
             <Card.Body className="text-center">
               <div className="stats-icon text-warning mb-2">
                 <i className="bi bi-clock" style={{ fontSize: '2rem' }}></i>
@@ -381,7 +381,7 @@ export const AdminEvaluationManagement = () => {
           </Card>
         </Col>
         <Col md={3} className="mb-3">
-          <Card className="stats-card h-100">
+          <Card className="h-100 border-0">
             <Card.Body className="text-center">
               <div className="stats-icon text-success mb-2">
                 <i
@@ -400,7 +400,7 @@ export const AdminEvaluationManagement = () => {
           </Card>
         </Col>
         <Col md={3} className="mb-3">
-          <Card className="stats-card h-100">
+          <Card className="h-100 border-0">
             <Card.Body className="text-center">
               <div className="stats-icon text-danger mb-2">
                 <i className="bi bi-x-circle" style={{ fontSize: '2rem' }}></i>
@@ -479,7 +479,9 @@ export const AdminEvaluationManagement = () => {
                       <Button
                         variant="outline-secondary"
                         size="sm"
-                        onClick={() => setSelectedEvaluations(evaluations.map(e => e.id))}
+                        onClick={() =>
+                          setSelectedEvaluations(evaluations.map(e => e.id))
+                        }
                       >
                         {t('evaluations.admin.selectAll', 'Select All')}
                       </Button>
