@@ -22,7 +22,7 @@
 
 /**
  * Generates the base API URL based on current hostname
- * 
+ *
  * @function getApiBaseUrl
  * @returns {string} The base API URL for the current environment
  * @private
@@ -34,7 +34,7 @@ const getApiBaseUrl = () => {
 
 /**
  * Generates the WebSocket base URL based on current hostname
- * 
+ *
  * @function getWebSocketBaseUrl
  * @returns {string} The base WebSocket URL for the current environment
  * @private
@@ -130,7 +130,7 @@ const NOTIFICATIONS_ENDPOINT = `${API_BASE_URL}/notifications`;
 
 /**
  * Comprehensive API endpoints configuration object
- * 
+ *
  * This object contains all API endpoint configurations organized by feature area.
  * Each endpoint defines:
  * - url: The full endpoint URL
@@ -138,7 +138,7 @@ const NOTIFICATIONS_ENDPOINT = `${API_BASE_URL}/notifications`;
  * - adminOnly: Whether the endpoint requires admin role (optional)
  * - managerOrAdmin: Whether the endpoint requires manager or admin role (optional)
  * - methods: Available HTTP methods for this endpoint (optional)
- * 
+ *
  * @namespace API_ENDPOINTS
  * @type {Object}
  */

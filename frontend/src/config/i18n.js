@@ -36,28 +36,28 @@ export const i18n = i18next
 
 /**
  * Initialize and configure i18n for the application
- * 
+ *
  * This function sets up the complete internationalization system with:
  * - Portuguese as the default fallback language
  * - HTTP backend for loading translation files from /locale/ directory
  * - Browser language detection with localStorage persistence
  * - React integration with suspense disabled for better control
  * - Debug mode enabled in development environment
- * 
+ *
  * The function ensures the i18n instance is initialized only once,
  * making it safe to call multiple times.
- * 
+ *
  * @async
  * @function setupI18n
  * @param {I18nConfig} [customConfig={}] - Optional custom configuration to merge with defaults
  * @returns {Promise<Object>} Promise that resolves to the configured i18next instance
- * 
+ *
  * @example
  * // Basic setup with default configuration
  * import { setupI18n } from 'config/i18n';
- * 
+ *
  * const i18n = await setupI18n();
- * 
+ *
  * @example
  * // Setup with custom configuration
  * const i18n = await setupI18n({
@@ -67,22 +67,22 @@ export const i18n = i18next
  *     loadPath: '/custom/locale/{{lng}}.json'
  *   }
  * });
- * 
+ *
  * @example
  * // Using in a React component
  * import { useEffect } from 'react';
  * import { setupI18n } from 'config/i18n';
- * 
+ *
  * function App() {
  *   useEffect(() => {
  *     setupI18n().then(() => {
  *       console.log('i18n initialized');
  *     });
  *   }, []);
- * 
+ *
  *   return <div>...</div>;
  * }
- * 
+ *
  * @throws {Error} When i18n initialization fails
  * @since 1.0.0
  */

@@ -53,26 +53,26 @@ import { API_ENDPOINTS } from 'api/apiConfig';
 
 /**
  * User Service - Comprehensive service for user management operations
- * 
+ *
  * This service provides a complete set of methods for managing users,
  * including profile management, role assignments, and profile picture handling.
  * All methods return Promises that resolve to the API response data.
- * 
+ *
  * @namespace userService
  */
 export const userService = {
   /**
    * Retrieves the current authenticated user's profile information
-   * 
+   *
    * @method getMe
    * @memberof userService
    * @returns {Promise<User>} Promise that resolves to the current user's profile data
-   * 
+   *
    * @example
    * // Get current user profile
    * const currentUser = await userService.getMe();
    * console.log(currentUser.firstName, currentUser.lastName);
-   * 
+   *
    * @throws {Error} When user is not authenticated or server error occurs
    * @since 1.0.0
    */
@@ -82,16 +82,16 @@ export const userService = {
 
   /**
    * Retrieves all users with optional filtering and pagination
-   * 
+   *
    * @method getAll
    * @memberof userService
    * @param {UserFilters} [params={}] - Query parameters for filtering and pagination
    * @returns {Promise<User[]>} Promise that resolves to an array of user objects
-   * 
+   *
    * @example
    * // Get all users
    * const users = await userService.getAll();
-   * 
+   *
    * @example
    * // Get users with filters
    * const managers = await userService.getAll({
@@ -100,14 +100,14 @@ export const userService = {
    *   page: 0,
    *   size: 10
    * });
-   * 
+   *
    * @example
    * // Search users by name or email
    * const searchResults = await userService.getAll({
    *   search: 'john',
    *   workplace: 'HEADQUARTERS'
    * });
-   * 
+   *
    * @throws {Error} When server error occurs or user lacks permissions
    * @since 1.0.0
    */
@@ -117,12 +117,12 @@ export const userService = {
 
   /**
    * Updates user information
-   * 
+   *
    * @method update
    * @memberof userService
    * @param {Partial<User>} data - User data to update (must include id)
    * @returns {Promise<User>} Promise that resolves to the updated user data
-   * 
+   *
    * @example
    * // Update user profile
    * const updatedUser = await userService.update({
@@ -131,7 +131,7 @@ export const userService = {
    *   lastName: 'Doe',
    *   workplace: 'BRANCH_OFFICE'
    * });
-   * 
+   *
    * @throws {Error} When user ID is invalid, user lacks permissions, or validation fails
    * @since 1.0.0
    */
@@ -144,16 +144,16 @@ export const userService = {
 
   /**
    * Retrieves users who don't have assigned managers
-   * 
+   *
    * @method getUnmanagedUsers
    * @memberof userService
    * @returns {Promise<User[]>} Promise that resolves to array of users without managers
-   * 
+   *
    * @example
    * // Get all users without managers for assignment
    * const unmanagedUsers = await userService.getUnmanagedUsers();
    * console.log(`Found ${unmanagedUsers.length} users without managers`);
-   * 
+   *
    * @throws {Error} When server error occurs or user lacks admin permissions
    * @since 1.0.0
    */
@@ -163,11 +163,11 @@ export const userService = {
 
   /**
    * Retrieves all users with manager role
-   * 
+   *
    * @method getManagers
    * @memberof userService
    * @returns {Promise<User[]>} Promise that resolves to array of manager users
-   * 
+   *
    * @example
    * // Get all managers for assignment dropdown
    * const managers = await userService.getManagers();
@@ -175,7 +175,7 @@ export const userService = {
    *   value: m.id,
    *   label: `${m.firstName} ${m.lastName}`
    * }));
-   * 
+   *
    * @throws {Error} When server error occurs or user lacks permissions
    * @since 1.0.0
    */
@@ -185,19 +185,19 @@ export const userService = {
 
   /**
    * Assigns a manager to multiple users
-   * 
+   *
    * @method assignManager
    * @memberof userService
    * @param {ManagerAssignment} assignment - Assignment data with manager and user IDs
    * @returns {Promise<Object>} Promise that resolves to assignment result
-   * 
+   *
    * @example
    * // Assign manager to multiple users
    * const result = await userService.assignManager({
    *   managerId: 5,
    *   userIds: [10, 11, 12]
    * });
-   * 
+   *
    * @throws {Error} When manager ID is invalid, user IDs are invalid, or user lacks admin permissions
    * @since 1.0.0
    */
@@ -210,22 +210,22 @@ export const userService = {
 
   /**
    * Retrieves minimal user profiles for dropdowns and selections
-   * 
+   *
    * @method getMiniUsers
    * @memberof userService
    * @param {UserFilters} [params={}] - Query parameters for filtering
    * @returns {Promise<MiniUser[]>} Promise that resolves to array of mini user profiles
-   * 
+   *
    * @example
    * // Get mini users for dropdown
    * const miniUsers = await userService.getMiniUsers();
-   * 
+   *
    * @example
    * // Get mini users including admins
    * const allMiniUsers = await userService.getMiniUsers({
    *   includeAdmins: true
    * });
-   * 
+   *
    * @throws {Error} When server error occurs
    * @since 1.0.0
    */
@@ -235,25 +235,25 @@ export const userService = {
 
   /**
    * Uploads a profile picture for a user
-   * 
+   *
    * @method uploadProfilePicture
    * @memberof userService
    * @param {number|string} userId - User ID for whom to upload the picture
    * @param {File} file - Image file to upload (must be valid image format)
    * @returns {Promise<Object>} Promise that resolves to upload result
-   * 
+   *
    * @example
    * // Upload profile picture from file input
    * const fileInput = document.getElementById('profilePicture');
    * const file = fileInput.files[0];
-   * 
+   *
    * try {
    *   const result = await userService.uploadProfilePicture(123, file);
    *   console.log('Profile picture uploaded successfully');
    * } catch (error) {
    *   console.error('Upload failed:', error.message);
    * }
-   * 
+   *
    * @throws {Error} When file is invalid, user ID is invalid, or upload fails
    * @since 1.0.0
    */
@@ -286,12 +286,12 @@ export const userService = {
 
   /**
    * Resets user's profile picture to default
-   * 
+   *
    * @method resetProfilePicture
    * @memberof userService
    * @param {number|string} userId - User ID for whom to reset the picture
    * @returns {Promise<Object>} Promise that resolves to reset result
-   * 
+   *
    * @example
    * // Reset profile picture to default
    * try {
@@ -300,7 +300,7 @@ export const userService = {
    * } catch (error) {
    *   console.error('Reset failed:', error.message);
    * }
-   * 
+   *
    * @throws {Error} When user ID is invalid or reset fails
    * @since 1.0.0
    */

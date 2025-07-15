@@ -22,7 +22,10 @@
   },
   "tags": {
     "allowUnknownTags": true,
-    "dictionaries": ["jsdoc", "closure"]
+    "dictionaries": [
+      "jsdoc",
+      "closure"
+    ]
   },
   "templates": {
     "cleverLinks": true,

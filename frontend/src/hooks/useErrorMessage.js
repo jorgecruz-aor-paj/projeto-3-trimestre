@@ -19,27 +19,27 @@ import { useTranslation } from 'react-i18next';
 
 /**
  * Custom hook for handling form error messages with translation support
- * 
+ *
  * This hook provides a unified way to handle error messages throughout the application,
  * supporting both simple string errors and complex error objects with translation keys
  * and interpolation options.
- * 
+ *
  * The hook handles multiple error formats:
  * - Simple strings (directly translated)
  * - Error objects with `key` and `options` properties
  * - Translation keys with or without interpolation
- * 
+ *
  * @function useErrorMessage
  * @returns {ErrorMessageHook} Object containing the getErrorMessage function
- * 
+ *
  * @example
  * // Basic usage in a form component
  * import { useErrorMessage } from 'hooks/useErrorMessage';
- * 
+ *
  * function MyForm() {
  *   const { getErrorMessage } = useErrorMessage();
  *   const [errors, setErrors] = useState({});
- * 
+ *
  *   return (
  *     <form>
  *       <input name="email" />
@@ -51,32 +51,32 @@ import { useTranslation } from 'react-i18next';
  *     </form>
  *   );
  * }
- * 
+ *
  * @example
  * // Handling different error formats
  * const { getErrorMessage } = useErrorMessage();
- * 
+ *
  * // Simple string error
  * const simpleError = getErrorMessage('validation.required');
- * 
+ *
  * // Error object with interpolation
  * const complexError = getErrorMessage({
  *   key: 'validation.minLength',
  *   options: { min: 8 }
  * });
- * 
+ *
  * @example
  * // Integration with validation system
  * import { useFormValidation } from 'utils/validation';
  * import { useErrorMessage } from 'hooks/useErrorMessage';
- * 
+ *
  * function LoginForm() {
  *   const { getErrorMessage } = useErrorMessage();
  *   const { formData, errors, handleChange } = useFormValidation(
  *     { email: '', password: '' },
  *     loginValidationRules
  *   );
- * 
+ *
  *   return (
  *     <form>
  *       <input
@@ -92,7 +92,7 @@ import { useTranslation } from 'react-i18next';
  *     </form>
  *   );
  * }
- * 
+ *
  * @since 1.0.0
  * @author Development Team
  */
@@ -101,23 +101,23 @@ export const useErrorMessage = () => {
 
   /**
    * Get translated error message from various error formats
-   * 
+   *
    * @function getErrorMessage
    * @memberof useErrorMessage
    * @param {string|ErrorMessage|null} error - The error to translate
    * @returns {string|null} Translated error message or null if no error
-   * 
+   *
    * @example
    * // Simple string error
    * getErrorMessage('validation.required'); // "This field is required"
-   * 
+   *
    * @example
    * // Error object with interpolation
    * getErrorMessage({
    *   key: 'validation.minLength',
    *   options: { min: 8 }
    * }); // "Minimum length is 8 characters"
-   * 
+   *
    * @example
    * // Null/undefined error
    * getErrorMessage(null); // null
