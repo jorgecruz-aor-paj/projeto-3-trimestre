@@ -1,11 +1,11 @@
 ## Missing features
 
-1. [X] 2FA - Two factor authenticator;
-2. [] Exportar para .xlsx;
+1. [x] 2FA - Two factor authenticator;
+2. [x] Exportar para .xlsx;
 3. [] Integração do LLM nas restantes funcionalidades de geração de relatórios e sugestões de melhoria;
-4. [x/-] JavaDoc e JsDoc;
-5. [] Alterar os textos das paǵinas para parecer uma aplicação e não um produto vendido em separado.
-6. [X] na ativação do processo de 2FA o botão enter interrompe o processo;
+4. [x] JavaDoc e JsDoc;
+5. [x] Alterar os textos das paǵinas para parecer uma aplicação e não um produto vendido em separado.
+6. [x] na ativação do processo de 2FA o botão enter interrompe o processo;
 
 ## Known bugs:
 
@@ -25,7 +25,7 @@
 
 ### Wizard atribuir gestores:
 
-1. [X] Opção seleccionar todos lança excepção "User not defined";
+1. [x] Opção seleccionar todos lança excepção "User not defined";
 
 ### Notificações:
 
@@ -45,11 +45,11 @@
 
 1. [x] checkAndCloseEvaluationCycle -> refactor para passar do EvaluationService para o EvaluationCycleService.
 
-2. [X] Caixa de pesquisa está a pesquisar pelo feedback apenas;
+2. [x] Caixa de pesquisa está a pesquisar pelo feedback apenas;
 
 3. [x] Após marcar avaliações como fechadas página não faz refresh (Email Assincrono);
 
-4. [X] Visão de lista de avaliações para o admin não dá para mostrar avaliações;
+4. [x] Visão de lista de avaliações para o admin não dá para mostrar avaliações;
 
 ---
 
