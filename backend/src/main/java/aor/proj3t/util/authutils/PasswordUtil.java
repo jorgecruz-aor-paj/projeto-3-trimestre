@@ -7,6 +7,18 @@ import org.mindrot.jbcrypt.BCrypt;
 import aor.proj3t.config.AppConstants;
 import jakarta.enterprise.context.ApplicationScoped;
 
+/**
+ * Utility class for password hashing, verification, and validation.
+ * <p>
+ * Provides methods to securely hash passwords using BCrypt, verify hashed credentials,
+ * and validate password strength based on centralized regex rules.
+ * This class is application-scoped for shared use across the authentication layer.
+ * </p>
+ *
+ * @author Jorge Cruz & João Osório - Gr4
+ * @version 1.0
+ * @since 1.0
+ */
 @ApplicationScoped
 public class PasswordUtil {
 

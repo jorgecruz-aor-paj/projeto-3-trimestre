@@ -33,6 +33,8 @@ import jakarta.ws.rs.core.Response;
  * Provides endpoints for 2FA setup, verification, and management.
  * 
  * @author Jorge Cruz & João Osório - Gr4
+ * @version 1.0
+ * @since 1.0
  */
 @RequestScoped
 @Path("/auth/2fa")

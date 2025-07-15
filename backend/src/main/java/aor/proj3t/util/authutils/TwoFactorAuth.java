@@ -14,6 +14,8 @@ import jakarta.ws.rs.NameBinding;
  * full session tokens.
  * 
  * @author Jorge Cruz & João Osório - Gr4
+ * @version 1.0
+ * @since 1.0
  */
 @NameBinding
 @Retention(RetentionPolicy.RUNTIME)

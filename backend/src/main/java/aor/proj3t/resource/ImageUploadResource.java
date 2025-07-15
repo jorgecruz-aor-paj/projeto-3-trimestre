@@ -28,7 +28,18 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-
+/**
+ * REST resource for user profile image upload and management.
+ * <p>
+ * Handles uploading, validating, and storing profile pictures for users.
+ * This resource parses multipart form data, enforces file type and size restrictions,
+ * and delegates storage logic to the user service layer.
+ * </p>
+ *
+ * @author Jorge Cruz & João Osório - Gr4
+ * @version 1.0
+ * @since 1.0
+ */
 @Path("/users/{userId}/profile")
 @RequestScoped
 public class ImageUploadResource {
@@ -41,6 +52,16 @@ public class ImageUploadResource {
     @Inject
     private FileStorageUtil fileStorageUtil;
 
+    /**
+     * Uploads a profile picture for the specified user.
+     * Validates file format, size, MIME type, and extracts metadata.
+     * Only the authenticated user or an admin may upload images.
+     *
+     * @param userId the ID of the user whose profile picture is being updated
+     * @param input multipart form input containing the image file
+     * @param authHeader the authorization header with the bearer token
+     * @return a response indicating success or failure of upload
+     */
     @POST
     @Path("/picture")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -197,6 +218,14 @@ public class ImageUploadResource {
         return "jpg"; // Default extension
     }
 
+    /**
+     * Deletes the user's profile picture, resetting it to the default image.
+     * Only the user themselves or an admin may perform this operation.
+     *
+     * @param userId the ID of the user whose picture is to be reset
+     * @param authHeader the bearer token from the request
+     * @return a response indicating whether the reset was successful
+     */
     @DELETE
     @Path("/picture")
     @Produces(MediaType.APPLICATION_JSON)
@@ -237,6 +266,13 @@ public class ImageUploadResource {
         }
     }
 
+    /**
+     * Retrieves the user's profile picture.
+     * If no custom image is found, returns the default profile image.
+     *
+     * @param userId the ID of the user whose picture is being requested
+     * @return an image stream with proper caching and content headers
+     */
     @GET
     @Path("/picture")
     @Produces("image/*")
