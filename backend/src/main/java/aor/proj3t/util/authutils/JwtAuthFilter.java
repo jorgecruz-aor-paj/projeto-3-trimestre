@@ -13,6 +13,19 @@ import jakarta.ws.rs.ext.Provider;
 
 import java.util.Arrays;
 
+/**
+ * Authentication filter for secured endpoints using JWT validation.
+ * <p>
+ * This filter intercepts requests to resources annotated with {@link Secured}
+ * and enforces role-based authorization based on the provided JWT.
+ * It extracts user identity and role from the token and sets a custom security context.
+ * If the user does not have the appropriate role, a {@link ForbiddenException} is thrown.
+ * </p>
+ *
+ * @author Jorge Cruz & João Osório - Gr4
+ * @version 1.0
+ * @since 1.0
+ */
 @Provider
 @Secured
 public class JwtAuthFilter implements ContainerRequestFilter {
@@ -21,11 +34,18 @@ public class JwtAuthFilter implements ContainerRequestFilter {
     private ResourceInfo resourceInfo;
 
     @Inject
-    JwtUtil jwtUtil;
+    private JwtUtil jwtUtil;
 
     @Inject
-    TokenServiceImpl tokenServiceImpl;
+    private TokenServiceImpl tokenServiceImpl;
 
+    /**
+     * Filters incoming requests by validating JWT tokens and checking role-based access.
+     * Injects a {@link CustomSecurityContext} upon successful validation.
+     *
+     * @param requestContext the request context for the current HTTP call
+     * @throws ForbiddenException if the user lacks required roles for the endpoint
+     */
     @Override
     public void filter(ContainerRequestContext requestContext) {
 
@@ -49,8 +69,8 @@ public class JwtAuthFilter implements ContainerRequestFilter {
                                 ", method=" + requestContext.getMethod() +
                                 ", path=" + requestContext.getUriInfo().getPath()
                 );
-
             }
         }
     }
 }
+

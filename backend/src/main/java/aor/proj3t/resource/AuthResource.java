@@ -30,12 +30,18 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-
 /**
  * REST endpoint for authentication-related operations.
- * This class is responsible for handling requests related to user
- * authentication,
- * such as login and logout operations.
+ * <p>
+ * This class is responsible for handling requests related to user authentication,
+ * including registration, login (with optional two-factor), logout, confirmation,
+ * and password reset. It delegates logic to service-layer components and ensures
+ * validation and security headers are respected.
+ * </p>
+ *
+ * @author Jorge Cruz & João Osório - Gr4
+ * @version 1.0
+ * @since 1.0
  */
 @Path("/auth")
 @RequestScoped
@@ -46,19 +52,25 @@ public class AuthResource {
 
     @Context
     private HttpHeaders headers;
-    @Inject
-    ServiceFactory serviceFactory;
 
     @Inject
-    UserValidator validator;
+    private ServiceFactory serviceFactory;
 
     @Inject
-    JwtUtil jwtUtil;
+    private UserValidator validator;
 
+    @Inject
+    private JwtUtil jwtUtil;
+
+    /**
+     * Registers a new user using credentials provided in the LoginDTO.
+     * Validates input and captures IP address for audit.
+     *
+     * @param loginDto the user credentials and email
+     * @return a response indicating successful registration
+     */
     @POST
     @Path("/register")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Response registerUser(LoginDTO loginDto) {
         String ipAddress = ThreadContext.get("clientIp");
         validator.validateLoginDTO(loginDto);
@@ -68,10 +80,15 @@ public class AuthResource {
                 .build();
     }
 
+    /**
+     * Authenticates a user using provided login credentials.
+     * Handles IP and User-Agent headers for session context.
+     *
+     * @param loginDto the login credentials
+     * @return a response containing session or temporary token data
+     */
     @POST
     @Path("/login")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Response login(LoginDTO loginDto) {
         validator.validateLoginDTO(loginDto);
         String userAgent = headers.getHeaderString("User-Agent");
@@ -80,10 +97,14 @@ public class AuthResource {
         return Response.ok(loginResponse).build();
     }
 
+    /**
+     * Completes a login request that requires two-factor authentication.
+     *
+     * @param verificationDto DTO containing temporary token and 2FA code
+     * @return session token upon successful two-factor verification
+     */
     @POST
     @Path("/complete-2fa")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Response completeTwoFactorLogin(LoginTwoFactorVerificationDTO verificationDto) {
         String userAgent = headers.getHeaderString("User-Agent");
         String ipAddress = ThreadContext.get("clientIp");
@@ -95,9 +116,14 @@ public class AuthResource {
         return Response.ok(sessionToken).build();
     }
 
+    /**
+     * Logs the user out by invalidating the session token.
+     *
+     * @param authHeader the authorization header containing the bearer token
+     * @return a response confirming logout success
+     */
     @POST
     @Path("/logout")
-    @Produces(MediaType.APPLICATION_JSON)
     public Response logout(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader) {
         String token = TokenUtil.extractToken(authHeader);
         Long userId = serviceFactory.forToken().getUserIdFromToken(token);
@@ -105,12 +131,17 @@ public class AuthResource {
         return Response.ok(new APIResponseDTO("Logout successful")).build();
     }
 
+    /**
+     * Confirms a newly registered user using a confirmation token and registration data.
+     *
+     * @param confirmationToken the confirmation JWT token
+     * @param userRegistrationDTO user profile details for confirmation
+     * @return a response indicating successful confirmation
+     */
     @POST
     @Path("/confirm")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Response confirmUser(@QueryParam("confirmationToken") String confirmationToken,
-            UserRegistrationDTO userRegistrationDTO) {
+                                UserRegistrationDTO userRegistrationDTO) {
         if (!jwtUtil.validateToken(confirmationToken)) {
             logger.warn("Invalid or expired confirmation token");
             throw new UnauthorizedException("Invalid or expired token");
@@ -120,31 +151,39 @@ public class AuthResource {
         String email = claims.get("email").toString();
 
         serviceFactory.forUser().confirmUser(email, userRegistrationDTO);
-
         return Response.ok(new APIResponseDTO("User confirmed successfully")).build();
     }
 
+    /**
+     * Sends a password reset link to the user with the specified email.
+     * Always returns a generic message to prevent user enumeration.
+     *
+     * @param email the email address to send reset instructions to
+     * @return a response indicating email was sent
+     */
     @GET
     @Path("/resetPassword/{email}")
-    @Produces(MediaType.APPLICATION_JSON)
     public Response getResetPasswordLink(@PathParam("email") String email) {
         logger.info("Received reset password request for email: {}", email);
         String ipAddress = ThreadContext.get("clientIp");
         validator.validateEmail(email);
         serviceFactory.forUser().sendResetPasswordLink(email, ipAddress);
-        // Always return the same message to prevent email enumeration
         return Response.ok(new APIResponseDTO("Email sent. Check your inbox")).build();
     }
 
+    /**
+     * Completes the password reset flow using a reset token and new password.
+     *
+     * @param resetPasswordToken JWT token included in reset link
+     * @param loginDTO DTO containing the new password
+     * @return a response confirming password change
+     */
     @PATCH
     @Path("/resetPassword")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Response resetPassword(@QueryParam("resetPasswordToken") String resetPasswordToken,
-            LoginDTO loginDTO) {
+                                  LoginDTO loginDTO) {
         validator.validatePassword(loginDTO.getPassword());
         serviceFactory.forUser().changePassword(resetPasswordToken, loginDTO);
         return Response.ok(new APIResponseDTO("User password changed successfully")).build();
     }
-
 }

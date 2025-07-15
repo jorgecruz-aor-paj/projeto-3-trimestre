@@ -30,8 +30,10 @@ import jakarta.ws.rs.core.Response;
  * as CSV.
  * Currently supports user data exports with optional filtering capabilities.
  * </p>
- * 
+ *
  * @author Jorge Cruz & João Osório - Gr4
+ * @version 1.0
+ * @since 1.0
  */
 @Path("/export")
 @RequestScoped

@@ -13,6 +13,10 @@ import java.lang.annotation.Target;
  * Can be applied at the class level to secure all methods or at the method
  * level
  * for selective security within a resource class.
+ * 
+ * @author Jorge Cruz & João Osório - Gr4
+ * @version 1.0
+ * @since 1.0
  */
 @NameBinding
 @Retention(RetentionPolicy.RUNTIME)

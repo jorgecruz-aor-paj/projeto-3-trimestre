@@ -9,34 +9,69 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 import java.time.Instant;
 
 /**
- * Data Transfer Object for Notification entity
+ * Data Transfer Object for {@code Notification} entity.
+ * <p>
+ * Represents system or user-triggered messages exchanged between users,
+ * such as alerts, requests, or announcements. Designed for use in messaging
+ * or notification APIs, dashboards, and audit tracking. JAXB annotations
+ * support XML serialization for compatible endpoints.
+ * </p>
+ *
+ * Attributes:
+ * - {@code id}: Unique identifier of the notification
+ * - {@code content}: Message body displayed to recipient
+ * - {@code type}: Type/category of notification (e.g. INFO, REQUEST, ALERT)
+ * - {@code isRead}: Flag indicating whether the recipient has opened the notification
+ * - {@code timestampSent}: Time the notification was created/sent
+ * - {@code timestampRead}: Time the notification was marked as read
+ * - {@code senderId}: ID of the user/system that sent the notification
+ * - {@code recipientId}: ID of the user receiving the notification
+ *
+ * @author Jorge Cruz & João Osório - Gr4
+ * @version 1.0
+ * @since 1.0
  */
 @XmlRootElement(name = "notification")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class NotificationDTO {
+
+    /** Unique identifier for the notification */
     @XmlElement(name = "id")
     private Long id;
+
+    /** The textual content or message of the notification */
     @XmlElement(name = "content")
     private String content;
+
+    /** Type of the notification (e.g., INFO, WARNING, ALERT) */
     @XmlElement(name = "type")
     private NotificationType type;
+
+    /** Indicates if the notification has been read by the recipient */
     @XmlElement(name = "read")
     private boolean isRead;
+
+    /** Timestamp when the notification was sent or created */
     @XmlElement(name = "timestampSent")
     private Instant timestampSent;
+
+    /** Timestamp when the notification was opened or marked as read */
     @XmlElement(name = "timestampRead")
     private Instant timestampRead;
+
+    /** ID of the user (or system) who sent the notification */
     @XmlElement(name = "senderId")
     private Long senderId;
+
+    /** ID of the recipient who receives the notification */
     @XmlElement(name = "recipientId")
     private Long recipientId;
 
-    public NotificationDTO() {
-    }
+    public NotificationDTO() {}
 
     public NotificationDTO(Long id, String content, NotificationType type, boolean isRead,
-            Instant timestampSent, Instant timestampRead,
-            Long senderId, Long recipientId) {
+                           Instant timestampSent, Instant timestampRead,
+                           Long senderId, Long recipientId) {
         this.id = id;
         this.content = content;
         this.type = type;

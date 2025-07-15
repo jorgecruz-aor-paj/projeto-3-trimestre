@@ -11,6 +11,14 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+/**
+ * REST resource for AI-related operations.
+ * Provides endpoints for sentiment analysis, training recommendations, performance prediction, chatbot responses, and report generation.
+ *
+ * @author Jorge Cruz & João Osório - Gr4
+ * @version 1.0
+ * @since 1.0
+ */
 @Path("/ai")
 @RequestScoped
 public class AIResource {

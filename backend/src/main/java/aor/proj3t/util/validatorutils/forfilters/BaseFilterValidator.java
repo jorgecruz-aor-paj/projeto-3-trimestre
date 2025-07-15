@@ -10,10 +10,18 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Base validator class that provides common validation functionality
- * for all filter validators.
- * 
- * @param <T> The type of filter to validate
+ * Abstract base class for validating filter objects.
+ * <p>
+ * Provides a common validation framework for filters using Jakarta Bean Validation
+ * and allows subclasses to implement additional custom validation logic via {@link #doValidate}.
+ * This approach enforces standardized validation behavior across all filter types.
+ * </p>
+ *
+ * @param <T> the type of filter to validate
+ *
+ * @author Jorge Cruz & João Osório - Gr4
+ * @version 1.0
+ * @since 1.0
  */
 public abstract class BaseFilterValidator<T> {
 
@@ -21,10 +29,10 @@ public abstract class BaseFilterValidator<T> {
     protected Validator validator;
 
     /**
-     * Validates a filter object using Jakarta Bean Validation and custom
-     * validations
-     * 
-     * @param filter The filter to validate
+     * Validates a filter object using Jakarta Bean Validation and subclass-defined rules.
+     * Throws an {@link InvalidDataException} if any violations are detected.
+     *
+     * @param filter the filter object to validate
      */
     public void validate(T filter) {
         // Jakarta Bean Validation
@@ -49,11 +57,13 @@ public abstract class BaseFilterValidator<T> {
     }
 
     /**
-     * Implement this method in subclasses to add specific validations for each
-     * filter type
-     * 
-     * @param filter           The filter to validate
-     * @param validationErrors List to collect validation error messages
+     * Subclasses must implement this method to define custom validations
+     * for their specific filter types. Append validation messages to the list
+     * if any issues are found.
+     *
+     * @param filter the filter to validate
+     * @param validationErrors list for collecting validation error messages
      */
     protected abstract void doValidate(T filter, List<String> validationErrors);
 }
+

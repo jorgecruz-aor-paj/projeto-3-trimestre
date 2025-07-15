@@ -31,6 +31,9 @@ import jakarta.ws.rs.core.Response;
  * REST endpoint for message-related operations.
  * This class handles requests for sending, receiving and managing messages
  * between users.
+ * @author Jorge Cruz & João Osório - Gr4
+ * @version 1.0
+ * @since 1.0
  */
 @Path("/messages")
 @RequestScoped

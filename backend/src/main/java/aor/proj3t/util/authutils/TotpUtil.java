@@ -26,6 +26,7 @@ import jakarta.enterprise.context.ApplicationScoped;
  *
  * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
+ * @since 1.0
  */
 @ApplicationScoped
 public class TotpUtil {

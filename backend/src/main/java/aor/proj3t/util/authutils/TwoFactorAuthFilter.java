@@ -13,10 +13,17 @@ import jakarta.ws.rs.ext.Provider;
 
 /**
  * Authentication filter for Two-Factor Authentication endpoints.
- * This filter validates temporary 2FA tokens rather than requiring full session
- * tokens.
- * 
+ * <p>
+ * This filter intercepts requests targeting endpoints marked with {@link TwoFactorAuth}
+ * and validates temporary 2FA tokens from the authorization header.
+ * Unlike full session tokens, 2FA tokens are short-lived and used during the second step
+ * of the login process. The filter parses and verifies the token, and injects a simplified
+ * security context for downstream operations.
+ * </p>
+ *
  * @author Jorge Cruz & João Osório - Gr4
+ * @version 1.0
+ * @since 1.0
  */
 @Provider
 @TwoFactorAuth
@@ -27,11 +34,18 @@ public class TwoFactorAuthFilter implements ContainerRequestFilter {
     @Inject
     private TokenServiceImpl tokenService;
 
+    /**
+     * Performs authentication filtering for endpoints requiring 2FA validation.
+     * Extracts and verifies the temporary token from the Authorization header.
+     * Sets a minimal security context representing the authenticated user.
+     *
+     * @param requestContext the container request context for the incoming request
+     * @throws UnauthorizedException if the token is missing, invalid, or expired
+     */
     @Override
     public void filter(ContainerRequestContext requestContext) {
         String authHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
 
-        // Use existing validation utility
         try {
             TokenUtil.validateAuthHeader(authHeader);
         } catch (UnauthorizedException e) {
@@ -40,15 +54,12 @@ public class TwoFactorAuthFilter implements ContainerRequestFilter {
 
         String token = TokenUtil.extractToken(authHeader);
 
-        // Validate that this is a temporary 2FA token
         if (!tokenService.validateTwoFactorToken(token)) {
             throw new UnauthorizedException("Invalid 2FA token", "Temporary 2FA token validation failed");
         }
 
-        // Extract user information for context
         try {
             Long userId = tokenService.getUserIdFromTwoFactorToken(token);
-            // Set a minimal security context for 2FA operations
             requestContext.setSecurityContext(new CustomSecurityContext(userId.toString(), "2FA_USER"));
             logger.debug("2FA token validated for user: {}", userId);
         } catch (Exception e) {
@@ -57,3 +68,4 @@ public class TwoFactorAuthFilter implements ContainerRequestFilter {
         }
     }
 }
+

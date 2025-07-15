@@ -20,6 +20,9 @@ import java.util.List;
  * REST endpoint for notification-related operations.
  * This class handles requests for retrieving, marking as read, and managing
  * notifications.
+ * @author Jorge Cruz & João Osório - Gr4
+ * @version 1.0
+ * @since 1.0
  */
 @Path("/notifications")
 @RequestScoped

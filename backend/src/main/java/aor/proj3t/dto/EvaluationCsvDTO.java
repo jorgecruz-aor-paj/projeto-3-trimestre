@@ -6,10 +6,33 @@ import com.opencsv.bean.CsvDate;
 import java.time.Instant;
 
 /**
- * DTO specifically designed for CSV export of Evaluation data
- * Uses OpenCSV annotations for automatic CSV mapping
+ * DTO for CSV export of evaluation data.
+ * <p>
+ * Designed for integration with OpenCSV, this DTO maps evaluation attributes
+ * to specific column names in a CSV file using {@code @CsvBindByName}.
+ * It also formats date-time fields consistently with {@code @CsvDate}.
+ * Includes a constructor for quick transformation from {@link EvaluationDTO}.
+ * </p>
+ *
+ * Fields include:
+ * - Evaluation metadata (ID, scale, status, feedback)
+ * - Timestamps (created/edited)
+ * - Evaluation cycle info (IDs, dates)
+ * - Evaluatee and evaluator details (ID, name, email)
+ *
+ * Example usage:
+ * <pre>{@code
+ *     List<EvaluationCsvDTO> exportList = evaluations.stream()
+ *         .map(EvaluationCsvDTO::new)
+ *         .collect(Collectors.toList());
+ * }</pre>
+ *
+ * @author Jorge Cruz & João Osório - Gr4
+ * @version 1.0
+ * @since 1.0
  */
 public class EvaluationCsvDTO {
+    // Fields mapped to CSV columns with OpenCSV annotations
 
     @CsvBindByName(column = "ID")
     private Long id;
@@ -24,23 +47,22 @@ public class EvaluationCsvDTO {
     private String feedback;
 
     @CsvBindByName(column = "Created At")
-    @CsvDate(value = "yyyy-MM-dd HH:mm:ss")
+    @CsvDate("yyyy-MM-dd HH:mm:ss")
     private Instant createdAt;
 
     @CsvBindByName(column = "Edited At")
-    @CsvDate(value = "yyyy-MM-dd HH:mm:ss")
+    @CsvDate("yyyy-MM-dd HH:mm:ss")
     private Instant editedAt;
 
     @CsvBindByName(column = "Evaluation Cycle ID")
     private Long evaluationCycleId;
 
     @CsvBindByName(column = "Evaluation Cycle Start Date")
-    @CsvDate(value = "yyyy-MM-dd HH:mm:ss")
-
+    @CsvDate("yyyy-MM-dd HH:mm:ss")
     private Instant evaluationCycleStartDate;
 
     @CsvBindByName(column = "Evaluation Cycle End Date")
-    @CsvDate(value = "yyyy-MM-dd HH:mm:ss")
+    @CsvDate("yyyy-MM-dd HH:mm:ss")
     private Instant evaluationCycleClosureDate;
 
     @CsvBindByName(column = "Evaluatee ID")
@@ -61,12 +83,16 @@ public class EvaluationCsvDTO {
     @CsvBindByName(column = "Evaluator Email")
     private String evaluatorEmail;
 
+    /**
+     * Default constructor required by OpenCSV.
+     */
+    public EvaluationCsvDTO() {}
 
-    // Default constructor required by OpenCSV
-    public EvaluationCsvDTO() {
-    }
-
-    // Constructor to convert from EvaluationDTO
+    /**
+     * Converts an {@link EvaluationDTO} into a CSV-friendly DTO.
+     *
+     * @param evaluationDTO the source object
+     */
     public EvaluationCsvDTO(EvaluationDTO evaluationDTO) {
         this.id = evaluationDTO.getId();
         this.scale = evaluationDTO.getScale() != null ? evaluationDTO.getScale().toString() : null;
@@ -83,8 +109,9 @@ public class EvaluationCsvDTO {
         this.evaluatorId = evaluationDTO.getEvaluator().getId();
         this.evaluatorName = evaluationDTO.getEvaluator().getFirstName() + " " + evaluationDTO.getEvaluator().getLastName();
         this.evaluatorEmail = evaluationDTO.getEvaluator().getEmail();
+    
     }
-
+    
     // Getters and setters
     public Long getId() {
         return id;
