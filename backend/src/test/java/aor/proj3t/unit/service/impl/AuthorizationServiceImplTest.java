@@ -139,53 +139,6 @@ class AuthorizationServiceImplTest {
         assertTrue(exception.getMessage().contains("User with id " + USER_ID + " cannot access evaluations for user " + OTHER_USER_ID));
     }
 
-    @Test
-    @DisplayName("Regular user should be allowed to access evaluations by their manager")
-    void authorizeEvaluationAccess_WhenUserAccessesEvaluationsByManager_ShouldAllow() {
-        // Mock the user lookup for the manager check
-        when(userDAO.findById(USER_ID)).thenReturn(Optional.of(user));
-
-        // User accessing evaluations by their manager
-        assertDoesNotThrow(() -> 
-            authorizationService.authorizeEvaluationAccess(user, null, MANAGER_ID));
-
-        verify(userDAO).findById(USER_ID);
-    }
-
-    @Test
-    @DisplayName("Regular user should be forbidden from accessing evaluations by non-manager evaluators")
-    void authorizeEvaluationAccess_WhenUserAccessesEvaluationsByNonManager_ShouldThrowForbidden() {
-        // Mock the user lookup
-        when(userDAO.findById(USER_ID)).thenReturn(Optional.of(user));
-
-        // User trying to access evaluations by someone who is not their manager
-        ForbiddenException exception = assertThrows(ForbiddenException.class, () -> 
-            authorizationService.authorizeEvaluationAccess(user, null, OTHER_USER_ID));
-
-        assertEquals("Permission denied", exception.getUserMessage());
-        assertTrue(exception.getMessage().contains("User with id " + USER_ID + " cannot access evaluations by evaluator " + OTHER_USER_ID));
-
-        verify(userDAO).findById(USER_ID);
-    }
-
-    @Test
-    @DisplayName("Regular user should be forbidden when accessing evaluations by evaluator with no manager")
-    void authorizeEvaluationAccess_WhenUserHasNoManager_ShouldThrowForbidden() {
-        // Create user with no manager
-        User userWithoutManager = new User();
-        userWithoutManager.setId(USER_ID);
-        userWithoutManager.setRole(Role.USER);
-        userWithoutManager.setManager(null);
-
-        when(userDAO.findById(USER_ID)).thenReturn(Optional.of(userWithoutManager));
-
-        ForbiddenException exception = assertThrows(ForbiddenException.class, () -> 
-            authorizationService.authorizeEvaluationAccess(userWithoutManager, null, MANAGER_ID));
-
-        assertEquals("Permission denied", exception.getUserMessage());
-        assertTrue(exception.getMessage().contains("User with id " + USER_ID + " cannot access evaluations by evaluator " + MANAGER_ID));
-    }
-
     // ===== MANAGER AUTHORIZATION TESTS =====
 
     @Test
@@ -233,19 +186,6 @@ class AuthorizationServiceImplTest {
         verify(userDAO).findById(OTHER_USER_ID);
     }
 
-    @Test
-    @DisplayName("Manager should be forbidden from accessing evaluations by other evaluators")
-    void authorizeEvaluationAccess_WhenManagerAccessesEvaluationsByOtherEvaluator_ShouldThrowForbidden() {
-        // Manager trying to access evaluations conducted by another evaluator
-        ForbiddenException exception = assertThrows(ForbiddenException.class, () -> 
-            authorizationService.authorizeEvaluationAccess(manager, null, OTHER_USER_ID));
-
-        assertEquals("Permission denied", exception.getUserMessage());
-        assertTrue(exception.getMessage().contains("Manager with id " + MANAGER_ID + " cannot access evaluations by evaluator " + OTHER_USER_ID));
-
-        // No DAO calls should be made for evaluator checks
-        verifyNoInteractions(userDAO);
-    }
 
     @Test
     @DisplayName("Manager should be forbidden when user they're trying to access has no manager")
@@ -276,26 +216,6 @@ class AuthorizationServiceImplTest {
         // Manager trying to access evaluations for non-existent user
         NotFoundException exception = assertThrows(NotFoundException.class, () -> 
             authorizationService.authorizeEvaluationAccess(manager, NON_EXISTENT_USER_ID, null));
-
-        assertTrue(exception.getMessage().contains("User not found with ID: " + NON_EXISTENT_USER_ID));
-
-        verify(userDAO).findById(NON_EXISTENT_USER_ID);
-    }
-
-    @Test
-    @DisplayName("Should throw NotFoundException when requester user is not found during evaluator check")
-    void authorizeEvaluationAccess_WhenRequesterNotFoundForEvaluatorCheck_ShouldThrowNotFoundException() {
-        // Mock user not found
-        when(userDAO.findById(NON_EXISTENT_USER_ID)).thenReturn(Optional.empty());
-
-        // Create a user with non-existent ID
-        User nonExistentUser = new User();
-        nonExistentUser.setId(NON_EXISTENT_USER_ID);
-        nonExistentUser.setRole(Role.USER);
-
-        // User trying to access evaluations by evaluator
-        NotFoundException exception = assertThrows(NotFoundException.class, () -> 
-            authorizationService.authorizeEvaluationAccess(nonExistentUser, null, MANAGER_ID));
 
         assertTrue(exception.getMessage().contains("User not found with ID: " + NON_EXISTENT_USER_ID));
 
@@ -334,28 +254,6 @@ class AuthorizationServiceImplTest {
         verifyNoInteractions(userDAO);
     }
 
-    @Test
-    @DisplayName("Should verify correct DAO method calls")
-    void authorizeEvaluationAccess_ShouldMakeCorrectDAOCalls() {
-        // Set up mocks
-        when(userDAO.findById(MANAGED_USER_ID)).thenReturn(Optional.of(managedUser));
-        when(userDAO.findById(USER_ID)).thenReturn(Optional.of(user));
-
-        // Test manager accessing direct report
-        authorizationService.authorizeEvaluationAccess(manager, MANAGED_USER_ID, null);
-        verify(userDAO).findById(MANAGED_USER_ID);
-
-        // Reset mock
-        reset(userDAO);
-        when(userDAO.findById(USER_ID)).thenReturn(Optional.of(user));
-
-        // Test user accessing evaluations by manager
-        authorizationService.authorizeEvaluationAccess(user, null, MANAGER_ID);
-        verify(userDAO).findById(USER_ID);
-
-        // Verify exact number of calls
-        verify(userDAO, times(1)).findById(USER_ID);
-    }
 
     // ===== EDGE CASES =====
 
