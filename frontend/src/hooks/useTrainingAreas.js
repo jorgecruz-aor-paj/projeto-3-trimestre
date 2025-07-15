@@ -14,7 +14,6 @@ export const useTrainingAreas = () => {
     } else {
       try {
         const data = await trainingService.getAllAreas();
-        console.log('Fetched training areas:', data); // Debugging log
         setTrainingAreas(data);
         sessionStorage.setItem('trainingAreas', JSON.stringify(data));
       } catch (err) {

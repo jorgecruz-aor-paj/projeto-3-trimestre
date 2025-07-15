@@ -112,19 +112,10 @@ export const useMessageStore = create((set, get) => ({
   loadConversationMessages: async (otherUserId, page = 0, pageSize = 20) => {
     set({ isLoading: true, error: null });
     try {
-      console.log(
-        'Loading conversation messages with user:',
-        otherUserId,
-        'page:',
-        page
-      );
-
       const url = `${API_ENDPOINTS.messages.conversation.url(
         otherUserId
       )}?page=${page}&pageSize=${pageSize}`;
       const response = await axiosInstance.get(url);
-
-      console.log('Messages response:', response);
       const messages = Array.isArray(response) ? response : [];
 
       // Backend now returns newest first, but we want to display oldest first in chat
@@ -308,8 +299,6 @@ export const useMessageStore = create((set, get) => ({
 
   // Handle WebSocket notifications
   handleNotification: notificationData => {
-    console.log('Received notification:', notificationData);
-
     if (notificationData.type === 'new_message') {
       // If we're in an active conversation, reload the latest messages
       const { activeConversation } = get();

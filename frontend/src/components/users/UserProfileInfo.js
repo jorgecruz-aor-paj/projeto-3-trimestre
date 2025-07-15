@@ -111,7 +111,6 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
     // Extract name and value from the event object
     if (e && e.target) {
       const { name, value } = e.target;
-      console.log(`Field changed: ${name} = ${value}`);
 
       // Mark the field as touched when it changes
       setTouched(prev => ({
@@ -127,7 +126,6 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
   };
 
   const handleManagerSelect = id => {
-    console.log(`Manager selected: ${id}`);
 
     // Mark the field as touched
     setTouched(prev => ({
@@ -208,11 +206,8 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
     setTouched(allFieldsTouched);
 
     // Validate all fields before saving
-    console.log('Attempting to save with data:', formData);
     const isValid = validateAll();
     if (!isValid) {
-      console.error('Validation failed with errors:', errors);
-
       // Use AlertContext to show validation errors
       showAlert({
         title: t('validation.error'),
@@ -228,32 +223,19 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
     if (selectedFile && user.id) {
       try {
         setUploadingProfilePicture(true);
-        console.log(
-          `Admin ${loggedUser?.id} uploading profile picture for user ${user.id} (${user.firstName} ${user.lastName}):`,
-          selectedFile
-        );
-        console.log('Current logged user:', loggedUser);
-        console.log('Target user:', user);
-        console.log('Is admin:', isAdmin);
-        console.log('Is self:', isSelf);
-
+      
         const result = await userService.uploadProfilePicture(
           user.id,
           selectedFile
         );
-        console.log('Profile picture upload result:', result);
 
         // Clear profile picture cache to force reload
         if (window.profilePictureCache) {
-          console.log(`Clearing profile picture cache for user ${user.id}`);
           window.profilePictureCache.clearUser(user.id);
         }
 
         // Dispatch cache busting event with a delay to ensure DB transaction is committed
         setTimeout(() => {
-          console.log(
-            `Dispatching profilePictureUpdated event for user ${user.id}`
-          );
           window.dispatchEvent(
             new CustomEvent('profilePictureUpdated', {
               detail: { userId: user.id },
@@ -302,7 +284,6 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
       formData.managerId
     ) {
       try {
-        console.log(formData.managerId);
         const response = await userService.assignManager({
           managerId: formData.managerId,
           userIds: [user.id],
@@ -311,7 +292,6 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
         newManager = filteredManagerList.find(
           u => String(u.id) === String(formData.managerId)
         );
-        console.log('Manager assigned successfully:', response);
       } catch (err) {
         console.error('Failed to assign manager:', err);
         showAlert({
@@ -342,9 +322,7 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
         manager: newManager,
         photograph: null, // Explicitly set to null - profile pictures are handled separately
       };
-      console.log('Updating user with payload:', updatePayload);
       const response = await userService.update(updatePayload);
-      console.log('User updated successfully:', response);
 
       // Always update local user state
       setUser(response);
@@ -352,13 +330,11 @@ export const UserProfileInfo = ({ user: initialUser, onUserUpdate }) => {
       if (isSelf) {
         // Update logged user in auth store if it's the self profile
         useAuthStore.setState({ user: response });
-        console.log('Updated auth store with new user data');
       }
 
       // Call the parent's update callback if provided
       if (onUserUpdate) {
         onUserUpdate(response);
-        console.log('Called onUserUpdate with response');
       }
 
       // Show success message

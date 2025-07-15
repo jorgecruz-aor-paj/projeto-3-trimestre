@@ -26,19 +26,19 @@ class WebSocketService {
       }
 
       const wsUrl = `${WEBSOCKET_BASE_URL}/websocket/${token}`;
-      console.log('Connecting to WebSocket...');
+      //console.log('Connecting to WebSocket...');
 
       this.socket = new WebSocket(wsUrl);
 
       this.socket.onopen = () => {
-        console.log('WebSocket connected');
+        //console.log('WebSocket connected');
         this.reconnectAttempts = 0; // Reset on successful connection
       };
 
       this.socket.onmessage = event => {
         try {
           const data = JSON.parse(event.data);
-          console.log('WebSocket notification received:', data);
+          //console.log('WebSocket notification received:', data);
 
           switch (data.type) {
             case 'error':
@@ -53,19 +53,19 @@ class WebSocketService {
               break;
 
             case 'connect':
-              console.log('WebSocket connection confirmed');
+             //console.log('WebSocket connection confirmed');
               break;
 
             default:
-              console.warn('Unknown notification type:', data.type);
+              //console.warn('Unknown notification type:', data.type);
           }
         } catch (error) {
-          console.error('Error parsing WebSocket notification:', error);
+          //console.error('Error parsing WebSocket notification:', error);
         }
       };
 
       this.socket.onclose = event => {
-        console.log('WebSocket disconnected:', event.code, event.reason);
+        //console.log('WebSocket disconnected:', event.code, event.reason);
         this.socket = null;
 
         // Only try to reconnect if user is still authenticated and it wasn't a manual disconnect
@@ -75,12 +75,12 @@ class WebSocketService {
       };
 
       this.socket.onerror = error => {
-        console.error('WebSocket error:', error);
+        //console.error('WebSocket error:', error);
       };
 
       return this.socket;
     } catch (error) {
-      console.error('Failed to create WebSocket connection:', error);
+      //console.error('Failed to create WebSocket connection:', error);
       throw error;
     }
   }
@@ -88,9 +88,9 @@ class WebSocketService {
   handleReconnect() {
     if (this.reconnectAttempts < this.maxReconnectAttempts) {
       this.reconnectAttempts++;
-      console.log(
-        `Attempting to reconnect... (${this.reconnectAttempts}/${this.maxReconnectAttempts})`
-      );
+      //console.log(
+      //  `Attempting to reconnect... (${this.reconnectAttempts}/${this.maxReconnectAttempts})`
+      //);
 
       setTimeout(() => {
         // Only reconnect if still authenticated
@@ -99,15 +99,15 @@ class WebSocketService {
         }
       }, this.reconnectDelay);
     } else {
-      console.error(
-        'Max reconnection attempts reached. Please refresh the page.'
-      );
+      //console.error(
+      //  'Max reconnection attempts reached. Please refresh the page.'
+      //);
     }
   }
 
   disconnect() {
     if (this.socket) {
-      console.log('Disconnecting WebSocket');
+      //console.log('Disconnecting WebSocket');
       this.socket.close(1000, 'User logout');
       this.socket = null;
     }

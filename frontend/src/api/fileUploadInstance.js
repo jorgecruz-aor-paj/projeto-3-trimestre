@@ -42,11 +42,6 @@ const handleAutomaticLogout = () => {
     } catch (e) {
       console.warn('WebSocket service not available during logout:', e);
     }
-
-    console.log(
-      'Automatic logout completed - session expired or invalid token'
-    );
-
     // Show alert to user before redirect
     try {
       // We're accessing the global alertContext which should be available
@@ -130,9 +125,9 @@ fileUploadInstance.interceptors.response.use(
 
     // Handle 401 - unauthorized/expired token
     if (response?.status === 401) {
-      console.log(
-        '401 Unauthorized response received during file upload - performing automatic logout'
-      );
+      //console.log(
+      //  '401 Unauthorized response received during file upload - performing automatic logout'
+      //);
       handleAutomaticLogout();
 
       // Return structured error for components to handle

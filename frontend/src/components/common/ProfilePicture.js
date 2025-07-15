@@ -5,19 +5,6 @@ import { API_ENDPOINTS } from 'api/apiConfig';
 // Simple in-memory cache to avoid redundant requests
 const imageCache = new Map();
 
-// Debug function to inspect cache (available in browser console)
-window.profilePictureCache = {
-  getCache: () => imageCache,
-  clearCache: () => imageCache.clear(),
-  clearUser: userId => imageCache.delete(`profile_${userId}`),
-  inspect: () => {
-    console.log('Profile Picture Cache Contents:');
-    imageCache.forEach((value, key) => {
-      console.log(`${key}: ${value}`);
-    });
-  },
-};
-
 /**
  * Reusable ProfilePicture component that handles user profile pictures
  * with automatic cache management and fallback support
@@ -70,9 +57,7 @@ export const ProfilePicture = ({
   // Listen for profile picture updates
   useEffect(() => {
     const handleProfilePictureUpdate = event => {
-      console.log('Profile picture update event received:', event.detail);
       if (event.detail?.userId === userId) {
-        console.log(`Updating profile picture for user ${userId}`);
         // Clear cache for this user
         const cacheKey = `profile_${userId}`;
         imageCache.delete(cacheKey);
@@ -83,9 +68,6 @@ export const ProfilePicture = ({
           API_ENDPOINTS.user.profilePicture(userId).url
         }?_t=${timestamp}`;
        
-
-        console.log(`New profile picture URL: ${newSrc}`);
-
         // Update our app cache with the new timestamped URL
         imageCache.set(cacheKey, newSrc);
 
@@ -116,7 +98,6 @@ export const ProfilePicture = ({
 
     // Set image src to fallback image if not already set
     if (e.target.src !== fallbackSrc) {
-      console.log(`Falling back to default image for user ${userId}`);
       e.target.src = fallbackSrc;
     }
 

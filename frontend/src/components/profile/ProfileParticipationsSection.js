@@ -62,11 +62,9 @@ export const ProfileParticipationsSection = ({ userId }) => {
         participantId: userId,
         managerId: currentUser.id,
       };
-      console.log('Adding participation:', participationToSend);
       const response = await trainingParticipationService.register(
         participationToSend
       );
-      console.log('Add participation response:', response);
       fetchParticipations(filters);
       handleCloseModal();
     } catch (err) {

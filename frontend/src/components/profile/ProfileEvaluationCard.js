@@ -15,7 +15,6 @@ export const ProfileEvaluationCard = ({ evaluation }) => {
   const handleDownload = () => {
     const fetchFile = async () => {
       try {
-        console.log('Downloading evaluation PDF...');
         const response = await exportService.evaluationToPDF(evaluation.id);
         // If the service returns a Blob or File, handle download
         // Try to get filename from Content-Disposition header if available

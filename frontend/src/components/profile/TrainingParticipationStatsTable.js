@@ -14,9 +14,7 @@ export const TrainingParticipationStatsTable = ({ userId }) => {
       setLoading(true);
       setError(null);
       try {
-        console.log('Fetching training participation stats for user:', userId);
         const stats = await statsService.getParticipationStats(userId);
-        console.log(stats);
         setStats(stats);
       } catch (err) {
         setError(err);

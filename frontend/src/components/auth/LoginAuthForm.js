@@ -27,12 +27,7 @@ export const LoginAuthForm = () => {
         // Get the translated strings
         const title = t('auth.sessionExpired');
         const message = t('auth.sessionExpiredMessage');
-
-        console.log('Showing session expired alert with translations:', {
-          title,
-          message,
-        });
-
+        
         // Show alert to user explaining why they were redirected
         showAlert({
           title,

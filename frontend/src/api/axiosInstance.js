@@ -20,20 +20,6 @@ axiosInstance.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-
-    // Log file uploads for debugging
-    if (
-      config.data instanceof FormData &&
-      config.url.includes('/profile/picture')
-    ) {
-      console.log('Sending profile picture upload request:', {
-        url: config.url,
-        method: config.method,
-        headers: config.headers,
-        hasFile: config.data.has('file'),
-      });
-    }
-
     return config;
   },
   error => Promise.reject(error)
@@ -74,10 +60,6 @@ const handleAutomaticLogout = () => {
     } catch (e) {
       console.warn('WebSocket service not available during logout:', e);
     }
-
-    console.log(
-      'Automatic logout completed - session expired or invalid token'
-    );
 
     // Show alert to user before redirect
     try {
@@ -136,15 +118,6 @@ const handleAutomaticLogout = () => {
 
 axiosInstance.interceptors.response.use(
   response => {
-    // Log profile picture responses
-    if (response.config.url.includes('/profile/picture')) {
-      console.log('Profile picture request completed:', {
-        url: response.config.url,
-        status: response.status,
-        statusText: response.statusText,
-        headers: response.headers,
-      });
-    }
     return response.data;
   },
   error => {
@@ -171,9 +144,9 @@ axiosInstance.interceptors.response.use(
 
     // Handle 401 - unauthorized/expired token
     if (response?.status === 401) {
-      console.log(
-        '401 Unauthorized response received - performing automatic logout'
-      );
+      //console.log(
+      //  '401 Unauthorized response received - performing automatic logout'
+      //);
       handleAutomaticLogout();
 
       // Return structured error for components to handle

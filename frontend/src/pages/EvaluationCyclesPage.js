@@ -55,7 +55,6 @@ export const EvaluationCyclesPage = () => {
       setError(null);
       try {
         const currentCycle = await cycleService.getCurrent();
-        console.log('Current cycle:', currentCycle);
         if (currentCycle.id == null) {
           setCurrentCycle(null);
         } else {
@@ -103,8 +102,6 @@ export const EvaluationCyclesPage = () => {
         userService.getUnmanagedUsers(),
         userService.getMiniUsers(),
       ]);
-      console.log('Unmanaged users:', unmanagedUsersData);
-      console.log('Managers:', managersData);
       setUnmanagedUsers(unmanagedUsersData);
       setManagers(managersData);
       setShowAssignModal(true);
@@ -116,7 +113,6 @@ export const EvaluationCyclesPage = () => {
 
   const handleAssignmentComplete = async assignment => {
     try {
-      console.log(assignment);
       await userService.assignManager(assignment);
 
       // Refresh stats after successful assignment
@@ -131,8 +127,6 @@ export const EvaluationCyclesPage = () => {
   // handlers
   const handleStartCycle = async cycleData => {
     try {
-      console.log('Cycle started:', cycleData);
-
       await cycleService.start(cycleData);
       // Refresh current cycle
       const currentCycle = await cycleService.getCurrent();

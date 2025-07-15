@@ -36,8 +36,6 @@ export const Header = () => {
 
   // Handle WebSocket notifications in the Header
   const handleHeaderNotification = notificationData => {
-    console.log('Header received notification:', notificationData);
-
     switch (notificationData.type) {
       case 'new_message':
         // Update unread count when new message arrives
