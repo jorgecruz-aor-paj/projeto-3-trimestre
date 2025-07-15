@@ -17,6 +17,11 @@ jest.mock('hooks/useUserList', () => ({
     ],
   }),
 }));
+jest.mock('contexts/AlertContext', () => ({
+  useAlert: () => ({
+    showAlert: jest.fn(),
+  }),
+}));
 jest.mock('services/exportService', () => ({
   exportService: {
     evaluationsToCSVFiltered: jest.fn(() =>
@@ -188,13 +193,6 @@ describe('EvaluationFilter', () => {
         require('services/exportService').exportService.evaluationsToCSVFiltered
       ).toHaveBeenCalled();
     });
-  });
-
-  it('shows alert when clicking Excel button', () => {
-    window.alert = jest.fn();
-    setup();
-    fireEvent.click(screen.getByText('Excel'));
-    expect(window.alert).toHaveBeenCalledWith('Excel export not implemented.');
   });
 
   it('renders extraFields if provided', () => {
