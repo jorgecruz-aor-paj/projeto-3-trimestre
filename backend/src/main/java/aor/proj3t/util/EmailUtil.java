@@ -22,13 +22,36 @@ import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 
 /**
- * Utility class for sending emails and email validation.
- * 
- * This class provides methods for sending emails, including account validation
- * emails, and validating email formats.
+ * Utility class for sending emails and validating email formats.
+ * <p>
+ * Provides reusable methods for formatting and delivering email messages,
+ * including support for external SMTP configuration via environment variables or
+ * server-based injection using JNDI (e.g., Wildfly). Supports HTML content, validation
+ * with regex, and fallback strategies for dynamic session creation.
+ * </p>
+ *
+ * Features:
+ * - Environment-aware SMTP setup (.env or server context)
+ * - Supports HTML emails
+ * - Validates recipient format using regex
+ * - Uses injected JavaMail session if available
+ * - Gracefully logs and handles failures
+ *
+ * Limitations:
+ * - SMTP credentials are loaded at startup via Dotenv
+ * - Only sends emails via authenticated SMTP
+ *
+ * Example usage:
+ * <pre>{@code
+ *     boolean success = emailUtil.sendEmail("user@example.com", "Welcome", "<h1>Hello!</h1>");
+ * }</pre>
+ *
+ * Configuration keys expected in .env or environment:
+ * SMTP_HOST, SMTP_PORT, SMTP_USERNAME, SMTP_PASSWORD
  *
  * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
+ * @since 1.0
  */
 @ApplicationScoped
 public class EmailUtil {

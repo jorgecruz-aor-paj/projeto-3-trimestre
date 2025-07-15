@@ -6,50 +6,85 @@ import com.opencsv.bean.CsvDate;
 import java.time.LocalDate;
 
 /**
- * DTO specifically designed for CSV export of User data
- * Uses OpenCSV annotations for automatic CSV mapping
+ * DTO specifically designed for CSV export of {@code User} data.
+ * <p>
+ * Uses OpenCSV annotations to map user attributes to structured CSV columns.
+ * This DTO provides a flat representation of user profile metadata, optimized
+ * for exporting data into spreadsheets, audits, or analytics pipelines.
+ * </p>
+ *
+ * Attributes:
+ * - {@code id}: Unique identifier for the user
+ * - {@code email}: Primary contact email of the user
+ * - {@code firstName}: User's given name
+ * - {@code lastName}: User's surname
+ * - {@code phoneNumber}: Optional phone contact number
+ * - {@code address}: User's residential or mailing address
+ * - {@code birthdate}: User's date of birth, formatted as yyyy-MM-dd
+ * - {@code role}: Current role or position held by the user
+ * - {@code managerId}: ID of the user's assigned manager
+ * - {@code manager}: Full name of the user's manager
+ * - {@code workplace}: Name of the user's office or department
+ *
+ * @author Jorge Cruz & João Osório - Gr4
+ * @version 1.0
+ * @since 1.0
  */
 public class UserCsvDTO {
 
+    /** Unique identifier for the user */
     @CsvBindByName(column = "ID")
     private Long id;
 
+    /** Email address used for communication and login */
     @CsvBindByName(column = "Email")
     private String email;
 
+    /** User's first name */
     @CsvBindByName(column = "First Name")
     private String firstName;
 
+    /** User's last name or surname */
     @CsvBindByName(column = "Last Name")
     private String lastName;
 
+    /** Phone number associated with the user */
     @CsvBindByName(column = "Phone Number")
     private String phoneNumber;
 
+    /** Physical or mailing address of the user */
     @CsvBindByName(column = "Address")
     private String address;
 
+    /** Birth date of the user in yyyy-MM-dd format */
     @CsvBindByName(column = "Birth Date")
-    @CsvDate(value = "yyyy-MM-dd")
+    @CsvDate("yyyy-MM-dd")
     private LocalDate birthdate;
 
+    /** Role or position of the user (e.g. ADMIN, EMPLOYEE) */
     @CsvBindByName(column = "Role")
     private String role;
 
+    /** Unique identifier of the manager assigned to this user */
     @CsvBindByName(column = "Manager ID")
     private Long managerId;
 
-    @CsvBindByName (column = "manager")
+    /** Full name of the manager */
+    @CsvBindByName(column = "manager")
     private String manager;
 
+    /** Name of the workplace or department the user is part of */
     @CsvBindByName(column = "Workplace")
     private String workplace;
 
-    // Default constructor required by OpenCSV
-    public UserCsvDTO() {
-    }
+    /** Default constructor required by OpenCSV */
+    public UserCsvDTO() {}
 
-    // Constructor to convert from UserDTO
+    /**
+     * Constructs a {@code UserCsvDTO} by extracting relevant fields from a {@link UserDTO}.
+     *
+     * @param userDTO the source user object
+     */
     public UserCsvDTO(UserDTO userDTO) {
         this.id = userDTO.getId();
         this.email = userDTO.getEmail();
@@ -59,15 +94,16 @@ public class UserCsvDTO {
         this.address = userDTO.getAddress();
         this.birthdate = userDTO.getBirthdate();
         this.role = userDTO.getRole() != null ? userDTO.getRole().toString() : null;
-        if(userDTO.getManager() != null) {
+        if (userDTO.getManager() != null) {
             this.managerId = userDTO.getManager().getId();
             this.manager = userDTO.getManager().getFirstName() + " " + userDTO.getManager().getLastName();
-        }else{
+        } else {
             this.managerId = null;
             this.manager = null;
         }
         this.workplace = userDTO.getWorkplace().getName();
     }
+
 
     // Getters and setters
     public Long getId() {

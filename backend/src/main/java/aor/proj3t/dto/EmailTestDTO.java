@@ -14,6 +14,7 @@ import jakarta.xml.bind.annotation.XmlRootElement;
  * 
  * @author Jorge Cruz & João Osório - Gr4
  * @version 1.0
+ * @since 1.0
  */
 @XmlRootElement(name = "emailTest")
 @XmlAccessorType(XmlAccessType.FIELD)

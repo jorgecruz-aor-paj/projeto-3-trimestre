@@ -2,44 +2,57 @@ package aor.proj3t.util;
 
 import java.util.HashMap;
 import java.util.Map;
-
 /**
- * A utility class for building filter maps to use with DAO search methods.
+ * Utility class for building filter maps for DAO search queries.
  * <p>
- * This builder provides a fluent API for constructing filter maps, making
- * code more readable and reducing repetition.
+ * Offers a fluent and expressive API for composing query filters as key-value pairs.
+ * Filters are conditionally added only if their values are non-null, promoting clean
+ * and concise controller or service logic when assembling queries.
+ * Common use cases include building dynamic search parameters or simplifying DAO lookups.
  * </p>
+ *
+ * Example usage:
+ * <pre>{@code
+ *     Map<String, Object> filters = FilterBuilder.create()
+ *         .with("status", "ACTIVE")
+ *         .with("department", departmentId)
+ *         .build();
+ * }</pre>
+ *
+ * @author Jorge Cruz & João Osório - Gr4
+ * @version 1.0
+ * @since 1.0
  */
 public class FilterBuilder {
     private final Map<String, Object> filters = new HashMap<>();
 
     /**
-     * Creates a new FilterBuilder instance.
-     * 
-     * @return A new FilterBuilder instance
+     * Creates a new instance of {@link FilterBuilder}.
+     *
+     * @return a fresh {@link FilterBuilder} instance
      */
     public static FilterBuilder create() {
         return new FilterBuilder();
     }
 
     /**
-     * Adds a filter criterion if the value is not null.
-     * 
-     * @param key   The filter key
-     * @param value The filter value
-     * @return This FilterBuilder instance for method chaining
+     * Adds a filter key-value pair to the map if the value is not null.
+     *
+     * @param key the filter key (usually a field name or query parameter)
+     * @param value the filter value to associate
+     * @return this {@link FilterBuilder} instance for method chaining
      */
     public FilterBuilder with(String key, Object value) {
-        if (value != null) { // Only add non-null values
+        if (value != null) {
             filters.put(key, value);
         }
         return this;
     }
 
     /**
-     * Builds and returns the completed filters map.
-     * 
-     * @return The filters map
+     * Finalizes the filter map and returns it.
+     *
+     * @return an immutable {@link Map} of filter criteria
      */
     public Map<String, Object> build() {
         return filters;

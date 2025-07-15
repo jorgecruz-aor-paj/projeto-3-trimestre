@@ -56,6 +56,10 @@ import org.apache.logging.log4j.ThreadContext;
  * @see ContainerRequestFilter
  * @see ContainerResponseFilter
  * @see ThreadContext
+ * 
+ * @author Jorge Cruz & João Osório - Gr4
+ * @version 1.0
+ * @since 1.0
  */
 @Provider
 @Priority(1)

@@ -8,25 +8,62 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 import java.time.Instant;
 
 /**
- * Data Transfer Object for Session entity
+ * Data Transfer Object for {@code Session} entity.
+ * <p>
+ * Represents session metadata for a user's active or expired login token,
+ * including lifecycle timestamps, status, and client-specific identifiers.
+ * Primarily used in authentication systems, session tracking dashboards,
+ * or security auditing workflows. JAXB annotations support XML serialization
+ * for REST endpoints and interoperability with external systems.
+ * </p>
+ *
+ * Attributes:
+ * - {@code id}: Unique identifier for the session record
+ * - {@code createdAt}: Timestamp when the session was created
+ * - {@code expirationDate}: When the session token is set to expire
+ * - {@code sessionToken}: Token string used to maintain session authentication
+ * - {@code isActive}: Flag indicating if the session is still valid
+ * - {@code ipAddress}: IP address from which the session originated
+ * - {@code userAgent}: Client-specific identifier (e.g., browser info, device)
+ * - {@code userId}: ID of the user associated with this session
+ *
+ * @author Jorge Cruz & João Osório - Gr4
+ * @version 1.0
+ * @since 1.0
  */
 @XmlRootElement(name = "session")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SessionDTO {
+
+    /** Unique identifier for the session */
     @XmlElement(name = "id")
     private Long id;
+
+    /** Timestamp marking when the session was initiated */
     @XmlElement(name = "createdAt")
     private Instant createdAt;
+
+    /** Expiration time for the session token */
     @XmlElement(name = "expirationDate")
     private Instant expirationDate;
+
+    /** Token used to authenticate session requests */
     @XmlElement(name = "sessionToken")
     private String sessionToken;
+
+    /** Indicates whether the session is currently active */
     @XmlElement(name = "active")
     private Boolean isActive;
+
+    /** IP address from which the session originated */
     @XmlElement(name = "ipAddress")
     private String ipAddress;
+
+    /** Client identifier string (e.g. browser or device info) */
     @XmlElement(name = "userAgent")
     private String userAgent;
+
+    /** ID of the user linked to this session */
     @XmlElement(name = "userId")
     private Long userId;
 
