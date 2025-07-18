@@ -7,11 +7,7 @@ export const REGEX = {
     /^(?=.{1,64}@.{1,255}$)([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})$/,
   PHONE: /^\d{9}$/,
   TRAINING_AREA_NAME: /^[a-zA-Z0-9\s-]+$/,
-  PASSWORD_LOGIN: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&.\-_])\S{8,}$/,
-  PASSWORD_REGISTER:
-    /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!*.])(?!.*\s).{8,}$/,
-  PASSWORD_SET_NEW:
-    /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!*.])(?!.*\s).{8,}$/,
+  PASSWORD: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&.\-_])\S{8,}$/,
   NUMBER_ONLY: /^[0-9]+$/,
 };
 
@@ -36,4 +32,12 @@ export const VALIDATION_LIMITS = {
   EMAIL_MAX_LENGTH: 255,
   BIRTHDATE_MIN_AGE: 13,
   BIRTHDATE_MAX_AGE: 120,
+  // Additional constants found in validation.js
+  TRAINING_AREA_NAME_MIN_LENGTH: 2,
+  TRAINING_AREA_NAME_MAX_LENGTH: 50,
+  LOGIN_EMAIL_MAX_LENGTH: 255,
+  LOGIN_PASSWORD_MIN_LENGTH: 8,
+  REGISTER_EMAIL_MAX_LENGTH: 255,
+  CONFIRM_PASSWORD_MIN_LENGTH: 8,
+  SET_NEW_PASSWORD_MIN_LENGTH: 8,
 };
