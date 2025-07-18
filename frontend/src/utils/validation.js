@@ -282,8 +282,8 @@ export const useFormValidation = (initialFormData, validationRules) => {
 export const trainingAreaValidationRules = {
   name: {
     required: true,
-    minLength: 2,
-    maxLength: 50,
+    minLength: VALIDATION_LIMITS.TRAINING_AREA_NAME_MIN_LENGTH,
+    maxLength: VALIDATION_LIMITS.TRAINING_AREA_NAME_MAX_LENGTH,
     pattern: REGEX.TRAINING_AREA_NAME,
     patternError: 'validation.trainingAreaNameFormat',
   },
@@ -303,13 +303,13 @@ export const trainingAreaValidationRules = {
 export const trainingValidationRules = {
   title: {
     required: true,
-    minLength: 3,
-    maxLength: 100,
+    minLength: VALIDATION_LIMITS.TRAINING_TITLE_MIN,
+    maxLength: VALIDATION_LIMITS.TRAINING_TITLE_MAX,
   },
   description: {
     required: true,
-    minLength: 10,
-    maxLength: 2000,
+    minLength: VALIDATION_LIMITS.TRAINING_DESC_MIN,
+    maxLength: VALIDATION_LIMITS.TRAINING_DESC_MAX,
   },
   duration: {
     required: true,
@@ -321,16 +321,16 @@ export const trainingValidationRules = {
       if (isNaN(numValue) || !Number.isInteger(numValue)) {
         return 'validation.numberOnly';
       }
-      if (numValue < 15) {
+      if (numValue < VALIDATION_LIMITS.TRAINING_DURATION_MIN) {
         return {
           key: 'validation.minValue',
-          options: { min: 15 },
+          options: { min: VALIDATION_LIMITS.TRAINING_DURATION_MIN },
         };
       }
-      if (numValue > 3000) {
+      if (numValue > VALIDATION_LIMITS.TRAINING_DURATION_MAX) {
         return {
           key: 'validation.maxValue',
-          options: { max: 3000 },
+          options: { max: VALIDATION_LIMITS.TRAINING_DURATION_MAX },
         };
       }
       return null;
@@ -361,13 +361,13 @@ export const loginValidationRules = {
     required: true,
     pattern: REGEX.EMAIL_STRICT,
     patternError: 'validation.emailInvalid',
-    maxLength: 255,
+    maxLength: VALIDATION_LIMITS.LOGIN_EMAIL_MAX_LENGTH,
   },
   password: {
     required: true,
-    pattern: REGEX.PASSWORD_LOGIN,
+    pattern: REGEX.PASSWORD,
     patternError: 'validation.passwordInvalid',
-    minLength: 8,
+    minLength: VALIDATION_LIMITS.LOGIN_PASSWORD_MIN_LENGTH,
   },
 };
 
@@ -384,17 +384,17 @@ export const registerValidationRules = {
     required: true,
     pattern: REGEX.EMAIL,
     patternError: 'validation.emailInvalid',
-    maxLength: 255,
+    maxLength: VALIDATION_LIMITS.REGISTER_EMAIL_MAX_LENGTH,
   },
   password: {
     required: true,
-    pattern: REGEX.PASSWORD_REGISTER,
+    pattern: REGEX.PASSWORD,
     patternError: 'validation.passwordInvalid',
     minLength: VALIDATION_LIMITS.PASSWORD_MIN_LENGTH,
   },
   confirmPassword: {
     required: true,
-    minLength: 8,
+    minLength: VALIDATION_LIMITS.CONFIRM_PASSWORD_MIN_LENGTH,
     custom: (value, formData) => {
       if (value !== formData?.password) {
         return 'validation.passwordsDontMatch';
@@ -419,13 +419,13 @@ export const registerValidationRules = {
 export const profileValidationRules = {
   firstName: {
     required: true,
-    minLength: 2,
-    maxLength: 50,
+    minLength: VALIDATION_LIMITS.NAME_MIN_LENGTH,
+    maxLength: VALIDATION_LIMITS.NAME_MAX_LENGTH,
   },
   lastName: {
     required: true,
-    minLength: 2,
-    maxLength: 50,
+    minLength: VALIDATION_LIMITS.NAME_MIN_LENGTH,
+    maxLength: VALIDATION_LIMITS.NAME_MAX_LENGTH,
   },
   phoneNumber: {
     required: true,
@@ -443,12 +443,12 @@ export const profileValidationRules = {
       const date = new Date(value);
       const today = new Date();
       const minDate = new Date(
-        today.getFullYear() - 120,
+        today.getFullYear() - VALIDATION_LIMITS.BIRTHDATE_MAX_AGE,
         today.getMonth(),
         today.getDate()
       );
       const maxDate = new Date(
-        today.getFullYear() - 13,
+        today.getFullYear() - VALIDATION_LIMITS.BIRTHDATE_MIN_AGE,
         today.getMonth(),
         today.getDate()
       );
@@ -480,13 +480,13 @@ export const profileValidationRules = {
 export const evaluationValidationRules = {
   title: {
     required: true,
-    minLength: 5,
-    maxLength: 150,
+    minLength: VALIDATION_LIMITS.EVALUATION_TITLE_MIN,
+    maxLength: VALIDATION_LIMITS.EVALUATION_TITLE_MAX,
   },
   feedback: {
     required: true,
-    minLength: 3,
-    maxLength: 2000,
+    minLength: VALIDATION_LIMITS.EVALUATION_FEEDBACK_MIN,
+    maxLength: VALIDATION_LIMITS.EVALUATION_FEEDBACK_MAX,
   },
   status: {
     required: true,
@@ -505,7 +505,7 @@ export const evaluationValidationRules = {
 export const messageValidationRules = {
   content: {
     required: true,
-    maxLength: 5000,
+    maxLength: VALIDATION_LIMITS.MESSAGE_MAX_LENGTH,
   },
 };
 
@@ -518,8 +518,7 @@ export const messageValidationRules = {
 export const resetPasswordRequestValidationRules = {
   email: {
     required: true,
-    pattern:
-      /^(?=.{1,64}@.{1,255}$)([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})$/,
+    pattern: REGEX.EMAIL_STRICT,
     patternError: 'validation.emailInvalid',
     maxLength: VALIDATION_LIMITS.EMAIL_MAX_LENGTH,
   },
@@ -535,13 +534,13 @@ export const resetPasswordRequestValidationRules = {
 export const setNewPasswordValidationRules = {
   password: {
     required: true,
-    pattern: REGEX.PASSWORD_SET_NEW,
+    pattern: REGEX.PASSWORD,
     patternError: 'validation.passwordInvalid',
-    minLength: 8,
+    minLength: VALIDATION_LIMITS.SET_NEW_PASSWORD_MIN_LENGTH,
   },
   confirmPassword: {
     required: true,
-    minLength: 8,
+    minLength: VALIDATION_LIMITS.CONFIRM_PASSWORD_MIN_LENGTH,
     custom: (value, formData) => {
       if (value !== formData?.password) {
         return 'validation.passwordsDontMatch';
