@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Card, Badge, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { useLanguage } from 'contexts/LanguageContext';
 
 export const TrainingCard = ({
   training,
@@ -11,6 +12,7 @@ export const TrainingCard = ({
   showActions = true,
 }) => {
   const { t } = useTranslation();
+  const { formatInstant } = useLanguage();
 
   const formatDuration = minutes => {
     if (minutes < 60) return `${minutes}m`;
@@ -133,7 +135,7 @@ export const TrainingCard = ({
       </Card.Body>
       <Card.Footer className="text-muted small">
         <i className="bi bi-calendar-event me-1"></i>
-        {new Date(training.createdAt).toLocaleDateString()}
+        {formatInstant(training.createdAt)}
       </Card.Footer>
     </Card>
   );

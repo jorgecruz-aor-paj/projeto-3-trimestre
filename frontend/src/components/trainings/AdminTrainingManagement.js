@@ -88,7 +88,20 @@ export const AdminTrainingManagement = () => {
   const handleCreateTraining = async trainingData => {
     try {
       setFormLoading(true);
-      await trainingService.create(trainingData);
+
+      // Parse and transform the training data to match NewTrainingDTO structure
+      const newTrainingData = {
+        title: trainingData.title,
+        duration: parseInt(trainingData.duration, 10),
+        description: trainingData.description || '',
+        link: trainingData.link || '',
+        language: trainingData.language,
+        //BUGFIX Send trainingAreaId instead of trainingArea object
+        trainingAreaId:
+          trainingData.trainingAreaId || trainingData.trainingArea?.id,
+      };
+
+      await trainingService.create(newTrainingData);
       showAlert({
         title: t('trainings.admin.success'),
         message: t('trainings.admin.createSuccess'),

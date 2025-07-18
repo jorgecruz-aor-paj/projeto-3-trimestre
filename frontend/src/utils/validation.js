@@ -5,6 +5,7 @@
  */
 
 import { useState } from 'react';
+import { REGEX, VALIDATION_LIMITS } from './constants';
 
 /**
  * @typedef {Object} ValidationRule
@@ -283,7 +284,7 @@ export const trainingAreaValidationRules = {
     required: true,
     minLength: 2,
     maxLength: 50,
-    pattern: /^[a-zA-Z0-9\s-]+$/,
+    pattern: REGEX.TRAINING_AREA_NAME,
     patternError: 'validation.trainingAreaNameFormat',
   },
 };
@@ -312,7 +313,7 @@ export const trainingValidationRules = {
   },
   duration: {
     required: true,
-    pattern: /^[0-9]+$/,
+    pattern: REGEX.NUMBER_ONLY,
     patternError: 'validation.numberOnly',
     //enforces a whole number between 15 and 3000
     custom: value => {
@@ -358,14 +359,13 @@ export const trainingValidationRules = {
 export const loginValidationRules = {
   email: {
     required: true,
-    pattern:
-      /^(?=.{1,64}@.{1,255}$)([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})$/,
+    pattern: REGEX.EMAIL_STRICT,
     patternError: 'validation.emailInvalid',
     maxLength: 255,
   },
   password: {
     required: true,
-    pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&.-_])\S{8,}$/,
+    pattern: REGEX.PASSWORD_LOGIN,
     patternError: 'validation.passwordInvalid',
     minLength: 8,
   },
@@ -382,16 +382,15 @@ export const loginValidationRules = {
 export const registerValidationRules = {
   email: {
     required: true,
-    pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+    pattern: REGEX.EMAIL,
     patternError: 'validation.emailInvalid',
     maxLength: 255,
   },
   password: {
     required: true,
-    pattern:
-      /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!*])(?!.*\s).{8,}$/,
+    pattern: REGEX.PASSWORD_REGISTER,
     patternError: 'validation.passwordInvalid',
-    minLength: 8,
+    minLength: VALIDATION_LIMITS.PASSWORD_MIN_LENGTH,
   },
   confirmPassword: {
     required: true,
@@ -430,12 +429,12 @@ export const profileValidationRules = {
   },
   phoneNumber: {
     required: true,
-    pattern: /^\d{9}$/,
+    pattern: REGEX.PHONE,
     patternError: 'validation.phoneInvalid',
   },
   address: {
     required: true,
-    maxLength: 200,
+    maxLength: VALIDATION_LIMITS.ADDRESS_MAX_LENGTH,
   },
   birthdate: {
     required: true,
@@ -462,7 +461,7 @@ export const profileValidationRules = {
   },
   biography: {
     required: false,
-    maxLength: 500,
+    maxLength: VALIDATION_LIMITS.BIOGRAPHY_MAX_LENGTH,
   },
   workplaceId: {
     required: true,
@@ -522,7 +521,7 @@ export const resetPasswordRequestValidationRules = {
     pattern:
       /^(?=.{1,64}@.{1,255}$)([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})$/,
     patternError: 'validation.emailInvalid',
-    maxLength: 255,
+    maxLength: VALIDATION_LIMITS.EMAIL_MAX_LENGTH,
   },
 };
 
@@ -536,8 +535,7 @@ export const resetPasswordRequestValidationRules = {
 export const setNewPasswordValidationRules = {
   password: {
     required: true,
-    pattern:
-      /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!*])(?!.*\s).{8,}$/,
+    pattern: REGEX.PASSWORD_SET_NEW,
     patternError: 'validation.passwordInvalid',
     minLength: 8,
   },

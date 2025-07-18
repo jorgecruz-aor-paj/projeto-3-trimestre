@@ -13,6 +13,7 @@ import {
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { trainingService } from 'services/trainingService';
+import { useLanguage } from 'contexts/LanguageContext';
 
 /**
  * User Training View component
@@ -21,6 +22,7 @@ import { trainingService } from 'services/trainingService';
  */
 export const UserTrainingView = () => {
   const { t } = useTranslation();
+  const { formatInstant } = useLanguage();
 
   // State management
   const [trainings, setTrainings] = useState([]);
@@ -323,7 +325,7 @@ export const UserTrainingView = () => {
                 <Card.Footer className="text-muted small">
                   <i className="bi bi-calendar3 me-1"></i>
                   {t('trainings.user.addedOn', 'Added')}{' '}
-                  {new Date(training.createdAt).toLocaleDateString()}
+                  {formatInstant(training.createdAt)}
                 </Card.Footer>
               </Card>
             </Col>
