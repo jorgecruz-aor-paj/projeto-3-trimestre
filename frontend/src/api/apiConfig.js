@@ -28,8 +28,8 @@
  * @private
  */
 const getApiBaseUrl = () => {
-  const url = `https://${window.location.hostname}/api`; // For production
-  // const url = `https://${window.location.hostname}:8443/jorgeosorio-proj3t/api`; // For development
+  // const url = `https://${window.location.hostname}/api`; // For production
+  const url = `https://${window.location.hostname}:8443/jorgeosorio-proj3t/api`; // For development
   return url;
 };
 
@@ -41,8 +41,8 @@ const getApiBaseUrl = () => {
  * @private
  */
 const getWebSocketBaseUrl = () => {
-  const url = `wss://${window.location.hostname}/jorgeosorio-proj3t`; // For production
-  // const url = `wss://${window.location.hostname}:8443/jorgeosorio-proj3t`; // For development
+  // const url = `wss://${window.location.hostname}/jorgeosorio-proj3t`; // For production
+  const url = `wss://${window.location.hostname}:8443/jorgeosorio-proj3t`; // For development
   return url;
 };
 
